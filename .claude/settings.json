@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s *)",
+      "Bash(curl -sA *)",
+      "Bash(curl -sI *)",
+      "Bash(curl -sIL *)",
+      "Bash(git add *)",
+      "Bash(git add -A)",
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "Bash(git push)",
+      "Bash(git switch *)",
+      "Bash(git branch *)",
+      "Bash(git restore *)",
+      "Bash(git remote *)",
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "Bash(npx --yes create-next-app *)",
+      "Bash(npx create-next-app *)",
+      "Bash(cp *)",
+      "Bash(mv *)",
+      "Bash(mkdir *)",
+      "Bash(touch *)",
+      "Bash(node *)",
+      "Write",
+      "Edit"
+    ]
+  }
+}
