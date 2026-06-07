@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import useIsMobile from "@/hooks/useIsMobile";
+import useLanguage from "@/hooks/useLanguage";
 import NewGridHoverEffect from "@/components/NewGridHoverEffect";
 import NewGridHoverEffectMobile from "@/components/NewGridHoverEffectMobile";
 import ScrolledLinesV3 from "@/components/ScrolledLinesV3";
@@ -39,6 +40,7 @@ const MEDICAL_CLINIC_JSON_LD = JSON.stringify({
 
 function Home() {
   const isMobile = useIsMobile();
+  const lang = useLanguage();
   const [windowWidth, setWindowWidth] = useState(0);
 
   useEffect(() => {
@@ -63,6 +65,11 @@ function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: MEDICAL_CLINIC_JSON_LD }}
       />
+      <h1 className="sr-only">
+        {lang === "en"
+          ? "ViveCura – Functional Medicine, Prevention & Longevity in Berlin"
+          : "ViveCura – Funktionelle Medizin, Prävention & Longevity in Berlin"}
+      </h1>
 
      <ScrolledLinesV3 />
 
