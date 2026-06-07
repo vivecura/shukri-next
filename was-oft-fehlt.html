@@ -1,0 +1,419 @@
+<!-- Vivecura · Assoziation vs Dissoziation · Wellen-Visualisierung -->
+<style>
+  .wof2 {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 80px 24px;
+    color: #1a1f24;
+  }
+
+  .wof2 h2 {
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 700;
+    color: #43A9AB;
+    margin: 0 0 14px 0;
+    letter-spacing: -0.015em;
+  }
+
+  .wof2-intro {
+    font-size: 16px;
+    line-height: 1.65;
+    color: #6b7378;
+    max-width: 640px;
+    margin: 0 0 56px 0;
+  }
+
+  /* ---- Toggle ---- */
+  .wof2-toggle {
+    display: inline-flex;
+    align-items: center;
+    background: #f0f7f7;
+    border-radius: 100px;
+    padding: 4px;
+    gap: 2px;
+    margin-bottom: 40px;
+  }
+
+  .wof2-btn {
+    padding: 10px 26px;
+    border-radius: 100px;
+    border: none;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.35s ease;
+    color: #6b7378;
+  }
+
+  .wof2-btn.is-active {
+    background: #ffffff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    color: #1a1f24;
+  }
+
+  .wof2-btn.is-active.btn-assoz { color: #43A9AB; }
+
+  /* ---- Wave stage ---- */
+  .wof2-stage {
+    background: #ffffff;
+    border: 1px solid rgba(67, 169, 171, 0.18);
+    border-radius: 22px;
+    overflow: hidden;
+    margin-bottom: 56px;
+    position: relative;
+  }
+
+  .wof2-canvas-wrap {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    align-items: stretch;
+  }
+
+  @media (max-width: 640px) {
+    .wof2-canvas-wrap { grid-template-columns: 110px 1fr; }
+  }
+
+  /* Level labels on left */
+  .wof2-labels {
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid rgba(67, 169, 171, 0.1);
+    background: #fafcfc;
+  }
+
+  .wof2-label-row {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding: 0 18px;
+    gap: 12px;
+    border-bottom: 1px solid rgba(67, 169, 171, 0.08);
+    min-height: 88px;
+    transition: background 0.4s ease;
+  }
+
+  .wof2-label-row:last-child { border-bottom: none; }
+
+  .wof2-label-row.is-synced {
+    background: rgba(67, 169, 171, 0.04);
+  }
+
+  .wof2-label-num {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: rgba(67, 169, 171, 0.5);
+    flex-shrink: 0;
+  }
+
+  .wof2-label-text {
+    line-height: 1.25;
+  }
+
+  .wof2-label-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a1f24;
+    display: block;
+    margin-bottom: 3px;
+    transition: color 0.4s ease;
+  }
+
+  .wof2-label-row.is-synced .wof2-label-name { color: #43A9AB; }
+
+  .wof2-label-sub {
+    font-size: 11.5px;
+    color: #9aa2a7;
+    display: block;
+    line-height: 1.4;
+  }
+
+  /* Canvas */
+  .wof2-canvas {
+    display: block;
+    width: 100%;
+    height: 352px;
+    background: #ffffff;
+  }
+
+  /* Status bar */
+  .wof2-status {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 28px;
+    border-top: 1px solid rgba(67, 169, 171, 0.1);
+    background: #fafcfc;
+    transition: all 0.4s ease;
+  }
+
+  .wof2-status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #9aa2a7;
+    transition: background 0.4s ease;
+    flex-shrink: 0;
+  }
+
+  .wof2-status.is-assoz .wof2-status-dot { background: #43A9AB; box-shadow: 0 0 8px rgba(67,169,171,0.5); }
+
+  .wof2-status-text {
+    font-size: 13px;
+    color: #6b7378;
+    transition: color 0.4s ease;
+  }
+
+  .wof2-status.is-assoz .wof2-status-text { color: #43A9AB; font-weight: 500; }
+
+  /* ---- Bottom text ---- */
+  .wof2-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+    align-items: start;
+  }
+
+  @media (max-width: 860px) {
+    .wof2-body { grid-template-columns: 1fr; gap: 28px; }
+  }
+
+  .wof2-body p {
+    font-size: 16px;
+    line-height: 1.75;
+    color: #4a5258;
+    margin: 0 0 18px 0;
+  }
+
+  .wof2-body p:last-child { margin: 0; }
+
+  .wof2-pullquote {
+    border-left: 3px solid #43A9AB;
+    padding: 6px 0 6px 22px;
+  }
+
+  .wof2-pullquote strong {
+    font-size: 17px;
+    line-height: 1.55;
+    color: #1a1f24;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 12px;
+  }
+
+  .wof2-closing {
+    font-size: 16px;
+    color: #43A9AB !important;
+    font-style: italic;
+    font-weight: 500;
+  }
+</style>
+
+<section class="wof2">
+  <h2>Was oft fehlt</h2>
+  <p class="wof2-intro">
+    Viele Ansätze arbeiten nur auf einer Bewusstseinsebene. Echte Veränderung entsteht, wenn alle vier gleichzeitig in Kontakt sind.
+  </p>
+
+  <div class="wof2-toggle" role="group">
+    <button class="wof2-btn btn-dissoz is-active" data-mode="dissoz">Dissoziation</button>
+    <button class="wof2-btn btn-assoz" data-mode="assoz">Assoziation</button>
+  </div>
+
+  <div class="wof2-stage">
+    <div class="wof2-canvas-wrap">
+
+      <!-- Labels -->
+      <div class="wof2-labels" id="wof2Labels">
+        <div class="wof2-label-row" data-lv="0">
+          <span class="wof2-label-num">01</span>
+          <span class="wof2-label-text">
+            <span class="wof2-label-name">Empfindungen</span>
+            <span class="wof2-label-sub">Körper · Spüren</span>
+          </span>
+        </div>
+        <div class="wof2-label-row" data-lv="1">
+          <span class="wof2-label-num">02</span>
+          <span class="wof2-label-text">
+            <span class="wof2-label-name">Gefühle</span>
+            <span class="wof2-label-sub">Emotion · Erleben</span>
+          </span>
+        </div>
+        <div class="wof2-label-row" data-lv="2">
+          <span class="wof2-label-num">03</span>
+          <span class="wof2-label-text">
+            <span class="wof2-label-name">Gedanken</span>
+            <span class="wof2-label-sub">Kognition · Bedeutung</span>
+          </span>
+        </div>
+        <div class="wof2-label-row" data-lv="3">
+          <span class="wof2-label-num">04</span>
+          <span class="wof2-label-text">
+            <span class="wof2-label-name">Handlungen</span>
+            <span class="wof2-label-sub">Verhalten · Ausdruck</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- Animated wave canvas -->
+      <canvas class="wof2-canvas" id="wof2Canvas"></canvas>
+    </div>
+
+    <!-- Status bar -->
+    <div class="wof2-status" id="wof2Status">
+      <span class="wof2-status-dot"></span>
+      <span class="wof2-status-text" id="wof2StatusText">Ebenen isoliert — jede folgt ihrem eigenen Rhythmus</span>
+    </div>
+  </div>
+
+  <!-- Bottom text -->
+  <div class="wof2-body">
+    <div>
+      <p>
+        Viele Ansätze beschäftigen sich nur mit einer Bewusstseinsebene. Zum Beispiel beim Denken (Gesprächstherapie) oder beim Verhalten (Verhaltenstherapie). Andere arbeiten stärker mit dem Körper oder mit Gefühlen.
+      </p>
+      <p>
+        Jede dieser Methoden kann wirksam sein. Für viele Menschen reicht es jedoch nicht aus, sich nur auf eine Ebene zu beschränken.
+      </p>
+    </div>
+    <div>
+      <div class="wof2-pullquote">
+        <strong>Veränderung gelingt oft schneller, wenn alle Formen miteinander in Einklang gebracht werden. Denken, Fühlen, Körper und Handeln wirken zusammen.</strong>
+        <p class="wof2-closing">
+          Du veränderst dich nicht, weil du dich zwingst, sondern weil du innerlich an einem anderen Punkt angekommen bist.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function() {
+  const canvas = document.getElementById('wof2Canvas');
+  const ctx = canvas.getContext('2d');
+  const statusEl = document.getElementById('wof2Status');
+  const statusText = document.getElementById('wof2StatusText');
+  const labelRows = document.querySelectorAll('.wof2-label-row');
+  const btns = document.querySelectorAll('.wof2-btn');
+
+  let mode = 'dissoz'; // 'dissoz' | 'assoz'
+  let syncProgress = 0; // 0 = dissoz, 1 = assoz
+  let animFrame;
+  let t = 0;
+
+  // Wave configs: base freq, amplitude, phase offset, chaos offset
+  const waves = [
+    { freq: 0.018, amp: 28, phase: 0,    chaosFreq: 0.031, chaosAmp: 18, color: 'rgba(67,169,171,1)' },
+    { freq: 0.022, amp: 22, phase: 1.8,  chaosFreq: 0.019, chaosAmp: 22, color: 'rgba(67,169,171,0.75)' },
+    { freq: 0.015, amp: 32, phase: 3.4,  chaosFreq: 0.027, chaosAmp: 14, color: 'rgba(67,169,171,0.5)' },
+    { freq: 0.026, amp: 20, phase: 5.1,  chaosFreq: 0.014, chaosAmp: 26, color: 'rgba(67,169,171,0.32)' },
+  ];
+
+  function resize() {
+    const rect = canvas.parentElement.getBoundingClientRect();
+    const w = canvas.offsetWidth;
+    canvas.width = w * window.devicePixelRatio;
+    canvas.height = canvas.offsetHeight * window.devicePixelRatio;
+    ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+  }
+
+  function drawWave(w, centerY, progress) {
+    const displayW = canvas.width / window.devicePixelRatio;
+    ctx.beginPath();
+    ctx.strokeStyle = w.color;
+    ctx.lineWidth = 2;
+    ctx.lineCap = 'round';
+
+    for (let x = 0; x <= displayW; x += 2) {
+      // Base sine
+      const baseY = Math.sin(x * w.freq + t * 0.6 + w.phase) * w.amp;
+      // Chaos component (fades out as progress → 1)
+      const chaosY = Math.sin(x * w.chaosFreq + t * 0.9 + w.phase * 1.7) * w.chaosAmp;
+      // Blend: 0 = full chaos, 1 = clean
+      const y = centerY + baseY + chaosY * (1 - progress);
+
+      x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+  }
+
+  function drawGlow(w, centerY, progress) {
+    if (progress < 0.3) return;
+    const displayW = canvas.width / window.devicePixelRatio;
+    ctx.beginPath();
+    ctx.strokeStyle = w.color.replace('1)', `${0.18 * progress})`).replace('0.75)', `${0.14 * progress})`).replace('0.5)', `${0.1 * progress})`).replace('0.32)', `${0.08 * progress})`);
+    ctx.lineWidth = 8;
+    ctx.lineCap = 'round';
+
+    for (let x = 0; x <= displayW; x += 2) {
+      const baseY = Math.sin(x * w.freq + t * 0.6 + w.phase) * w.amp;
+      const y = centerY + baseY;
+      x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+  }
+
+  function draw() {
+    const dw = canvas.width / window.devicePixelRatio;
+    const dh = canvas.height / window.devicePixelRatio;
+    ctx.clearRect(0, 0, dw, dh);
+
+    // Row height based on 4 equal rows
+    const rowH = dh / 4;
+
+    // Draw subtle horizontal lane separators
+    ctx.strokeStyle = 'rgba(67,169,171,0.06)';
+    ctx.lineWidth = 1;
+    for (let i = 1; i < 4; i++) {
+      ctx.beginPath();
+      ctx.moveTo(0, rowH * i);
+      ctx.lineTo(dw, rowH * i);
+      ctx.stroke();
+    }
+
+    waves.forEach((w, i) => {
+      const centerY = rowH * i + rowH / 2;
+      drawGlow(w, centerY, syncProgress);
+      drawWave(w, centerY, syncProgress);
+    });
+
+    // Smooth sync progress
+    const target = mode === 'assoz' ? 1 : 0;
+    syncProgress += (target - syncProgress) * 0.035;
+
+    // Update label highlight
+    const threshold = 0.55;
+    labelRows.forEach(row => {
+      row.classList.toggle('is-synced', syncProgress > threshold);
+    });
+
+    t += 1;
+    animFrame = requestAnimationFrame(draw);
+  }
+
+  function setMode(m) {
+    mode = m;
+    btns.forEach(b => b.classList.remove('is-active'));
+    document.querySelector(`.wof2-btn[data-mode="${m}"]`).classList.add('is-active');
+
+    if (m === 'assoz') {
+      statusEl.classList.add('is-assoz');
+      statusText.textContent = 'Ebenen synchronisiert — alle fließen im selben Rhythmus';
+    } else {
+      statusEl.classList.remove('is-assoz');
+      statusText.textContent = 'Ebenen isoliert — jede folgt ihrem eigenen Rhythmus';
+    }
+  }
+
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => setMode(btn.dataset.mode));
+  });
+
+  window.addEventListener('resize', resize);
+  resize();
+  draw();
+})();
+</script>

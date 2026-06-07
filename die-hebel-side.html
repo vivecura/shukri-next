@@ -1,0 +1,454 @@
+<!-- Vivecura · Longevity · Die Hebel (Side-by-side Flow) -->
+<style>
+  .hebel-side {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 80px 24px;
+    color: #1a1f24;
+  }
+
+  .hebel-side h2 {
+    font-size: clamp(30px, 4vw, 42px);
+    font-weight: 700;
+    color: #43A9AB;
+    margin: 0 0 18px 0;
+    letter-spacing: -0.015em;
+  }
+
+  .hebel-side .intro {
+    font-size: 17px;
+    line-height: 1.65;
+    color: #6b7378;
+    max-width: 640px;
+    margin: 0 0 64px 0;
+  }
+
+  /* ----- Two-column grid ----- */
+  .hebel-split {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    gap: 72px;
+    align-items: start;
+  }
+
+  @media (max-width: 960px) {
+    .hebel-split {
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+  }
+
+  /* ----- Left: vertical flow list ----- */
+  .flow-list {
+    position: relative;
+    padding: 8px 0;
+  }
+
+  /* Vertical connecting line */
+  .flow-list::before {
+    content: '';
+    position: absolute;
+    left: 25px;
+    top: 34px;
+    bottom: 34px;
+    width: 1.5px;
+    background: linear-gradient(
+      to bottom,
+      rgba(67, 169, 171, 0.1) 0%,
+      rgba(67, 169, 171, 0.3) 50%,
+      rgba(67, 169, 171, 0.1) 100%
+    );
+  }
+
+  .flow-item {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    padding: 14px 0;
+    width: 100%;
+    text-align: left;
+    position: relative;
+    transition: transform 0.25s ease;
+  }
+
+  .flow-item:hover {
+    transform: translateX(3px);
+  }
+
+  .flow-dot {
+    width: 52px;
+    height: 52px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 1.5px solid rgba(67, 169, 171, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 600;
+    color: #43A9AB;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    z-index: 1;
+  }
+
+  .flow-item:hover .flow-dot {
+    border-color: #43A9AB;
+  }
+
+  .flow-item.is-active .flow-dot {
+    background: #43A9AB;
+    color: #ffffff;
+    border-color: #43A9AB;
+    border-width: 2px;
+    box-shadow: 0 0 0 6px rgba(67, 169, 171, 0.12);
+  }
+
+  .flow-item.is-connected .flow-dot {
+    background: #e8f5f5;
+    border-color: #43A9AB;
+  }
+
+  .flow-label {
+    font-size: 16px;
+    font-weight: 500;
+    color: #4a5258;
+    line-height: 1.35;
+    transition: color 0.3s ease, font-weight 0.3s ease;
+  }
+
+  .flow-item.is-active .flow-label {
+    color: #1a1f24;
+    font-weight: 600;
+  }
+
+  /* ----- Right: detail panel ----- */
+  .flow-detail-wrap {
+    min-height: 480px;
+    padding-top: 4px;
+  }
+
+  .flow-content {
+    display: none;
+    animation: contentFade 0.45s ease;
+  }
+
+  .flow-content.is-active {
+    display: block;
+  }
+
+  @keyframes contentFade {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .flow-big-num {
+    font-size: clamp(56px, 7vw, 88px);
+    font-weight: 300;
+    color: #43A9AB;
+    line-height: 0.9;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+    margin-bottom: 28px;
+    display: block;
+  }
+
+  .flow-big-num sup {
+    font-size: 0.32em;
+    font-weight: 500;
+    color: #9aa2a7;
+    margin-left: 6px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    vertical-align: 10px;
+  }
+
+  .flow-title {
+    font-size: clamp(26px, 3vw, 34px);
+    font-weight: 700;
+    color: #1a1f24;
+    margin: 0 0 22px 0;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+  }
+
+  .flow-lead {
+    font-size: 18px;
+    line-height: 1.5;
+    color: #43A9AB;
+    font-weight: 500;
+    margin: 0 0 22px 0;
+    font-style: italic;
+  }
+
+  .flow-text {
+    font-size: 16px;
+    line-height: 1.75;
+    color: #4a5258;
+    margin: 0 0 14px 0;
+    max-width: 620px;
+  }
+
+  .flow-text:last-of-type {
+    margin-bottom: 36px;
+  }
+
+  /* Related hebels */
+  .flow-related {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding-top: 24px;
+    border-top: 1px solid #eef5f5;
+    flex-wrap: wrap;
+  }
+
+  .flow-related-label {
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #9aa2a7;
+    font-weight: 600;
+  }
+
+  .flow-related-list {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .flow-related-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    color: #2d7a7b;
+    padding: 6px 14px 6px 8px;
+    border: 1px solid rgba(67, 169, 171, 0.25);
+    border-radius: 100px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .flow-related-item:hover {
+    background: #43A9AB;
+    color: #ffffff;
+    border-color: #43A9AB;
+  }
+
+  .flow-related-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    background: rgba(67, 169, 171, 0.12);
+    border-radius: 50%;
+    font-size: 11px;
+    font-weight: 600;
+    color: #43A9AB;
+    transition: all 0.2s ease;
+  }
+
+  .flow-related-item:hover .flow-related-num {
+    background: rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+  }
+</style>
+
+<section class="hebel-side">
+  <h2>Die Hebel</h2>
+  <p class="intro">
+    Die einzelnen Methoden sind kein Geheimnis. Entscheidend ist das Gesamtkonzept dahinter, also wie alle Schritte sinnvoll miteinander verbunden werden.
+  </p>
+
+  <div class="hebel-split">
+
+    <!-- Left: vertical flow list -->
+    <aside class="flow-list" id="flowList" role="tablist">
+      <button class="flow-item is-active" data-num="1" role="tab">
+        <span class="flow-dot">1</span>
+        <span class="flow-label">Schlaf &amp; Rhythmus</span>
+      </button>
+      <button class="flow-item" data-num="2" role="tab">
+        <span class="flow-dot">2</span>
+        <span class="flow-label">Ernährung mit Feedback</span>
+      </button>
+      <button class="flow-item" data-num="3" role="tab">
+        <span class="flow-dot">3</span>
+        <span class="flow-label">Training &amp; Regeneration</span>
+      </button>
+      <button class="flow-item" data-num="4" role="tab">
+        <span class="flow-dot">4</span>
+        <span class="flow-label">Stressregulation</span>
+      </button>
+      <button class="flow-item" data-num="5" role="tab">
+        <span class="flow-dot">5</span>
+        <span class="flow-label">Supplemente</span>
+      </button>
+      <button class="flow-item" data-num="6" role="tab">
+        <span class="flow-dot">6</span>
+        <span class="flow-label">Infusionen</span>
+      </button>
+    </aside>
+
+    <!-- Right: detail content -->
+    <div class="flow-detail-wrap">
+
+      <div class="flow-content is-active" id="n1" data-related="2,3,4">
+        <span class="flow-big-num">01<sup>/06</sup></span>
+        <h3 class="flow-title">Schlaf &amp; Rhythmus</h3>
+        <p class="flow-lead">Alles beginnt mit dem Takt, in dem dein Körper regeneriert.</p>
+        <p class="flow-text">
+          Im Tiefschlaf repariert sich dein Nervensystem, im REM-Schlaf verarbeitest du Emotionen, und dein zirkadianer Rhythmus steuert Hormone, Stoffwechsel und Zellalterung.
+        </p>
+        <p class="flow-text">
+          Wir schauen auf deine Schlafqualität, dein Licht- und Bewegungsmuster und bringen deinen Tagesrhythmus wieder in den Takt, in dem dein Körper wirklich altern kann wie er soll.
+        </p>
+        <div class="flow-related">
+          <span class="flow-related-label">Verbunden mit</span>
+          <div class="flow-related-list"></div>
+        </div>
+      </div>
+
+      <div class="flow-content" id="n2" data-related="1,3,5,6">
+        <span class="flow-big-num">02<sup>/06</sup></span>
+        <h3 class="flow-title">Ernährung mit Feedback</h3>
+        <p class="flow-lead">Was gesund ist, zeigt dir dein eigener Körper.</p>
+        <p class="flow-text">
+          Statt allgemeiner Empfehlungen arbeiten wir mit echten Daten aus deinem Körper: Blutzuckerverläufe über ein CGM, Labormarker, Mikronährstoffstatus und deine subjektiven Signale.
+        </p>
+        <p class="flow-text">
+          So wird aus Ernährung kein Dogma, sondern ein Werkzeug, das du verstehst und das messbar zu dir passt.
+        </p>
+        <div class="flow-related">
+          <span class="flow-related-label">Verbunden mit</span>
+          <div class="flow-related-list"></div>
+        </div>
+      </div>
+
+      <div class="flow-content" id="n3" data-related="1,2,4">
+        <span class="flow-big-num">03<sup>/06</sup></span>
+        <h3 class="flow-title">Training &amp; Regeneration</h3>
+        <p class="flow-lead">Muskeln sind das Organ des Alterns.</p>
+        <p class="flow-text">
+          Wer Muskelmasse, Kraft und mitochondriale Kapazität erhält, bleibt länger gesund, belastbar und mental klar.
+        </p>
+        <p class="flow-text">
+          Genauso wichtig ist die Regeneration dazwischen. Wir bringen Training und Erholung so in Balance, dass dein Körper stärker wird, statt sich weiter zu erschöpfen.
+        </p>
+        <div class="flow-related">
+          <span class="flow-related-label">Verbunden mit</span>
+          <div class="flow-related-list"></div>
+        </div>
+      </div>
+
+      <div class="flow-content" id="n4" data-related="1,3">
+        <span class="flow-big-num">04<sup>/06</sup></span>
+        <h3 class="flow-title">Stressregulation</h3>
+        <p class="flow-lead">Im Alarm kann dein Körper nicht heilen.</p>
+        <p class="flow-text">
+          Chronischer Stress ist einer der stärksten Beschleuniger biologischer Alterung. Er hält dein Nervensystem im Alarmzustand, stört Schlaf, Hormone und Verdauung und zehrt still an deinen Reserven.
+        </p>
+        <p class="flow-text">
+          Über HRV-Messung, Atemarbeit, somatische Methoden und gezielte Regulation lernt dein System wieder, zwischen Anspannung und echter Erholung zu wechseln.
+        </p>
+        <div class="flow-related">
+          <span class="flow-related-label">Verbunden mit</span>
+          <div class="flow-related-list"></div>
+        </div>
+      </div>
+
+      <div class="flow-content" id="n5" data-related="2,6">
+        <span class="flow-big-num">05<sup>/06</sup></span>
+        <h3 class="flow-title">Gezielter Einsatz von Supplementen</h3>
+        <p class="flow-lead">Nur was dein Labor zeigt und dein Alltag braucht.</p>
+        <p class="flow-text">
+          Nahrungsergänzung ersetzt keinen Lebensstil, kann aber gezielte Lücken schließen, die sonst bremsen. Nur was sich im Labor zeigt und in deinem Alltag Sinn ergibt, wird auch eingesetzt.
+        </p>
+        <p class="flow-text">
+          Das Ziel ist nicht möglichst viel, sondern genau das, was dein Körper gerade braucht, in passender Form und Dosierung.
+        </p>
+        <div class="flow-related">
+          <span class="flow-related-label">Verbunden mit</span>
+          <div class="flow-related-list"></div>
+        </div>
+      </div>
+
+      <div class="flow-content" id="n6" data-related="2,5">
+        <span class="flow-big-num">06<sup>/06</sup></span>
+        <h3 class="flow-title">Sinnvolle Infusionen</h3>
+        <p class="flow-lead">Direkt ins Blut, dorthin wo sie wirken.</p>
+        <p class="flow-text">
+          Wenn dein Körper über den Darm nicht mehr gut aufnehmen kann oder schnell spürbare Effekte entscheidend sind, sind Infusionen ein starkes Werkzeug. Nährstoffe, Aminosäuren oder Moleküle wie NAD+ gehen direkt ins Blut und damit dorthin, wo sie wirken.
+        </p>
+        <p class="flow-text">
+          Wir setzen Infusionen nur dort ein, wo sie zu deinem Bild passen, zielgerichtet, dosiert und eingebettet in dein Gesamtkonzept.
+        </p>
+        <div class="flow-related">
+          <span class="flow-related-label">Verbunden mit</span>
+          <div class="flow-related-list"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+  (function() {
+    const hebels = {
+      1: 'Schlaf & Rhythmus',
+      2: 'Ernährung',
+      3: 'Training',
+      4: 'Stressregulation',
+      5: 'Supplemente',
+      6: 'Infusionen'
+    };
+
+    const items = document.querySelectorAll('#flowList .flow-item');
+    const contents = document.querySelectorAll('.flow-content');
+
+    function activate(num) {
+      items.forEach(n => n.classList.remove('is-active', 'is-connected'));
+      const activeItem = document.querySelector(`.flow-item[data-num="${num}"]`);
+      activeItem.classList.add('is-active');
+
+      contents.forEach(c => c.classList.remove('is-active'));
+      const activeContent = document.getElementById(`n${num}`);
+      activeContent.classList.add('is-active');
+
+      // Mark connected items + build "Verbunden mit" chips
+      const related = activeContent.dataset.related.split(',').map(x => x.trim());
+      related.forEach(r => {
+        const connectedItem = document.querySelector(`.flow-item[data-num="${r}"]`);
+        if (connectedItem) connectedItem.classList.add('is-connected');
+      });
+
+      const list = activeContent.querySelector('.flow-related-list');
+      list.innerHTML = '';
+      related.forEach(r => {
+        const btn = document.createElement('button');
+        btn.className = 'flow-related-item';
+        btn.innerHTML = `<span class="flow-related-num">${r}</span>${hebels[r]}`;
+        btn.addEventListener('click', () => activate(r));
+        list.appendChild(btn);
+      });
+    }
+
+    items.forEach(item => {
+      item.addEventListener('click', () => activate(item.dataset.num));
+    });
+
+    activate(1);
+  })();
+</script>

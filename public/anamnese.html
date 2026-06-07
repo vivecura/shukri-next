@@ -1,0 +1,2225 @@
+<!DOCTYPE html>
+<html lang="de" data-lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0d1015">
+<title>Patienten-Aufnahme | ViveCura Berlin</title>
+<meta name="description" content="Digitale Patienten-Aufnahme der Praxis ViveCura, Berlin. Kontaktdaten, Anamnese und Einwilligungen, DSGVO-konform.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Libre+Baskerville:ital,wght@0,400;1,400&family=Anton&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<style>
+  :root {
+    --teal: #43A9AB;
+    --teal-soft: #5fc8ca;
+    --teal-deep: #1f6e70;
+    --bg: #0d1015;
+    --bg-soft: #14181d;
+    --bg-card: #181d22;
+    --cream: #f3faf9;
+    --cream-soft: rgba(243, 250, 249, 0.72);
+    --cream-dim: rgba(243, 250, 249, 0.5);
+    --line: rgba(243, 250, 249, 0.10);
+    --line-teal: rgba(67, 169, 171, 0.35);
+    --error: #e57373;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 100%; overflow-x: hidden; }
+
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    color: var(--cream);
+    background: var(--bg);
+    background: radial-gradient(ellipse at 50% 0%, #1a2326 0%, var(--bg) 50%);
+    min-height: 100vh;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    padding-bottom: 24px;
+    padding-bottom: calc(24px + env(safe-area-inset-bottom));
+  }
+
+  .page { max-width: 520px; margin: 0 auto; padding: 22px 20px 40px; }
+  /* iPad-friendly: widen the column on tablets so the form doesn't sit
+     as a narrow inset column with empty gutters on either side. */
+  @media (min-width: 720px) {
+    .page { max-width: 720px; padding: 36px 32px 64px; }
+    .hero h1 { font-size: 60px; }
+    .hero-sub { font-size: 17.5px; max-width: 42ch; }
+    .step-title { font-size: 32px; }
+    .step-intro { font-size: 15px; }
+    .question-label { font-size: 15.5px; }
+    .field input[type="text"],
+    .field input[type="email"],
+    .field input[type="tel"],
+    .field input[type="number"],
+    .field input[type="date"],
+    .field textarea { font-size: 15.5px; padding: 13px 16px; }
+    .pill-choice { font-size: 13.5px; padding: 9px 16px; }
+    .step-section { padding: 30px 28px; }
+    .reality { padding: 30px 28px; }
+    .sub-questions { grid-template-columns: 1fr 1fr; gap: 22px; }
+  }
+
+  /* Lang toggle bar */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+  }
+  .wordmark {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 8px;
+    color: var(--cream);
+    padding-left: 8px;
+  }
+  .lang-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--line);
+    color: var(--cream);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 7px 12px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .lang-toggle:hover { background: rgba(255,255,255,0.12); }
+  .lang-toggle span.active { color: var(--teal-soft); }
+  .lang-toggle span.inactive { color: var(--cream-dim); }
+
+  /* Bilingual content */
+  [data-lang="de"] .en-only { display: none; }
+  [data-lang="en"] .de-only { display: none; }
+
+  /* Editorial eyebrow */
+  .eyebrow-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .eyebrow-line::before, .eyebrow-line::after {
+    content: '';
+    width: 26px;
+    height: 1px;
+    background: var(--teal-soft);
+    opacity: 0.7;
+  }
+  .eyebrow-line span {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--teal-soft);
+  }
+
+  /* Hero */
+  .hero { text-align: center; margin-bottom: 38px; }
+  .hero h1 {
+    font-family: 'Anton', sans-serif;
+    font-weight: 400;
+    font-size: 48px;
+    line-height: 0.95;
+    text-transform: uppercase;
+    color: var(--cream);
+    letter-spacing: -0.3px;
+    margin-bottom: 18px;
+  }
+  .hero h1 em {
+    font-style: normal;
+    color: var(--teal-soft);
+  }
+  .hero-sub {
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-style: italic;
+    font-size: 16px;
+    line-height: 1.45;
+    color: var(--cream-soft);
+    max-width: 34ch;
+    margin: 0 auto 22px;
+  }
+  .price-block {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 14px 30px;
+    border: 1px solid var(--line-teal);
+    border-radius: 18px;
+    background: rgba(67, 169, 171, 0.06);
+  }
+  .price-tag {
+    font-family: 'Anton', sans-serif;
+    font-size: 38px;
+    color: var(--teal-soft);
+    letter-spacing: 0.5px;
+    line-height: 1;
+  }
+  .price-meta {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    color: var(--cream-dim);
+    margin-top: 6px;
+  }
+
+  /* Reality check section */
+  .reality {
+    margin-bottom: 32px;
+    padding: 26px 22px;
+    background: linear-gradient(155deg, var(--bg-card) 0%, var(--bg-soft) 100%);
+    border: 1px solid var(--line);
+    border-radius: 22px;
+  }
+  .reality-eyebrow {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--teal-soft);
+    margin-bottom: 12px;
+  }
+  .reality h2 {
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-weight: 400;
+    font-size: 19px;
+    line-height: 1.35;
+    color: var(--cream);
+    margin-bottom: 14px;
+  }
+  .reality h2 em { font-style: italic; color: var(--teal-soft); }
+  .reality p {
+    font-size: 14px;
+    color: var(--cream-soft);
+    line-height: 1.6;
+  }
+  .reality-questions {
+    margin: 14px 0 14px;
+    padding-left: 14px;
+    border-left: 2px solid rgba(67, 169, 171, 0.3);
+  }
+  .reality-questions p {
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--cream-soft);
+    line-height: 1.55;
+    margin-bottom: 8px;
+  }
+  .reality-questions p:last-child { margin-bottom: 0; }
+  .reality-resolve {
+    margin: 16px 0 18px;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--teal-soft);
+    letter-spacing: 0.2px;
+  }
+  .reality-promise {
+    font-size: 14px;
+    color: var(--cream-soft);
+    line-height: 1.6;
+  }
+
+  /* Value props */
+  .value-list {
+    margin-bottom: 36px;
+  }
+  .value-list h3 {
+    text-align: center;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2.4px;
+    text-transform: uppercase;
+    color: var(--teal-soft);
+    margin-bottom: 18px;
+  }
+  .value-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .value-item:last-child { border-bottom: none; }
+  .value-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: rgba(67, 169, 171, 0.12);
+    color: var(--teal-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-family: 'Anton', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+  }
+  .value-text {
+    font-size: 14.5px;
+    line-height: 1.5;
+    color: var(--cream);
+    padding-top: 4px;
+  }
+
+  /* Steps overview (vertical) */
+  .steps-overview {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 40px;
+  }
+  .step-row {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 14px 18px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+  }
+  .step-num-large {
+    font-family: 'Anton', sans-serif;
+    font-size: 30px;
+    color: var(--teal-soft);
+    line-height: 1;
+    flex-shrink: 0;
+    min-width: 38px;
+  }
+  .step-row-text {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--cream);
+    letter-spacing: 0.2px;
+  }
+
+  /* Scarcity badge */
+  .scarcity-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(229, 115, 115, 0.10);
+    border: 1px solid rgba(229, 115, 115, 0.35);
+    color: #ffb3a8;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    padding: 7px 14px;
+    border-radius: 999px;
+    margin-top: 18px;
+    margin-bottom: 8px;
+  }
+  .scarcity-cta {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--cream-soft);
+    letter-spacing: 0.1px;
+    max-width: 30ch;
+    margin: 0 auto;
+    line-height: 1.4;
+  }
+  .scarcity-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #ff8a76;
+    box-shadow: 0 0 0 3px rgba(255, 138, 118, 0.25);
+    animation: scarcityPulse 1.6s ease-in-out infinite;
+  }
+  @keyframes scarcityPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.2); }
+  }
+
+  /* Step sections */
+  .step-section {
+    margin-bottom: 26px;
+    padding: 24px 22px;
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: 22px;
+    position: relative;
+    transition: opacity 0.3s ease, filter 0.3s ease;
+  }
+  .step-section.locked {
+    opacity: 0.4;
+    filter: blur(1px);
+    pointer-events: none;
+  }
+  .step-section.active {
+    border-color: rgba(67, 169, 171, 0.35);
+    box-shadow: 0 0 0 1px rgba(67, 169, 171, 0.2), 0 12px 28px rgba(0,0,0,0.35);
+  }
+  .step-eyebrow-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .step-eyebrow-row::before {
+    content: '';
+    width: 22px;
+    height: 1px;
+    background: var(--teal-soft);
+  }
+  .step-eyebrow-row span {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--teal-soft);
+  }
+  .step-title {
+    font-family: 'Anton', sans-serif;
+    font-size: 28px;
+    line-height: 1;
+    color: var(--cream);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 16px;
+  }
+  .step-intro {
+    font-size: 14px;
+    color: var(--cream-soft);
+    line-height: 1.55;
+    margin-bottom: 18px;
+  }
+
+  /* Form fields */
+  .field { margin-bottom: 14px; }
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .field label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: var(--cream-dim);
+    margin-bottom: 6px;
+  }
+  .field input[type="text"],
+  .field input[type="email"],
+  .field input[type="tel"],
+  .field input[type="number"],
+  .field textarea {
+    width: 100%;
+    padding: 12px 14px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    color: var(--cream);
+    font-size: 14.5px;
+    font-family: inherit;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .field textarea {
+    resize: vertical;
+    min-height: 70px;
+    line-height: 1.5;
+  }
+  .field input:focus,
+  .field textarea:focus {
+    outline: none;
+    border-color: var(--teal);
+    background: rgba(67, 169, 171, 0.05);
+  }
+  .field input::placeholder, .field textarea::placeholder {
+    color: var(--cream-dim);
+  }
+  .field-error {
+    display: none;
+    font-size: 11px;
+    color: var(--error);
+    margin-top: 4px;
+  }
+  .field.has-error input { border-color: var(--error); }
+  .field.has-error .field-error { display: block; }
+
+  /* Pill choice groups */
+  .question { margin-bottom: 22px; }
+  .question-label {
+    display: block;
+    font-size: 14.5px;
+    font-weight: 600;
+    color: var(--cream);
+    margin-bottom: 10px;
+    line-height: 1.4;
+  }
+  .question-sub {
+    font-size: 12.5px;
+    color: var(--cream-dim);
+    margin-bottom: 10px;
+    line-height: 1.4;
+  }
+  .pill-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+  .pill-choice {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 14px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--cream-soft);
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+    user-select: none;
+  }
+  .pill-choice input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .pill-choice:hover { background: rgba(67, 169, 171, 0.08); border-color: var(--line-teal); }
+  .pill-choice.checked,
+  .pill-choice:has(input:checked) {
+    background: rgba(67, 169, 171, 0.18);
+    border-color: var(--teal);
+    color: var(--teal-soft);
+  }
+
+  .other-field {
+    margin-top: 8px;
+  }
+  .other-field input {
+    width: 100%;
+    padding: 10px 14px;
+    background: rgba(255,255,255,0.03);
+    border: 1px dashed var(--line);
+    border-radius: 12px;
+    color: var(--cream);
+    font-size: 13.5px;
+    font-family: inherit;
+  }
+  .other-field input::placeholder { color: var(--cream-dim); font-style: italic; }
+  .other-field input:focus { outline: none; border-style: solid; border-color: var(--teal); background: rgba(67,169,171,0.04); }
+
+  /* Supplement-Dosis dynamic list */
+  .supp-dosage-list {
+    display: none;
+    margin-top: 14px;
+    padding: 14px 14px 8px;
+    background: rgba(67, 169, 171, 0.05);
+    border: 1px solid rgba(67, 169, 171, 0.22);
+    border-radius: 14px;
+  }
+  .supp-dosage-list.has-items { display: block; }
+  .supp-dosage-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    color: var(--teal-soft);
+    margin-bottom: 12px;
+  }
+  .supp-dosage-header::before {
+    content: '';
+    width: 14px;
+    height: 1px;
+    background: var(--teal-soft);
+    opacity: 0.7;
+  }
+  .supp-dosage-row {
+    display: grid;
+    grid-template-columns: minmax(95px, 0.5fr) 1fr;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .supp-dosage-row:last-child { margin-bottom: 0; }
+  .supp-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--cream);
+    letter-spacing: 0.2px;
+  }
+  .supp-dosage-row input {
+    width: 100%;
+    padding: 9px 12px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    color: var(--cream);
+    font-size: 13px;
+    font-family: inherit;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .supp-dosage-row input:focus {
+    outline: none;
+    border-color: var(--teal);
+    background: rgba(67, 169, 171, 0.05);
+  }
+  .supp-dosage-row input::placeholder {
+    color: var(--cream-dim);
+    font-style: italic;
+    font-size: 12.5px;
+  }
+
+  /* Inline hint between steps */
+  .step-hint {
+    text-align: center;
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--cream-soft);
+    line-height: 1.55;
+    margin: 18px auto 22px;
+    max-width: 36ch;
+    padding: 0 10px;
+  }
+  .step-hint strong {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    color: var(--teal-soft);
+    letter-spacing: 0.2px;
+  }
+
+  /* Info banner between steps */
+  .info-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 18px;
+    padding: 14px 16px 14px 14px;
+    background: rgba(67, 169, 171, 0.07);
+    border: 1px solid rgba(67, 169, 171, 0.28);
+    border-radius: 14px;
+  }
+  .info-banner-icon {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(67, 169, 171, 0.18);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--teal-soft);
+  }
+  .info-banner-text {
+    font-size: 13px;
+    color: var(--cream-soft);
+    line-height: 1.5;
+    flex: 1;
+  }
+  .info-banner-text strong {
+    color: var(--cream);
+    font-weight: 700;
+  }
+
+  /* Sub-questions (4 in row, like Konsum) */
+  .sub-questions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 12px;
+  }
+  .sub-q { display: flex; flex-direction: column; gap: 8px; }
+  .sub-q .sub-label {
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: var(--cream-dim);
+  }
+  .sub-q .pill-choice { font-size: 11.5px; padding: 6px 10px; }
+
+  /* Stress slider buttons */
+  .stress-buttons {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 4px;
+  }
+  .stress-buttons .pill-choice {
+    padding: 10px 0;
+    justify-content: center;
+    font-size: 13px;
+  }
+
+  /* Doctolib block */
+  .doctolib-card {
+    text-align: center;
+    padding: 8px 0;
+  }
+  .doctolib-callout {
+    display: inline-block;
+    padding: 6px 12px;
+    background: rgba(67,169,171,0.12);
+    border-radius: 999px;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--teal-soft);
+    letter-spacing: 0.5px;
+    margin-bottom: 14px;
+  }
+  .doctolib-instruction {
+    font-size: 13.5px;
+    color: var(--cream-soft);
+    line-height: 1.5;
+    margin-bottom: 18px;
+  }
+  .doctolib-instruction strong {
+    color: var(--cream);
+    font-weight: 700;
+  }
+
+  /* Buttons */
+  .btn-primary,
+  .btn-secondary,
+  .btn-doctolib {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 22px;
+    border-radius: 14px;
+    font-size: 14.5px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    text-decoration: none;
+    transition: transform 0.15s, background 0.2s, box-shadow 0.2s;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    font-family: inherit;
+  }
+  .btn-primary {
+    background: var(--teal);
+    color: var(--cream);
+    box-shadow: 0 8px 22px rgba(67, 169, 171, 0.32);
+  }
+  .btn-primary:hover { background: var(--teal-soft); color: var(--bg); }
+  .btn-primary:active { transform: scale(0.985); }
+  .btn-secondary {
+    background: rgba(255,255,255,0.06);
+    color: var(--cream);
+    border: 1px solid var(--line);
+  }
+  .btn-secondary:hover { background: rgba(255,255,255,0.12); }
+  .btn-doctolib {
+    background: var(--cream);
+    color: var(--bg);
+    box-shadow: 0 8px 22px rgba(255,255,255,0.12);
+    margin-bottom: 12px;
+  }
+  .btn-doctolib:hover { background: var(--teal); color: var(--cream); }
+  .btn svg, .btn-primary svg, .btn-secondary svg, .btn-doctolib svg {
+    transition: transform 0.2s;
+  }
+  .btn-primary:hover svg, .btn-doctolib:hover svg { transform: translateX(3px); }
+
+  /* File upload — labels default to `display:inline` on iOS Safari, which
+     collapses the box to the width of its inline content and makes the
+     border render as broken corner fragments. Force block + full width. */
+  .file-upload {
+    display: block;
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 22px 18px;
+    border: 2px solid var(--teal);
+    border-radius: 16px;
+    background: rgba(67,169,171,0.06);
+    text-align: center;
+    transition: background 0.2s, border-color 0.2s;
+    cursor: pointer;
+  }
+  .file-upload:hover {
+    background: rgba(67,169,171,0.12);
+  }
+  .file-upload input[type="file"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .file-upload-label {
+    font-size: 14px;
+    color: var(--cream);
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .file-upload-hint {
+    font-size: 12px;
+    color: var(--cream-dim);
+  }
+  .file-list {
+    margin-top: 10px;
+    font-size: 12.5px;
+    color: var(--teal-soft);
+  }
+
+  /* Datenschutz block */
+  .privacy-block {
+    margin-top: 18px;
+    padding: 16px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+  }
+  .privacy-checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .privacy-checkbox input {
+    margin-top: 3px;
+    accent-color: var(--teal);
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+  .privacy-checkbox span {
+    font-size: 12.5px;
+    color: var(--cream-soft);
+    line-height: 1.5;
+  }
+  .privacy-checkbox a {
+    color: var(--teal-soft);
+    text-decoration: underline;
+  }
+  .privacy-fine {
+    font-size: 11px;
+    color: var(--cream-dim);
+    line-height: 1.5;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--line);
+  }
+
+  /* Sticky CTA */
+  .sticky-bar {
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    z-index: 50;
+    padding: 10px 14px;
+    padding-bottom: calc(10px + env(safe-area-inset-bottom));
+    background: rgba(13, 16, 21, 0.82);
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    border-top: 1px solid var(--line);
+  }
+  .sticky-inner {
+    max-width: 520px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  @media (min-width: 720px) {
+    .sticky-inner { max-width: 720px; }
+  }
+  .sticky-btn {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 13px 16px;
+    border-radius: 14px;
+    background: var(--teal);
+    color: var(--cream);
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.3px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(67, 169, 171, 0.4);
+    font-family: inherit;
+  }
+  .sticky-meta {
+    flex-shrink: 0;
+    font-size: 11px;
+    color: var(--cream-soft);
+    text-align: right;
+    line-height: 1.3;
+  }
+  .sticky-meta strong { color: var(--cream); font-weight: 700; }
+
+  /* Footer */
+  .footer {
+    margin-top: 30px;
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
+    text-align: center;
+    font-size: 12px;
+    color: var(--cream-dim);
+    line-height: 1.5;
+  }
+  .footer-name {
+    color: var(--cream);
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    font-size: 11px;
+    margin-bottom: 6px;
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 90px;
+    bottom: calc(90px + env(safe-area-inset-bottom));
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--cream);
+    color: var(--bg);
+    padding: 12px 18px;
+    border-radius: 12px;
+    font-size: 13.5px;
+    font-weight: 700;
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s;
+    pointer-events: none;
+    z-index: 60;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* Success state */
+  .success-state {
+    display: none;
+    text-align: center;
+    padding: 44px 22px 32px;
+    background: linear-gradient(155deg, var(--teal-deep) 0%, #163e44 100%);
+    border-radius: 22px;
+    margin-bottom: 26px;
+    box-shadow: 0 16px 40px rgba(67,169,171,0.22);
+  }
+  .success-state.show { display: block; }
+  .success-check {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.14);
+    color: var(--cream);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0 auto 18px;
+    box-shadow: 0 0 0 6px rgba(255,255,255,0.06);
+  }
+  .success-state h2 {
+    font-family: 'Anton', sans-serif;
+    font-size: 36px;
+    line-height: 1;
+    color: var(--cream);
+    margin-bottom: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .success-state p {
+    color: rgba(255,255,255,0.88);
+    font-size: 14.5px;
+    line-height: 1.6;
+    max-width: 34ch;
+    margin: 0 auto 10px;
+  }
+  .success-sign {
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-style: italic;
+    color: var(--cream) !important;
+    margin-top: 14px !important;
+    margin-bottom: 6px !important;
+  }
+  .success-role {
+    font-size: 12.5px !important;
+    color: rgba(255,255,255,0.65) !important;
+    line-height: 1.5 !important;
+    max-width: 36ch !important;
+    margin: 0 auto 8px !important;
+    letter-spacing: 0.2px;
+  }
+  .success-contact {
+    margin-top: 22px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.18);
+    font-size: 13px;
+    color: rgba(255,255,255,0.72);
+    line-height: 1.55;
+  }
+  .success-contact a {
+    display: inline-block;
+    margin-top: 6px;
+    color: var(--cream);
+    text-decoration: underline;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+  }
+  .success-contact a:hover { color: var(--teal-soft); }
+
+  @media (max-width: 380px) {
+    .hero h1 { font-size: 40px; }
+    .step-title { font-size: 24px; }
+    .sub-questions { grid-template-columns: 1fr; }
+    .field-row { grid-template-columns: 1fr; }
+  }
+
+  /* ===== Patient-Intake additions ===== */
+  .anwalt-banner {
+    background: rgba(220, 160, 60, 0.12);
+    border: 1px solid rgba(220, 160, 60, 0.4);
+    color: #e8c98a;
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-size: 12.5px;
+    line-height: 1.5;
+    margin: 0 auto 18px;
+    max-width: 560px;
+    text-align: center;
+  }
+  .consent-list { display: flex; flex-direction: column; gap: 12px; margin: 16px 0; }
+  .consent-list .privacy-checkbox { align-items: flex-start; }
+  .consent-group-title {
+    font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--teal-soft); margin: 20px 0 4px;
+  }
+  .consent-optional-note { font-size: 12px; color: var(--cream-dim); margin: 0 0 6px; }
+  .rights-note {
+    font-size: 12px; color: var(--cream-dim); line-height: 1.6;
+    border-left: 2px solid rgba(255,255,255,0.12); padding-left: 12px; margin: 14px 0;
+  }
+  .minor-notice {
+    display: none; background: rgba(67,169,171,0.1); border: 1px solid rgba(67,169,171,0.35);
+    border-radius: 12px; padding: 14px; margin: 14px 0;
+  }
+  .minor-notice.show { display: block; }
+  /* Signature pad */
+  .sig-wrap { margin: 18px 0 6px; }
+  .sig-label { font-size: 14px; color: var(--cream); margin-bottom: 8px; display: block; }
+  .sig-canvas {
+    width: 100%; height: 180px; background: #fff; border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.2); touch-action: none; display: block;
+  }
+  .sig-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
+  .sig-clear {
+    background: none; border: 1px solid rgba(255,255,255,0.2); color: var(--cream-dim);
+    border-radius: 8px; padding: 6px 14px; font-size: 13px; cursor: pointer;
+  }
+  .sig-hint { font-size: 12px; color: var(--cream-dim); }
+</style>
+</head>
+<body>
+
+  <div class="page">
+
+    <!-- Topbar with wordmark + language toggle -->
+    <div class="topbar">
+      <div class="wordmark">VIVECURA</div>
+      <button class="lang-toggle" id="langToggle" aria-label="Sprache wechseln">
+        <span class="active" id="lang-de-label">DE</span>
+        <span style="opacity: 0.4">|</span>
+        <span class="inactive" id="lang-en-label">EN</span>
+      </button>
+    </div>
+
+    <!-- HERO (Warteraum-Intake) -->
+    <section class="hero">
+      <h1>
+        <span class="de-only">WILLKOMMEN<br>BEI <em>VIVECURA</em>.</span>
+        <span class="en-only">WELCOME<br>TO <em>VIVECURA</em>.</span>
+      </h1>
+      <p class="hero-sub">
+        <span class="de-only">Bitte nehmen Sie sich ein paar Minuten für Ihre Aufnahme. So bin ich für unser Gespräch optimal vorbereitet. Ihre Daten werden vertraulich und DSGVO-konform behandelt.</span>
+        <span class="en-only">Please take a few minutes to complete your intake, so I'm well prepared for our conversation. Your data is handled confidentially and in line with GDPR.</span>
+      </p>
+    </section>
+
+    <!-- Steps overview (vertical) -->
+    <div class="steps-overview">
+      <div class="step-row">
+        <div class="step-num-large">01</div>
+        <div class="step-row-text"><span class="de-only">Ihre Daten.</span><span class="en-only">Your details.</span></div>
+      </div>
+      <div class="step-row">
+        <div class="step-num-large">02</div>
+        <div class="step-row-text"><span class="de-only">Ihr Termin heute.</span><span class="en-only">Today's appointment.</span></div>
+      </div>
+      <div class="step-row">
+        <div class="step-num-large">03</div>
+        <div class="step-row-text"><span class="de-only">Fragen zu Ihrer Gesundheit.</span><span class="en-only">Health questions.</span></div>
+      </div>
+      <div class="step-row">
+        <div class="step-num-large">04</div>
+        <div class="step-row-text"><span class="de-only">Einwilligungen &amp; Unterschrift.</span><span class="en-only">Consents &amp; signature.</span></div>
+      </div>
+    </div>
+
+    <!-- Success state (hidden until submit) -->
+    <div class="success-state" id="successState">
+      <div class="success-check">✓</div>
+      <h2>
+        <span class="de-only">Sie sind dabei.</span>
+        <span class="en-only">You're in.</span>
+      </h2>
+      <p>
+        <span class="de-only">Ihre Aufnahme ist angekommen. Vielen Dank. Wir sehen uns gleich im Sprechzimmer.</span>
+        <span class="en-only">Your intake has arrived. Thank you. We'll see each other shortly in the consultation room.</span>
+      </p>
+      <p class="success-sign">
+        <span class="de-only">Bis gleich, Shukri Jarmoukli.</span>
+        <span class="en-only">See you shortly, Shukri Jarmoukli.</span>
+      </p>
+      <p class="success-role">
+        <span class="de-only">Ihr Arzt für Funktionelle Medizin, Anthroposophie, Toxikologie, Biohacking und Longevity.</span>
+        <span class="en-only">Your doctor for functional medicine, anthroposophy, toxicology, biohacking and longevity.</span>
+      </p>
+      <div class="success-contact">
+        <span class="de-only">Noch Fragen? Schreiben Sie mir über das Kontaktformular:</span>
+        <span class="en-only">Any questions? Reach me through the contact form:</span>
+        <a href="https://vivecura.com/kontakt" target="_blank" rel="noopener">vivecura.com/kontakt</a>
+      </div>
+    </div>
+
+    <!-- The form -->
+    <form id="mainForm" action="REPLACE_WITH_BACKEND_URL" method="POST" enctype="multipart/form-data" novalidate>
+
+      <!-- STEP 1: KONTAKTDATEN -->
+      <section class="step-section active" id="step1">
+        <div class="step-eyebrow-row"><span class="de-only">Schritt 01</span><span class="en-only">Step 01</span></div>
+        <h2 class="step-title"><span class="de-only">Kontaktdaten</span><span class="en-only">Contact Info</span></h2>
+        <p class="step-intro">
+          <span class="de-only">Damit ich Sie erreichen kann. Mehr brauche ich erstmal nicht.</span>
+          <span class="en-only">So I can reach you. That's all I need first.</span>
+        </p>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="vorname"><span class="de-only">Vorname</span><span class="en-only">First name</span></label>
+            <input type="text" id="vorname" name="vorname" required autocomplete="given-name">
+            <div class="field-error"><span class="de-only">Bitte ausfüllen</span><span class="en-only">Please fill in</span></div>
+          </div>
+          <div class="field">
+            <label for="nachname"><span class="de-only">Nachname</span><span class="en-only">Last name</span></label>
+            <input type="text" id="nachname" name="nachname" required autocomplete="family-name">
+            <div class="field-error"><span class="de-only">Bitte ausfüllen</span><span class="en-only">Please fill in</span></div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required autocomplete="email" placeholder="du@beispiel.de">
+          <div class="field-error"><span class="de-only">Gültige Email bitte</span><span class="en-only">Valid email please</span></div>
+        </div>
+
+        <div class="field">
+          <label for="handy"><span class="de-only">Handy-Nummer</span><span class="en-only">Mobile number</span></label>
+          <input type="tel" id="handy" name="handy" required autocomplete="tel" placeholder="+49 ...">
+          <div class="field-error"><span class="de-only">Bitte ausfüllen</span><span class="en-only">Please fill in</span></div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="geburtsdatum"><span class="de-only">Geburtsdatum</span><span class="en-only">Date of birth</span></label>
+            <input type="date" id="geburtsdatum" name="geburtsdatum" required autocomplete="bday">
+            <div class="field-error"><span class="de-only">Bitte ausfüllen</span><span class="en-only">Please fill in</span></div>
+          </div>
+          <div class="field">
+            <label><span class="de-only">Geschlecht</span><span class="en-only">Gender</span></label>
+            <div class="pill-group" id="geschlecht-group">
+              <label class="pill-choice"><input type="radio" name="geschlecht" value="weiblich"><span class="de-only">Weiblich</span><span class="en-only">Female</span></label>
+              <label class="pill-choice"><input type="radio" name="geschlecht" value="männlich"><span class="de-only">Männlich</span><span class="en-only">Male</span></label>
+              <label class="pill-choice"><input type="radio" name="geschlecht" value="divers"><span class="de-only">Divers</span><span class="en-only">Diverse</span></label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Minderjährigen-Hinweis (erscheint bei Alter < 18) -->
+        <div class="minor-notice" id="minorNotice">
+          <p style="margin:0 0 10px; font-size:13.5px;">
+            <span class="de-only"><strong>Hinweis:</strong> Bei Minderjährigen muss ein Sorgeberechtigter mitwirken. Bitte Name eintragen. Die Unterschrift in Schritt 4 erfolgt durch den Sorgeberechtigten gemeinsam mit Shukri Jarmoukli.</span>
+            <span class="en-only"><strong>Note:</strong> For minors, a legal guardian must participate. Please enter the guardian's name. The signature in step 4 is provided by the guardian together with Shukri Jarmoukli.</span>
+          </p>
+          <div class="field">
+            <label for="sorgeberechtigter"><span class="de-only">Name des Sorgeberechtigten</span><span class="en-only">Legal guardian's name</span></label>
+            <input type="text" id="sorgeberechtigter" name="sorgeberechtigter" autocomplete="name">
+          </div>
+        </div>
+
+        <!-- Kontakt-Einwilligung (Basis; volle Einwilligungen in Schritt 4) -->
+        <div class="privacy-block" style="margin-top: 14px; margin-bottom: 18px;">
+          <label class="privacy-checkbox">
+            <input type="checkbox" name="kontakt_einwilligung" required id="kontaktConsent">
+            <span>
+              <span class="de-only">Ich willige ein, dass Shukri Jarmoukli mich über die angegebenen Kontaktdaten (Email, Telefon) erreichen darf.</span>
+              <span class="en-only">I consent to Shukri Jarmoukli contacting me via the provided contact details (email, phone).</span>
+            </span>
+          </label>
+        </div>
+
+        <button type="button" class="btn-primary" id="step1Next">
+          <span class="de-only">Weiter zu Schritt 2</span>
+          <span class="en-only">Continue to Step 2</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </section>
+
+      <!-- Hint after Step 1 -->
+      <p class="step-hint">
+        <span class="de-only"><strong>Kurz aufgepasst.</strong> Ihre Anmeldung landet erst bei mir, wenn Sie alle vier Schritte abschließen. Wenn Sie jetzt keine Zeit haben, kommen Sie später wieder und fangen einfach neu an.</span>
+        <span class="en-only"><strong>Quick note.</strong> Your registration only reaches me once all four steps are completed. If you don't have time right now, come back later and start over.</span>
+      </p>
+
+      <!-- STEP 2: TERMIN -->
+      <section class="step-section locked" id="step2">
+        <div class="step-eyebrow-row"><span class="de-only">Schritt 02</span><span class="en-only">Step 02</span></div>
+        <h2 class="step-title"><span class="de-only">Ihr Termin heute</span><span class="en-only">Today's appointment</span></h2>
+        <p class="step-intro">
+          <span class="de-only">Weswegen sind Sie heute hier? Falls Sie unsicher sind, wählen Sie „Erstgespräch / unsicher". Wir klären es im Gespräch.</span>
+          <span class="en-only">What brings you in today? If you're unsure, pick "First visit / not sure". We'll clarify it together.</span>
+        </p>
+
+        <div class="question" id="terminart-group">
+          <label class="question-label"><span class="de-only">Terminart</span><span class="en-only">Appointment type</span></label>
+          <div class="pill-group">
+            <label class="pill-choice"><input type="radio" name="terminart" value="Erstgespräch"><span class="de-only">Erstgespräch / unsicher</span><span class="en-only">First visit / not sure</span></label>
+            <label class="pill-choice"><input type="radio" name="terminart" value="Ganzheitliche Beratung"><span class="de-only">Ganzheitliche Beratung</span><span class="en-only">Holistic consultation</span></label>
+            <label class="pill-choice"><input type="radio" name="terminart" value="Ganzheitliche Analyse"><span class="de-only">Ganzheitliche Analyse</span><span class="en-only">Holistic analysis</span></label>
+            <label class="pill-choice"><input type="radio" name="terminart" value="Infusion"><span class="de-only">Infusion</span><span class="en-only">Infusion</span></label>
+            <label class="pill-choice"><input type="radio" name="terminart" value="Psychotherapie"><span class="de-only">Psychotherapie</span><span class="en-only">Psychotherapy</span></label>
+            <label class="pill-choice"><input type="radio" name="terminart" value="Ketamin-Therapie"><span class="de-only">Ketamin-Therapie</span><span class="en-only">Ketamine therapy</span></label>
+            <label class="pill-choice"><input type="radio" name="terminart" value="Sonstiges"><span class="de-only">Sonstiges</span><span class="en-only">Other</span></label>
+          </div>
+          <div class="other-field"><input type="text" name="terminart_anderes" placeholder="Anmerkung / anderer Grund..."></div>
+        </div>
+
+        <div class="question" style="margin-top: 16px;">
+          <label class="question-label"><span class="de-only">Wie findet die Konsultation statt?</span><span class="en-only">How does the consultation take place?</span></label>
+          <div class="pill-group">
+            <label class="pill-choice"><input type="radio" name="konsultationsart" value="Vor Ort"><span class="de-only">Vor Ort in Berlin</span><span class="en-only">In person, Berlin</span></label>
+            <label class="pill-choice"><input type="radio" name="konsultationsart" value="Telefonisch"><span class="de-only">Telefonisch / Video</span><span class="en-only">Phone / video</span></label>
+          </div>
+        </div>
+
+        <!-- Wie haben Sie von uns erfahren? (Marketing-Quelle) -->
+        <div class="question" style="margin-top: 16px;">
+          <label class="question-label"><span class="de-only">Wie haben Sie von uns erfahren?</span><span class="en-only">How did you hear about us?</span></label>
+          <p class="question-sub"><span class="de-only">Das hilft uns sehr – bitte das Wichtigste auswählen.</span><span class="en-only">This helps us a lot – just pick what fits best.</span></p>
+          <div class="pill-group">
+            <label class="pill-choice"><input type="radio" name="quelle" value="Doctolib">Doctolib</label>
+            <label class="pill-choice"><input type="radio" name="quelle" value="Google"><span class="de-only">Google-Suche</span><span class="en-only">Google search</span></label>
+            <label class="pill-choice"><input type="radio" name="quelle" value="KI-Assistent"><span class="de-only">KI-Assistent (ChatGPT, Claude, Gemini …)</span><span class="en-only">AI assistant (ChatGPT, Claude, Gemini …)</span></label>
+            <label class="pill-choice"><input type="radio" name="quelle" value="Freunde / Familie"><span class="de-only">Freunde / Familie (Mund-zu-Mund)</span><span class="en-only">Friends / family (word of mouth)</span></label>
+            <label class="pill-choice"><input type="radio" name="quelle" value="Empfehlung"><span class="de-only">Empfehlung von Bekannten</span><span class="en-only">Recommended by an acquaintance</span></label>
+            <label class="pill-choice"><input type="radio" name="quelle" value="Instagram">Instagram</label>
+            <label class="pill-choice"><input type="radio" name="quelle" value="LinkedIn">LinkedIn</label>
+            <label class="pill-choice"><input type="radio" name="quelle" value="TikTok">TikTok</label>
+            <label class="pill-choice"><input type="radio" name="quelle" value="Podcast">Podcast</label>
+            <label class="pill-choice"><input type="radio" name="quelle" value="YouTube">YouTube</label>
+            <label class="pill-choice"><input type="radio" name="quelle" value="Seminar Shukri"><span class="de-only">Seminar / Vortrag von Shukri</span><span class="en-only">Seminar / talk by Shukri</span></label>
+          </div>
+          <div class="other-field"><input type="text" name="quelle_anderes" placeholder="Anderes – wer oder was genau?..."></div>
+        </div>
+
+        <button type="button" class="btn-primary" id="step2Next" style="margin-top: 18px;">
+          <span class="de-only">Weiter zur Anamnese</span>
+          <span class="en-only">Continue to intake</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </section>
+
+      <!-- STEP 3: ANAMNESE -->
+      <section class="step-section locked" id="step3">
+        <div class="step-eyebrow-row"><span class="de-only">Schritt 03</span><span class="en-only">Step 03</span></div>
+        <h2 class="step-title"><span class="de-only">Anamnese</span><span class="en-only">Health Intake</span></h2>
+        <p class="step-intro">
+          <span class="de-only">16 Fragen, meist nur ein Klick. In etwa 3 Minuten durch.</span>
+          <span class="en-only">16 questions, mostly one tap each. About 3 minutes total.</span>
+        </p>
+
+        <!-- Q1 Hauptanliegen -->
+        <div class="question">
+          <label class="question-label"><span class="de-only">1. Was beschäftigt Sie gerade am meisten?</span><span class="en-only">1. What's on your mind right now?</span></label>
+          <p class="question-sub"><span class="de-only">Mehrfachauswahl möglich</span><span class="en-only">Multiple selection possible</span></p>
+          <div class="pill-group">
+            <label class="pill-choice"><input type="checkbox" name="anliegen" value="Erschöpfung"><span class="de-only">Erschöpfung</span><span class="en-only">Exhaustion</span></label>
+            <label class="pill-choice"><input type="checkbox" name="anliegen" value="Schlaf"><span class="de-only">Schlaf</span><span class="en-only">Sleep</span></label>
+            <label class="pill-choice"><input type="checkbox" name="anliegen" value="Verdauung"><span class="de-only">Verdauung</span><span class="en-only">Digestion</span></label>
+            <label class="pill-choice"><input type="checkbox" name="anliegen" value="Hormone">Hormone</label>
+            <label class="pill-choice"><input type="checkbox" name="anliegen" value="Stimmung"><span class="de-only">Stimmung</span><span class="en-only">Mood</span></label>
+            <label class="pill-choice"><input type="checkbox" name="anliegen" value="Gewicht"><span class="de-only">Gewicht</span><span class="en-only">Weight</span></label>
+            <label class="pill-choice"><input type="checkbox" name="anliegen" value="Fokus"><span class="de-only">Fokus &amp; Konzentration</span><span class="en-only">Focus &amp; concentration</span></label>
+          </div>
+          <div class="other-field"><input type="text" name="anliegen_anderes" placeholder="Anderes / Anmerkung..."></div>
+        </div>
+
+        <!-- Q2 Ziel des Gesprächs -->
+        <div class="question">
+          <label class="question-label"><span class="de-only">2. Was möchten Sie aus dem Gespräch mitnehmen?</span><span class="en-only">2. What do you want from our call?</span></label>
+          <div class="pill-group">
+            <label class="pill-choice"><input type="checkbox" name="ziel_gespraech" value="Supplemente einordnen"><span class="de-only">Supplemente einordnen</span><span class="en-only">Make sense of supplements</span></label>
+            <label class="pill-choice"><input type="checkbox" name="ziel_gespraech" value="Blutwerte verstehen"><span class="de-only">Blutwerte verstehen</span><span class="en-only">Understand my labs</span></label>
+            <label class="pill-choice"><input type="checkbox" name="ziel_gespraech" value="Therapie-Vorschlag"><span class="de-only">Therapie-Vorschlag</span><span class="en-only">Therapy recommendation</span></label>
+            <label class="pill-choice"><input type="checkbox" name="ziel_gespraech" value="Zweitmeinung"><span class="de-only">Zweitmeinung</span><span class="en-only">Second opinion</span></label>
+            <label class="pill-choice"><input type="checkbox" name="ziel_gespraech" value="Lifestyle-Check">Lifestyle-Check</label>
+            <label class="pill-choice"><input type="checkbox" name="ziel_gespraech" value="Nächste Schritte"><span class="de-only">Nächste Schritte</span><span class="en-only">Next steps</span></label>
+          </div>
+          <div class="other-field"><input type="text" name="ziel_gespraech_anderes" placeholder="Anderes / Anmerkung..."></div>
+        </div>
+
+        <!-- Q3 Seit wann -->
+        <div class="question">
+          <label class="question-label"><span class="de-only">3. Seit wann begleitet Sie Ihr Hauptthema?</span><span class="en-only">3. How long has this been with you?</span></label>
+          <div class="pill-group">
+            <label class="pill-choice"><input type="radio" name="dauer" value="<=3 Monate"><span class="de-only">≤3 Monate</span><span class="en-only">≤3 months</span></label>
+            <label class="pill-choice"><input type="radio" name="dauer" value="3-12 Monate"><span class="de-only">3-12 Monate</span><span class="en-only">3-12 months</span></label>
+            <label class="pill-choice"><input type="radio" name="dauer" value="1-3 Jahre"><span class="de-only">1-3 Jahre</span><span class="en-only">1-3 years</span></label>
+            <label class="pill-choice"><input type="radio" name="dauer" value="3+ Jahre"><span class="de-only">3+ Jahre</span><span class="en-only">3+ years</span></label>
+          </div>
+          <div class="other-field"><input type="text" name="dauer_anderes" placeholder="Anmerkung..."></div>
+        </div>
+
+        <!-- Q4 Schlaf -->
+        <div class="question">
+          <label class="question-label"><span class="de-only">4. Wie ist Ihr Schlaf?</span><span class="en-only">4. How's your sleep?</span></label>
+          <div class="pill-group">
+            <label class="pill-choice"><input type="radio" name="schlaf" value="Sehr gut"><span class="de-only">Sehr gut</span><span class="en-only">Excellent</span></label>
+            <label class="pill-choice"><input type="radio" name="schlaf" value="Okay"><span class="de-only">Okay</span><span class="en-only">Okay</span></label>
+            <label class="pill-choice"><input type="radio" name="schlaf" value="Schlecht"><span class="de-only">Schlecht</span><span class="en-only">Poor</span></label>
+          </div>
+          <div class="other-field"><input type="text" name="schlaf_anderes" placeholder="Anmerkung (Einschlaf-, Durchschlafprobleme, ...)"></div>
+        </div>
+
+        <!-- Q5 Stress 1-10 -->
+        <div class="question">
+          <label class="question-label"><span class="de-only">5. Stresslevel von 1 (entspannt) bis 10 (Vollgas)?</span><span class="en-only">5. Stress level from 1 (relaxed) to 10 (max)?</span></label>
+          <div class="stress-buttons">
+            <label class="pill-choice"><input type="radio" name="stress" value="1">1</label>
+            <label class="pill-choice"><input type="radio" name="stress" value="2">2</label>
+            <label class="pill-choice"><input type="radio" name="stress" value="3">3</label>
+            <label class="pill-choice"><input type="radio" name="stress" value="4">4</label>
+            <label class="pill-choice"><input type="radio" name="stress" value="5">5</label>
+            <label class="pill-choice"><input type="radio" name="stress" value="6">6</label>
+            <label class="pill-choice"><input type="radio" name="stress" value="7">7</label>
+            <label class="pill-choice"><input type="radio" name="stress" value="8">8</label>
+            <label class="pill-choice"><input type="radio" name="stress" value="9">9</label>
+            <label class="pill-choice"><input type="radio" name="stress" value="10">10</label>
+          </div>
+          <div class="other-field"><input type="text" name="stress_anderes" placeholder="Anmerkung / Hauptstressoren..."></div>
+        </div>
+
+        <!-- Q6 Sport -->
+        <div class="question">
+          <label class="question-label"><span class="de-only">6. Sport / Bewegung pro Woche?</span><span class="en-only">6. Exercise per week?</span></label>
+          <div class="pill-group">
+            <label class="pill-choice"><input type="radio" name="sport" value="Nie"><span class="de-only">Nie</span><span class="en-only">Never</span></label>
+            <label class="pill-choice"><input type="radio" name="sport" value="1-2x"><span class="de-only">1-2× Woche</span><span class="en-only">1-2×/week</span></label>
+            <label class="pill-choice"><input type="radio" name="sport" value="3-4x"><span class="de-only">3-4× Woche</span><span class="en-only">3-4×/week</span></label>
+            <label class="pill-choice"><input type="radio" name="sport" value="Täglich"><span class="de-only">Täglich</span><span class="en-only">Daily</span></label>
+          </div>
+          <div class="other-field"><input type="text" name="sport_anderes" placeholder="Sportart, Anmerkung..."></div>
+        </div>
+
+        <!-- Q7 Ernährung -->
+        <div class="question">
+          <label class="question-label"><span class="de-only">7. Wie ernähren Sie sich?</span><span class="en-only">7. How do you eat?</span></label>
+          <div class="pill-group">
+            <label class="pill-choice"><input type="radio" name="ernaehrung" value="Standard">Standard</label>
+            <label class="pill-choice"><input type="radio" name="ernaehrung" value="Pflanzenbasiert"><span class="de-only">Pflanzenbasiert</span><span class="en-only">Plant-based</span></label>
+            <label class="pill-choice"><input type="radio" name="ernaehrung" value="Low Carb">Low Carb</label>
+            <label class="pill-choice"><input type="radio" name="ernaehrung" value="Keto">Keto</label>
+            <label class="pill-choice"><input type="radio" name="ernaehrung" value="Paleo">Paleo</label>
+          </div>
+          <div class="other-field"><input type="text" name="ernaehrung_anderes" placeholder="Anderes / Heißhunger, Süß, Salzig..."></div>
+        </div>
+
+        <!-- Q8 Konsum: Alkohol, Rauchen, Koffein, Cannabis -->
+        <div class="question">
+          <label class="question-label"><span class="de-only">8. Konsum-Gewohnheiten</span><span class="en-only">8. Consumption habits</span></label>
+          <div class="sub-questions">
+            <div class="sub-q">
+              <div class="sub-label">Alkohol</div>
+              <div class="pill-group">
+                <label class="pill-choice"><input type="radio" name="alkohol" value="Nie"><span class="de-only">Nie</span><span class="en-only">Never</span></label>
+                <label class="pill-choice"><input type="radio" name="alkohol" value="Selten"><span class="de-only">Selten</span><span class="en-only">Rare</span></label>
+                <label class="pill-choice"><input type="radio" name="alkohol" value="Regelmäßig"><span class="de-only">Regelmäßig</span><span class="en-only">Regular</span></label>
+                <label class="pill-choice"><input type="radio" name="alkohol" value="Täglich"><span class="de-only">Täglich</span><span class="en-only">Daily</span></label>
+              </div>
+            </div>
+            <div class="sub-q">
+              <div class="sub-label"><span class="de-only">Rauchen</span><span class="en-only">Smoking</span></div>
+              <div class="pill-group">
+                <label class="pill-choice"><input type="radio" name="rauchen" value="Nie"><span class="de-only">Nie</span><span class="en-only">Never</span></label>
+                <label class="pill-choice"><input type="radio" name="rauchen" value="Gelegentlich"><span class="de-only">Gelegentlich</span><span class="en-only">Occasional</span></label>
+                <label class="pill-choice"><input type="radio" name="rauchen" value="Täglich"><span class="de-only">Täglich</span><span class="en-only">Daily</span></label>
+              </div>
+            </div>
+            <div class="sub-q">
+              <div class="sub-label"><span class="de-only">Koffein (Tassen/Tag)</span><span class="en-only">Caffeine (cups/day)</span></div>
+              <div class="pill-group">
+                <label class="pill-choice"><input type="radio" name="koffein" value="0">0</label>
+                <label class="pill-choice"><input type="radio" name="koffein" value="1-2">1-2</label>
+                <label class="pill-choice"><input type="radio" name="koffein" value="3-4">3-4</label>
+                <label class="pill-choice"><input type="radio" name="koffein" value="5+">5+</label>
+              </div>
+            </div>
+            <div class="sub-q">
+              <div class="sub-label">Cannabis</div>
+              <div class="pill-group">
+                <label class="pill-choice"><input type="radio" name="cannabis" value="Nie"><span class="de-only">Nie</span><span class="en-only">Never</span></label>
+                <label class="pill-choice"><input type="radio" name="cannabis" value="Selten"><span class="de-only">Selten</span><span class="en-only">Rare</span></label>
+                <label class="pill-choice"><input type="radio" name="cannabis" value="Regelmäßig"><span class="de-only">Regelmäßig</span><span class="en-only">Regular</span></label>
+                <label class="pill-choice"><input type="radio" name="cannabis" value="Täglich"><span class="de-only">Täglich</span><span class="en-only">Daily</span></label>
+              </div>
+            </div>
+          </div>
+          <div class="other-field"><input type="text" name="konsum_anderes" placeholder="Anderes (z. B. Energy Drinks)..."></div>
+        </div>
+
+        <!-- Q9 Verdauung -->
+        <div class="question">
+          <label class="question-label"><span class="de-only">9. Wie ist Ihre Verdauung?</span><span class="en-only">9. How's your digestion?</span></label>
+          <div class="pill-group">
+            <label class="pill-choice"><input type="radio" name="verdauung" value="Regelmäßig"><span class="de-only">Regelmäßig</span><span class="en-only">Regular</span></label>
+            <label class="pill-choice"><input type="radio" name="verdauung" value="Verstopfung"><span class="de-only">Verstopfung</span><span class="en-only">Constipation</span></label>
+            <label class="pill-choice"><input type="radio" name="verdauung" value="Durchfall"><span class="de-only">Durchfall</span><span class="en-only">Diarrhea</span></label>
+            <label class="pill-choice"><input type="radio" name="verdauung" value="Wechselnd"><span class="de-only">Wechselnd</span><span class="en-only">Alternating</span></label>
+          </div>
+          <p class="question-sub" style="margin-top: 10px;"><span class="de-only">Symptome (Mehrfachauswahl):</span><span class="en-only">Symptoms (multi-select):</span></p>
+          <div class="pill-group">
+            <label class="pill-choice"><input type="checkbox" name="verdauung_symptome" value="Blähungen"><span class="de-only">Blähungen</span><span class="en-only">Bloating</span></label>
+            <label class="pill-choice"><input type="checkbox" name="verdauung_symptome" value="Sodbrennen"><span class="de-only">Sodbrennen</span><span class="en-only">Heartburn</span></label>
+            <label class="pill-choice"><input type="checkbox" name="verdauung_symptome" value="Bauchschmerzen"><span class="de-only">Bauchschmerzen</span><span class="en-only">Abdominal pain</span></label>
+            <label class="pill-choice"><input type="checkbox" name="verdauung_symptome" value="Müdigkeit nach Essen"><span class="de-only">Müdigkeit nach Essen</span><span class="en-only">Post-meal fatigue</span></label>
+          </div>
+          <div class="other-field"><input type="text" name="verdauung_anderes" placeholder="Anderes / Anmerkung..."></div>
+        </div>
+
+        <!-- Q10 Unverträglichkeiten -->
+        <div class="question">
+          <label class="question-label"><span class="de-only">10. Unverträglichkeiten oder Allergien?</span><span class="en-only">10. Intolerances or allergies?</span></label>
+          <p class="question-sub"><span class="de-only">Mehrfachauswahl möglich</span><span class="en-only">Multiple selection possible</span></p>
+          <div class="pill-group">
+            <label class="pill-choice"><input type="checkbox" name="allergien" value="Gluten">Gluten</label>
+            <label class="pill-choice"><input type="checkbox" name="allergien" value="Laktose"><span class="de-only">Laktose</span><span class="en-only">Lactose</span></label>
+            <label class="pill-choice"><input type="checkbox" name="allergien" value="Histamin">Histamin</label>
+            <label class="pill-choice"><input type="checkbox" name="allergien" value="Fructose">Fructose</label>
+            <label class="pill-choice"><input type="checkbox" name="allergien" value="Soja"><span class="de-only">Soja</span><span class="en-only">Soy</span></label>
+            <label class="pill-choice"><input type="checkbox" name="allergien" value="Nüsse"><span class="de-only">Nüsse</span><span class="en-only">Nuts</span></label>
+            <label class="pill-choice"><input type="checkbox" name="allergien" value="Eier"><span class="de-only">Eier</span><span class="en-only">Eggs</span></label>
+            <label class="pill-choice"><input type="checkbox" name="allergien" value="Keine"><span class="de-only">Keine</span><span class="en-only">None</span></label>
+          </div>
+          <div class="other-field"><input type="text" name="allergien_anderes" placeholder="Anderes / Anmerkung..."></div>
+        </div>
+
+        <!-- Q11 Schimmel -->
+        <div class="question">
+          <label class="question-label"><span class="de-only">11. Schimmel-Belastung in Ihrer Wohnung (auch nur im Bad), für mehrere Monate?</span><span class="en-only">11. Mold exposure in your home (even just the bathroom), for several months?</span></label>
+          <div class="pill-group">
+            <label class="pill-choice"><input type="radio" name="schimmel" value="Aktuell"><span class="de-only">Aktuell</span><span class="en-only">Currently</span></label>
+            <label class="pill-choice"><input type="radio" name="schimmel" value="In den letzten Jahren"><span class="de-only">In den letzten Jahren</span><span class="en-only">In past years</span></label>
+            <label class="pill-choice"><input type="radio" name="schimmel" value="Nein"><span class="de-only">Nein</span><span class="en-only">No</span></label>
+            <label class="pill-choice"><input type="radio" name="schimmel" value="Unsicher"><span class="de-only">Unsicher</span><span class="en-only">Not sure</span></label>
+          </div>
+          <div class="other-field"><input type="text" name="schimmel_anderes" placeholder="Anmerkung..."></div>
+        </div>
+
+        <!-- Q12 Zahnstatus -->
+        <div class="question">
+          <label class="question-label"><span class="de-only">12. Zahnstatus (Mehrfachauswahl)</span><span class="en-only">12. Dental status (multi-select)</span></label>
+          <div class="pill-group">
+            <label class="pill-choice"><input type="checkbox" name="zahnstatus" value="Amalgam aktuell"><span class="de-only">Amalgam-Füllungen aktuell</span><span class="en-only">Current amalgam fillings</span></label>
+            <label class="pill-choice"><input type="checkbox" name="zahnstatus" value="Amalgam entfernt"><span class="de-only">Amalgam entfernt</span><span class="en-only">Amalgam removed</span></label>
+            <label class="pill-choice"><input type="checkbox" name="zahnstatus" value="Wurzelkanal"><span class="de-only">Wurzelkanalbehandlungen</span><span class="en-only">Root canals</span></label>
+            <label class="pill-choice"><input type="checkbox" name="zahnstatus" value="Implantate"><span class="de-only">Implantate</span><span class="en-only">Implants</span></label>
+            <label class="pill-choice"><input type="checkbox" name="zahnstatus" value="Nichts"><span class="de-only">Nichts davon</span><span class="en-only">None of these</span></label>
+          </div>
+          <div class="other-field"><input type="text" name="zahnstatus_anderes" placeholder="Anderes / Anmerkung..."></div>
+        </div>
+
+        <!-- Q13 Supplemente -->
+        <div class="question">
+          <label class="question-label"><span class="de-only">13. Welche Supplemente nehmen Sie aktuell?</span><span class="en-only">13. Which supplements do you take?</span></label>
+          <p class="question-sub"><span class="de-only">Mehrfachauswahl möglich</span><span class="en-only">Multiple selection possible</span></p>
+          <div class="pill-group">
+            <label class="pill-choice"><input type="checkbox" name="supplemente" value="Vitamin D">Vitamin D</label>
+            <label class="pill-choice"><input type="checkbox" name="supplemente" value="K2">K2</label>
+            <label class="pill-choice"><input type="checkbox" name="supplemente" value="Magnesium">Magnesium</label>
+            <label class="pill-choice"><input type="checkbox" name="supplemente" value="Omega-3">Omega-3</label>
+            <label class="pill-choice"><input type="checkbox" name="supplemente" value="B-Complex">B-Complex</label>
+            <label class="pill-choice"><input type="checkbox" name="supplemente" value="NAD+/NMN">NAD+ / NMN</label>
+            <label class="pill-choice"><input type="checkbox" name="supplemente" value="Quercetin">Quercetin</label>
+            <label class="pill-choice"><input type="checkbox" name="supplemente" value="Spermidin">Spermidin</label>
+            <label class="pill-choice"><input type="checkbox" name="supplemente" value="Probiotika"><span class="de-only">Probiotika</span><span class="en-only">Probiotics</span></label>
+            <label class="pill-choice"><input type="checkbox" name="supplemente" value="Zink"><span class="de-only">Zink</span><span class="en-only">Zinc</span></label>
+            <label class="pill-choice"><input type="checkbox" name="supplemente" value="Eisen"><span class="de-only">Eisen</span><span class="en-only">Iron</span></label>
+            <label class="pill-choice"><input type="checkbox" name="supplemente" value="Multivitamin">Multivitamin</label>
+            <label class="pill-choice"><input type="checkbox" name="supplemente" value="Heilpilze"><span class="de-only">Heilpilze</span><span class="en-only">Medicinal mushrooms</span></label>
+            <label class="pill-choice"><input type="checkbox" name="supplemente" value="Ashwagandha">Ashwagandha</label>
+            <label class="pill-choice"><input type="checkbox" name="supplemente" value="Keine"><span class="de-only">Nehme keine</span><span class="en-only">None</span></label>
+          </div>
+
+          <!-- Dynamic Dosage Inputs (appears when supplements are checked) -->
+          <div class="supp-dosage-list" id="suppDosageList">
+            <div class="supp-dosage-header">
+              <span class="de-only">Dosierung &amp; Häufigkeit (optional)</span>
+              <span class="en-only">Dosage &amp; frequency (optional)</span>
+            </div>
+            <div id="suppDosageRows"></div>
+          </div>
+
+          <div class="other-field"><input type="text" name="supplemente_anderes" placeholder="Andere Supplemente, Dosis, seit wann..."></div>
+        </div>
+
+        <!-- Q14 Medikamente -->
+        <div class="question">
+          <label class="question-label"><span class="de-only">14. Vorerkrankungen / bekannte Diagnosen</span><span class="en-only">14. Pre-existing conditions / known diagnoses</span></label>
+          <p class="question-sub"><span class="de-only">Mehrfachauswahl möglich</span><span class="en-only">Multiple selection possible</span></p>
+          <div class="pill-group">
+            <label class="pill-choice"><input type="checkbox" name="vorerkrankungen" value="Schilddrüse"><span class="de-only">Schilddrüse (z. B. Hashimoto)</span><span class="en-only">Thyroid (e.g. Hashimoto)</span></label>
+            <label class="pill-choice"><input type="checkbox" name="vorerkrankungen" value="Diabetes/Insulinresistenz"><span class="de-only">Diabetes / Insulinresistenz</span><span class="en-only">Diabetes / insulin resistance</span></label>
+            <label class="pill-choice"><input type="checkbox" name="vorerkrankungen" value="Bluthochdruck/Herz-Kreislauf"><span class="de-only">Bluthochdruck / Herz-Kreislauf</span><span class="en-only">Hypertension / cardiovascular</span></label>
+            <label class="pill-choice"><input type="checkbox" name="vorerkrankungen" value="Autoimmunerkrankung"><span class="de-only">Autoimmunerkrankung</span><span class="en-only">Autoimmune disease</span></label>
+            <label class="pill-choice"><input type="checkbox" name="vorerkrankungen" value="Depression/Angst"><span class="de-only">Depression / Angst</span><span class="en-only">Depression / anxiety</span></label>
+            <label class="pill-choice"><input type="checkbox" name="vorerkrankungen" value="Chronische Schmerzen/Migräne"><span class="de-only">Chronische Schmerzen / Migräne</span><span class="en-only">Chronic pain / migraine</span></label>
+            <label class="pill-choice"><input type="checkbox" name="vorerkrankungen" value="Magen-Darm"><span class="de-only">Magen-Darm (z. B. Reizdarm)</span><span class="en-only">Gastrointestinal (e.g. IBS)</span></label>
+            <label class="pill-choice"><input type="checkbox" name="vorerkrankungen" value="Asthma/Atemwege"><span class="de-only">Asthma / Atemwege</span><span class="en-only">Asthma / respiratory</span></label>
+            <label class="pill-choice"><input type="checkbox" name="vorerkrankungen" value="Krebs (aktuell/früher)"><span class="de-only">Krebs (aktuell / früher)</span><span class="en-only">Cancer (current / past)</span></label>
+            <label class="pill-choice"><input type="checkbox" name="vorerkrankungen" value="Keine bekannt"><span class="de-only">Keine bekannt</span><span class="en-only">None known</span></label>
+          </div>
+          <div class="other-field"><input type="text" name="vorerkrankungen_anderes" placeholder="Weitere Diagnosen, OPs, Details..."></div>
+        </div>
+
+        <!-- Q15 Medikamente -->
+        <div class="question">
+          <label class="question-label"><span class="de-only">15. Medikamente (optional)</span><span class="en-only">15. Medications (optional)</span></label>
+          <div class="other-field"><input type="text" name="medikamente" placeholder="Aktuelle Medikamente, Dosis..."></div>
+        </div>
+
+        <!-- Q16 Ziel -->
+        <div class="question">
+          <label class="question-label"><span class="de-only">16. Ihr Ziel in einem Satz</span><span class="en-only">16. Your goal in one sentence</span></label>
+          <div class="field">
+            <textarea name="ziel" placeholder="Was wäre für Sie am Ende ein gutes Ergebnis?"></textarea>
+          </div>
+        </div>
+
+        <button type="button" class="btn-primary" id="step3Next">
+          <span class="de-only">Weiter zu Befunde</span>
+          <span class="en-only">Continue to lab results</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </section>
+
+      <!-- STEP 4: BEFUNDE -->
+      <section class="step-section locked" id="step4">
+        <div class="step-eyebrow-row"><span class="de-only">Schritt 04</span><span class="en-only">Step 04</span></div>
+        <h2 class="step-title"><span class="de-only">Befunde, Einwilligungen &amp; Unterschrift</span><span class="en-only">Lab Results, Consents &amp; Signature</span></h2>
+        <p class="step-intro">
+          <span class="de-only">Optional: Befunde hochladen. Dann die Einwilligungen und Ihre Unterschrift.</span>
+          <span class="en-only">Optional: upload lab results. Then the consents and your signature.</span>
+        </p>
+
+        <label class="file-upload">
+          <input type="file" name="befunde[]" multiple accept="image/*,application/pdf" id="befundeInput">
+          <div class="file-upload-label">
+            <span class="de-only">Befunde hochladen (optional)</span>
+            <span class="en-only">Upload lab results (optional)</span>
+          </div>
+          <div class="file-upload-hint">
+            <span class="de-only">Tippen zum Auswählen. PDF, JPG, PNG. Bis 20 MB.</span>
+            <span class="en-only">Tap to choose. PDF, JPG, PNG. Up to 20 MB.</span>
+          </div>
+          <div class="file-list" id="fileList"></div>
+        </label>
+
+        <p class="question-sub" style="margin-top: 12px;">
+          <span class="de-only"><strong style="color: var(--teal-soft);">Kein Stress:</strong> ohne Befunde geht es auch. Wenn Sie welche haben, können Sie sie hier hochladen oder zum Gespräch mitbringen.</span>
+          <span class="en-only"><strong style="color: var(--teal-soft);">No stress:</strong> the form works without uploads too. If you have lab results, upload them here or bring them to the consultation.</span>
+        </p>
+
+        <!-- PFLICHT-EINWILLIGUNGEN -->
+        <div class="consent-group-title"><span class="de-only">Erforderlich</span><span class="en-only">Required</span></div>
+        <div class="consent-list">
+          <label class="privacy-checkbox">
+            <input type="checkbox" name="consent_behandlung" required>
+            <span>
+              <span class="de-only">Ich willige ausdrücklich in die Verarbeitung meiner Gesundheitsdaten (Art. 9 DSGVO) durch Shukri Jarmoukli / ViveCura zum Zweck von Anamnese, Diagnostik und Behandlung ein. Diese Einwilligung ist freiwillig und jederzeit mit Wirkung für die Zukunft widerrufbar.</span>
+              <span class="en-only">I expressly consent to the processing of my health data (Art. 9 GDPR) by Shukri Jarmoukli / ViveCura for the purpose of anamnesis, diagnosis and treatment. This consent is voluntary and revocable at any time with future effect.</span>
+            </span>
+          </label>
+          <label class="privacy-checkbox">
+            <input type="checkbox" name="consent_selbstzahler" required>
+            <span>
+              <span class="de-only">Mir ist bekannt, dass ViveCura ausschließlich privatärztliche Leistungen und Selbstzahlerleistungen erbringt. Die Abrechnung erfolgt nach der Gebührenordnung für Ärzte (GOÄ). Eine Erstattung durch die gesetzliche Krankenversicherung ist nicht vorgesehen; eine Erstattung durch private Versicherer oder Beihilfe kann nicht garantiert werden. Die konkrete Höhe der Kosten wird vor einer kostenpflichtigen Leistung gesondert besprochen.</span>
+              <span class="en-only">I am aware that ViveCura provides private medical and self-pay services only, billed according to the German medical fee schedule (GOÄ). Statutory health insurance does not cover these services; reimbursement by private insurers cannot be guaranteed. Specific costs are discussed separately before any chargeable service.</span>
+            </span>
+          </label>
+          <label class="privacy-checkbox">
+            <input type="checkbox" name="consent_datenschutz_gelesen" required id="datenschutzCheck">
+            <span>
+              <span class="de-only">Ich habe die <a href="https://vivecura.com/rechtliches" target="_blank" rel="noopener">Datenschutzerklärung</a> gelesen und zur Kenntnis genommen.</span>
+              <span class="en-only">I have read and acknowledged the <a href="https://vivecura.com/rechtliches" target="_blank" rel="noopener">privacy policy</a>.</span>
+            </span>
+          </label>
+        </div>
+
+        <!-- OPTIONALE EINWILLIGUNGEN -->
+        <div class="consent-group-title"><span class="de-only">Optional</span><span class="en-only">Optional</span></div>
+        <p class="consent-optional-note"><span class="de-only">Freiwillig. Eine Ablehnung hat keinen Einfluss auf Ihre Behandlung.</span><span class="en-only">Voluntary. Declining does not affect your treatment.</span></p>
+        <div class="consent-list">
+          <label class="privacy-checkbox">
+            <input type="checkbox" name="consent_ki_pseudonym">
+            <span>
+              <span class="de-only">Ich willige ein, dass meine Angaben – einschließlich der hier hochgeladenen Befunde und Dateien – KI-gestützt ausgewertet werden dürfen, z. B. zur Vorbereitung meines Behandlungsplans. Soweit möglich werden meine Daten dabei pseudonymisiert (Name und Geburtsdatum durch eine Kennung ersetzt). Diese Einwilligung ist freiwillig und jederzeit mit Wirkung für die Zukunft widerrufbar.</span>
+              <span class="en-only">I consent to my information – including the lab results and files uploaded here – being analysed with AI assistance, e.g. to prepare my treatment plan. Where possible, my data is pseudonymized (name and date of birth replaced by an ID). This consent is voluntary and revocable at any time with future effect.</span>
+            </span>
+          </label>
+          <label class="privacy-checkbox">
+            <input type="checkbox" name="consent_newsletter">
+            <span>
+              <span class="de-only">Ich möchte den ViveCura-Newsletter per Email erhalten (jederzeit abbestellbar).</span>
+              <span class="en-only">I would like to receive the ViveCura newsletter by email (unsubscribe anytime).</span>
+            </span>
+          </label>
+          <label class="privacy-checkbox">
+            <input type="checkbox" name="consent_einladungen">
+            <span>
+              <span class="de-only">Ich möchte Einladungen zu Workshops und Vorträgen per Email oder SMS erhalten.</span>
+              <span class="en-only">I would like to receive invitations to workshops and talks by email or SMS.</span>
+            </span>
+          </label>
+          <label class="privacy-checkbox">
+            <input type="checkbox" name="consent_email_unverschluesselt">
+            <span>
+              <span class="de-only">Ich bin damit einverstanden, dass mich die Praxis auch per unverschlüsselter Email kontaktiert (z. B. zu Befunden). Mir ist bewusst, dass unverschlüsselte Email kein vollständig sicherer Kanal ist.</span>
+              <span class="en-only">I agree to be contacted by the practice via unencrypted email (e.g. about results). I understand that unencrypted email is not a fully secure channel.</span>
+            </span>
+          </label>
+        </div>
+
+        <!-- BETROFFENENRECHTE -->
+        <p class="rights-note">
+          <span class="de-only">Ihre Rechte: Auskunft, Berichtigung, Löschung, Einschränkung, Datenübertragbarkeit und Widerspruch (Art. 15-21 DSGVO). Einwilligungen können Sie jederzeit widerrufen, formlos an praxis@vivecura.com. Verantwortlich: Shukri Jarmoukli, ViveCura, Skalitzer Straße 137, Berlin.</span>
+          <span class="en-only">Your rights: access, rectification, erasure, restriction, portability and objection (Art. 15-21 GDPR). You can withdraw consents at any time, informally to praxis@vivecura.com. Controller: Shukri Jarmoukli, ViveCura, Skalitzer Straße 137, Berlin.</span>
+        </p>
+
+        <!-- UNTERSCHRIFT -->
+        <div class="sig-wrap">
+          <label class="sig-label"><span class="de-only">Ihre Unterschrift</span><span class="en-only">Your signature</span> <span id="sigSignerLabel" class="sig-hint"></span></label>
+          <canvas class="sig-canvas" id="sigCanvas"></canvas>
+          <input type="hidden" name="unterschrift_dataurl" id="sigData">
+          <div class="sig-actions">
+            <span class="sig-hint"><span class="de-only">Mit dem Finger unterschreiben.</span><span class="en-only">Sign with your finger.</span></span>
+            <button type="button" class="sig-clear" id="sigClear"><span class="de-only">Löschen</span><span class="en-only">Clear</span></button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-primary" style="margin-top: 18px;">
+          <span class="de-only">Alles abschicken</span>
+          <span class="en-only">Submit everything</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </section>
+
+    </form>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="footer-name">Shukri Jarmoukli</div>
+      <div>ViveCura, Skalitzer Straße 137, Berlin</div>
+      <div style="margin-top: 8px; opacity: 0.7;">
+        <a href="https://vivecura.com/rechtliches" target="_blank" style="color: inherit; text-decoration: underline;">
+          <span class="de-only">Datenschutz &amp; Impressum</span>
+          <span class="en-only">Privacy &amp; Imprint</span>
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+<script>
+  // ========= SUPABASE CLIENT =========
+  // Same URL + anon key as the React app (src/supabaseClient.js).
+  // The anon key is public by design; row-level security on the table
+  // limits anon to INSERT only.
+  const SUPABASE_URL = 'https://zevrlfpyyndwjnlpidkx.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpldnJsZnB5eW5kd2pubHBpZGt4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyODA2MTUsImV4cCI6MjA5MDg1NjYxNX0.upwfBBFCmlLp9Q-gXjgG89WCXkqqG3hutGiuisyV3CI';
+  const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  // ========= LANGUAGE TOGGLE =========
+  const html = document.documentElement;
+  const langToggle = document.getElementById('langToggle');
+  const deLabel = document.getElementById('lang-de-label');
+  const enLabel = document.getElementById('lang-en-label');
+
+  function setLang(lang) {
+    html.setAttribute('data-lang', lang);
+    html.setAttribute('lang', lang);
+    deLabel.className = lang === 'de' ? 'active' : 'inactive';
+    enLabel.className = lang === 'en' ? 'active' : 'inactive';
+    localStorage.setItem('vc_lang', lang);
+  }
+  langToggle.addEventListener('click', () => {
+    const current = html.getAttribute('data-lang');
+    setLang(current === 'de' ? 'en' : 'de');
+  });
+  setLang(localStorage.getItem('vc_lang') || (navigator.language && navigator.language.startsWith('en') ? 'en' : 'de'));
+
+  // ========= STEP GATING =========
+  const step1 = document.getElementById('step1');
+  const step2 = document.getElementById('step2');
+  const step3 = document.getElementById('step3');
+  const step4 = document.getElementById('step4');
+
+  function unlock(section) {
+    section.classList.remove('locked');
+    section.classList.add('active');
+  }
+  function lock(section) {
+    section.classList.remove('active');
+    section.classList.add('locked');
+  }
+  function scrollTo(el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // ========= BACKEND ENDPOINT (unified) =========
+  // ITler: setze hier deine Backend-URL. Sie empfängt bei jedem Schritt einen POST mit "step":
+  //   step=1: Kontaktdaten (JSON, sessionId + contact)
+  //          → Backend: speichert Lead, sendet sofort Bestätigungs-Email
+  //                     mit Link "https://...?continue={sessionId}",
+  //                     plant Reminder-Cron (z. B. 6h später)
+  //   step=2: Termin-Tracking (JSON, sessionId + action: "doctolib_opened" oder "continued_to_anamnese")
+  //   step=3: Anamnese-Daten (JSON, sessionId + anamnese-Object mit allen 15 Fragen)
+  //   step=4: Final-Submit (multipart/form-data, alle Daten + Befunde-Dateien)
+  //          → Backend: sendet "alles erhalten"-Email, benachrichtigt Shukri
+  // sessionId bleibt konstant über alle Schritte, damit das Backend Daten zusammenführt.
+  const BACKEND_ENDPOINT = 'REPLACE_WITH_BACKEND_URL';
+
+  function generateSessionId() {
+    return 'vc_' + Date.now().toString(36) + '_' + Math.random().toString(36).substr(2, 6);
+  }
+  function getOrCreateSessionId() {
+    let id = localStorage.getItem('vc_session_id');
+    if (!id) { id = generateSessionId(); localStorage.setItem('vc_session_id', id); }
+    return id;
+  }
+
+  async function postToBackend(stepNum, extraData = {}, formDataObj = null) {
+    if (BACKEND_ENDPOINT === 'REPLACE_WITH_BACKEND_URL') {
+      console.log(`[Backend] Step ${stepNum} (endpoint not configured yet). Data:`, extraData);
+      return { ok: true, mock: true };
+    }
+    try {
+      if (formDataObj) {
+        formDataObj.append('sessionId', getOrCreateSessionId());
+        formDataObj.append('step', String(stepNum));
+        formDataObj.append('lang', html.getAttribute('data-lang'));
+        formDataObj.append('timestamp', new Date().toISOString());
+        return await fetch(BACKEND_ENDPOINT, { method: 'POST', body: formDataObj });
+      } else {
+        const body = {
+          sessionId: getOrCreateSessionId(),
+          step: stepNum,
+          lang: html.getAttribute('data-lang'),
+          timestamp: new Date().toISOString(),
+          ...extraData
+        };
+        return await fetch(BACKEND_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+      }
+    } catch (e) {
+      console.warn(`[Backend] Step ${stepNum} POST failed`, e);
+      return { ok: false, error: e };
+    }
+  }
+
+  // ========= MINDERJÄHRIGEN-LOGIK =========
+  const minorNotice = document.getElementById('minorNotice');
+  const geburtsdatumInput = document.getElementById('geburtsdatum');
+  function ageFrom(dateStr) {
+    if (!dateStr) return null;
+    const d = new Date(dateStr);
+    if (isNaN(d)) return null;
+    const now = new Date();
+    let a = now.getFullYear() - d.getFullYear();
+    const m = now.getMonth() - d.getMonth();
+    if (m < 0 || (m === 0 && now.getDate() < d.getDate())) a--;
+    return a;
+  }
+  function checkMinor() {
+    const a = ageFrom(geburtsdatumInput.value);
+    if (a !== null && a < 18) { minorNotice.classList.add('show'); }
+    else { minorNotice.classList.remove('show'); }
+  }
+  geburtsdatumInput.addEventListener('change', checkMinor);
+
+  // Step 1 Next: validate Stammdaten + consent, POST to backend, unlock next steps
+  document.getElementById('step1Next').addEventListener('click', () => {
+    const fields = ['vorname','nachname','email','handy','geburtsdatum'];
+    let valid = true;
+    fields.forEach(name => {
+      const input = document.querySelector(`[name="${name}"]`);
+      const wrapper = input.closest('.field');
+      const value = input.value.trim();
+      if (!value || (name === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))) {
+        wrapper.classList.add('has-error');
+        valid = false;
+      } else {
+        wrapper.classList.remove('has-error');
+      }
+    });
+
+    // Geschlecht Pflicht
+    const geschlecht = document.querySelector('[name="geschlecht"]:checked');
+    if (!geschlecht) {
+      showToast(html.getAttribute('data-lang') === 'de' ? 'Bitte Geschlecht wählen' : 'Please choose gender');
+      document.getElementById('geschlecht-group').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    // Minderjährige: Sorgeberechtigter-Name Pflicht
+    const a = ageFrom(geburtsdatumInput.value);
+    if (a !== null && a < 18) {
+      const sorge = document.querySelector('[name="sorgeberechtigter"]');
+      if (!sorge.value.trim()) {
+        showToast(html.getAttribute('data-lang') === 'de' ? 'Bei Minderjährigen: Name des Sorgeberechtigten nötig' : 'For minors: legal guardian name required');
+        sorge.closest('.field').classList.add('has-error');
+        minorNotice.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+    }
+
+    // Kontakt-Einwilligung Pflicht
+    const kontaktConsent = document.getElementById('kontaktConsent');
+    if (!kontaktConsent.checked) {
+      showToast(html.getAttribute('data-lang') === 'de' ? 'Bitte bestätigen Sie die Kontakt-Einwilligung' : 'Please confirm contact consent');
+      kontaktConsent.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    if (!valid) { showToast(html.getAttribute('data-lang') === 'de' ? 'Bitte füllen Sie alle Felder aus' : 'Please fill all fields'); return; }
+
+    // POST step 1 to backend (triggers email + reminder)
+    postToBackend(1, {
+      contact: {
+        vorname: document.querySelector('[name="vorname"]').value.trim(),
+        nachname: document.querySelector('[name="nachname"]').value.trim(),
+        email: document.querySelector('[name="email"]').value.trim(),
+        handy: document.querySelector('[name="handy"]').value.trim(),
+        geburtsdatum: geburtsdatumInput.value,
+        geschlecht: geschlecht.value
+      },
+      sorgeberechtigter: document.querySelector('[name="sorgeberechtigter"]').value.trim() || null,
+      kontakt_einwilligung: true
+    });
+
+    showToast(html.getAttribute('data-lang') === 'de'
+      ? '✓ Bestätigung kommt per Email. Machen Sie gerne weiter.'
+      : '✓ Confirmation email on the way. Feel free to continue.');
+
+    lock(step1);
+    unlock(step2);
+    unlock(step3);
+    unlock(step4);
+    scrollTo(step2);
+  });
+
+  // ========= SUPPLEMENT DOSAGE DYNAMIC UI =========
+  const suppCheckboxes = document.querySelectorAll('input[name="supplemente"]');
+  const suppDosageList = document.getElementById('suppDosageList');
+  const suppDosageRows = document.getElementById('suppDosageRows');
+
+  function slugifySupp(name) {
+    return name.replace(/[^a-zA-Z0-9]/g, '_');
+  }
+
+  function renderSuppDosages() {
+    // Preserve existing input values
+    const existing = {};
+    suppDosageRows.querySelectorAll('input[type="text"]').forEach(input => {
+      existing[input.dataset.supp] = input.value;
+    });
+
+    // Get checked supplements (exclude "Keine")
+    const checked = Array.from(suppCheckboxes).filter(cb => cb.checked && cb.value !== 'Keine');
+
+    if (checked.length === 0) {
+      suppDosageList.classList.remove('has-items');
+      suppDosageRows.innerHTML = '';
+      return;
+    }
+
+    suppDosageList.classList.add('has-items');
+    suppDosageRows.innerHTML = checked.map(cb => {
+      const supp = cb.value;
+      const slug = slugifySupp(supp);
+      const val = existing[supp] || '';
+      const placeholder = html.getAttribute('data-lang') === 'de'
+        ? 'z. B. 5000 IE, täglich'
+        : 'e.g. 5000 IU, daily';
+      return `
+        <div class="supp-dosage-row">
+          <span class="supp-name">${supp}</span>
+          <input type="text" name="dosis_${slug}" data-supp="${supp}" value="${val.replace(/"/g, '&quot;')}" placeholder="${placeholder}">
+        </div>`;
+    }).join('');
+  }
+
+  suppCheckboxes.forEach(cb => {
+    cb.addEventListener('change', () => {
+      // If "Keine" is selected, uncheck all others
+      if (cb.value === 'Keine' && cb.checked) {
+        suppCheckboxes.forEach(other => {
+          if (other.value !== 'Keine') other.checked = false;
+        });
+      } else if (cb.checked && cb.value !== 'Keine') {
+        // If anything else is checked, uncheck "Keine"
+        const keine = Array.from(suppCheckboxes).find(c => c.value === 'Keine');
+        if (keine) keine.checked = false;
+      }
+      renderSuppDosages();
+      saveForm();
+    });
+  });
+
+  // Initial render (in case localStorage restored checkboxes)
+  renderSuppDosages();
+
+  // Save dosage inputs as user types
+  suppDosageRows.addEventListener('input', saveForm);
+
+  // ========= URL PARAMETER: ?continue=sessionId (from reminder email) =========
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.has('continue')) {
+    const incomingSession = urlParams.get('continue');
+    if (incomingSession) localStorage.setItem('vc_session_id', incomingSession);
+    // Treat as if Step 1 already completed
+    showToast(html.getAttribute('data-lang') === 'de'
+      ? 'Schön, dass Sie wieder da sind. Machen Sie genau dort weiter.'
+      : 'Welcome back. Continue right where you left off.');
+    lock(step1);
+    unlock(step2);
+    unlock(step3);
+    unlock(step4);
+    setTimeout(() => scrollTo(step3), 600);
+  }
+
+  // Step 2 Next: validate Terminart, POST appointment info, scroll to Step 3
+  document.getElementById('step2Next').addEventListener('click', () => {
+    const terminart = document.querySelector('[name="terminart"]:checked');
+    if (!terminart) {
+      showToast(html.getAttribute('data-lang') === 'de' ? 'Bitte Terminart wählen' : 'Please choose appointment type');
+      document.getElementById('terminart-group').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    const konsultationsart = document.querySelector('[name="konsultationsart"]:checked');
+    postToBackend(2, {
+      terminart: terminart.value,
+      terminart_anderes: document.querySelector('[name="terminart_anderes"]').value.trim() || null,
+      konsultationsart: konsultationsart ? konsultationsart.value : null
+    });
+    scrollTo(step3);
+  });
+
+  // Step 3 Next: POST anamnese data, scroll to Step 4
+  document.getElementById('step3Next').addEventListener('click', () => {
+    // Collect anamnese fields (exclude contact + files + datenschutz)
+    const formData = new FormData(form);
+    const anamnese = {};
+    const exclude = ['vorname','nachname','email','handy','datenschutz','befunde','befunde[]'];
+    for (const [key, value] of formData.entries()) {
+      if (exclude.includes(key)) continue;
+      if (anamnese[key] !== undefined) {
+        if (!Array.isArray(anamnese[key])) anamnese[key] = [anamnese[key]];
+        anamnese[key].push(value);
+      } else {
+        anamnese[key] = value;
+      }
+    }
+    postToBackend(3, { anamnese: anamnese });
+    scrollTo(step4);
+  });
+
+  // ========= AUTO-SAVE TO LOCALSTORAGE =========
+  const form = document.getElementById('mainForm');
+  const STORAGE_KEY = 'vc_lifesummit_form';
+
+  function saveForm() {
+    const data = {};
+    const formData = new FormData(form);
+    for (const [key, value] of formData.entries()) {
+      if (data[key]) {
+        if (!Array.isArray(data[key])) data[key] = [data[key]];
+        data[key].push(value);
+      } else {
+        data[key] = value;
+      }
+    }
+    // also save checked states for radios/checkboxes manually
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  }
+
+  function loadForm() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      const data = JSON.parse(raw);
+      Object.keys(data).forEach(key => {
+        const inputs = form.querySelectorAll(`[name="${key}"]`);
+        if (inputs.length === 0) return;
+        const value = data[key];
+        const values = Array.isArray(value) ? value : [value];
+        inputs.forEach(input => {
+          if (input.type === 'checkbox' || input.type === 'radio') {
+            if (values.includes(input.value)) input.checked = true;
+          } else if (input.type === 'file') {
+            // can't restore
+          } else {
+            input.value = values[0] || '';
+          }
+        });
+      });
+    } catch (e) { console.warn('Restore failed', e); }
+  }
+
+  form.addEventListener('input', saveForm);
+  form.addEventListener('change', saveForm);
+  loadForm();
+  // Re-render dosage rows in case localStorage restored supplement checkboxes
+  renderSuppDosages();
+
+  // ========= FILE LIST =========
+  const fileInput = document.getElementById('befundeInput');
+  const fileList = document.getElementById('fileList');
+  if (fileInput) {
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files.length === 0) { fileList.textContent = ''; return; }
+      const names = Array.from(fileInput.files).map(f => f.name).join(', ');
+      const lang = html.getAttribute('data-lang');
+      fileList.textContent = (lang === 'de' ? 'Hochgeladen: ' : 'Uploaded: ') + names;
+    });
+  }
+
+  // ========= TOAST =========
+  const toast = document.getElementById('toast');
+  let toastTimer;
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 2400);
+  }
+
+  // ========= SIGNATURE PAD =========
+  const sigCanvas = document.getElementById('sigCanvas');
+  const sigData = document.getElementById('sigData');
+  const sigCtx = sigCanvas.getContext('2d');
+  let sigDrawing = false, sigHasInk = false;
+
+  function sigResize() {
+    const ratio = window.devicePixelRatio || 1;
+    const rect = sigCanvas.getBoundingClientRect();
+    // Preserve drawing across resize
+    const prev = sigHasInk ? sigCanvas.toDataURL() : null;
+    sigCanvas.width = rect.width * ratio;
+    sigCanvas.height = rect.height * ratio;
+    sigCtx.scale(ratio, ratio);
+    sigCtx.lineWidth = 2.2;
+    sigCtx.lineCap = 'round';
+    sigCtx.strokeStyle = '#1a1f24';
+    if (prev) {
+      const img = new Image();
+      img.onload = () => sigCtx.drawImage(img, 0, 0, rect.width, rect.height);
+      img.src = prev;
+    }
+  }
+  setTimeout(sigResize, 60);
+  window.addEventListener('resize', sigResize);
+
+  function sigPos(e) {
+    const rect = sigCanvas.getBoundingClientRect();
+    const t = e.touches ? e.touches[0] : e;
+    return { x: t.clientX - rect.left, y: t.clientY - rect.top };
+  }
+  function sigStart(e) { sigDrawing = true; const p = sigPos(e); sigCtx.beginPath(); sigCtx.moveTo(p.x, p.y); e.preventDefault(); }
+  function sigMove(e) {
+    if (!sigDrawing) return;
+    const p = sigPos(e); sigCtx.lineTo(p.x, p.y); sigCtx.stroke();
+    sigHasInk = true; e.preventDefault();
+  }
+  function sigEnd() {
+    if (!sigDrawing) return;
+    sigDrawing = false;
+    if (sigHasInk) sigData.value = sigCanvas.toDataURL('image/png');
+  }
+  sigCanvas.addEventListener('mousedown', sigStart);
+  sigCanvas.addEventListener('mousemove', sigMove);
+  window.addEventListener('mouseup', sigEnd);
+  sigCanvas.addEventListener('touchstart', sigStart, { passive: false });
+  sigCanvas.addEventListener('touchmove', sigMove, { passive: false });
+  sigCanvas.addEventListener('touchend', sigEnd);
+  sigCanvas.addEventListener('touchcancel', sigEnd);
+  document.getElementById('sigClear').addEventListener('click', () => {
+    sigCtx.clearRect(0, 0, sigCanvas.width, sigCanvas.height);
+    sigHasInk = false; sigData.value = '';
+  });
+
+  // Signer label (zeigt Sorgeberechtigten bei Minderjährigen)
+  const sigSignerLabel = document.getElementById('sigSignerLabel');
+  function updateSigLabel() {
+    const a = ageFrom(geburtsdatumInput.value);
+    const sorge = document.querySelector('[name="sorgeberechtigter"]').value.trim();
+    if (a !== null && a < 18 && sorge) {
+      sigSignerLabel.textContent = (html.getAttribute('data-lang') === 'de' ? '(Sorgeberechtigt: ' : '(Guardian: ') + sorge + ')';
+    } else { sigSignerLabel.textContent = ''; }
+  }
+  geburtsdatumInput.addEventListener('change', updateSigLabel);
+  document.querySelector('[name="sorgeberechtigter"]').addEventListener('input', updateSigLabel);
+
+  // ========= FORM SUBMIT (Step 4, final) =========
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const lang = html.getAttribute('data-lang');
+
+    // Required consents (granular)
+    const requiredConsents = [
+      { name: 'consent_behandlung', de: 'Bitte der Behandlung + Datenverarbeitung zustimmen', en: 'Please consent to treatment + data processing' },
+      { name: 'consent_selbstzahler', de: 'Bitte Selbstzahler-Hinweis bestätigen', en: 'Please confirm the self-pay notice' },
+      { name: 'consent_datenschutz_gelesen', de: 'Bitte Datenschutzerklärung bestätigen', en: 'Please confirm the privacy policy' }
+    ];
+    for (const c of requiredConsents) {
+      const el = document.querySelector(`[name="${c.name}"]`);
+      if (!el.checked) {
+        showToast(lang === 'de' ? c.de : c.en);
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+    }
+
+    // Signature required
+    if (!sigHasInk || !sigData.value) {
+      showToast(lang === 'de' ? 'Bitte unterschreiben Sie' : 'Please sign');
+      sigCanvas.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    // ===== Build payload from every form field =====
+    const formData = new FormData(form);
+    const payload = {};
+    for (const [key, value] of formData.entries()) {
+      if (value instanceof File) continue; // files handled separately
+      if (key in payload) {
+        // checkboxes with same name → array
+        if (Array.isArray(payload[key])) payload[key].push(value);
+        else payload[key] = [payload[key], value];
+      } else {
+        payload[key] = value;
+      }
+    }
+
+    // Disable submit button while uploading
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const submitBtnOriginal = submitBtn ? submitBtn.innerHTML : '';
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = (lang === 'de' ? 'Wird gesendet…' : 'Sending…');
+    }
+
+    // ===== Upload Befunde files to Supabase Storage =====
+    const befunde_urls = [];
+    const files = fileInput.files;
+    if (files && files.length) {
+      const sessionId = getOrCreateSessionId();
+      for (const file of files) {
+        if (file.size > 20 * 1024 * 1024) {
+          showToast(lang === 'de'
+            ? `Datei "${file.name}" über 20 MB, wurde übersprungen`
+            : `File "${file.name}" over 20 MB, was skipped`);
+          continue;
+        }
+        const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+        const path = `${sessionId}/${Date.now()}_${safeName}`;
+        const { error: upErr } = await sb.storage.from('befunde').upload(path, file, {
+          contentType: file.type || 'application/octet-stream',
+          upsert: false,
+        });
+        if (upErr) {
+          console.warn('[anamnese] file upload failed', file.name, upErr);
+          showToast(lang === 'de'
+            ? `Datei "${file.name}" konnte nicht hochgeladen werden`
+            : `Could not upload file "${file.name}"`);
+          if (submitBtn) { submitBtn.disabled = false; submitBtn.innerHTML = submitBtnOriginal; }
+          return;
+        }
+        befunde_urls.push(path);
+      }
+    }
+
+    // ===== Insert row into anamnese_submissions =====
+    const row = {
+      lang,
+      email: payload.email || null,
+      vorname: payload.vorname || null,
+      nachname: payload.nachname || null,
+      handy: payload.handy || null,
+      geburtsdatum: payload.geburtsdatum || null,
+      payload,
+      signature_dataurl: sigData.value || null,
+      befunde_urls,
+    };
+
+    const { error: insErr } = await sb.from('anamnese_submissions').insert(row);
+    if (insErr) {
+      console.error('[anamnese] insert failed', insErr);
+      showToast(lang === 'de'
+        ? 'Übertragung fehlgeschlagen, bitte versuchen Sie es erneut'
+        : 'Submission failed, please retry');
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.innerHTML = submitBtnOriginal; }
+      return;
+    }
+
+    // Show success state, hide entire form so user lands cleanly on the thank-you
+    document.getElementById('successState').classList.add('show');
+    form.style.display = 'none';
+    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem('vc_session_id');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+</script>
+</body>
+</html>

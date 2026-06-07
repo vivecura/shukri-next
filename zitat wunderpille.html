@@ -1,0 +1,123 @@
+<!-- Vivecura · Zitat-Block -->
+<style>
+  .quote-wrap {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 80px 24px;
+  }
+
+  .quote-box {
+    position: relative;
+    background: #ffffff;
+    border: 1px solid rgba(67, 169, 171, 0.25);
+    border-radius: 24px;
+    padding: 64px 72px;
+    overflow: hidden;
+  }
+
+  @media (max-width: 680px) {
+    .quote-box { padding: 48px 36px; }
+  }
+
+  /* Left teal bar */
+  .quote-box::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 40px;
+    bottom: 40px;
+    width: 4px;
+    background: linear-gradient(to bottom, transparent, #43A9AB 20%, #43A9AB 80%, transparent);
+    border-radius: 0 4px 4px 0;
+  }
+
+  /* Background glow */
+  .quote-box::after {
+    content: '';
+    position: absolute;
+    top: -120px;
+    right: -120px;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(67,169,171,0.06), transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  /* Big quotation mark */
+  .quote-mark {
+    font-size: 140px;
+    line-height: 1;
+    color: rgba(67, 169, 171, 0.12);
+    font-family: Georgia, serif;
+    position: absolute;
+    top: 20px;
+    left: 56px;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  @media (max-width: 680px) {
+    .quote-mark { font-size: 90px; left: 28px; }
+  }
+
+  /* Quote text */
+  .quote-text {
+    font-size: clamp(20px, 2.6vw, 28px);
+    font-weight: 600;
+    line-height: 1.5;
+    color: #1a1f24;
+    letter-spacing: -0.015em;
+    margin: 0 0 32px 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .quote-text em {
+    font-style: normal;
+    color: #43A9AB;
+  }
+
+  /* Attribution */
+  .quote-attr {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .quote-attr-line {
+    width: 32px;
+    height: 1.5px;
+    background: rgba(67, 169, 171, 0.5);
+    flex-shrink: 0;
+  }
+
+  .quote-attr-name {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #43A9AB;
+  }
+
+  .quote-attr-role {
+    font-size: 13px;
+    color: #9aa2a7;
+    margin-left: 4px;
+  }
+</style>
+
+<div class="quote-wrap">
+  <figure class="quote-box">
+    <span class="quote-mark">"</span>
+
+    <blockquote class="quote-text">
+      Du suchst eine Lösung, aber keine Wunderpille. Die habe ich auch nicht. Was ich für dich habe: <em>Struktur. Systemlogik.</em> Und einen Weg, der dich und deine Beschwerden ernst nimmt.
+    </blockquote>
+
+
+  </figure>
+</div>

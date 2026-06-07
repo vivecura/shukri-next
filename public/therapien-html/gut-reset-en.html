@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gut Reset: When the Body Needs to Restart – Vivecura Berlin</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --teal:#43A9AB;
+  --teal-dark:#2d8789;
+  --teal-darker:#1f6e70;
+  --teal-pale:#e8f4f4;
+  --teal-subtle:#f3faf9;
+  --charcoal:#1a1f24;
+  --dark:#2d3439;
+  --mid:#4a5259;
+  --muted:#6b7378;
+  --soft:#9ca3a8;
+  --light:#d1d5d8;
+  --pale:#e8ebed;
+  --bg:#fafbfc;
+  --card:#ffffff;
+}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--dark);line-height:1.75;font-weight:400;-webkit-font-smoothing:antialiased}
+
+/* -- HERO -- */
+.hero{
+  background:linear-gradient(155deg,var(--charcoal) 0%,#232a30 25%,var(--teal-darker) 60%,var(--teal-dark) 85%,var(--teal) 100%);
+  padding:104px 24px 96px;text-align:center;position:relative;overflow:hidden
+}
+.hero::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:64px;background:var(--bg);clip-path:ellipse(58% 100% at 50% 100%)}
+.microbiome{position:absolute;top:50%;left:50%;transform:translate(-50%,-52%);pointer-events:none}
+.ring{position:absolute;border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);border:1px solid rgba(255,255,255,.08)}
+.ring:nth-child(1){width:60px;height:60px;background:radial-gradient(circle,rgba(67,169,171,.5),transparent);animation:pulse 3s ease-in-out infinite}
+.ring:nth-child(2){width:140px;height:140px;animation:expand 9s ease-in-out infinite}
+.ring:nth-child(3){width:250px;height:250px;animation:expand 14s ease-in-out infinite;animation-delay:.7s}
+.ring:nth-child(4){width:370px;height:370px;animation:expand 19s ease-in-out infinite;animation-delay:1.5s}
+.ring:nth-child(5){width:500px;height:500px;animation:expand 25s ease-in-out infinite;animation-delay:2.2s;border-color:rgba(255,255,255,.04)}
+@keyframes pulse{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.6}50%{transform:translate(-50%,-50%) scale(1.35);opacity:1}}
+@keyframes expand{0%{transform:translate(-50%,-50%) scale(.75);opacity:.6}55%{transform:translate(-50%,-50%) scale(1.05);opacity:.15}100%{transform:translate(-50%,-50%) scale(1.2);opacity:0}}
+.hero-tag{position:relative;z-index:2;display:inline-block;font-size:.7rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:24px;font-weight:700}
+.hero h1{position:relative;z-index:2;font-size:clamp(1.85rem,5.2vw,3rem);color:#fff;max-width:780px;margin:0 auto 16px;line-height:1.15;font-weight:800;letter-spacing:-.02em}
+.hero-sub{position:relative;z-index:2;color:rgba(255,255,255,.72);font-size:1rem;font-weight:400;max-width:540px;margin:0 auto;line-height:1.6}
+
+/* -- MAIN -- */
+main{max-width:740px;margin:0 auto;padding:64px 24px 96px}
+h2{font-size:1.7rem;color:var(--charcoal);margin:64px 0 8px;line-height:1.2;font-weight:800;letter-spacing:-.02em}
+.rule{width:42px;height:3px;background:var(--teal);border-radius:3px;margin:0 0 22px}
+h3{font-size:1.15rem;color:var(--teal-darker);margin:32px 0 12px;font-weight:700;letter-spacing:-.01em}
+p{margin-bottom:16px;font-size:1rem;color:var(--dark);line-height:1.75}
+strong{font-weight:700;color:var(--charcoal)}
+em{font-style:italic;color:var(--teal-darker)}
+
+/* -- STORY BOX -- */
+.story{background:var(--teal-subtle);border:1px solid var(--teal-pale);border-radius:16px;padding:30px 32px;margin:32px 0;position:relative;overflow:hidden}
+.story::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--teal)}
+.story-label{font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--teal-dark);font-weight:700;margin-bottom:12px;display:block}
+.story p{font-size:.95rem;margin-bottom:12px;color:var(--dark);line-height:1.75}
+.story p:last-child{margin:0}
+
+/* -- STUDY BOX -- */
+.study{background:var(--card);border:1px solid var(--pale);border-radius:13px;padding:22px 26px;margin:24px 0;position:relative;overflow:hidden}
+.study::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--teal)}
+.study-label{font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--teal-dark);font-weight:700;margin-bottom:10px;display:block}
+.study p{font-size:.92rem;margin-bottom:8px;color:var(--dark);line-height:1.72}
+.study p:last-child{margin:0}
+.study cite{font-size:.8rem;font-style:italic;color:var(--muted);display:block;margin-top:10px;padding-top:10px;border-top:1px solid var(--pale)}
+
+/* -- MYTH / TRUTH BOX -- */
+.myth-box{background:var(--teal-subtle);border:1.5px solid var(--teal-pale);border-radius:14px;padding:24px 28px;margin:28px 0;position:relative}
+.myth-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--teal);border-radius:14px 14px 0 0}
+.myth-label{font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:var(--teal-dark);font-weight:700;margin-bottom:10px;display:block}
+.myth-box p{font-size:.93rem;margin:0;color:var(--dark);line-height:1.75}
+
+/* -- QUOTE -- */
+.pull-quote{border-left:4px solid var(--teal);margin:40px 0;padding:20px 26px;background:var(--teal-subtle);border-radius:0 12px 12px 0}
+.pull-quote p{font-size:1.18rem;color:var(--charcoal);font-weight:500;margin:0;line-height:1.6;letter-spacing:-.01em}
+.pull-quote cite{font-size:.82rem;color:var(--muted);display:block;margin-top:10px;font-style:normal;font-weight:600;letter-spacing:.04em}
+
+/* -- CONDITION GRID -- */
+.cond-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:26px 0}
+@media(max-width:540px){.cond-grid{grid-template-columns:1fr}}
+.cond-card{background:var(--card);border:1px solid var(--pale);border-radius:13px;padding:22px 22px;position:relative;overflow:hidden}
+.cond-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--teal)}
+.cond-card h4{font-size:1rem;color:var(--charcoal);margin-bottom:8px;font-weight:700;letter-spacing:-.01em}
+.cond-card p{font-size:.88rem;margin:0;color:var(--mid);line-height:1.7}
+.cond-card .tag{font-size:.65rem;letter-spacing:.16em;text-transform:uppercase;color:var(--teal-dark);font-weight:700;display:block;margin-bottom:6px}
+
+/* -- DIAG PANEL -- */
+.panel{background:var(--card);border-radius:14px;padding:26px 28px;margin:22px 0;border:1px solid var(--pale)}
+.panel h4{font-size:1.05rem;color:var(--charcoal);margin-bottom:16px;font-weight:700;letter-spacing:-.01em}
+.panel ul{list-style:none;padding:0}
+.panel li{font-size:.92rem;padding:10px 0 10px 24px;position:relative;border-bottom:1px solid var(--pale);color:var(--dark);line-height:1.7}
+.panel li:last-child{border:none}
+.panel li::before{content:'';position:absolute;left:0;top:17px;width:7px;height:7px;border-radius:50%;background:var(--teal)}
+
+/* -- PROTOCOL STEPS -- */
+.protocol{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin:26px 0}
+@media(max-width:620px){.protocol{grid-template-columns:1fr}}
+.step-card{background:var(--card);border:1px solid var(--pale);border-radius:14px;padding:26px 22px;text-align:center;position:relative;overflow:hidden}
+.step-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--teal)}
+.step-num{font-size:2rem;color:var(--teal);font-weight:800;display:block;line-height:1;margin-bottom:10px;letter-spacing:-.02em}
+.step-card h4{font-size:1rem;color:var(--charcoal);margin-bottom:10px;font-weight:700;letter-spacing:-.01em}
+.step-card p{font-size:.86rem;margin:0;color:var(--mid);line-height:1.65}
+
+/* -- DIET CARDS -- */
+.diet-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0}
+@media(max-width:520px){.diet-grid{grid-template-columns:1fr}}
+.diet-card{padding:22px 20px;border-radius:12px;background:var(--teal-subtle);border:1px solid var(--teal-pale);position:relative;overflow:hidden}
+.diet-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--teal)}
+.diet-card h4{font-size:.98rem;color:var(--charcoal);margin-bottom:8px;font-weight:700;letter-spacing:-.01em}
+.diet-card p{font-size:.86rem;margin:0;color:var(--dark);line-height:1.68}
+
+/* -- SUPPLEMENT BAR -- */
+.supp-list{margin:24px 0}
+.supp-item{display:flex;align-items:center;gap:14px;padding:13px 0;border-bottom:1px solid var(--pale)}
+.supp-item:last-child{border:none}
+.supp-name{font-size:.92rem;color:var(--charcoal);font-weight:600;min-width:180px;flex-shrink:0}
+.supp-bar-wrap{flex:1;height:6px;background:var(--pale);border-radius:3px;overflow:hidden}
+.supp-bar{height:100%;border-radius:3px;background:var(--teal);animation:barGrow .8s ease-out forwards;transform-origin:left;transform:scaleX(0)}
+@keyframes barGrow{to{transform:scaleX(1)}}
+.supp-note{font-size:.8rem;color:var(--muted);min-width:130px;text-align:right}
+
+/* -- REFRAME -- */
+.reframe{background:var(--teal-subtle);border:1px solid var(--teal-pale);border-radius:14px;padding:26px 28px;margin:30px 0;position:relative}
+.reframe::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--teal);border-radius:14px 14px 0 0}
+.reframe-label{font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--teal-dark);font-weight:700;margin-bottom:12px;display:block}
+.reframe p{margin:0;font-size:.94rem;color:var(--dark);line-height:1.75}
+
+/* -- WARNING / INFO -- */
+.info-box{background:var(--teal-subtle);border-left:3px solid var(--teal);border-radius:0 12px 12px 0;padding:20px 24px;margin:26px 0;font-size:.92rem;color:var(--dark);line-height:1.7}
+.info-box strong{display:block;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--teal-dark);margin-bottom:8px;font-weight:700}
+
+/* -- CTA -- */
+.cta-section{background:linear-gradient(145deg,var(--charcoal),var(--teal-darker));border-radius:20px;padding:52px 40px;text-align:center;margin:54px 0 30px;position:relative;overflow:hidden}
+.cta-section::before{content:'';position:absolute;top:-50px;right:-50px;width:220px;height:220px;background:radial-gradient(circle,rgba(67,169,171,.25),transparent);border-radius:50%}
+.cta-section::after{content:'';position:absolute;bottom:-40px;left:-40px;width:160px;height:160px;background:radial-gradient(circle,rgba(67,169,171,.18),transparent);border-radius:50%}
+.cta-section h3{position:relative;z-index:1;font-size:1.6rem;color:#fff;margin-bottom:14px;font-weight:800;letter-spacing:-.02em}
+.cta-section p{position:relative;z-index:1;color:rgba(255,255,255,.78);font-size:.95rem;max-width:460px;margin:0 auto 30px;line-height:1.6}
+.cta-btn{position:relative;z-index:1;display:inline-block;background:var(--teal);color:#fff;text-decoration:none;font-weight:700;padding:16px 38px;border-radius:50px;letter-spacing:.06em;text-transform:uppercase;font-size:.82rem;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 24px rgba(67,169,171,.4)}
+.cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(67,169,171,.55);background:var(--teal-dark)}
+
+/* -- SOURCES -- */
+.sources{margin-top:52px;padding-top:32px;border-top:1px solid var(--pale)}
+.sources h4{font-size:1.02rem;color:var(--charcoal);margin-bottom:16px;font-weight:700;letter-spacing:-.01em}
+.sources ol{padding-left:20px}
+.sources li{font-size:.82rem;color:var(--muted);line-height:1.65;margin-bottom:8px;padding-left:4px}
+
+/* -- PHASE INDICATOR -- */
+.phase-strip{display:flex;gap:2px;margin:28px 0;border-radius:12px;overflow:hidden}
+.phase{flex:1;padding:18px 14px;text-align:center;color:#fff}
+.phase:nth-child(1){background:var(--charcoal)}
+.phase:nth-child(2){background:var(--teal-darker)}
+.phase:nth-child(3){background:var(--teal-dark)}
+.phase-num{font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;opacity:.7;display:block;margin-bottom:5px;font-weight:700}
+.phase-name{font-size:1.02rem;font-weight:700;letter-spacing:-.01em}
+
+/* -- HIGHLIGHT NUMBERS -- */
+.numbers-row{display:flex;gap:14px;margin:28px 0;flex-wrap:wrap}
+.num-card{flex:1;min-width:140px;background:var(--card);border:1px solid var(--pale);border-radius:13px;padding:22px 16px;text-align:center}
+.num-big{font-size:2rem;color:var(--teal-darker);font-weight:800;display:block;line-height:1;letter-spacing:-.02em}
+.num-label{font-size:.78rem;color:var(--muted);display:block;margin-top:8px;line-height:1.45;font-weight:500}
+
+/* -- GUT SELF-CHECK -- */
+.check-section{background:var(--card);border:1px solid var(--pale);border-radius:16px;padding:26px 28px;margin:22px 0;position:relative;overflow:hidden}
+.check-section::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--teal)}
+.check-section h4{font-size:1.08rem;color:var(--charcoal);margin-bottom:5px;font-weight:700;letter-spacing:-.01em}
+.check-category-label{font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--teal-dark);font-weight:700;margin-bottom:13px;margin-top:3px;display:block}
+.check-list{list-style:none;padding:0;margin:0}
+.check-list li{font-size:.92rem;padding:11px 0 11px 30px;position:relative;border-bottom:1px solid var(--pale);color:var(--dark);line-height:1.7}
+.check-list li:last-child{border:none}
+.check-list li::before{content:'';position:absolute;left:0;top:14px;width:16px;height:16px;border:1.5px solid var(--light);border-radius:4px;background:var(--bg)}
+.check-list li strong{font-weight:600;color:var(--charcoal)}
+
+/* -- SCORE SCALE -- */
+.score-scale{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:26px 0}
+@media(max-width:520px){.score-scale{grid-template-columns:1fr}}
+.score-card{border-radius:12px;padding:20px 16px;text-align:center;background:var(--card);border:1px solid var(--pale)}
+.score-1{border-color:var(--teal-pale)}
+.score-2{border-color:var(--teal-pale);background:var(--teal-subtle)}
+.score-3{border:2px solid var(--teal);background:var(--teal-subtle)}
+.score-num{font-size:1.6rem;color:var(--teal-darker);display:block;margin-bottom:6px;font-weight:800;letter-spacing:-.02em}
+.score-label{font-size:.72rem;font-weight:700;color:var(--charcoal);display:block;margin-bottom:8px;text-transform:uppercase;letter-spacing:.11em}
+.score-desc{font-size:.83rem;color:var(--muted);line-height:1.58}
+</style>
+</head>
+<body>
+
+<!-- =============================== HERO =============================== -->
+<section class="hero">
+  <div class="microbiome">
+    <div class="ring"></div>
+    <div class="ring"></div>
+    <div class="ring"></div>
+    <div class="ring"></div>
+    <div class="ring"></div>
+  </div>
+  <span class="hero-tag">Special Therapies &middot; Vivecura Berlin</span>
+  <h1>Gut Reset: When the Body Needs to Restart</h1>
+  <p class="hero-sub">Why chronic gut problems rarely lie where you first look, and what a true reset really means</p>
+</section>
+
+<!-- =============================== CONTENT =============================== -->
+<main>
+
+<!-- INTRO -->
+<p>For two years, I treated my own mother. With everything medicine has to offer, both conventional and functional. Colonoscopy, stool samples, elimination diets, probiotics, antibiotics, plant compounds, psychotherapy. Chronic digestive disorders, confirmed parasitic infestation, bloating that barely let her sleep. Nothing helped lastingly. Relapse after relapse.</p>
+
+<p>The solution came from a direction I myself had not yet sufficiently on my radar back then: <strong>mold.</strong> Mycotoxins in her living environment had systematically compromised the gut barrier and produced an inflammatory burden against which any gut therapy was powerless as long as the actual root cause remained untreated. Only when we addressed the mold exposure could the gut truly recover.</p>
+
+<p>This story shaped me. It is the reason I now understand more about chronic gut problems than many who, for decades, have known only a single perspective. And it is the reason why I keep <strong>Gut Reset</strong> as one of my four areas of specialization at Vivecura, alongside ketamine therapy, mold treatment and heavy metal detoxification.</p>
+
+<div class="story">
+  <span class="story-label">Personal Story</span>
+  <p>For two years my mother suffered from stubborn digestive disorders, a confirmed parasitic infection and an irritable bowel that responded to no conventional therapy. During that time I tried practically everything: rifaximin, herbal antibiotics, low-FODMAP diet, repeated probiotic regimens, elimination diets, nutritional supplements, osteopathic treatments. Each time brief improvement, then relapse.</p>
+  <p>What no one had checked: her living environment. The analysis revealed a massive mold exposure, with mycotoxins demonstrably known to damage the gut barrier, inhibit gut motility via the vagus nerve and maintain a chronic inflammatory burden that sabotages any therapeutic attempt. Only after the mold remediation could the gut finally reset.</p>
+  <p>This experience fundamentally changed my understanding of the true complexity of gut problems. Since then I treat every patient with the question: What is the actual root cause, and not just the visible symptom?</p>
+</div>
+
+<!-- ====== CHAPTER 1: THE SECOND BRAIN ====== -->
+<h2>The Gut: Far More Than Digestion</h2>
+<div class="rule"></div>
+
+<p>Before we talk about problems and solutions, a moment of awe is in order. The human gut is one of the most complex organ systems evolution has produced, and we have long underestimated it far too much.</p>
+
+<div class="numbers-row">
+  <div class="num-card">
+    <span class="num-big">200&ndash;600</span>
+    <span class="num-label">million neurons in the enteric nervous system</span>
+  </div>
+  <div class="num-card">
+    <span class="num-big">~80 %</span>
+    <span class="num-label">of all immune cells in the body reside in gut tissue</span>
+  </div>
+  <div class="num-card">
+    <span class="num-big">&gt;90 %</span>
+    <span class="num-label">of the body's serotonin is produced in the gut</span>
+  </div>
+  <div class="num-card">
+    <span class="num-big">100 trillion</span>
+    <span class="num-label">microorganisms, 10x more than human body cells</span>
+  </div>
+</div>
+
+<p>The gut's enteric nervous system contains as many neurons as the spinal cord. It communicates bidirectionally with the brain via the vagus nerve, that long nerve that connects heart, lungs and abdominal organs. Around 80 % of the signals travel <em>from gut to brain</em>, not the other way around. This means: a disturbed gut actively influences mood, cognitive performance, anxiety and even pain perception.</p>
+
+<h3>The Vagus Nerve, the Nervous System of the Gut</h3>
+<p>The vagus nerve is the most important relay between gut and brain. It regulates <strong>gut motility</strong> (the transport movement of intestinal contents), modulates the immune response and coordinates the release of digestive juices. Chronic inflammation in the gut, for example from mycotoxins, bacterial toxins or dysbiosis, can directly damage this nerve via cytokines. The result: slowed motility, chronic constipation, and a vicious circle that perpetuates itself.</p>
+
+<div class="study">
+  <span class="study-label">Research status &middot; Vagus nerve stimulation</span>
+  <p>Transcutaneous vagus nerve stimulation (tVNS) showed measurable improvements in several clinical studies for functional dyspepsia, gastroparesis, IBS and inflammatory bowel diseases, with normalization of gut motility and restoration of protective bacteria.</p>
+  <cite>Yin, 2025, Journal of Translational Gastroenterology &middot; Liu et al., 2024, Neurobiology of Disease</cite>
+</div>
+
+<p>Gut bacteria even communicate directly with the brain via the vagus: certain Lactobacillus strains produce GABA, the same neurotransmitter that dampens anxiety and regulates sleep in the brain. In animal models, these signals were completely interrupted by vagotomy, which proves: this communication pathway is real.</p>
+
+<!-- ====== CHAPTER 2: FIBER MYTH ====== -->
+<h2>The Myth That "Fiber Is Always Good"</h2>
+<div class="rule"></div>
+
+<p>Hardly any advice sounds more self-evident: "Eat more fiber for a healthy gut." This sentence is true in a healthy gut. In a disturbed gut, it can considerably worsen the situation.</p>
+
+<div class="myth-box">
+  <span class="myth-label">Myth</span>
+  <p><strong>"More fiber = better gut health."</strong> This oversimplification ignores the fact that fermentable fiber in SIBO feeds exactly what you want to get rid of: the misplaced bacteria in the small intestine.</p>
+</div>
+
+<h3>FODMAPs, the Problem with Short-Chain Sugars</h3>
+<p>FODMAPs (Fermentable Oligosaccharides, Disaccharides, Monosaccharides and Polyols) are a category of short-chain carbohydrates that are poorly absorbed in the small intestine and rapidly fermented in the large intestine. The problem: in SIBO this fermentation already occurs in the small intestine, with gas production, bloating, abdominal pain and diarrhea as the immediate consequence.</p>
+
+<p>Even resistant starch, ordinarily a high-quality fiber, can trigger symptoms in IBS patients. In a pilot RCT, <strong>every tested dose of resistant starch (10&ndash;20 g/day) significantly increased bloating</strong> in IBS patients. The individual microbiome composition decisively determines how someone reacts to specific fibers.</p>
+
+<div class="study">
+  <span class="study-label">Network meta-analysis &middot; 2025 (highest level of evidence)</span>
+  <p>Cuffe et al. analyzed 28 randomized controlled trials with 2,338 IBS patients and compared all dietary interventions head-to-head. Result: a starch- and sucrose-reduced diet ranked <strong>first</strong> for the reduction of global IBS symptoms (RR 0.41). Low-FODMAP came in fourth and is the only diet superior to the standard diet for bloating/distension.</p>
+  <cite>Cuffe et al., 2025, Lancet Gastroenterology &amp; Hepatology</cite>
+</div>
+
+<div class="study">
+  <span class="study-label">Research finding &middot; Microbiome damage from low-FODMAP</span>
+  <p>A long-term low-FODMAP diet significantly reduces Bifidobacterium populations, that is, precisely the bacteria we need for gut health. Cox et al. (RCT, n=52 IBD patients) found significantly lower <em>Bifidobacterium adolescentis, B. longum</em> and <em>Faecalibacterium prausnitzii</em> after 6 weeks of low-FODMAP.</p>
+  <cite>Cox et al., 2020, Gastroenterology</cite>
+</div>
+
+<p>My therapeutic approach: low-FODMAP or SCD (Specific Carbohydrate Diet) are used <strong>temporarily and in a targeted way</strong>, never as a permanent way of eating without concurrent treatment of the root cause. The dietary intervention must follow the diagnostic findings, not the other way around.</p>
+
+<!-- ====== CHAPTER 3: IBS ====== -->
+<h2>Irritable Bowel, an Honest Reframing</h2>
+<div class="rule"></div>
+
+<p>The diagnosis "irritable bowel syndrome" (IBS) affects 10&ndash;15 % of the population worldwide. It is the most common gastroenterological diagnosis at all, and strictly speaking it describes only symptoms: recurrent abdominal pain associated with changes in stool, without an organically explainable finding.</p>
+
+<p>This diagnosis is not wrong. But it is <strong>not a diagnosis of cause</strong>. It says: "Your gut is not functioning normally, and we don't know why." That is medically honest, but therapeutically incomplete.</p>
+
+<div class="pull-quote">
+  <p>"Irritable bowel" is not a destination, it is a starting point. For me, the actual work begins here: what is really behind it?</p>
+  <cite>&mdash; Dr. Shukri Jarmoukli, Vivecura Berlin</cite>
+</div>
+
+<p>The functional-medicine perspective views irritable bowel symptoms as signals of a system out of balance. And in my clinical experience, this imbalance almost always has one or more identifiable causes: SIBO, fungal overgrowth, parasites, mold exposure, food intolerances, histamine issues, low stomach acid, toxic exposures or psychological stressors.</p>
+
+<div class="reframe">
+  <span class="reframe-label">Conventional vs. Functional Medicine</span>
+  <p>Conventional medicine treats irritable bowel symptomatically: antispasmodics, fiber supplements, low-dose antidepressants. That can bring relief. Functional medicine asks: <em>why</em> does the gut behave this way? Which infections, toxins, nutritional deficiencies or psychosomatic patterns are at the root? Both approaches have their place, but only one of them aims at lasting healing.</p>
+</div>
+
+<!-- ====== CHAPTER 4: DIAGNOSES ====== -->
+<h2>The Diagnostic Universe of Gut Pathology</h2>
+<div class="rule"></div>
+
+<p>The world of gut diseases is complex. What you will read here is not a complete list, it is an honest overview of the diagnoses I see in my daily practice, those that are often overlooked, and which together explain why so many people go from doctor to doctor for years without finding help.</p>
+
+<h3>Bacterial Diseases</h3>
+
+<div class="cond-grid">
+  <div class="cond-card">
+    <span class="tag">Often overlooked</span>
+    <h4>SIBO, Small Intestinal Bacterial Overgrowth</h4>
+    <p>Normal gut bacteria settle in the small intestine, where they don't belong. They ferment carbohydrates already in the small intestine and produce gases (hydrogen, methane, hydrogen sulfide). Symptoms: bloating shortly after eating, sensation of pressure, alternating bowel habits, nutrient deficiencies. Prevalence in IBS patients: depending on the study, 4&ndash;78 %. The variance reflects diagnostic differences, not chance.</p>
+  </div>
+  <div class="cond-card">
+    <span class="tag">Newly reclassified</span>
+    <h4>IMO, Methanogen Overgrowth</h4>
+    <p>Methanogens are archaea, not bacteria, that produce methane. Methane measurably slows intestinal transit time and correlates strongly with constipation-predominant IBS (IBS-C). Breath-test cutoff: &ge;10 ppm methane. Therapy requires different antibiotics from classic SIBO (rifaximin + neomycin).</p>
+  </div>
+  <div class="cond-card">
+    <span class="tag">Dysbiosis pattern</span>
+    <h4>General Dysbiosis</h4>
+    <p>Quantitative or qualitative imbalance of the gut microbiota. Meta-analysis of 23 studies (n=1,340): IBS patients have significantly lower Lactobacillus levels (&minus;0.57 log CFU/g), lower Bifidobacterium levels (&minus;1.04 log CFU/g) and higher E. coli abundance (+0.60 log CFU/g) compared to healthy controls.</p>
+  </div>
+  <div class="cond-card">
+    <span class="tag">Rarely tested</span>
+    <h4>Specific Toxic Pathogens</h4>
+    <p>Klebsiella pneumoniae, Proteus mirabilis, Clostridium difficile, these bacteria produce toxins that directly damage the gut wall, burden the liver and trigger systemic inflammatory reactions. Klebsiella additionally feeds on certain prebiotics (FOS), which means: uncritical prebiotic consumption can actively make the situation worse.</p>
+  </div>
+</div>
+
+<h3>Fungal and Parasitic Diseases</h3>
+
+<div class="cond-grid">
+  <div class="cond-card">
+    <span class="tag">Very often underestimated</span>
+    <h4>SIFO / FIBO, Fungal Overgrowth in the Small Intestine</h4>
+    <p>Small Intestinal Fungal Overgrowth: fungi (predominantly Candida species) colonize the small intestine. Two clinical studies showed a prevalence of 25&ndash;26 % in patients with unexplained GI symptoms. Candida produces candidalysin (an exotoxin) that directly attacks the gut barrier. There is no validated non-invasive diagnostic test, stool culture or PCR are needed.</p>
+  </div>
+  <div class="cond-card">
+    <span class="tag">Often co-existent</span>
+    <h4>Candida Overgrowth in the Colon</h4>
+    <p>Candida albicans can, under certain conditions, prior antibiotic treatment, a carbohydrate-rich diet, immunosuppression, overgrow the colon. It demonstrably increases intestinal permeability in vitro. Specific dietary adjustments (sugar reduction, antifungal therapy) are necessary, but blind without diagnostics.</p>
+  </div>
+  <div class="cond-card">
+    <span class="tag">Far more common than thought</span>
+    <h4>Parasitic Infestation</h4>
+    <p>Blastocystis hominis, Giardia lamblia, Entamoeba histolytica, Toxoplasma, tapeworms, parasitic infections are massively underestimated in routine diagnostics. Standard stool samples are notoriously unreliable. Only specialized PCR-based stool tests and multiple sample collections have sufficient sensitivity.</p>
+  </div>
+  <div class="cond-card">
+    <span class="tag">Systemically active</span>
+    <h4>Mycotoxins, Mold Toxins in the Gut</h4>
+    <p>Mold toxins (deoxynivalenol, zearalenone, aflatoxin B1, ochratoxin A) damage tight-junction proteins (ZO-1, claudin-1, occludin), increase intestinal permeability, alter the microbiome and inhibit the vagus nerve via cytokines, which further worsens gut motility. In-vivo animal models and in-vitro studies clearly document these effects. Source: food, mold exposure in the living space.</p>
+  </div>
+</div>
+
+<h3>Immunological and Barrier Disorders</h3>
+
+<div class="cond-grid">
+  <div class="cond-card">
+    <span class="tag">Universal in inflammation</span>
+    <h4>Leaky Gut, Increased Intestinal Permeability</h4>
+    <p>Disrupted tight junctions allow large molecules (undigested protein particles, bacterial components, LPS endotoxins) to cross into the bloodstream. The immune response to this generates antibodies against these particles, and thus food reactions, systemic inflammation and autoimmune processes. Zonulin, the peptide that opens tight junctions, is upregulated by gliadin (wheat), SIBO and mycotoxins.</p>
+  </div>
+  <div class="cond-card">
+    <span class="tag">Mostly overlooked</span>
+    <h4>Histamine Intolerance</h4>
+    <p>Diamine oxidase (DAO), the enzyme that breaks down histamine in the gut epithelium, is reduced in some people, either genetically or as an acquired condition. Histamine-rich foods (aged cheeses, red wine, canned fish, fermented foods, chocolate) then trigger systemic reactions: headaches, flushing, palpitations, nasal congestion, diarrhea. Symptoms vary widely and are therefore frequently misdiagnosed.</p>
+  </div>
+  <div class="cond-card">
+    <span class="tag">Complex, more common than recognized</span>
+    <h4>MCAS, Mast Cell Activation Syndrome</h4>
+    <p>Mast cells link the immune system and the nervous system. In MCAS they react hypersensitively to stimuli (foods, smells, light, heat, stress) and release histamine and over 200 other mediators. Unlike classic allergies, the reactions are inconsistent, sometimes strong, sometimes not. Common triggers: mold exposure, Bartonella infection, viral illnesses. Only when the cause is treated does the syndrome often disappear.</p>
+  </div>
+  <div class="cond-card">
+    <span class="tag">Immunological</span>
+    <h4>Food Intolerances</h4>
+    <p>In addition to the well-known IgE-mediated immediate allergy, there are delayed reactions (IgG-mediated, 2&ndash;72 h after exposure), enzymatic intolerances (lactase, fructase deficiency), FODMAP sensitivity and gluten/gliadin intolerance without celiac disease. Gliadin alone already increases intestinal permeability via zonulin release, even in non-celiacs. The gut wall begins to regenerate roughly 12&ndash;15 hours after a meal containing gliadin.</p>
+  </div>
+</div>
+
+<h3>Functional and Organic Disorders</h3>
+
+<div class="cond-grid">
+  <div class="cond-card">
+    <span class="tag">Massively underestimated</span>
+    <h4>Hypochlorhydria, Low Stomach Acid</h4>
+    <p>Too little stomach acid is paradoxically a frequent cause of heartburn, exactly the symptom for which PPIs (proton pump inhibitors) are reflexively prescribed. Without sufficient HCl, proteins are incompletely digested, minerals (magnesium, zinc, iron) poorly absorbed, and the stomach loses its barrier function against bacteria and fungi. PPIs worsen the problem in the long term and significantly increase the risk of SIBO.</p>
+  </div>
+  <div class="cond-card">
+    <span class="tag">Neglected organ</span>
+    <h4>Gallbladder Dysfunction</h4>
+    <p>Bile is not only necessary for fat digestion, it is the body's most important elimination route for fat-soluble toxins (including mycotoxins). It produces secretory IgA (sIgA) and stimulates the innate immune response in the gut. Under inflammation, bile secretion is compromised. Symptoms: poor fat digestion, bloating after fat-rich meals, fatty stools, fat-soluble vitamin deficiencies (A, D, E, K).</p>
+  </div>
+  <div class="cond-card">
+    <span class="tag">Often overlooked</span>
+    <h4>Enzyme Insufficiency, Insufficient Digestive Enzymes</h4>
+    <p>The pancreas and the small intestinal mucosa produce enzymes for proteins (proteases), fats (lipases) and carbohydrates (amylases). Stress, inflammation, alcohol, aging or chronic illnesses reduce this production. Undigested proteins that reach the colon are fermented by proteolytic bacteria, with toxic metabolic products as a consequence. Visible in the stool test as undigested food residues or elevated fecal fat.</p>
+  </div>
+  <div class="cond-card">
+    <span class="tag">Anatomical</span>
+    <h4>Ileocecal Valve and Vagal Tone</h4>
+    <p>The ileocecal valve separates the small and large intestine and prevents the backflow of colonic bacteria into the small intestine. With low vagal tone it does not close completely, a direct mechanism for SIBO recurrence. Test: pressure pain about 5 cm to the right of the navel. Therapy: vagus stimulation, acetylcholine support.</p>
+  </div>
+</div>
+
+<div class="info-box">
+  <strong>Important note on diagnostics</strong>
+  Many of these conditions can occur simultaneously. It is not uncommon for a patient with chronic gut problems to have SIBO, candida overgrowth, histamine intolerance and leaky gut <em>at the same time</em>, with an underlying mold exposure as the common root. That is why a comprehensive diagnostic approach is indispensable.
+</div>
+
+<!-- ====== CHAPTER 5: WHY SYSTEM RESET ====== -->
+<h2>Why a Gut Reset Is a System Reset</h2>
+<div class="rule"></div>
+
+<p>This is where the decisive difference lies between symptomatic therapy and a true gut reset: the gut is not an isolated organ. It is closely interconnected with the hormonal system, the immune system, the central nervous system and the detoxification system. What damages the gut rarely comes only from the gut.</p>
+
+<h3>Toxins as Underestimated Gut Destabilizers</h3>
+
+<p>Mycotoxins (mold toxins from food or the living environment) show in in-vitro and animal studies a direct damage to the gut barrier at the molecular level: reduction of tight-junction proteins, activation of the NLRP3 inflammasome, induction of pyroptosis (cell death). At the same time they disturb the gut microbiome, with depletion of protective Lactobacillus strains and promotion of pathogenic species.</p>
+
+<div class="study">
+  <span class="study-label">In-vivo animal study &middot; Mycotoxins and tight junctions</span>
+  <p>Kang &amp; Lee (2024) showed in intestinal organoids: deoxynivalenol (DON) damaged tight-junction proteins and increased intestinal permeability dose-dependently. Aflatoxin B1 reduced the expression of ZO-1, claudin-1, occludin and MUC-2. Butyrate was able to partially mitigate DON-induced barrier damage.</p>
+  <cite>Kang &amp; Lee, 2024, Journal of Animal Science and Biotechnology &middot; Xu et al., 2025, Ecotoxicology and Environmental Safety</cite>
+</div>
+
+<p>Glyphosate, the most widely used herbicide in the world, enters the body via the food chain. It disturbs the biosynthesis of cytochrome membranes in the gut, damages DNA, impairs mineral chelation and destroys tight junctions, in some in-vitro studies ten times more potently than gluten.</p>
+
+<h3>Psyche, Trauma and the Gut-Brain Axis</h3>
+
+<p>Chronic stress is a direct gut damager. Cortisol increases intestinal permeability, depletes Lactobacilli and Bifidobacteria, and activates mast cells in gut tissue. Adverse childhood experiences (ACEs) significantly increase the risk of functional bowel disorders in adulthood, via autonomic dysregulation, altered HPA-axis reactivity and epigenetic changes.</p>
+
+<div class="study">
+  <span class="study-label">Network meta-analysis &middot; Psychotherapy in IBS</span>
+  <p>Black et al. (2020, Gut, 41 RCTs, 4,072 patients): gut-directed hypnotherapy (RR 0.67) and cognitive behavioral therapy (RR 0.62) were the most effective psychological interventions in IBS. Gut-directed hypnotherapy demonstrably modulates the postprandial gastrocolic reflex, colonic motility and visceral pain processing, measurable on fMRI.</p>
+  <cite>Black et al., 2020, Gut</cite>
+</div>
+
+<p>The gut microbiome produces neurotransmitter precursors, regulates serotonin availability via the tryptophan-kynurenine pathway and directly influences GABA synthesis in the CNS. Dysbiosis is therefore not only a digestive problem, it is a nervous system problem.</p>
+
+<div class="pull-quote">
+  <p>As long as toxins are present, stress destabilizes the system or the vagus nerve does not function, any purely diet-based or antibiotic gut therapy will only work temporarily. Lasting success requires an understanding of the system as a whole.</p>
+  <cite>&mdash; Dr. Shukri Jarmoukli, Vivecura Berlin</cite>
+</div>
+
+<!-- ====== CHAPTER 6: DIAGNOSTICS ====== -->
+<h2>Diagnostics, What I Actually Test For</h2>
+<div class="rule"></div>
+
+<p>My diagnostic approach to gut problems is comprehensive, and is always guided by the individual case history. Not every test is necessary for every patient. But without complete diagnostics I am working blind. Here is what I use and why.</p>
+
+<h3>Stool Diagnostics</h3>
+<div class="panel">
+  <h4>What a good stool test shows</h4>
+  <ul>
+    <li><strong>PCR dysbiosis panel:</strong> quantitative analysis of lactobacilli, bifidobacteria, E. coli (subtypes), Klebsiella, Clostridium, Proteus, Bacteroides, Faecalibacterium prausnitzii (the most important butyrate-producing species)</li>
+    <li><strong>Toxic fungi:</strong> Candida albicans and other Candida species, molds in the gut lumen (often overlooked)</li>
+    <li><strong>Parasites:</strong> specialized PCR for Blastocystis hominis, Giardia lamblia, Entamoeba histolytica, Cryptosporidium, not the unreliable classic microscopy</li>
+    <li><strong>Fiber-degrading microbiota:</strong> Bifidobacterium adolescentis, Ruminococcus bromii, key bacteria for butyrate production and mucosal nourishment</li>
+    <li><strong>Neuroactive microbiota:</strong> Lactobacillus plantarum, Bifidobacterium adolescentis as GABA producers</li>
+    <li><strong>Stool pH:</strong> target range 5.5&ndash;6.5 (too alkaline = excess proteolytic fermentation)</li>
+    <li><strong>Elastase-1:</strong> marker for exocrine pancreatic function and enzyme production</li>
+    <li><strong>Fecal calprotectin:</strong> inflammation marker in the gut, distinguishes inflammatory from non-inflammatory diseases</li>
+    <li><strong>Secretory IgA (sIgA):</strong> the gut's local immune defense, often exhausted under chronic burden</li>
+    <li><strong>Alpha-1-antitrypsin:</strong> marker for protein loss through the gut wall (protein-losing enteropathy)</li>
+  </ul>
+</div>
+
+<h3>Blood Diagnostics</h3>
+<div class="panel">
+  <h4>Blood tests with direct gut relevance</h4>
+  <ul>
+    <li><strong>Inflammatory markers:</strong> hs-CRP (high-sensitivity), IL-6, TNF-alpha (when systemic inflammation is suspected)</li>
+    <li><strong>Nutrient status:</strong> vitamin B12, folate, vitamin D, zinc, magnesium, ferritin/iron, all of which can be lowered by malabsorption</li>
+    <li><strong>Liver values:</strong> AST, ALT, GGT, AP, the liver is the main detoxification organ and is co-affected in chronic dysbiosis</li>
+    <li><strong>Thyroid:</strong> TSH, fT3, fT4, hypothyroidism directly slows gut motility</li>
+    <li><strong>Fasting insulin, blood glucose, HbA1c:</strong> insulin resistance amplifies fungal overgrowth and chronic inflammation</li>
+    <li><strong>IgE (total + specific):</strong> when a true IgE allergy is suspected (not to be confused with IgG-based tests, which have no clinical validity)</li>
+    <li><strong>Histamine, diamine oxidase (DAO):</strong> when histamine intolerance is suspected</li>
+    <li><strong>Zonulin:</strong> as an orienting marker for intestinal permeability (limitation: commercially available ELISAs may measure properdin instead of true zonulin, results are interpreted in context)</li>
+    <li><strong>Differential blood count:</strong> eosinophilia as a hint of parasites or allergic reactions</li>
+  </ul>
+</div>
+
+<h3>Breath Tests and Specialized Diagnostics</h3>
+<div class="panel">
+  <h4>Complementary diagnostics</h4>
+  <ul>
+    <li><strong>SIBO breath test (H&#8322;/CH&#8324;):</strong> indicative, but with a known limitation, false-negative results are frequent. A negative test does not rule out SIBO; the clinical picture and response to therapy are decisive</li>
+    <li><strong>Lactose breath test:</strong> quantitative diagnostics for lactose intolerance</li>
+    <li><strong>Fructose breath test:</strong> for fructose malabsorption</li>
+    <li><strong>Organic acids in urine:</strong> D-arabinitol as the most reliable marker for candida overload (in contrast to other OAT markers of limited validity)</li>
+    <li><strong>Mycotoxin screening in urine:</strong> specific panels (e.g. MycoTOX from MosaicDX) can indicate mycotoxin exposure. These tests have limitations and are always interpreted in the clinical context</li>
+    <li><strong>Mold-specific diagnostics:</strong> LTT (lymphocyte transformation test) when an immunological reaction is suspected, stool culture for fungi</li>
+    <li><strong>Elimination diet:</strong> still the gold standard for food intolerances, complete elimination of suspected foods for 7&ndash;10 days, then systematic reintroduction</li>
+  </ul>
+</div>
+
+<!-- ====== CHAPTER 7: MY PROTOCOL ====== -->
+<h2>My Protocol, Holistic, Individual, Three-Phase</h2>
+<div class="rule"></div>
+
+<p>No two patients are alike. That is why I have no one-size-fits-all protocol. What I do have is a systematic framework that is applied individually to every patient.</p>
+
+<div class="phase-strip">
+  <div class="phase">
+    <span class="phase-num">Phase 1</span>
+    <span class="phase-name">Case History</span>
+  </div>
+  <div class="phase">
+    <span class="phase-num">Phase 2</span>
+    <span class="phase-name">Diagnostics</span>
+  </div>
+  <div class="phase">
+    <span class="phase-num">Phase 3</span>
+    <span class="phase-name">Individual Plan</span>
+  </div>
+</div>
+
+<div class="protocol">
+  <div class="step-card">
+    <span class="step-num">01</span>
+    <h4>Comprehensive Case History</h4>
+    <p>Medical history, prior conditions, medications, previous therapies, living environment, stress levels, psychological history, eating habits, travel history. I listen, really.</p>
+  </div>
+  <div class="step-card">
+    <span class="step-num">02</span>
+    <h4>Targeted Diagnostics</h4>
+    <p>Based on the history: stool diagnostics, blood count, breath tests, if needed specialized diagnostics for mold, toxins, hormonal axis. The investigations follow the clinical picture, not the protocol.</p>
+  </div>
+  <div class="step-card">
+    <span class="step-num">03</span>
+    <h4>Individual Treatment Plan</h4>
+    <p>Depending on the findings: dietary adjustment, supplements, antimicrobial therapy, detoxification strategies, psychotherapy referral, vagus stimulation, all coordinated and timed in stages.</p>
+  </div>
+</div>
+
+<!-- ====== CHAPTER 8: NUTRITION ====== -->
+<h2>Dietary Strategies, the Right Tool at the Right Time</h2>
+<div class="rule"></div>
+
+<p>Dietary therapy in the gut reset follows no ideology. It follows the findings. The same diet that heals one person's gut can deepen dysbiosis in another. Here are the most important strategies I use:</p>
+
+<div class="diet-grid">
+  <div class="diet-card">
+    <h4>Paleo Autoimmune Protocol (AIP)</h4>
+    <p>Eliminates grains, legumes, nightshades, eggs and dairy, all potential immune activators. Particularly effective in autoimmune diseases and severe leaky gut situations. Clinical study (n=15 IBD patients): fecal calprotectin fell from 471 to 112, endoscopic improvements in 6/7 patients.</p>
+  </div>
+  <div class="diet-card">
+    <h4>SCD + Low-FODMAP (SIBO-specific)</h4>
+    <p>The Specific Carbohydrate Diet combined with low-FODMAP is the strongest evidence-based dietary SIBO intervention. Eliminates fermentable carbohydrates that feed SIBO bacteria. Goal: starve the bacteria without harming the host cells. Network meta-analysis 2025: a starch-/sucrose-reduced diet is the most effective strategy for global IBS symptom reduction.</p>
+  </div>
+  <div class="diet-card">
+    <h4>Low-Histamine Diet</h4>
+    <p>For histamine intolerance or MCAS: elimination of histamine-rich foods (aged cheese, red wine, fermented foods, leftovers, canned goods, smoked meat). Also factor in DAO activators: vitamin B6, vitamin C, copper, calcium. At the same time avoid DAO inhibitors: alcohol, certain medications (metamizole, metoclopramide).</p>
+  </div>
+  <div class="diet-card">
+    <h4>Anti-Candida / Low-Fungal Diet</h4>
+    <p>Sugar restriction, elimination of yeasts and mold-prone foods (peanuts, pistachios, fermented foods), general carbohydrate reduction. Biologically plausible, candida is glucose-dependent. In combination with antifungal therapy (herbal or pharmaceutical), considerably more effective than alone.</p>
+  </div>
+  <div class="diet-card">
+    <h4>Ketogenic / Low-Carb Approaches</h4>
+    <p>Beta-hydroxybutyrate (BHB), the principal ketone body, is far more than fuel: it upregulates claudin-1 (protects tight junctions), inhibits HDAC enzymes (epigenetic effect) and promotes the self-renewal of intestinal stem cells. Particularly relevant in metabolic endotoxemia and insulin-resistance-associated gut inflammation.</p>
+  </div>
+  <div class="diet-card">
+    <h4>Elemental Diet (short-term, SIBO)</h4>
+    <p>The strongest dietary SIBO intervention: pre-digested amino acids, simple sugars, MCT fats, completely absorbed in the proximal small intestine, no substrate for bacteria. Pimentel et al.: 80 % negative breath test after 15 days, 85 % after 21 days. Demanding to implement, but highly effective.</p>
+  </div>
+</div>
+
+<h3>Sugar Neutralization as a Therapeutic Principle</h3>
+<p>Refined sugar is the most direct feeder for candida, pathogenic bacteria and inflammatory processes. The strategy is not lifelong total avoidance of sugar, but rather <strong>targeted, time-limited restriction</strong> during the active treatment phase, combined with eating patterns that stabilize blood sugar (low glycemic index, sufficient fat and protein, regular fasting intervals).</p>
+
+<!-- ====== CHAPTER 9: SUPPLEMENTS ====== -->
+<h2>Supplements and Infusions, What I Actually Use</h2>
+<div class="rule"></div>
+
+<p>Supplements are not a stand-alone solution but part of a coordinated plan. Used incorrectly, they can do harm: prebiotics in Klebsiella overgrowth feed the pathogen; glutathione during active mold exposure can trigger a Herxheimer reaction; methylation substrates (B12, folate) can worsen symptoms during an active CDR (cellular danger response). That is why supplements always follow diagnostics.</p>
+
+<h3>Gut Barrier and Microbiota Rebuilding</h3>
+<div class="supp-list">
+  <div class="supp-item">
+    <span class="supp-name">L-Glutamine</span>
+    <div class="supp-bar-wrap"><div class="supp-bar" style="width:90%"></div></div>
+    <span class="supp-note">main fuel for enterocytes</span>
+  </div>
+  <div class="supp-item">
+    <span class="supp-name">Probiotics (spore form)</span>
+    <div class="supp-bar-wrap"><div class="supp-bar" style="width:85%"></div></div>
+    <span class="supp-note">survive the stomach environment</span>
+  </div>
+  <div class="supp-item">
+    <span class="supp-name">Saccharomyces boulardii</span>
+    <div class="supp-bar-wrap"><div class="supp-bar" style="width:80%"></div></div>
+    <span class="supp-note">anti-candida, barrier protection</span>
+  </div>
+  <div class="supp-item">
+    <span class="supp-name">Zinc</span>
+    <div class="supp-bar-wrap"><div class="supp-bar" style="width:75%"></div></div>
+    <span class="supp-note">tight-junction integrity</span>
+  </div>
+  <div class="supp-item">
+    <span class="supp-name">Butyrate / Tributyrin</span>
+    <div class="supp-bar-wrap"><div class="supp-bar" style="width:78%"></div></div>
+    <span class="supp-note">mucosal regeneration, BBB protection</span>
+  </div>
+  <div class="supp-item">
+    <span class="supp-name">Colostrum</span>
+    <div class="supp-bar-wrap"><div class="supp-bar" style="width:70%"></div></div>
+    <span class="supp-note">sIgA, growth factors</span>
+  </div>
+</div>
+
+<h3>Antimicrobial Strategy (Herbal)</h3>
+<div class="supp-list">
+  <div class="supp-item">
+    <span class="supp-name">Oregano oil (carvacrol)</span>
+    <div class="supp-bar-wrap"><div class="supp-bar" style="width:85%"></div></div>
+    <span class="supp-note">SIBO, candida, parasites</span>
+  </div>
+  <div class="supp-item">
+    <span class="supp-name">Berberine</span>
+    <div class="supp-bar-wrap"><div class="supp-bar" style="width:82%"></div></div>
+    <span class="supp-note">SIBO, microbiome, blood sugar</span>
+  </div>
+  <div class="supp-item">
+    <span class="supp-name">Allicin (garlic extract)</span>
+    <div class="supp-bar-wrap"><div class="supp-bar" style="width:80%"></div></div>
+    <span class="supp-note">antibacterial, antifungal</span>
+  </div>
+  <div class="supp-item">
+    <span class="supp-name">Olive leaf extract</span>
+    <div class="supp-bar-wrap"><div class="supp-bar" style="width:72%"></div></div>
+    <span class="supp-note">oleuropein, broadly antimicrobial</span>
+  </div>
+</div>
+
+<div class="study">
+  <span class="study-label">Clinical study &middot; Herbal antibiotics vs. rifaximin</span>
+  <p>Chedid et al. (2014, n=104 SIBO patients): herbal antibiotic combinations achieved <strong>46 % negative breath tests vs. 34 % for rifaximin</strong> (OR 1.85). In rifaximin non-responders who received herbal rescue therapy, 57 % normalized the breath test, comparable to triple antibiotics (60 %).</p>
+  <cite>Chedid et al., 2014, Global Advances in Health and Medicine</cite>
+</div>
+
+<h3>Digestive Support</h3>
+<div class="panel">
+  <h4>Enzyme and Acid Substitution</h4>
+  <ul>
+    <li><strong>Betaine HCl with pepsin:</strong> for hypochlorhydria, before protein-rich meals, with cautious titration; heartburn = enough stomach acid is present</li>
+    <li><strong>Full-spectrum digestive enzymes</strong> (lipase, amylase, protease, lactase): support breakdown in enzyme insufficiency</li>
+    <li><strong>Bile-acid support</strong> (TUDCA, milk thistle, bitters, phosphatidylcholine): improve bile flow and toxin elimination</li>
+    <li><strong>Iberogast:</strong> herbal prokinetic combination, improves gut motility, well studied clinically</li>
+    <li><strong>Low-dose naltrexone (LDN):</strong> off-label, but increasingly evidence-based in therapy-refractory IBD (74.5 % clinical improvement in a pilot study) and as a prokinetic for SIBO prevention</li>
+  </ul>
+</div>
+
+<h3>Infusion Therapy, When Oral Absorption Is Limited</h3>
+<p>In cases of pronounced malabsorption, deficiency states or chronic inflammatory burden, I offer targeted <strong>IV nutrient infusions</strong>. Intravenous administration bypasses the disturbed gut barrier and enables immediate cellular supply. Used, depending on the findings and the clinical picture:</p>
+
+<div class="panel">
+  <h4>IV options in the gut reset</h4>
+  <ul>
+    <li><strong>Vitamin C (high-dose):</strong> antioxidant, immunomodulating, collagen synthesis (tight junctions need collagen)</li>
+    <li><strong>Magnesium:</strong> with confirmed deficiency; direct effect on gut motility and nervous regulation</li>
+    <li><strong>B-vitamin complex:</strong> especially B12 (nerves, methylation) and B5 (bile acid synthesis), crucial after phases of malabsorption</li>
+    <li><strong>Glutathione:</strong> only when root causes have already been addressed, in active mold exposure glutathione can mobilize toxins faster than they can be eliminated (with a temporary worsening of symptoms)</li>
+    <li><strong>Phosphatidylcholine:</strong> cell-membrane repair, especially in neurotoxic burden and disturbed fatty-acid status</li>
+    <li><strong>Zinc, selenium, trace elements:</strong> essential for tight-junction integrity, immune function and detoxification enzymes (Nrf2 pathway)</li>
+  </ul>
+</div>
+
+<h3>Histamine Intolerance and MCAS: Mast Cell Stabilization</h3>
+<div class="panel">
+  <h4>Stepwise therapeutic plan</h4>
+  <ul>
+    <li><strong>Quercetin (500 mg, 30 min before meals):</strong> natural mast cell stabilizer, start with 500 mg/day, titrate up to 4&times; 500 mg. Around 85 % of patients tolerate it well</li>
+    <li><strong>DAO supplement:</strong> the histamine-degrading enzyme as a capsule before meals, supportive, no substitute for dietary measures</li>
+    <li><strong>Loratadine (H1 blocker):</strong> pharmacological option, first dose in the evening (drowsiness possible)</li>
+    <li><strong>Famotidine (H2 blocker):</strong> complementary after successful H1 blockade</li>
+    <li><strong>Treat the root cause:</strong> MCAS often disappears completely once mold exposure or Bartonella infection is addressed</li>
+  </ul>
+</div>
+
+<!-- ====== CHAPTER 10: PSYCHOTHERAPY AND VAGUS ====== -->
+<h2>Psychotherapy and Vagus Stimulation as Part of the Protocol</h2>
+<div class="rule"></div>
+
+<p>This is not a nice-to-have add-on. This is a medical necessity. The gut-brain axis is bidirectional, and as long as the nervous system remains in chronic stress tone, the gut also remains in a state that prevents healing.</p>
+
+<h3>Gut-Directed Hypnotherapy, the Strongest Evidence</h3>
+
+<p>Gut-directed hypnotherapy is not alternative medicine, it is the <strong>most evidence-based psychological intervention</strong> in IBS, with results from 41 randomized controlled trials (4,072 patients). It measurably modulates the postprandial gastrocolic reflex, normalizes visceral pain processing and changes the activation of pain-relevant brain regions on fMRI. Studies show that 6 sessions yield results equivalent to 12, compliance is decisive, not duration.</p>
+
+<h3>Vagus Stimulation, Practical Exercises</h3>
+
+<div class="panel">
+  <h4>What activates the vagus nerve</h4>
+  <ul>
+    <li><strong>Deep, slowed breathing (4&ndash;7&ndash;8 method):</strong> measurably increases respiratory sinus arrhythmia and vagal tone</li>
+    <li><strong>Humming, singing, gargling:</strong> directly activates vagal afferents through the larynx area, described by Dr. Datis Kharrazian as the simplest vagus exercise that can be practiced daily</li>
+    <li><strong>Cold exposure (face/neck):</strong> the diving reflex activates the vagus; start a cold shower with the face/neck</li>
+    <li><strong>Meditation, yoga, tai chi:</strong> reduce cortisol levels, improve HRV (heart rate variability) as a marker of vagal tone</li>
+    <li><strong>Chewing (thoroughly, slowly):</strong> stimulates saliva production and parasympathetic preparation for digestion</li>
+  </ul>
+</div>
+
+<p>In patients with severely weakened gut motility or diagnosed ileocecal valve dysfunction, I combine vagus exercises with acetylcholine-supporting supplements (choline complex), since acetylcholine is the decisive neurotransmitter for vagal signal transmission and gut motility.</p>
+
+<div class="reframe">
+  <span class="reframe-label">Integrated Understanding</span>
+  <p>Chronic gut problems that do not respond to any previous therapy almost always have, in my experience, one of three backgrounds: an undetected toxic burden (mycotoxins, heavy metals, glyphosate), a persistent infection that maintains the cellular danger response (CDR), or a chronically dysregulated nervous system that sabotages every attempt at healing in the gut. Most often it is combinations of all three. The holistic plan must address all of this simultaneously.</p>
+</div>
+
+<!-- ====== OTHER DIAGNOSES ====== -->
+<h2>Other Conditions at a Glance</h2>
+<div class="rule"></div>
+
+<p>The clinical picture of gut medicine is broader than SIBO and candida. Here are further conditions I diagnose and treat in practice, and which often go unrecognized for months in conventional settings:</p>
+
+<div class="cond-grid">
+  <div class="cond-card">
+    <span class="tag">Systemic</span>
+    <h4>Metabolic Endotoxemia</h4>
+    <p>Bacterial LPS endotoxins penetrate a damaged gut barrier into the bloodstream. The result: low-grade systemic inflammation, insulin resistance, obesity, cognitive disturbances, cardiovascular diseases. Diagnostically: high-sensitivity CRP, fasting insulin, clinical picture.</p>
+  </div>
+  <div class="cond-card">
+    <span class="tag">Neurological</span>
+    <h4>Gut-Brain Axis Disorders</h4>
+    <p>Depression, anxiety disorders, brain fog, chronic fatigue, all with documented microbiome-dysfunction correlates. Tryptophan depletion through dysbiosis reduces serotonin precursors; pro-inflammatory cytokines cross the blood-brain barrier and produce neuroinflammation.</p>
+  </div>
+  <div class="cond-card">
+    <span class="tag">Inflammatory</span>
+    <h4>Crohn's Disease, Ulcerative Colitis</h4>
+    <p>Chronic inflammatory bowel diseases with documented microbiome imbalances, disrupted barrier function and immunological overactivation. Functional medicine add-ons (LDN, specific diets, targeted microbiome rebuilding) show clinical additional efficacy on top of conventional therapy.</p>
+  </div>
+  <div class="cond-card">
+    <span class="tag">Hormonal</span>
+    <h4>Estrogen Dominance and the Gut</h4>
+    <p>The gut microbiome contains the so-called "estrobolome," bacterial species that metabolize estrogen. Dysbiosis raises free estrogen, promotes estrogen dominance and increases the risk of histamine issues (estrogen stimulates mast cell activation). An often overlooked but treatable interplay.</p>
+  </div>
+  <div class="cond-card">
+    <span class="tag">Functional</span>
+    <h4>SIBO-Associated Hypoglycemia</h4>
+    <p>Bacteria in the small intestine consume carbohydrates before absorption, which can cause paradoxical reactive hypoglycemia. Symptoms: fatigue, palpitations, anxiety and memory lapses when no food has been eaten for a longer time.</p>
+  </div>
+  <div class="cond-card">
+    <span class="tag">Rarely diagnosed</span>
+    <h4>Oxalate Hypersensitivity</h4>
+    <p>Certain patients react particularly sensitively to oxalate-rich foods (kale, spinach, beets, almonds). Oxalates promote systemic inflammation and renal crystal formation. Often unrecognized in therapy-resistant joint pain, vulvodynia, neuropathy.</p>
+  </div>
+</div>
+
+<!-- ====== THE MOM STORY RESOLUTION ====== -->
+<h2>What My Mother's Case Taught Me</h2>
+<div class="rule"></div>
+
+<p>The two years I spent treating my mother were the most intense continuing education of my life. Not because of the successes, but because of the long phase of failure.</p>
+
+<p>Every therapy that was available conventionally and functionally at the time, we tried. The parasites were treated, but they came back. The dysbiosis improved briefly, then worsened again. The leaky gut was treated, then opened up again. That was the moment when it became clear to me: we are treating symptoms, but not the cause.</p>
+
+<p>The cause was the living space. Mold and its mycotoxins had created a chronic inflammatory burden in the entire system that lastingly sabotaged every local therapy approach in the gut. Only when we eliminated the mold exposure and systematically detoxified the body could the gut stabilize, and the healing began.</p>
+
+<div class="story">
+  <span class="story-label">The lesson</span>
+  <p>When a gut does not respond lastingly to any therapy, rethink the basic assumptions. Don't ask: "Which antibiotic or probiotic protocol haven't we tried yet?" Ask: "What is keeping the system systematically in a state of inflammation?" Mycotoxins, heavy metals, persistent infections (Borrelia, Bartonella), chronic stress, these factors can neutralize every attempt at healing in the gut over the long term.</p>
+  <p>That is the reason mold treatment is one of my four areas of specialization, right next to gut reset. In my practice the two are often inseparable. And now, with this knowledge from two years of intense experience and the clinical understanding gained from hundreds of patients I have treated, I offer something rare: a complete view of the system.</p>
+</div>
+
+<!-- ====== SELF-CHECK ====== -->
+<h2>Could a Gut Reset Be Right for You? An Honest Self-Check.</h2>
+<div class="rule"></div>
+
+<p>What follows is not a diagnosis. It is an honest invitation to pause and observe. Gut problems rarely show clear-cut patterns. They disguise themselves as exhaustion, as a hormonal disorder, as brain fog, as mood instability. And because no single symptom unambiguously points to the gut, people often look everywhere except there.</p>
+
+<p>Go through these questions calmly. Quietly count how many points apply to you. The evaluation is at the end.</p>
+
+<div class="check-section">
+  <h4>Area 1: Digestion and the Abdomen</h4>
+  <span class="check-category-label">How familiar do these complaints sound?</span>
+  <ul class="check-list">
+    <li><strong>Bloating or a visibly distended abdomen,</strong> particularly shortly after eating or in the afternoon and evening</li>
+    <li><strong>Abdominal pain or cramps</strong> that come and go, without imaging having found a cause</li>
+    <li><strong>Alternating bowel habits:</strong> sometimes constipation, sometimes diarrhea, sometimes both alternating within a few days</li>
+    <li><strong>Urge to defecate or pressure shortly after eating,</strong> as if the gut were reacting immediately</li>
+    <li><strong>Heartburn, acid reflux</strong> or persistent pressure in the upper abdomen, perhaps even with chronic PPI use</li>
+    <li><strong>Food intolerances that have expanded:</strong> things you used to tolerate without problems you now don't tolerate anymore</li>
+    <li><strong>Nausea, fullness or the feeling of digesting poorly,</strong> particularly after fat- or protein-rich meals</li>
+  </ul>
+</div>
+
+<div class="check-section">
+  <h4>Area 2: Systemic and Neurological Symptoms</h4>
+  <span class="check-category-label">The gut often shows itself far away from the abdomen</span>
+  <ul class="check-list">
+    <li><strong>Chronic exhaustion</strong> that no amount of sleep or rest really resolves. Tired already in the morning.</li>
+    <li><strong>Brain fog:</strong> difficulty concentrating, word-finding problems, the feeling of being mentally behind a frosted glass screen</li>
+    <li><strong>Mood swings, irritability or anxious feelings</strong> without an identifiable external trigger. Over 90 % of serotonin is produced in the gut.</li>
+    <li><strong>Sleep problems,</strong> particularly difficulty falling asleep or staying asleep. The gut directly influences sleep through the melatonin-serotonin axis.</li>
+    <li><strong>Hormonal imbalances:</strong> cycle disturbances, severe PMS, estrogen dominance or unexplained weight gain. The microbiome metabolizes estrogen directly.</li>
+    <li><strong>Headaches or migraines</strong> that remain without a neurological finding and that cluster after meals or at certain times of day</li>
+  </ul>
+</div>
+
+<div class="check-section">
+  <h4>Area 3: Skin, Immune System, Joints</h4>
+  <span class="check-category-label">Internal inflammation shows on the outside</span>
+  <ul class="check-list">
+    <li><strong>Eczema, skin rashes, acne</strong> or rosacea that has gradually worsened or doesn't lastingly respond to any skin therapy</li>
+    <li><strong>Frequent infections</strong> or an overlong recovery time after colds. Around 80 % of the immune system resides in the gut.</li>
+    <li><strong>New allergies or intolerances in adulthood</strong> that weren't there before</li>
+    <li><strong>Diffuse joint or muscle pain</strong> without an orthopedic finding, that wanders and cannot be localized</li>
+    <li><strong>Autoimmune diseases of any kind:</strong> Hashimoto's, rheumatism, psoriasis, celiac disease, Crohn's disease, colitis. The gut is directly involved in all cases.</li>
+  </ul>
+</div>
+
+<div class="check-section">
+  <h4>Area 4: Your Story</h4>
+  <span class="check-category-label">What may have stressed the gut</span>
+  <ul class="check-list">
+    <li><strong>Several courses of antibiotics</strong> in recent years, with or without subsequent microbiome rebuilding</li>
+    <li><strong>A long period of stress or a difficult phase of life.</strong> Cortisol increases intestinal permeability and depletes Lactobacilli directly.</li>
+    <li><strong>Diagnosis of "irritable bowel"</strong> without ever having looked for concrete causes such as SIBO, fungal overgrowth, parasites or mold exposure</li>
+    <li><strong>Amalgam fillings, now or in the past,</strong> or living in a place with mold infestation. Mycotoxins damage the gut barrier directly and sabotage every gut therapy as long as the source of exposure persists.</li>
+    <li><strong>Long-term PPI use</strong> (proton pump inhibitors). Low stomach acid considerably increases the risk of SIBO and damages the stomach's barrier function.</li>
+    <li><strong>A diet rich in sugar, alcohol or highly processed foods over a long time,</strong> even if that lies in the past</li>
+  </ul>
+</div>
+
+<div class="check-section">
+  <h4>Area 5: Time Dimension and Treatment History</h4>
+  <span class="check-category-label">Duration and course say a lot</span>
+  <ul class="check-list">
+    <li><strong>Your complaints have lasted more than six months,</strong> with or without an official diagnosis</li>
+    <li><strong>You have already tried treatments</strong> that helped briefly but never lastingly</li>
+    <li><strong>You take probiotics or follow diets,</strong> see brief improvements, then everything comes back</li>
+    <li><strong>Several doctors have told you that everything is fine,</strong> even though you don't feel fine</li>
+  </ul>
+</div>
+
+<h3>How many points did you count?</h3>
+
+<div class="score-scale">
+  <div class="score-card score-1">
+    <span class="score-num">1&ndash;4</span>
+    <span class="score-label">First Signals</span>
+    <span class="score-desc">Isolated indications. Observation and a targeted case history make sense, especially if the complaints persist or accumulate.</span>
+  </div>
+  <div class="score-card score-2">
+    <span class="score-num">5&ndash;9</span>
+    <span class="score-label">Clear Indications</span>
+    <span class="score-desc">Several systems affected. A functional gut workup is highly recommended. The pattern points to a systemic imbalance.</span>
+  </div>
+  <div class="score-card score-3">
+    <span class="score-num">10+</span>
+    <span class="score-label">Strong Signals</span>
+    <span class="score-desc">The gut is very likely involved in your complaints. A comprehensive reset should be addressed as a priority.</span>
+  </div>
+</div>
+
+<div class="reframe">
+  <span class="reframe-label">What this check is, and what it isn't</span>
+  <p>These questions do not replace a medical case history or laboratory diagnostics. They are an orientation aid, not a diagnosis. Not everyone with exhaustion has a gut problem. And not every gut problem is immediately a case for a complete reset. What counts is the overall context. That is exactly what the initial consultation is for.</p>
+</div>
+
+<!-- ====== CLOSING ====== -->
+<h2>My Promise to Every Gut Patient</h2>
+<div class="rule"></div>
+
+<p>Chronic gut problems are not a fate. They are a signal, of a system that needs help. The right help requires time, patience and, above all, an honest, complete inventory of what is really going on.</p>
+
+<p>I will not give you a standard protocol. I will listen to your story, understand it, and then develop with you a plan that is tailored to your body, your circumstances and your goals. Sometimes the solution is simple. Sometimes it lies in a corner that no one has looked at before.</p>
+
+<p>But there is always a solution.</p>
+
+<!-- CTA -->
+<div class="cta-section">
+  <h3>Book an Appointment</h3>
+  <p>Gut problems that haven't responded to any previous therapy? I take time for your story.</p>
+  <a href="https://www.doctolib.de/arzt/berlin/shukri-jarmoukli/booking/motives?source=profile" target="_top" rel="noopener noreferrer" class="cta-btn">Book an appointment at Vivecura now</a>
+</div>
+
+<!-- ====== SOURCES ====== -->
+<div class="sources">
+  <h4>Scientific Sources and Literature</h4>
+  <ol>
+    <li>Cuffe et al. (2025). Network meta-analysis of dietary interventions in IBS. <em>Lancet Gastroenterology &amp; Hepatology.</em></li>
+    <li>Wang et al. (2019). Meta-analysis: dysbiosis patterns in IBS (23 studies, n=1340). <em>Journal of the Academy of Nutrition and Dietetics.</em></li>
+    <li>Li et al. (2024). Gut microbiota meta-analysis in IBS (1167 samples). <em>Frontiers in Microbiology.</em></li>
+    <li>Erdogan &amp; Rao (2015). Small intestinal fungal overgrowth. <em>Current Gastroenterology Reports.</em></li>
+    <li>Soliman et al. (2025). SIBO and SIFO, health implications and management. <em>Nutrients.</em></li>
+    <li>Kang &amp; Lee (2024). DON damages tight junctions in intestinal organoids. <em>Journal of Animal Science and Biotechnology.</em></li>
+    <li>Xu et al. (2025). Aflatoxin B1 activates NLRP3 inflammasome, disrupts tight junctions. <em>Ecotoxicology and Environmental Safety.</em></li>
+    <li>Cox et al. (2020). Low-FODMAP reduces Bifidobacterium in IBD patients. <em>Gastroenterology.</em> RCT n=52.</li>
+    <li>Black et al. (2020). Psychological interventions for IBS, network meta-analysis (41 RCTs, n=4072). <em>Gut.</em></li>
+    <li>Chedid et al. (2014). Herbal antibiotics vs. rifaximin in SIBO. <em>Global Advances in Health and Medicine.</em> n=104.</li>
+    <li>Comas-Bast&eacute; et al. (2020). Histamine intolerance: current state of the art. <em>Biomolecules.</em></li>
+    <li>Bravo et al. (2011). L. rhamnosus JB-1 modulates brain GABA via vagus nerve. <em>PNAS.</em> (in-vivo animal study)</li>
+    <li>Yin (2025). tVNS for gastrointestinal motility disorders. <em>Journal of Translational Gastroenterology.</em></li>
+    <li>Cryan et al. (2019). The microbiota-gut-brain axis. <em>Physiological Reviews.</em> 136-page review.</li>
+    <li>Konijeti et al. (2017). Autoimmune protocol diet in IBD. <em>Inflammatory Bowel Diseases.</em> n=15.</li>
+    <li>Kong et al. (2021). Ketogenic diet ameliorates colitis, microbiome analysis. <em>Signal Transduction and Targeted Therapy.</em></li>
+    <li>Huang et al. (2022). BHB ameliorates colitis, promotes M2 macrophage polarization. <em>BMC Medicine.</em></li>
+    <li>Pimentel et al. (2004). Elemental diet normalizes breath test in SIBO. <em>Digestive Diseases and Sciences.</em> n=93.</li>
+    <li>Lie et al. (2018). Low-dose naltrexone in therapy-refractory IBD. <em>Journal of Translational Medicine.</em> n=47.</li>
+    <li>Nathan N. (2018). Toxic: Heal Your Body from Mold, Lyme, and Other Chronic Conditions. Victory Belt Publishing.</li>
+    <li>Fasano A. (2012). Leaky gut and autoimmune diseases. <em>Clinical Reviews in Allergy &amp; Immunology.</em></li>
+    <li>Ign&aacute;cio et al. (2024). Glyphosate and gut dysbiosis, systematic review. <em>Food &amp; Function.</em></li>
+    <li>Gao et al. (2022). BHB upregulates Claudin-1, mitigates hyperpermeability. <em>Frontiers in Immunology.</em></li>
+    <li>Khalighi Sikaroudi et al. (2024). Low-FODMAP umbrella review (24 RCTs, n=1646). <em>Food &amp; Function.</em></li>
+    <li>Habtemariam S. (2020). Berberine and gut microbiota, the hidden organ hypothesis. <em>Pharmacological Research.</em></li>
+  </ol>
+</div>
+
+</main>
+</body>
+</html>

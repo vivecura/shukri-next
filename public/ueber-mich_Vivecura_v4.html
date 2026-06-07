@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PVM2RGELWW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PVM2RGELWW');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Über mich · Shukri Jarmoukli · Vivecura Berlin</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --teal:#43A9AB;
+  --teal-dark:#2b7f81;
+  --teal-darker:#1d5a5c;
+  --teal-pale:#e8f2f2;
+  --teal-faint:#f3f8f8;
+  --teal-line:rgba(67,169,171,.24);
+  --ink:#2d3d3d;
+  --ink-soft:#495959;
+  --muted:#7a8585;
+  --cream:#f2eadb;
+  --cream-soft:#f7f1e4;
+  --white:#ffffff;
+  --bg:#fafbfb;
+  --line:rgba(45,61,61,.12);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--ink);line-height:1.78;font-weight:300;font-size:17px}
+
+/* HERO */
+.hero{background:linear-gradient(165deg,#f7fafa 0%,#eaf3f3 50%,#d7e8e8 100%);padding:110px 24px 130px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 25% 20%,rgba(67,169,171,.12),transparent 55%),radial-gradient(ellipse at 78% 82%,rgba(67,169,171,.08),transparent 55%);pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:70px;background:var(--bg);clip-path:polygon(0 100%,100% 100%,100% 35%,82% 74%,64% 28%,46% 78%,28% 38%,12% 80%,0 50%)}
+.compass{position:absolute;top:50%;left:50%;transform:translate(-50%,-55%);width:380px;height:380px;pointer-events:none;opacity:.55}
+.compass-ring{position:absolute;inset:0;border:1px solid rgba(67,169,171,.22);border-radius:50%;animation:spin 80s linear infinite}
+.compass-ring:nth-child(2){inset:50px;border-style:dashed;border-color:rgba(67,169,171,.16);animation:spin 60s linear infinite reverse}
+.compass-ring:nth-child(3){inset:105px;border-color:rgba(67,169,171,.3)}
+.compass-dot{position:absolute;top:0;left:50%;width:7px;height:7px;background:var(--teal);border-radius:50%;transform:translateX(-50%) translateY(-3px);box-shadow:0 0 18px rgba(67,169,171,.55)}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.hero-eyebrow{position:relative;z-index:2;display:inline-block;font-family:'Source Sans 3',sans-serif;font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;color:var(--teal-dark);margin-bottom:26px;font-weight:600}
+.hero h1{position:relative;z-index:2;font-family:'Libre Baskerville',serif;font-size:clamp(1.95rem,5vw,3.1rem);color:var(--ink);max-width:790px;margin:0 auto 22px;line-height:1.2;font-weight:400;letter-spacing:-.005em}
+.hero h1 em{font-style:italic;color:var(--teal);font-weight:400}
+.hero-sub{position:relative;z-index:2;color:var(--ink-soft);font-size:1.04rem;font-weight:300;max-width:530px;margin:0 auto;font-family:'Source Sans 3',sans-serif;letter-spacing:.005em}
+.hero-signature{position:relative;z-index:2;margin-top:42px;font-family:'Source Sans 3',sans-serif;font-size:.75rem;color:var(--teal-dark);letter-spacing:.22em;text-transform:uppercase;font-weight:600}
+
+/* MAIN */
+main{max-width:720px;margin:0 auto;padding:40px 24px 100px}
+
+/* OPENING */
+.opening{margin:30px 0 60px;text-align:center}
+.opening-pre{font-family:'Libre Baskerville',serif;font-style:italic;color:var(--teal);font-size:1.1rem;letter-spacing:.01em;margin-bottom:14px;font-weight:400}
+.opening-line{width:56px;height:1px;background:var(--teal);margin:0 auto;opacity:.55}
+
+/* SECTIONS */
+.section{margin:68px 0}
+h2{font-family:'Libre Baskerville',serif;font-size:1.82rem;color:var(--teal);margin:0 0 12px;font-weight:400;font-style:italic;line-height:1.25;letter-spacing:-.005em}
+.section-mark{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+.section-mark::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--teal-line),transparent)}
+.section-mark .dot{width:7px;height:7px;background:var(--teal);border-radius:50%;flex-shrink:0}
+.section-mark .chapter{font-family:'Source Sans 3',sans-serif;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--teal-dark);font-weight:600}
+
+p{margin-bottom:22px;color:var(--ink);font-weight:300}
+p.lead{font-family:'Libre Baskerville',serif;font-size:1.14rem;font-weight:400;color:var(--ink);line-height:1.55;margin-bottom:22px;font-style:normal}
+strong{font-weight:600;color:var(--teal-darker)}
+em{font-style:italic}
+
+/* PULL QUOTE */
+.pullquote{position:relative;margin:44px 0;padding:30px 34px 30px 44px;border-left:3px solid var(--teal);font-family:'Libre Baskerville',serif;font-size:1.26rem;line-height:1.5;color:var(--teal-darker);font-style:italic;background:linear-gradient(90deg,var(--teal-faint),transparent);font-weight:400}
+.pullquote::before{content:'"';position:absolute;left:10px;top:8px;font-family:'Libre Baskerville',serif;font-size:3.4rem;color:var(--teal);opacity:.25;line-height:1}
+.pullquote cite{display:block;margin-top:14px;font-size:.74rem;color:var(--teal-dark);font-style:normal;letter-spacing:.18em;text-transform:uppercase;font-family:'Source Sans 3',sans-serif;font-weight:600}
+
+/* REFRAME */
+.reframe{background:var(--cream);border:1px solid rgba(45,61,61,.06);border-radius:14px;padding:30px 32px;margin:38px 0;position:relative}
+.reframe::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--teal);border-radius:14px 14px 0 0}
+.reframe-label{font-family:'Source Sans 3',sans-serif;font-size:.7rem;letter-spacing:.24em;text-transform:uppercase;color:var(--teal-dark);font-weight:600;margin-bottom:14px;display:block}
+.reframe-title{font-family:'Libre Baskerville',serif;font-size:1.35rem;color:var(--ink);margin-bottom:12px;font-weight:400;line-height:1.35}
+.reframe p{margin:0 0 10px;font-size:.98rem;color:var(--ink);line-height:1.72;font-weight:300}
+.reframe p:last-child{margin-bottom:0}
+
+/* MOMENT */
+.moment{margin:42px 0;padding:28px 30px;background:var(--cream-soft);border-radius:14px;border:1px solid rgba(45,61,61,.06);position:relative}
+.moment-label{font-family:'Libre Baskerville',serif;font-style:italic;color:var(--teal);font-size:.94rem;margin-bottom:10px}
+.moment p{font-size:.96rem;margin-bottom:12px;color:var(--ink);font-weight:300}
+.moment p:last-child{margin:0}
+
+/* IMAGE PLACEHOLDER */
+.image-slot{margin:44px 0;border-radius:14px;overflow:hidden;background:linear-gradient(135deg,var(--teal-pale),var(--teal-faint));aspect-ratio:3/2;position:relative;border:1px solid var(--teal-line)}
+.image-slot::after{content:attr(data-label);position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Libre Baskerville',serif;font-style:italic;color:var(--teal-dark);font-size:.92rem;letter-spacing:.04em;text-align:center;padding:20px}
+.image-slot.with-image::after{display:none}
+.image-slot img{width:100%;height:100%;object-fit:cover;display:block}
+
+/* IMAGE COMPARE (VORHER/NACHHER) */
+.image-compare{margin:44px 0;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.image-compare .slot{border-radius:14px;overflow:hidden;background:linear-gradient(135deg,var(--teal-pale),var(--teal-faint));aspect-ratio:3/4;position:relative;border:1px solid var(--teal-line)}
+.image-compare .slot::after{content:attr(data-label);position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Libre Baskerville',serif;font-style:italic;color:var(--teal-dark);font-size:.86rem;letter-spacing:.02em;text-align:center;padding:16px;line-height:1.4}
+.image-compare .slot.with-image::after{display:none}
+.image-compare .slot img{width:100%;height:100%;object-fit:cover;display:block}
+@media(max-width:560px){
+  .image-compare{grid-template-columns:1fr}
+  .image-compare .slot{aspect-ratio:4/5}
+}
+
+/* TIMELINE MARKERS */
+.waypoint{display:flex;align-items:baseline;gap:14px;margin:32px 0 16px}
+.waypoint-dot{width:9px;height:9px;border-radius:50%;background:var(--teal);flex-shrink:0;position:relative;transform:translateY(-2px)}
+.waypoint-dot::after{content:'';position:absolute;inset:-4px;border:1px solid var(--teal);border-radius:50%;opacity:.35}
+.waypoint-year{font-family:'Libre Baskerville',serif;font-style:italic;color:var(--teal-dark);font-size:.98rem;letter-spacing:.02em}
+.waypoint-place{color:var(--muted);font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;font-weight:600;font-family:'Source Sans 3',sans-serif}
+
+/* SYSTEM SECTION */
+.system-wrap{margin:56px 0 40px;padding:48px 20px 36px;background:linear-gradient(165deg,var(--teal-faint),#ffffff);border-radius:18px;border:1px solid var(--teal-line);text-align:center}
+.system-label{font-family:'Source Sans 3',sans-serif;font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;color:var(--teal-dark);font-weight:600;margin-bottom:12px}
+.system-title{font-family:'Libre Baskerville',serif;font-size:1.55rem;color:var(--ink);margin-bottom:8px;font-weight:400;line-height:1.3}
+.system-title em{font-style:italic;color:var(--teal)}
+.system-sub{font-family:'Source Sans 3',sans-serif;font-size:.94rem;color:var(--muted);margin-bottom:32px;font-weight:300}
+.system-svg{width:100%;max-width:460px;height:auto;margin:0 auto;display:block}
+/* INNER BREAK ORNAMENT */
+.inner-break{text-align:center;margin:40px 0;font-size:1rem;color:var(--teal);opacity:.45;letter-spacing:1em;font-weight:400;user-select:none;pointer-events:none}
+
+/* INTERACTIVE PILLAR NODES */
+.pillar-node{cursor:pointer}
+.pillar-node circle{transition:fill .3s ease,stroke-width .3s ease,stroke-opacity .3s ease,stroke .3s ease}
+.pillar-node text{transition:fill .25s ease;pointer-events:none}
+.pillar-node:hover circle{fill:#f3f8f8;stroke-width:2;stroke-opacity:.9}
+.pillar-node:focus{outline:none}
+.pillar-node:focus-visible circle{stroke:#2b7f81;stroke-width:2.5;stroke-opacity:1}
+.pillar-node.active circle{fill:#e0eeee;stroke:#2b7f81;stroke-width:2.5;stroke-opacity:1}
+.pillar-node.active text{fill:#1d5a5c}
+
+/* PILLAR DETAIL PANEL */
+.pillar-detail{min-height:130px;margin:36px 0 0;padding:28px 30px;background:#ffffff;border:1px solid var(--teal-line);border-radius:14px;text-align:left;transition:opacity .25s ease;position:relative;overflow:hidden}
+.pillar-detail::before{content:'';position:absolute;top:0;left:24px;right:24px;height:2px;background:linear-gradient(90deg,transparent,var(--teal),transparent);opacity:0;transition:opacity .3s ease}
+.pillar-detail.has-content::before{opacity:.55}
+.pillar-detail-hint{text-align:center;color:var(--muted);font-family:'Libre Baskerville',serif;font-style:italic;padding:24px 8px 18px;font-size:1rem;line-height:1.55}
+.pillar-detail-hint .hint-arrow{display:block;margin-top:12px;font-size:1.25rem;color:var(--teal);opacity:.55;font-style:normal}
+.pillar-name-large{font-family:'Source Sans 3',sans-serif;font-size:.74rem;letter-spacing:.22em;text-transform:uppercase;color:var(--teal);font-weight:600;margin-bottom:10px}
+.pillar-desc-large{font-size:1rem;color:var(--ink);line-height:1.72;font-weight:300;margin:0}
+
+/* CTA FINAL */
+.invitation{margin:80px 0 20px;padding:56px 36px;background:linear-gradient(158deg,#1d5a5c,#2b7f81 55%,#43A9AB);border-radius:22px;color:#ffffff;position:relative;overflow:hidden;text-align:center}
+.invitation::before{content:'';position:absolute;top:-60px;right:-60px;width:240px;height:240px;background:radial-gradient(circle,rgba(255,255,255,.16),transparent);border-radius:50%;pointer-events:none}
+.invitation::after{content:'';position:absolute;bottom:-40px;left:-40px;width:180px;height:180px;background:radial-gradient(circle,rgba(255,255,255,.1),transparent);border-radius:50%;pointer-events:none}
+.invitation-eyebrow{position:relative;z-index:1;font-family:'Source Sans 3',sans-serif;font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.8);margin-bottom:18px;font-weight:600}
+.invitation h3{position:relative;z-index:1;font-family:'Libre Baskerville',serif;font-size:1.65rem;font-weight:400;line-height:1.32;color:#ffffff;margin-bottom:18px;font-style:italic;max-width:540px;margin-left:auto;margin-right:auto}
+.invitation p{position:relative;z-index:1;color:rgba(255,255,255,.82);margin-bottom:30px;font-size:.98rem;max-width:500px;margin-left:auto;margin-right:auto;font-weight:300}
+.invitation a.book{position:relative;z-index:1;display:inline-block;background:#ffffff;color:var(--teal-darker);font-weight:600;padding:15px 42px;border-radius:32px;text-decoration:none;font-size:.92rem;letter-spacing:.05em;font-family:'Source Sans 3',sans-serif;transition:transform .2s ease,box-shadow .2s ease;box-shadow:0 8px 26px rgba(0,0,0,.18)}
+.invitation a.book:hover{transform:translateY(-1px);box-shadow:0 12px 32px rgba(0,0,0,.22)}
+
+/* SIGNATURE */
+.signoff{text-align:center;margin:56px 0 20px}
+.signoff-line{font-family:'Libre Baskerville',serif;font-style:italic;color:var(--teal);font-size:1.1rem;margin-bottom:10px;font-weight:400}
+.signoff-name{font-family:'Libre Baskerville',serif;font-size:1.32rem;color:var(--ink);letter-spacing:.005em;font-weight:400}
+.signoff-role{font-family:'Source Sans 3',sans-serif;font-size:.76rem;color:var(--teal-dark);letter-spacing:.22em;text-transform:uppercase;margin-top:8px;font-weight:600}
+
+@media(max-width:560px){
+  body{font-size:16px}
+  .hero{padding:86px 20px 108px}
+  .hero h1{font-size:1.82rem}
+  main{padding:30px 18px 70px}
+  h2{font-size:1.48rem}
+  .pullquote{font-size:1.08rem;padding:24px 22px 24px 34px}
+  .invitation{padding:42px 24px}
+  .invitation h3{font-size:1.32rem}
+  .compass{width:260px;height:260px}
+  .system-wrap{padding:36px 16px 28px}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="compass">
+    <div class="compass-ring"><div class="compass-dot"></div></div>
+    <div class="compass-ring"></div>
+    <div class="compass-ring"></div>
+  </div>
+  <div class="hero-eyebrow">Über mich · Vivecura Berlin</div>
+  <h1>Von Damaskus nach Berlin. Und zu einer Medizin, die den Menschen <em>wieder sieht</em>.</h1>
+  <p class="hero-sub">Meine Geschichte. Warum ich dieses System gebaut habe. Und wohin ich damit will.</p>
+  <div class="hero-signature">Shukri Jarmoukli · Arzt und Mentor</div>
+</div>
+
+<main>
+
+<div class="opening">
+  <div class="opening-pre">Es hat nicht in einer Praxis angefangen. Es hat auf einer Straße angefangen.</div>
+  <div class="opening-line"></div>
+</div>
+
+<!-- KAPITEL 1: THE BIKE TOUR HOOK -->
+<section class="section">
+  <div class="section-mark"><span class="dot"></span><span class="chapter">Kapitel Eins · Der Riss</span></div>
+  <h2>Irgendwo zwischen Ljubljana und Zagreb</h2>
+
+  <p class="lead">Eigentlich war ich auf dem Weg nach Griechenland. 3200 Kilometer mit dem Fahrrad, von Deutschland aus. Fünf Taschen auf dem Gepäckträger. Zehn Länder. Sechs Wochen. Über 20.000 Höhenmeter.</p>
+
+  <p>Nach etwa einer Woche auf dem Rad habe ich in einem kleinen Dorf eine Tafel Milch gekauft. Ich habe einen Schluck getrunken. Und ich habe gewartet.</p>
+
+  <p>Denn seit zwei Jahren hatte ich eine Laktoseintoleranz. Nicht eine leichte. Eine schwere. Ein Schluck Milch ohne Enzymtablette und mein Darm hat reagiert, als hätte ich Gift getrunken. Mein Körper produzierte Laktase nicht mehr ausreichend. So lautete die Diagnose. So lautete das Urteil.</p>
+
+  <p>An diesem Tag passierte nichts. Kein Bauchweh. Kein Durchfall. Nichts.</p>
+
+  <p>Am nächsten Morgen habe ich ein ganzes Glas Milch getrunken. Wieder nichts. Ich war verblüfft. Im Studium hatte ich gelernt: Wer die Laktase nicht hat, verträgt keine Milch. Punkt. Entweder du nimmst das Enzym als Tablette oder du verzichtest. Das Bild war statisch. Mechanisch. Eindeutig.</p>
+
+  <p>Mein Körper hat mir gerade gezeigt, dass das Bild nicht stimmt.</p>
+
+  <p>Ich hatte keine Pille genommen. Keine Behandlung bekommen. Ich hatte nur mein Leben verändert.</p>
+
+  <div class="pullquote">
+    Auf einer Straße zwischen Ljubljana und Zagreb ist die Frage entstanden, die mich seitdem nicht mehr loslässt. Was, wenn wir in der Medizin die falsche Frage stellen?
+    <cite>Der Moment, an dem alles gekippt ist</cite>
+  </div>
+</section>
+
+<div class="image-slot" data-label="Fahrradtour Deutschland bis Griechenland · 3200 Kilometer, sechs Wochen, zehn Länder"></div>
+
+<!-- KAPITEL 2: ORIGINS -->
+<section class="section">
+  <div class="section-mark"><span class="dot"></span><span class="chapter">Kapitel Zwei · Die Herkunft</span></div>
+  <h2>Damaskus, Köln, und dreißig Kilo</h2>
+
+  <p>Aber die Geschichte beginnt früher.</p>
+
+  <div class="waypoint">
+    <span class="waypoint-dot"></span>
+    <span class="waypoint-year">2012</span>
+    <span class="waypoint-place">Damaskus → Frankfurt</span>
+  </div>
+
+  <p>Ich bin in Damaskus geboren. Syrien, Anfang des Krieges. Ich war neunzehn, als ich Deutschland erreicht habe. Ein Rucksack. Kein Wort Deutsch. Keine Familie um mich herum. Nur das Ziel, das ich seit meiner Kindheit getragen hatte. Ich wollte Arzt werden. Menschen helfen. Das war der klare Teil.</p>
+
+  <p>Ein Jahr später saß ich an der Universität zu Köln und habe angefangen, Medizin zu studieren.</p>
+
+  <p>Mein Mitbewohner in der WG kam aus Bayern. Er hat mir Deutschland beigebracht, so wie er es kannte. Ich muss etwas zugeben. In Syrien haben wir Alkohol sehr zurückhaltend getrunken, in Maßen, zum Genuss. Ich bin christlich aufgewachsen. Aber mein bayerischer Mitbewohner hat mir das Bier saufen beigebracht. Nach einem Jahr konnte ich mehr trinken als die meisten meiner deutschen Freunde.</p>
+
+  <p>An der Uni habe ich das ehrlich gesagt gefeiert. Alle dachten, der Syrer würde keinen Alkohol anrühren. Niemand ahnte, dass ich längst mehr kippen konnte als sie. Es war witzig. Auch für mich. Ein kleines Zeichen, dass ich angekommen war. Dass ich dazu gehöre.</p>
+
+  <p>Dazu kamen Fastfood. Wenig Bewegung. Stundenlang sitzen und lernen.</p>
+
+  <p>In zwei Jahren habe ich dreißig Kilo zugenommen.</p>
+
+  <p>Dann kam eine radikale, sehr dumme Diät. Karotten und Nüsse. Viel Sport, fast kein Essen. Ich habe nachts von einfachen Brötchen geträumt. Aber es hat funktioniert. In drei Monaten waren zwanzig Kilo wieder weg. Dass das komplett ungesund war, wusste ich damals auch als Medizinstudent nicht.</p>
+
+  <p>Was blieb, war das Sodbrennen.</p>
+
+  <div class="image-compare">
+    <div class="slot" data-label="Vorher · Mit dreißig Kilo mehr"></div>
+    <div class="slot" data-label="Nachher · Nach der Rückkehr zu mir selbst"></div>
+  </div>
+</section>
+
+<!-- KAPITEL 3: THE FIRST CRACK -->
+<section class="section">
+  <div class="section-mark"><span class="dot"></span><span class="chapter">Kapitel Drei · Die erste Lücke</span></div>
+  <h2>Das Sodbrennen, das alles angestoßen hat</h2>
+
+  <p>Ich bin zu meinen Hausärzten gegangen. Ich habe konkret und höflich gefragt. Was kann ich mit der Ernährung tun? Welche Lebensmittel sollte ich meiden? Wie kann ich das Sodbrennen verstehen?</p>
+
+  <p>Die Antwort war immer die gleiche. Ein Magensäureblocker. Auf unbestimmte Zeit.</p>
+
+  <p>Ich war Medizinstudent. Ich wusste, was das bedeutet. Nebenwirkungen. Verschlechterte Verdauung. Langfristig möglicherweise Nährstoffmängel. Und es würde das Grundproblem nicht lösen, nur überdecken.</p>
+
+  <p>Also habe ich selbst angefangen zu forschen. Ich habe meine Ernährung angepasst, Dinge ausprobiert, beobachtet. Nach einigen Monaten war mein Sodbrennen weg. Ohne Medikament.</p>
+
+  <p>In diesem Moment habe ich zum ersten Mal die Seite der Patienten erlebt. Nicht aus dem Lehrbuch. Aus dem eigenen Körper. Jemand, der nach einer nachhaltigen Lösung sucht und in der Schulmedizin keine findet. Jemand, der sich allein gelassen fühlt. Nicht böswillig. Nicht vernachlässigt. Nur ohne echte Antworten.</p>
+
+  <p>Damals dachte ich noch, das ist ein kleines Thema. Ein Sonderfall. Eine Ausnahme.</p>
+
+  <p>Ich habe mich geirrt.</p>
+
+  <div class="inner-break">· · ·</div>
+
+  <p>Weil kurz darauf eine zweite Diagnose kam, mit der ich tagtäglich zu tun hatte. Eine schwere Laktoseintoleranz. Von einem Tag auf den anderen. Ich konnte keinen Schluck Milch trinken, ohne eine Enzymtablette zu nehmen.</p>
+
+  <p>Und dann kam die Fahrradtour. Und die Laktoseintoleranz war weg.</p>
+</section>
+
+<!-- KAPITEL 4: PARADIGM SHIFT -->
+<section class="section">
+  <div class="section-mark"><span class="dot"></span><span class="chapter">Kapitel Vier · Der Perspektivwechsel</span></div>
+  <h2>Die Frage, die ich nach der Rückkehr nicht mehr losgelassen habe</h2>
+
+  <p>Zurück in Deutschland habe ich nicht aufgehört zu lesen.</p>
+
+  <p>Der einzige Unterschied zwischen meinem WG-Zimmer und der Fahrradtour war mein Leben selbst. Draußen schlafen. Mit der Sonne aufwachen. Frische Luft atmen. Stundenlang in die Pedale treten. Freiheit. Ruhe. Bewegung. Also habe ich mich durch Studien gelesen, die sich mit genau diesen Faktoren beschäftigen.</p>
+
+  <p>Ich bin auf die Forschung zu Naturvölkern gestoßen. Menschen, die noch in ihrer ursprünglichen Lebensweise leben. Ihre Genetik ist fast identisch mit unserer. Und trotzdem haben sie bis zu 85 Prozent weniger chronische Erkrankungen als wir.</p>
+
+  <p>Wenn einer von ihnen das fünfzehnte Lebensjahr erreicht, wird er durchschnittlich ähnlich alt wie wir. Aber er stirbt nicht nach Jahrzehnten mit zehn Tabletten und mühsamer Beweglichkeit. Er stirbt fitter. Er stirbt lebendiger.</p>
+
+  <p>Das hat mich getroffen.</p>
+
+  <p>Denn unser Ziel in der Medizin ist meistens: Symptome reduzieren. Krankheit verwalten. Das ist wichtig. Das rettet Leben. Aber es ist nicht das ganze Bild. Oft bekommen Menschen mit vielen chronischen Erkrankungen durch Medikamente eine Symptomreduktion und keine gefühlte Lebendigkeit. Das ist kein Vorwurf. Das ist eine Frage der Definition. Und mir wurde klar, wie eng wir Gesundheit definiert haben.</p>
+
+  <div class="reframe">
+    <span class="reframe-label">Der Reframe, der alles verändert hat</span>
+    <div class="reframe-title">Vom mechanischen zum regulatorischen Denken</div>
+    <p>In der mechanischen Denkweise fehlt ein Enzym. Also verträgst du keine Milch. Punkt.</p>
+    <p>In der regulatorischen Denkweise kann dein Körper sich wieder selbst regulieren. Das Enzym kann wieder gebildet werden. Wenn die Bedingungen stimmen.</p>
+    <p>Das ist nicht esoterisch. Das ist Biologie. Wir reden in der Ausbildung nur selten darüber.</p>
+  </div>
+
+  <p>Von da an wollte ich verstehen, wie der Körper sich selbst reguliert. Welche Faktoren diese Fähigkeit blockieren oder wieder wecken. Ernährung. Schlaf. Bewegung. Atmung. Licht. Kälte. Wärme. Mindset. Emotionale Verarbeitung. Soziale Strukturen. All das keine Wellness-Begriffe mehr für mich. Sondern Variablen, die jede einzelne Zelle im Körper beeinflussen.</p>
+</section>
+
+<!-- KAPITEL 5: TRANSLATIONSMEDIZIN -->
+<section class="section">
+  <div class="section-mark"><span class="dot"></span><span class="chapter">Kapitel Fünf · Die Lücke</span></div>
+  <h2>Siebzehn Jahre zwischen Wissen und Praxis</h2>
+
+  <p>Je mehr ich gelesen habe, desto klarer wurde etwas anderes.</p>
+
+  <p>Es gibt in der Wissenschaft ein Phänomen mit einem nüchternen Namen. <strong>Translationsmedizin.</strong> Sie beschäftigt sich mit der Frage, wie lange es dauert, bis Erkenntnisse aus Studien beim Patienten ankommen. Die Antwort ist unangenehm. Durchschnittlich siebzehn Jahre.</p>
+
+  <p>Siebzehn Jahre, in denen Menschen leiden, obwohl das Wissen längst existiert.</p>
+
+  <p>Irgendwo in diesen Studien lag die Antwort auf mein Sodbrennen, bevor ich zum Arzt gegangen bin. Irgendwo lag eine Erklärung für meine Laktoseintoleranz, bevor sie wieder verschwunden ist. Irgendwo lag Wissen, das niemand in meinem Studium ausgerollt hat.</p>
+
+  <p>Da habe ich eine Entscheidung getroffen, die für mich alles verändert hat. Ich wollte nicht neue Studien machen. Ich wollte das Wissen, das wir schon haben, in die Praxis bringen. Für Menschen, die jetzt leiden. Nicht in siebzehn Jahren.</p>
+
+  <p>Das wurde zu meinem Handwerk.</p>
+</section>
+
+<!-- KAPITEL 6: COLD THERAPY -->
+<section class="section">
+  <div class="section-mark"><span class="dot"></span><span class="chapter">Kapitel Sechs · Die Kälte</span></div>
+  <h2>Die Regentonne auf meiner Terrasse</h2>
+
+  <p>Beim Durchforsten von Studien bin ich auf ein Thema gestoßen, das ich im gesamten Studium kaum berührt hatte. Kältetherapie. Über 1300 wissenschaftliche Studien. Effekte auf das Immunsystem. Auf Entzündungsmarker. Auf Hormone. Auf das Nervensystem. Eine bewiesene antidepressive Wirkung.</p>
+
+  <p>Ich hatte im Studium alle Antidepressiva auswendig lernen müssen. Die Kälte nicht.</p>
+
+  <p>Diese Diskrepanz hat mich nicht mehr losgelassen. Wer entscheidet eigentlich, was wir lernen und was nicht?</p>
+
+  <div class="moment">
+    <div class="moment-label">Ein Selbstversuch, der hängen geblieben ist</div>
+    <p>Ich hatte damals seit einem halben Jahr Rückenschmerzen. So stark, dass ich abends eine halbe Stunde dehnen musste, sonst kam ich am Morgen nicht aus dem Bett. Ich fing an, kalt zu duschen. Zwei Minuten pro Tag.</p>
+    <p>Nach einer Woche waren meine Rückenschmerzen weg. Ich habe nichts anderes verändert.</p>
+  </div>
+
+  <p>Das hat mich so verblüfft, dass ich eine Regentonne auf die Terrasse gestellt und mit Eisbädern angefangen habe. Morgens eine halbe Stunde Atemübungen. Dann Sport. Dann in die Tonne. Eine bis eineinhalb Stunden Investition. Jeden Tag.</p>
+
+  <p>Und etwas hat sich verändert, das ich vorher nicht für möglich gehalten hätte. Nicht nur in meinem Körper. In meinem Kopf.</p>
+
+  <p>Ich habe angefangen, anders zu reagieren. Dinge, die mich früher aus der Bahn geworfen haben, ließen mich kalt. Ich hatte plötzlich Ressourcen. Abstand. Klarheit. Ich hatte keine Psychotherapie gemacht. Ich hatte mit niemandem über meine Themen gesprochen. Ich hatte nur meinen Körper berührt.</p>
+
+  <p>Aus diesem Selbstversuch ist ein Buch entstanden. Über 70 Studien darin analysiert. Für jeden, der verstehen will, wie man sicher mit Kälte anfängt und was sie im Körper bewegt.</p>
+</section>
+
+<div class="image-slot" data-label="Eisbaden · Der Weg zur inneren Ruhe"></div>
+
+<!-- KAPITEL 7: BODY AND PSYCHE -->
+<section class="section">
+  <div class="section-mark"><span class="dot"></span><span class="chapter">Kapitel Sieben · Körper und Psyche</span></div>
+  <h2>Psychotherapie, die nicht nur aus Worten besteht</h2>
+
+  <p>Die Kälte hatte eine Tür aufgestoßen, durch die ich vorher nie geschaut hatte.</p>
+
+  <p>Wenn ein kaltes Bad meine Psyche verändern kann, dann ist der Körper nicht nur ein Gefäß für den Geist. Dann ist er ein direktes Instrument. Dann kann Psychotherapie auch durch den Körper geschehen.</p>
+
+  <p>Ich habe mich intensiv mit Ansätzen beschäftigt, die genau damit arbeiten. <strong>Polyvagal-Theorie</strong>, die erklärt, wie das vegetative Nervensystem Sicherheit und Bedrohung lesen und umlernen kann. <strong>Somatic Experiencing</strong>, das zeigt, wie Trauma im Gewebe sitzt und durch sanfte Bewegung gelöst werden kann. <strong>Biodynamische Psychotherapie</strong>, die Atem, Körperwahrnehmung und Gespräch zusammenführt.</p>
+
+  <p>Ich habe verstanden, dass der schnellste Weg zu einer echten Einheitserfahrung nicht immer über aktive Arbeit an sich selbst geht. Manchmal hilft ein passiver Zugang, der das denkende Selbst kurz leiser stellt.</p>
+
+  <p>Genau an diesem Punkt bin ich auf Ketamin gestoßen.</p>
+</section>
+
+<!-- KAPITEL 8: KETAMINE -->
+<section class="section">
+  <div class="section-mark"><span class="dot"></span><span class="chapter">Kapitel Acht · Ketamin</span></div>
+  <h2>Ein Werkzeug, kein Wunder</h2>
+
+  <p>Ketamin in niedriger, subanästhetischer Dosierung kann bei therapieresistenter Depression Response-Raten von über 60 Prozent erzielen. Auch dann, wenn zuvor zwei oder mehr Antidepressiva nicht angeschlagen haben. Die Datenlage hat mich aufhorchen lassen.</p>
+
+  <p>Ich war skeptisch. Ich habe die Studien gelesen. Ich habe die Arbeit an mir selbst gemacht. Und dann habe ich es behutsam in die Praxis eingeführt, mit Menschen, die seit Jahren nicht mehr weiterkamen.</p>
+
+  <p>Was ich gesehen habe, war kein Wunder. Es war ein Werkzeug. Eines, das erlaubt, sich selbst zu sehen, ohne die üblichen Verteidigungen. Eine Erfahrung im Inneren, die nicht nur besprochen, sondern erlebt wird. So als wäre sie real. Genau dadurch wird Veränderung möglich, die vorher festgefahren war.</p>
+
+  <div class="pullquote">
+    Andere Psychotherapien fühlen sich an wie Fahrradfahren. Diese hier ist wie Ferrari fahren.
+    <cite>Ein Patient, nach seiner dritten Sitzung</cite>
+  </div>
+
+  <p>Ich behandle niemanden leichtfertig mit Ketamin. Es ist kein Startpunkt. Es ist eingebettet in sorgfältige Diagnostik, Gespräch und Integration. Aber wenn es passt, verändert es das, was vorher nicht in Bewegung kam.</p>
+</section>
+
+<!-- KAPITEL 9: DIE GRENZE (NEW) -->
+<section class="section">
+  <div class="section-mark"><span class="dot"></span><span class="chapter">Kapitel Neun · Die Grenze</span></div>
+  <h2>Als mein Herz mich gestoppt hat</h2>
+
+  <p>Bis zu diesem Punkt meiner Geschichte klingt es, als hätte jedes Werkzeug gewirkt. Als wäre ich einen geraden Weg gegangen.</p>
+
+  <p>Das ist nicht die ganze Wahrheit.</p>
+
+  <p>Ich hatte all diese Werkzeuge aufgebaut. Atemtechniken, die ich seit Jahren trainiert hatte. Eisbäder. Supplements. Spezifische Strategien, um Energie zu erzwingen, wenn der Körper eigentlich nein sagte. Und sie haben funktioniert. Zu gut, wie sich später herausstellen sollte.</p>
+
+  <p>Ich hatte eine starke Grippe. Der Moment, in dem jeder gesunde Mensch im Bett bleibt. Ich bin stattdessen Ski fahren gegangen. Mit gezielten Atemtechniken, die ich brauchte, um überhaupt durchzuatmen. Mit einer Supplement-Kombination, die mir zusätzliche Energie geben sollte. Und ich habe es geschafft. Einen ganzen Tag auf der Piste, obwohl mein Körper geschrien hat.</p>
+
+  <p>Die Quittung kam kurz danach. Eine Herzmuskelentzündung.</p>
+
+  <div class="moment">
+    <div class="moment-label">Wenn der Körper endlich genug sagt</div>
+    <p>Für zwei Monate war ich außer Atem, wenn ich eine Etage Treppen hochgegangen bin. Einfach eine einzige Etage. Nach sechs Monaten waren zwanzig Minuten Sport wieder möglich. Das ist schnell für diese Art von Verletzung. Es war nur möglich, weil ich jede Regenerationsstrategie, die ich kannte, konsequent eingesetzt habe.</p>
+  </div>
+
+  <p>Aber die wichtigste Arbeit in diesen Monaten war nicht körperlich. Sie war in meinem Kopf.</p>
+
+  <p>Ich wurde gezwungen, nicht zu funktionieren. Nicht durch eine Entscheidung. Durch eine Verletzung, die ich nicht schnell wegoptimieren konnte. Ich musste mein ganzes System neu aufbauen. Und ich musste lernen, was ich mit allen Tools der Welt umgangen hatte. Meine Grenzen zu respektieren.</p>
+
+  <div class="reframe">
+    <span class="reframe-label">Was mir erst das Herz beigebracht hat</span>
+    <div class="reframe-title">Nicht immer mehr. Manchmal weniger.</div>
+    <p>Ich hatte lange nur in eine Richtung optimiert. Mehr Disziplin. Mehr Werkzeuge. Mehr Leistung. Die Herzmuskelentzündung hat mir beigebracht, dass Heilung in beide Richtungen geht. Gasgeben und loslassen. Fokus und Ruhe.</p>
+    <p>Flexibilität ist keine Schwäche. Sie ist die andere Hälfte der Gleichung.</p>
+  </div>
+
+  <p>Deshalb arbeite ich heute besonders gern mit Menschen, die viel leisten. Unternehmerinnen. Führungskräfte. Ärztinnen. Menschen, die gewohnt sind zu funktionieren und ihr System immer weiter zu treiben. Ich kenne diesen Tonus von innen. Ich weiß, was passiert, wenn man zu lange in nur eine Richtung pusht.</p>
+
+  <p>Ich rede zu diesen Themen nicht aus Büchern. Ich rede aus einem Körper, den ich gegen die Wand gefahren habe. Und aus den Monaten, in denen ich ihn wieder aufbauen durfte.</p>
+
+  <p>Im Nachhinein kann ich sagen: Ohne diese Herzverletzung hätte ich nie das Herz bekommen, das ich heute habe.</p>
+
+  <div class="inner-break">· · ·</div>
+
+  <p>Und deshalb erzähle ich dir all das. Nicht, weil ich einen perfekten Weg gegangen bin. Ich war nie perfekt. Ich bin es heute nicht. Sondern weil ich jede einzelne Station dieser Reise an meinem eigenen Körper erlebt habe. Ich komme nicht mit einem Rezeptblock, den mir jemand in die Hand gedrückt hat. Ich komme mit einem Körper, durch den ich alles durchgegangen bin.</p>
+</section>
+
+<!-- KAPITEL 10: YEARS IN BETWEEN (EXPANDED) -->
+<section class="section">
+  <div class="section-mark"><span class="dot"></span><span class="chapter">Kapitel Zehn · Die Lehrjahre</span></div>
+  <h2>Warum Umsetzung der schwierigste Teil der Medizin ist</h2>
+
+  <p>In klassischen Einrichtungen habe ich keinen Platz gefunden, um all das zusammenzubringen. Die Expertise, die ich über Jahre aufgebaut hatte, passte nicht in die vorgegebenen Strukturen.</p>
+
+  <p>Also habe ich in alternativen Praxen gearbeitet. Coaching. Biohacking mit Kältekammer. Ganzheitliche Medizin. Ketamin-assistierte Therapie. Biodynamische Psychotherapie. Arbeit mit komplexen, chronischen Krankheitsbildern.</p>
+
+  <p>Was ich dort vor allem gelernt habe, war aber etwas anderes, als ich erwartet hatte.</p>
+
+  <p class="lead">Die Umsetzung ist der schwierigste Teil der Medizin. Nicht die Diagnose. Nicht der Plan. Die Umsetzung.</p>
+
+  <p>Ich habe hunderte 1-zu-1-Coachings gemacht. Mit Menschen, die genau wussten, was sie ändern sollten. Und die trotzdem seit Jahren nicht dazu kamen. Menschen, die mit Willenskraft allein nicht weiterkamen. Menschen, bei denen es nie am Wissen lag, sondern am Leben drumherum. An Glaubenssätzen, an Gewohnheiten, an Ängsten, an Zeitdruck, an alten Wunden.</p>
+
+  <p>In diesen Stunden habe ich gelernt, wie man Mindset-Arbeit mit medizinischer Begleitung verbindet. Wie man Gewohnheiten langsam ersetzt, statt sie mit Disziplin zu erzwingen. Wie man Rückschläge als Information liest statt als Versagen. Wie man ein Leben so umbaut, dass die neuen Entscheidungen irgendwann leichter fallen als die alten.</p>
+
+  <p>Meine Medizin funktioniert nicht ohne diese Arbeit. Ein gutes Nährstoffprotokoll, das niemand umsetzen kann, ist kein Protokoll. Es ist Papier.</p>
+
+  <div class="inner-break">· · ·</div>
+
+  <p>Parallel dazu habe ich Menschen gesehen, die in der Schulmedizin keine Antworten gefunden hatten. Post-COVID. Menschen mit Impfschäden. Komplexe Erschöpfungssyndrome. Frauen mit jahrelangen Zyklusproblemen, denen man mit der Pille die Symptome zugedeckt hatte. Männer Mitte dreißig, ausgebrannt, auf Antidepressiva, ohne dass jemand gefragt hatte, wie sie schlafen.</p>
+
+  <p>Diese Menschen waren an vielen Türen gewesen. Die Suche war mühsam. Oft erfolglos.</p>
+
+  <p>Ich habe keine Luxusmedizin gemacht. Ich habe versucht zu helfen, mit den Werkzeugen, die ich hatte. Und ich habe gesehen, wie viel möglich ist, wenn man einen Menschen nicht in eine Diagnose sperrt, sondern ihn als System betrachtet. Wenn man gleichzeitig seinen Körper behandelt und sein Leben begleitet.</p>
+
+  <p>Ernährung. Bewegung. Atmung. Schlaf. Nährstoffe. Mindset. Emotionale Verarbeitung. Soziale Strukturen. Kälte. Licht. Stille.</p>
+
+  <p>Wenn man diese Variablen zusammen verändert, bei einem Menschen, der sich verstanden fühlt und in der Umsetzung begleitet wird, passiert etwas, das einzelne Pillen nicht erreichen können.</p>
+</section>
+
+<!-- KAPITEL 11: THE SYSTEM -->
+<section class="section">
+  <div class="section-mark"><span class="dot"></span><span class="chapter">Kapitel Elf · Das System</span></div>
+  <h2>Was entsteht, wenn man alles zusammenführt</h2>
+
+  <p>Jedes Kapitel meiner Reise hat ein Werkzeug in mein Leben gebracht. Das Sodbrennen hat mir die <em>Funktionelle Medizin</em> beigebracht. Die Fahrradtour hat mir die <em>Lebensstilmedizin</em> gezeigt. Die Kälte hat mich zum <em>Biohacking</em> gebracht. Die Körperarbeit hat mich in die <em>anthroposophische</em> Tiefe geführt. Die Arbeit mit Umweltbelastungen hat mir die <em>Toxikologie</em> aufgeschlossen. Die neue Generation der Forschung hat mir die Bedeutung von <em>Genetik und Epigenetik</em> gezeigt. Und die Jahre mit Patienten haben mir beigebracht, dass Wissen ohne <em>Umsetzung</em> nichts wert ist.</p>
+
+  <p>Sieben Sprachen. Ein Mensch.</p>
+
+  <p>In klassischen Einrichtungen lebt jede dieser Disziplinen für sich. In der Realität eines kranken Menschen aber hängen sie zusammen. Also habe ich angefangen, sie systematisch miteinander zu verbinden. Nicht als loses Sammelsurium. Als ein System, in dem jede Linse die anderen ergänzt und korrigiert.</p>
+
+  <div class="system-wrap">
+    <div class="system-label">Mein Ansatz</div>
+    <div class="system-title">Sieben Linsen auf einen <em>Menschen</em></div>
+    <p class="system-sub">Kein Baukasten. Kein Entweder-Oder. Ein integriertes System.</p>
+
+    <svg class="system-svg" viewBox="0 0 460 460" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <radialGradient id="centerG" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#43A9AB"/>
+          <stop offset="100%" stop-color="#2b7f81"/>
+        </radialGradient>
+      </defs>
+      <circle cx="230" cy="230" r="185" fill="none" stroke="#43A9AB" stroke-width="1" stroke-opacity="0.18" stroke-dasharray="3 5"/>
+      <circle cx="230" cy="230" r="140" fill="none" stroke="#43A9AB" stroke-width="1" stroke-opacity="0.12"/>
+
+      <g stroke="#43A9AB" stroke-width="1" stroke-opacity="0.28" stroke-dasharray="2 4">
+        <line x1="230" y1="230" x2="230" y2="75"/>
+        <line x1="230" y1="230" x2="365" y2="152"/>
+        <line x1="230" y1="230" x2="365" y2="308"/>
+        <line x1="230" y1="230" x2="230" y2="385"/>
+        <line x1="230" y1="230" x2="95" y2="308"/>
+        <line x1="230" y1="230" x2="95" y2="152"/>
+        <line x1="230" y1="230" x2="45" y2="230"/>
+      </g>
+
+      <circle cx="230" cy="230" r="54" fill="url(#centerG)"/>
+      <text x="230" y="235" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="12.5" font-weight="600" fill="#ffffff" letter-spacing="1.4">DER MENSCH</text>
+
+      <g font-family="'Source Sans 3',sans-serif" font-size="10" font-weight="600" fill="#2b7f81" letter-spacing="0.8">
+        <g class="pillar-node" data-pillar="funktionelle" role="button" tabindex="0" aria-label="Funktionelle Medizin">
+          <circle cx="230" cy="75" r="38" fill="#ffffff" stroke="#43A9AB" stroke-width="1.5" stroke-opacity="0.5"/>
+          <text x="230" y="72" text-anchor="middle">FUNKTIONELLE</text>
+          <text x="230" y="86" text-anchor="middle">MEDIZIN</text>
+        </g>
+
+        <g class="pillar-node" data-pillar="anthro" role="button" tabindex="0" aria-label="Anthroposophische Medizin">
+          <circle cx="365" cy="152" r="38" fill="#ffffff" stroke="#43A9AB" stroke-width="1.5" stroke-opacity="0.5"/>
+          <text x="365" y="144" text-anchor="middle">ANTHROPO-</text>
+          <text x="365" y="156" text-anchor="middle">SOPHISCHE</text>
+          <text x="365" y="168" text-anchor="middle">MEDIZIN</text>
+        </g>
+
+        <g class="pillar-node" data-pillar="tox" role="button" tabindex="0" aria-label="Toxikologie">
+          <circle cx="365" cy="308" r="38" fill="#ffffff" stroke="#43A9AB" stroke-width="1.5" stroke-opacity="0.5"/>
+          <text x="365" y="305" text-anchor="middle">TOXIKO-</text>
+          <text x="365" y="319" text-anchor="middle">LOGIE</text>
+        </g>
+
+        <g class="pillar-node" data-pillar="lebensstil" role="button" tabindex="0" aria-label="Lebensstilmedizin">
+          <circle cx="230" cy="385" r="38" fill="#ffffff" stroke="#43A9AB" stroke-width="1.5" stroke-opacity="0.5"/>
+          <text x="230" y="382" text-anchor="middle">LEBENSSTIL-</text>
+          <text x="230" y="396" text-anchor="middle">MEDIZIN</text>
+        </g>
+
+        <g class="pillar-node" data-pillar="genetik" role="button" tabindex="0" aria-label="Genetik und Epigenetik">
+          <circle cx="95" cy="308" r="38" fill="#ffffff" stroke="#43A9AB" stroke-width="1.5" stroke-opacity="0.5"/>
+          <text x="95" y="305" text-anchor="middle">GENETIK &amp;</text>
+          <text x="95" y="319" text-anchor="middle">EPIGENETIK</text>
+        </g>
+
+        <g class="pillar-node" data-pillar="biohacking" role="button" tabindex="0" aria-label="Biohacking">
+          <circle cx="95" cy="152" r="38" fill="#ffffff" stroke="#43A9AB" stroke-width="1.5" stroke-opacity="0.5"/>
+          <text x="95" y="149" text-anchor="middle">BIO-</text>
+          <text x="95" y="163" text-anchor="middle">HACKING</text>
+        </g>
+
+        <g class="pillar-node" data-pillar="coaching" role="button" tabindex="0" aria-label="Coaching und Umsetzung">
+          <circle cx="45" cy="230" r="38" fill="#ffffff" stroke="#43A9AB" stroke-width="1.5" stroke-opacity="0.5"/>
+          <text x="45" y="227" text-anchor="middle">COACHING &amp;</text>
+          <text x="45" y="241" text-anchor="middle">UMSETZUNG</text>
+        </g>
+      </g>
+    </svg>
+
+    <div class="pillar-detail" id="pillar-detail">
+      <div class="pillar-detail-hint">
+        Klick auf eine der sieben Linsen, um zu erfahren, wie ich damit arbeite.
+        <span class="hint-arrow">↑</span>
+      </div>
+    </div>
+  </div>
+
+  <p>Dieses System ist kein theoretischer Baukasten. Es ist das, was in meiner Praxis jeden Tag angewendet wird. Jede Sprechstunde beginnt mit der Frage, welche Linse gerade die wichtigste ist. Meistens sind es mehrere gleichzeitig.</p>
+
+  <div class="reframe">
+    <span class="reframe-label">Was das praktisch bedeutet</span>
+    <div class="reframe-title">Ich bin nicht der Arzt, der dir nur ein Rezept in die Hand drückt.</div>
+    <p>Ich bin nicht der Arzt, der in sieben Minuten ein Medikament verschreibt und dich dann zur Tür hinaus begleitet. Mein Werkzeugkasten ist breiter.</p>
+    <p>Ich arbeite mit <strong>Lebensstilveränderung</strong>. Mit <strong>gezielten Supplements</strong>. Mit <strong>Biohacking-Tools</strong>. Mit <strong>Entgiftungsstrategien</strong>. Mit <strong>Psyche-Körper-Integration</strong>. Und mit <strong>Medikamenten</strong>, wenn sie wirklich nötig sind.</p>
+    <p>Nicht entweder-oder. Sowohl als auch. Im richtigen Moment das richtige Werkzeug.</p>
+  </div>
+</section>
+
+<!-- KAPITEL 12: VIVECURA -->
+<section class="section">
+  <div class="section-mark"><span class="dot"></span><span class="chapter">Kapitel Zwölf · Vivecura</span></div>
+  <h2>Sorge ums Leben, nicht ums Überleben</h2>
+
+  <p>Irgendwann war der Punkt erreicht, an dem ich das System nicht nur anwenden, sondern auch gestalten wollte. Einen eigenen Ort, an dem Medizin und Coaching zusammen denken. An dem ich ein Blutbild lesen und im selben Gespräch fragen darf, wie du schläfst. Wie du atmest. Was du morgens isst. Wie es dir mit deinen Eltern geht. Wie du mit Stille umgehst.</p>
+
+  <p>Weil all das deine Gesundheit ist.</p>
+
+  <p>So ist Vivecura entstanden.</p>
+
+  <p><em>Vivere</em> heißt leben. <em>Cura</em> heißt Sorge, Pflege, Zuwendung. Vivecura heißt also: Sorge ums Leben. Nicht ums Überleben.</p>
+
+  <div class="reframe">
+    <span class="reframe-label">Was ich unter Gesundheit verstehe</span>
+    <div class="reframe-title">Lebendigkeit. Nicht Normalität.</div>
+    <p>Gesundheit ist kein Laborwert, der in der Norm liegt. Gesundheit ist, dass du morgens mit Energie aufstehst. Dass du klar denken kannst. Dass du für die Menschen, die du liebst, präsent sein kannst. Dass du Freude fühlen kannst und Schwere fühlen kannst und vor keinem von beiden wegläufst.</p>
+    <p>Wenn du unter Gesundheit Lebendigkeit verstehst, dann ja. Dann ist das mein Ziel.</p>
+  </div>
+</section>
+
+<div class="image-slot" data-label="Praxis Vivecura · Berlin-Kreuzberg"></div>
+
+<!-- KAPITEL 13: WHERE I'M GOING -->
+<section class="section">
+  <div class="section-mark"><span class="dot"></span><span class="chapter">Kapitel Dreizehn · Wohin</span></div>
+  <h2>Mehr Heilung in die Welt tragen</h2>
+
+  <p>Ich will nicht nur Praxis sein.</p>
+
+  <p>Ich will, dass Medizin wieder den ganzen Menschen sieht. Dass die siebzehn Jahre zwischen Forschung und Praxis kürzer werden. Dass Menschen sich nicht mehr alleine gelassen fühlen, wenn sie nach Antworten suchen, die ihnen niemand gibt.</p>
+
+  <p>Ich will, dass Menschen <strong>Selbstwirksamkeit</strong> erleben. Das Wort nehme ich ernst. Es heißt: Ich kann etwas tun. Meine Handlungen machen einen Unterschied. Ich bin nicht ausgeliefert. Mein Körper kann wieder lernen. Mein Nervensystem kann zur Ruhe kommen. Mein Leben ist veränderbar.</p>
+
+  <p>Ich glaube, dass eine Welt mit mehr lebendigen, selbstwirksamen Menschen eine andere Welt ergibt.</p>
+
+  <p>Wer in sich selbst Frieden gefunden hat, trägt Frieden weiter. Wer gesunde Gedanken hat, trifft gesündere Entscheidungen. Wer innere Ressourcen hat, kann Ressourcen teilen. Heilung ist nicht egoistisch. Heilung ist das Einzige, was wir wirklich weitergeben können, wenn wir selbst nicht mehr nur funktionieren.</p>
+
+  <div class="pullquote">
+    Ich will mehr Heilung in die Welt tragen. Um sie zu einem schöneren Ort für uns alle zu machen.
+    <cite>Meine Vision</cite>
+  </div>
+
+  <p>Das ist mein Beitrag. So klein er vielleicht wirkt, in einer Praxis in Berlin-Kreuzberg.</p>
+
+  <p>Ich will Menschen helfen, zu sich selbst zu finden. Damit sie das Beste für sich selbst und für die Welt um sie herum geben können. Ein Mensch nach dem anderen. Bis daraus etwas Größeres wird.</p>
+</section>
+
+<!-- INVITATION -->
+<div class="invitation">
+  <div class="invitation-eyebrow">Wenn das hier etwas in dir angesprochen hat</div>
+  <h3>Dann ist das kein Zufall. Vielleicht bist du genau die Person, die seit Jahren sucht.</h3>
+  <p>Ich verspreche dir nichts. Heilung ist keine Ware. Aber ich kann dir versprechen, dass ich hinschaue. Dass ich dich ernst nehme. Und dass wir gemeinsam suchen, bis wir verstehen, was in dir passiert. Und dann gemeinsam verändern, was verändert werden darf.</p>
+  <a class="book" href="https://www.doctolib.de/arzt/berlin/shukri-jarmoukli/booking/motives?source=profile" target="_top" rel="noopener noreferrer">Termin vereinbaren</a>
+</div>
+
+<div class="signoff">
+  <div class="signoff-line">Ich freue mich auf dich.</div>
+  <div class="signoff-name">Shukri Jarmoukli</div>
+  <div class="signoff-role">Arzt und Mentor · Berlin</div>
+</div>
+
+</main>
+
+<script>
+(function(){
+  const data = {
+    funktionelle: {n:'Funktionelle Medizin',d:'Warum etwas im Körper passiert, auf der Ebene von Stoffwechsel, Hormonen und Zellbiologie.'},
+    anthro: {n:'Anthroposophische Medizin',d:'Den ganzen Menschen begleiten, mit Biografie, Seele und Geist als Teil der Behandlung.'},
+    tox: {n:'Toxikologie',d:'Was von außen in uns wirkt, von Schwermetallen bis Umweltgiften, und was der Körper dagegen braucht.'},
+    lebensstil: {n:'Lebensstilmedizin',d:'Ernährung, Schlaf, Bewegung, Atmung, Licht, Kälte, Soziales. Das, was Zellen täglich formt.'},
+    genetik: {n:'Genetik und Epigenetik',d:'Die Karte, die du mitgebracht hast. Und die Handschrift, mit der dein Leben sie neu schreibt.'},
+    biohacking: {n:'Biohacking',d:'Werkzeuge, die messbar machen, was wirkt. Selbstversuche mit System, nicht mit Mode.'},
+    coaching: {n:'Coaching und Umsetzung',d:'Weil Wissen nichts bewegt, wenn es nicht im Alltag ankommt. Da beginnt die eigentliche Arbeit.'}
+  };
+  const nodes = document.querySelectorAll('.pillar-node');
+  const detail = document.getElementById('pillar-detail');
+  if(!detail || !nodes.length) return;
+
+  function show(key){
+    const d = data[key];
+    if(!d) return;
+    nodes.forEach(n => n.classList.toggle('active', n.dataset.pillar === key));
+    detail.style.opacity = '0';
+    setTimeout(function(){
+      detail.innerHTML = '<div class="pillar-name-large">' + d.n + '</div>' +
+                         '<p class="pillar-desc-large">' + d.d + '</p>';
+      detail.classList.add('has-content');
+      detail.style.opacity = '1';
+    }, 160);
+  }
+
+  nodes.forEach(function(node){
+    node.addEventListener('click', function(){ show(node.dataset.pillar); });
+    node.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' || e.key === ' '){
+        e.preventDefault();
+        show(node.dataset.pillar);
+      }
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

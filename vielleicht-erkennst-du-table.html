@@ -1,0 +1,548 @@
+<!-- Vivecura · Vielleicht erkennst du dich hier wieder (Tabellen-Form) -->
+<style>
+  .vk-table {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 80px 24px;
+    color: #1a1f24;
+  }
+
+  .vk-table h2 {
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 700;
+    color: #43A9AB;
+    margin: 0 0 14px 0;
+    letter-spacing: -0.015em;
+    line-height: 1.2;
+  }
+
+  .vk-intro {
+    font-size: 16px;
+    line-height: 1.65;
+    color: #6b7378;
+    max-width: 620px;
+    margin: 0 0 48px 0;
+  }
+
+  /* Label row above the table */
+  .vk-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #43A9AB;
+    font-weight: 600;
+    margin-bottom: 20px;
+    padding: 7px 14px;
+    background: rgba(67, 169, 171, 0.08);
+    border-radius: 100px;
+  }
+
+  .vk-badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #43A9AB;
+  }
+
+  /* ----- Table container ----- */
+  .vk-container {
+    background: #ffffff;
+    border: 1px solid rgba(67, 169, 171, 0.2);
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 40px;
+    box-shadow: 0 4px 20px rgba(67, 169, 171, 0.04);
+  }
+
+  /* Header row */
+  .vk-head {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: linear-gradient(180deg, #f7fbfb 0%, #ffffff 100%);
+    border-bottom: 1px solid rgba(67, 169, 171, 0.18);
+    position: relative;
+  }
+
+  .vk-head::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 24px;
+    bottom: 24px;
+    width: 1px;
+    background: rgba(67, 169, 171, 0.18);
+  }
+
+  @media (max-width: 780px) {
+    .vk-head {
+      grid-template-columns: 1fr;
+    }
+    .vk-head::before {
+      display: none;
+    }
+  }
+
+  .vk-head-col {
+    padding: 32px 36px 28px;
+  }
+
+  @media (max-width: 780px) {
+    .vk-head-col {
+      padding: 24px 24px 20px;
+    }
+    .vk-head-col:first-child {
+      border-bottom: 1px solid rgba(67, 169, 171, 0.18);
+    }
+  }
+
+  .vk-head-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .vk-head-letter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+
+  .vk-head-col.col-a .vk-head-letter {
+    background: #ffffff;
+    border: 1.5px solid #43A9AB;
+    color: #43A9AB;
+  }
+
+  .vk-head-col.col-b .vk-head-letter {
+    background: #43A9AB;
+    color: #ffffff;
+  }
+
+  .vk-head-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #9aa2a7;
+    font-weight: 600;
+  }
+
+  .vk-head-title {
+    font-size: clamp(19px, 2vw, 22px);
+    font-weight: 700;
+    color: #1a1f24;
+    margin: 0 0 6px 0;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+  }
+
+  .vk-head-sub {
+    font-size: 14px;
+    color: #6b7378;
+    margin: 0;
+    line-height: 1.55;
+    font-style: italic;
+  }
+
+  /* ----- Table body: two columns with rows ----- */
+  .vk-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+  }
+
+  .vk-body::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 16px;
+    bottom: 16px;
+    width: 1px;
+    background: rgba(67, 169, 171, 0.12);
+  }
+
+  @media (max-width: 780px) {
+    .vk-body {
+      grid-template-columns: 1fr;
+    }
+    .vk-body::before {
+      display: none;
+    }
+  }
+
+  .vk-col-body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  @media (max-width: 780px) {
+    .vk-col-body.col-a {
+      border-bottom: 1px solid rgba(67, 169, 171, 0.18);
+    }
+  }
+
+  .vk-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 18px 36px;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(67, 169, 171, 0.08);
+    font-family: inherit;
+    text-align: left;
+    width: 100%;
+    transition: background 0.25s ease;
+    position: relative;
+  }
+
+  .vk-row:last-child {
+    border-bottom: none;
+  }
+
+  .vk-row:hover {
+    background: rgba(67, 169, 171, 0.035);
+  }
+
+  .vk-row.is-marked {
+    background: rgba(67, 169, 171, 0.06);
+  }
+
+  .vk-row.is-marked::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: #43A9AB;
+  }
+
+  @media (max-width: 780px) {
+    .vk-row {
+      padding: 16px 24px;
+    }
+  }
+
+  .vk-row-index {
+    font-size: 11px;
+    color: #9aa2a7;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    font-variant-numeric: tabular-nums;
+    padding-top: 4px;
+    min-width: 32px;
+    flex-shrink: 0;
+    transition: color 0.25s ease;
+  }
+
+  .vk-row.is-marked .vk-row-index {
+    color: #43A9AB;
+  }
+
+  .vk-row-check {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(67, 169, 171, 0.5);
+    background: #ffffff;
+    flex-shrink: 0;
+    margin-top: 2px;
+    position: relative;
+    transition: all 0.3s ease;
+  }
+
+  .vk-row:hover .vk-row-check {
+    border-color: #43A9AB;
+  }
+
+  .vk-row-check svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    color: #ffffff;
+    opacity: 0;
+    transform: scale(0.4);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .vk-row.is-marked .vk-row-check {
+    background: #43A9AB;
+    border-color: #43A9AB;
+  }
+
+  .vk-row.is-marked .vk-row-check svg {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .vk-row-text {
+    flex: 1;
+    font-size: 15px;
+    line-height: 1.6;
+    color: #4a5258;
+    transition: color 0.25s ease;
+  }
+
+  .vk-row.is-marked .vk-row-text {
+    color: #1a1f24;
+  }
+
+  /* Footer of the table with the bridge quote */
+  .vk-footer {
+    border-top: 1px solid rgba(67, 169, 171, 0.18);
+    background: linear-gradient(180deg, #ffffff 0%, #f7fbfb 100%);
+    padding: 44px 48px;
+    text-align: center;
+    position: relative;
+  }
+
+  @media (max-width: 780px) {
+    .vk-footer {
+      padding: 36px 24px;
+    }
+  }
+
+  .vk-footer-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .vk-footer-line {
+    width: 36px;
+    height: 1px;
+    background: rgba(67, 169, 171, 0.4);
+  }
+
+  .vk-footer-label {
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #43A9AB;
+    font-weight: 600;
+  }
+
+  .vk-footer-quote {
+    font-size: clamp(19px, 2.2vw, 24px);
+    line-height: 1.4;
+    color: #1a1f24;
+    font-weight: 600;
+    margin: 0 auto 14px;
+    max-width: 720px;
+    letter-spacing: -0.01em;
+  }
+
+  .vk-footer-sub {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #6b7378;
+    max-width: 560px;
+    margin: 0 auto;
+  }
+
+  /* Counter below table */
+  .vk-counter-wrap {
+    display: flex;
+    justify-content: center;
+    padding: 0 0 8px;
+    min-height: 32px;
+  }
+
+  .vk-counter {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 9px 18px;
+    background: #ffffff;
+    border: 1px solid rgba(67, 169, 171, 0.25);
+    border-radius: 100px;
+    font-size: 13.5px;
+    color: #2d7a7b;
+    font-weight: 500;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: all 0.35s ease;
+    pointer-events: none;
+  }
+
+  .vk-counter.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    background: #43A9AB;
+    color: #ffffff;
+    border-color: #43A9AB;
+  }
+
+  .vk-counter-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 6px;
+    background: rgba(255, 255, 255, 0.22);
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+</style>
+
+<section class="vk-table">
+  <span class="vk-badge"><span class="vk-badge-dot"></span>Gegenüberstellung</span>
+  <h2>Vielleicht erkennst du dich hier wieder</h2>
+  <p class="vk-intro">
+    Zwei Ausgangspunkte, ein gemeinsamer Wunsch. Klick die Punkte an, in denen du dich wiederfindest.
+  </p>
+
+  <div class="vk-container">
+
+    <!-- Table header -->
+    <div class="vk-head">
+      <div class="vk-head-col col-a">
+        <div class="vk-head-tag">
+          <span class="vk-head-letter">A</span>
+          <span class="vk-head-eyebrow">Ausgangspunkt</span>
+        </div>
+        <h3 class="vk-head-title">Noch keine Therapie gemacht</h3>
+        <p class="vk-head-sub">Du spürst, dass da etwas ist, aber du weißt nicht so genau, wo anfangen.</p>
+      </div>
+      <div class="vk-head-col col-b">
+        <div class="vk-head-tag">
+          <span class="vk-head-letter">B</span>
+          <span class="vk-head-eyebrow">Ausgangspunkt</span>
+        </div>
+        <h3 class="vk-head-title">Schon eine Therapie gemacht</h3>
+        <p class="vk-head-sub">Du hast schon vieles verstanden, aber es hat sich noch nicht ganz gesetzt.</p>
+      </div>
+    </div>
+
+    <!-- Table body -->
+    <div class="vk-body">
+
+      <div class="vk-col-body col-a">
+        <button class="vk-row" type="button">
+          <span class="vk-row-index">A.01</span>
+          <span class="vk-row-check">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 10 8.5 13.5 15 7"/></svg>
+          </span>
+          <span class="vk-row-text">Du hast bisher noch keine Psychotherapie gemacht, spürst aber, dass du tiefer gehen möchtest als reine Selbstreflexion.</span>
+        </button>
+        <button class="vk-row" type="button">
+          <span class="vk-row-index">A.02</span>
+          <span class="vk-row-check">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 10 8.5 13.5 15 7"/></svg>
+          </span>
+          <span class="vk-row-text">Du erlebst körperliche Symptome wie Unruhe, Enge, Schwindel oder ein diffuses Gefühl im Körper. Woher dies kommt, kannst du dir nicht erklären.</span>
+        </button>
+        <button class="vk-row" type="button">
+          <span class="vk-row-index">A.03</span>
+          <span class="vk-row-check">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 10 8.5 13.5 15 7"/></svg>
+          </span>
+          <span class="vk-row-text">Du fühlst dich deinen Gedanken oder Emotionen teilweise ausgeliefert und wünschst dir mehr Stabilität und Kontrolle.</span>
+        </button>
+      </div>
+
+      <div class="vk-col-body col-b">
+        <button class="vk-row" type="button">
+          <span class="vk-row-index">B.01</span>
+          <span class="vk-row-check">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 10 8.5 13.5 15 7"/></svg>
+          </span>
+          <span class="vk-row-text">Du verstehst deine Muster, aber kriegst es nicht richtig hin, dein Verhalten wirklich zu ändern.</span>
+        </button>
+        <button class="vk-row" type="button">
+          <span class="vk-row-index">B.02</span>
+          <span class="vk-row-check">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 10 8.5 13.5 15 7"/></svg>
+          </span>
+          <span class="vk-row-text">Du kannst Dinge einordnen, aber nicht richtig fühlen.</span>
+        </button>
+        <button class="vk-row" type="button">
+          <span class="vk-row-index">B.03</span>
+          <span class="vk-row-check">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 10 8.5 13.5 15 7"/></svg>
+          </span>
+          <span class="vk-row-text">Du bist stabiler, also du funktionierst, aber nicht lebendig.</span>
+        </button>
+        <button class="vk-row" type="button">
+          <span class="vk-row-index">B.04</span>
+          <span class="vk-row-check">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 10 8.5 13.5 15 7"/></svg>
+          </span>
+          <span class="vk-row-text">Du weißt, was du tun solltest, aber es passiert nicht wirklich.</span>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Table footer: bridge quote -->
+    <div class="vk-footer">
+      <div class="vk-footer-tag">
+        <span class="vk-footer-line"></span>
+        <span class="vk-footer-label">In beiden Fällen</span>
+        <span class="vk-footer-line"></span>
+      </div>
+      <p class="vk-footer-quote">
+        Du fühlst noch nicht ganz, dass du bei dir angekommen bist.
+      </p>
+      <p class="vk-footer-sub">
+        Das ist kein Versagen und kein Zufall. Es zeigt nur, dass der bisherige Zugang an seine Grenze kommt, und dass ein anderer Weg möglich ist.
+      </p>
+    </div>
+
+  </div>
+
+  <!-- Floating counter below -->
+  <div class="vk-counter-wrap">
+    <div class="vk-counter" id="vkCounter">
+      <span class="vk-counter-num" id="vkCounterNum">0</span>
+      <span id="vkCounterText">Punkte erkannt, du bist nicht allein damit</span>
+    </div>
+  </div>
+
+</section>
+
+<script>
+  (function() {
+    const rows = document.querySelectorAll('.vk-row');
+    const counter = document.getElementById('vkCounter');
+    const counterNum = document.getElementById('vkCounterNum');
+    const counterText = document.getElementById('vkCounterText');
+
+    function updateCounter() {
+      const marked = document.querySelectorAll('.vk-row.is-marked').length;
+      counterNum.textContent = marked;
+
+      if (marked === 0) {
+        counter.classList.remove('is-visible');
+      } else {
+        counter.classList.add('is-visible');
+        counterText.textContent = marked === 1
+          ? 'Punkt erkannt, du bist nicht allein damit'
+          : 'Punkte erkannt, du bist nicht allein damit';
+      }
+    }
+
+    rows.forEach(row => {
+      row.addEventListener('click', () => {
+        row.classList.toggle('is-marked');
+        updateCounter();
+      });
+    });
+  })();
+</script>

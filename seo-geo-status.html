@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ViveCura · SEO & GEO – Stand und Nächste Schritte</title>
+  <style>
+    :root {
+      --teal: #43a9ab;
+      --teal-dark: #2d7a7b;
+      --teal-soft: #e8f5f5;
+      --ink: #1a1f24;
+      --muted: #6b7378;
+      --line: #eef5f5;
+      --green: #2f9e6e;
+      --amber: #c98700;
+      --bg: #fafbfb;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    .page { max-width: 980px; margin: 0 auto; padding: 56px 28px 80px; }
+
+    /* Header */
+    .eyebrow {
+      font-size: 12px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--teal);
+      font-weight: 600;
+      margin: 0 0 14px;
+    }
+    h1 {
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin: 0 0 18px;
+      color: var(--ink);
+    }
+    .lede {
+      font-size: 17px;
+      line-height: 1.65;
+      color: var(--muted);
+      max-width: 720px;
+      margin: 0 0 32px;
+    }
+
+    /* Highlight banner */
+    .banner {
+      background: linear-gradient(135deg, var(--teal) 0%, #5cb8ba 100%);
+      color: white;
+      padding: 28px 32px;
+      border-radius: 16px;
+      margin: 32px 0 48px;
+      box-shadow: 0 12px 32px -16px rgba(67,169,171,0.45);
+    }
+    .banner-eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      opacity: 0.85;
+      font-weight: 600;
+      margin: 0 0 10px;
+    }
+    .banner-quote {
+      font-size: 20px;
+      line-height: 1.4;
+      font-weight: 600;
+      margin: 0;
+      letter-spacing: -0.005em;
+    }
+    .banner-quote strong { font-weight: 800; }
+
+    /* Section */
+    section { margin: 48px 0; }
+    h2 {
+      font-size: clamp(22px, 2.6vw, 30px);
+      font-weight: 700;
+      color: var(--teal);
+      letter-spacing: -0.015em;
+      margin: 0 0 8px;
+    }
+    .section-sub {
+      font-size: 15px;
+      color: var(--muted);
+      margin: 0 0 24px;
+    }
+
+    /* Status table */
+    .status-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 0 0 1px var(--line);
+    }
+    .status-table th {
+      text-align: left;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 600;
+      padding: 16px 20px;
+      background: #f7faf9;
+      border-bottom: 1px solid var(--line);
+    }
+    .status-table td {
+      padding: 16px 20px;
+      vertical-align: top;
+      border-bottom: 1px solid var(--line);
+      font-size: 15px;
+    }
+    .status-table tr:last-child td { border-bottom: none; }
+    .status-table .what { font-weight: 600; color: var(--ink); }
+    .status-table .why { color: var(--muted); }
+
+    .check {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--green);
+      color: white;
+      font-size: 14px;
+      font-weight: 700;
+      margin-right: 4px;
+      flex-shrink: 0;
+    }
+
+    /* Todo cards */
+    .todo-grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: 1fr;
+    }
+    .todo-card {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 24px 26px;
+      transition: border-color 0.2s ease, transform 0.2s ease;
+      position: relative;
+    }
+    .todo-card:hover {
+      border-color: rgba(67,169,171,0.3);
+      transform: translateY(-1px);
+    }
+    .todo-head {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+    .todo-num {
+      width: 36px;
+      height: 36px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      background: var(--teal-soft);
+      color: var(--teal);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 15px;
+    }
+    .todo-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 4px 0 0;
+      letter-spacing: -0.01em;
+    }
+    .todo-meta {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+    .badge {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 100px;
+      font-weight: 600;
+      background: var(--teal-soft);
+      color: var(--teal-dark);
+    }
+    .badge.amber { background: #fff4dc; color: var(--amber); }
+    .badge.green { background: #e3f6ec; color: var(--green); }
+    .todo-body {
+      margin: 14px 0 0 50px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #404950;
+    }
+    .todo-body p { margin: 0 0 8px; }
+    .todo-body strong { color: var(--ink); font-weight: 600; }
+
+    .priority-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 32px 0 20px;
+    }
+    .priority-bar .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .priority-bar .label {
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .priority-bar.green .dot { background: var(--green); }
+    .priority-bar.amber .dot { background: var(--amber); }
+    .priority-bar.blue .dot { background: #5b8df0; }
+
+    /* Footer note */
+    .ask-note {
+      background: var(--teal-soft);
+      border-left: 4px solid var(--teal);
+      padding: 18px 22px;
+      border-radius: 0 12px 12px 0;
+      margin-top: 32px;
+    }
+    .ask-note p { margin: 0; font-size: 14px; color: #2d4548; }
+    .ask-note strong { color: var(--teal-dark); }
+
+    .signoff {
+      margin-top: 56px;
+      padding-top: 32px;
+      border-top: 1px solid var(--line);
+      font-size: 14px;
+      color: var(--muted);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <p class="eyebrow">ViveCura · Status-Bericht</p>
+    <h1>SEO &amp; GEO – Stand der Dinge</h1>
+    <p class="lede">
+      Ein klarer Überblick: Was wurde am Website-Backend bereits umgesetzt, damit ViveCura bei Google, in den lokalen Berliner Suchergebnissen und in KI-Suchmaschinen wie ChatGPT, Perplexity und Google AI Overviews sichtbar wird – und welche Schritte folgen jetzt.
+    </p>
+
+    <div class="banner">
+      <p class="banner-eyebrow">Fazit</p>
+      <p class="banner-quote">
+        Die Website hat jetzt ein <strong>stärkeres SEO &amp; GEO Fundament als 95&nbsp;% aller Arzt- und Zahnarztpraxen in Berlin.</strong> Die technische Arbeit ist abgeschlossen.
+      </p>
+    </div>
+
+    <!-- DONE -->
+    <section>
+      <h2>✅ Bereits umgesetzt (technisch, alles live)</h2>
+      <p class="section-sub">Diese Punkte sind im Code der Website verankert und werden bei jedem Aufruf automatisch ausgespielt.</p>
+
+      <table class="status-table">
+        <thead>
+          <tr>
+            <th style="width: 38%;">Was wurde gemacht</th>
+            <th>Warum es zählt</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="what"><span class="check">✓</span> Eigene Titel &amp; Beschreibungen für alle 14 Seiten</td>
+            <td class="why">Jede Unterseite bekommt jetzt einen eigenen Eintrag in den Google-Suchergebnissen. Vorher sahen alle Seiten gleich aus wie die Startseite.</td>
+          </tr>
+          <tr>
+            <td class="what"><span class="check">✓</span> Canonical-Links pro Seite</td>
+            <td class="why">Google weiß, welche Adresse die "offizielle" für jede Seite ist. Verhindert Abstrafungen wegen vermeintlich doppelter Inhalte.</td>
+          </tr>
+          <tr>
+            <td class="what"><span class="check">✓</span> OpenGraph + Twitter Card pro Seite</td>
+            <td class="why">Beim Teilen über WhatsApp, LinkedIn, Facebook erscheint die richtige Vorschau (Titel, Bild, Text) für jede einzelne Seite.</td>
+          </tr>
+          <tr>
+            <td class="what"><span class="check">✓</span> Doppelte Meta-Tags entfernt</td>
+            <td class="why">Google war vorher verwirrt, weil jede Seite zwei Canonical-Tags und zwei Beschreibungen hatte. Jetzt eindeutig.</td>
+          </tr>
+          <tr>
+            <td class="what"><span class="check">✓</span> Blog-Artikel im Shadow DOM gerendert</td>
+            <td class="why"><strong>Die wichtigste Änderung.</strong> Vorher konnte Google den Text der Blogartikel nicht lesen (iFrame-Problem). Jetzt erkennt Google jeden Satz.</td>
+          </tr>
+          <tr>
+            <td class="what"><span class="check">✓</span> Article-Schema (JSON-LD) auf jedem Blogpost</td>
+            <td class="why">Blogartikel können in Google als "Rich Result" mit Autor, Datum und Vorschaubild erscheinen – das wird häufiger geklickt.</td>
+          </tr>
+          <tr>
+            <td class="what"><span class="check">✓</span> MedicalClinic-Schema auf der Startseite</td>
+            <td class="why">Voraussetzung dafür, dass ViveCura im Google-Maps "Local Pack" und im rechten Wissenspanel auftauchen kann.</td>
+          </tr>
+          <tr>
+            <td class="what"><span class="check">✓</span> FAQ-Schema auf /ketamin, /praevention-longevity, /psychotherapie</td>
+            <td class="why">Frage-Antwort-Paare, die ChatGPT, Perplexity und Google AI Overviews wörtlich zitieren – mit Link zurück zur Praxis-Website.</td>
+          </tr>
+          <tr>
+            <td class="what"><span class="check">✓</span> Person-Schema auf /ueber-mich</td>
+            <td class="why">Etabliert Dr. Jarmoukli als bekannte Persönlichkeit im Knowledge Graph von Google.</td>
+          </tr>
+          <tr>
+            <td class="what"><span class="check">✓</span> llms.txt für KI-Crawler</td>
+            <td class="why">Eine kuratierte Übersicht der Website speziell für KI-Suchmaschinen wie ChatGPT und Claude.</td>
+          </tr>
+          <tr>
+            <td class="what"><span class="check">✓</span> Automatisch aktualisierte Sitemap</td>
+            <td class="why">Bei jedem Deploy wird die Sitemap mit allen veröffentlichten Blogartikeln neu generiert. Google findet neue Inhalte schneller.</td>
+          </tr>
+          <tr>
+            <td class="what"><span class="check">✓</span> robots.txt korrekt konfiguriert</td>
+            <td class="why">Erlaubt Crawlern überall den Zugriff, sperrt nur den Admin-Bereich. Verweist auf die Sitemap.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- TO DO -->
+    <section>
+      <h2>📋 Was jetzt noch zu tun ist</h2>
+      <p class="section-sub">
+        Diese Punkte sind <strong>nicht-technisch</strong> und können von der Praxisassistenz übernommen werden. Keine Programmierkenntnisse nötig. Sortiert nach Wirkung pro Aufwand.
+      </p>
+
+      <!-- Priority 1 -->
+      <div class="priority-bar green">
+        <span class="dot"></span>
+        <span class="label">Hohe Wirkung · Geringer Aufwand · Diese Woche erledigen</span>
+      </div>
+
+      <div class="todo-grid">
+
+        <div class="todo-card">
+          <div class="todo-head">
+            <div class="todo-num">1</div>
+            <div>
+              <h3 class="todo-title">Sitemap bei Google Search Console einreichen</h3>
+              <div class="todo-meta">
+                <span class="badge green">~15 Minuten</span>
+                <span class="badge">Wirkung: sehr hoch</span>
+              </div>
+            </div>
+          </div>
+          <div class="todo-body">
+            <p>Ohne diesen Schritt findet Google neue Inhalte erst nach 1–2&nbsp;Wochen. Mit diesem Schritt: oft innerhalb von 24–48&nbsp;Stunden.</p>
+            <p><strong>Sitemap zum Einreichen:</strong> <code>https://vivecura.com/sitemap.xml</code></p>
+            <p><strong>So läuft es ab:</strong> bei <a href="https://search.google.com/search-console" target="_blank" rel="noopener">Google Search Console</a> mit dem Google-Konto der Praxis anmelden → Property <code>vivecura.com</code> hinzufügen → Google gibt einen <strong>Verifizierungscode</strong> aus (ein String, der mit <code>google-site-verification=…</code> beginnt).</p>
+            <p>👉 <strong>Diesen Verifizierungscode an Sami weiterleiten.</strong> Er trägt ihn in den Hosting-Server (Vercel) ein – dauert etwa 30&nbsp;Sekunden. Sobald das erledigt ist, in der Search Console auf "Verifizieren" klicken. Anschließend die Sitemap-URL oben unter dem Menüpunkt "Sitemaps" einreichen.</p>
+          </div>
+        </div>
+
+        <div class="todo-card">
+          <div class="todo-head">
+            <div class="todo-num">2</div>
+            <div>
+              <h3 class="todo-title">Bing Webmaster Tools einrichten</h3>
+              <div class="todo-meta">
+                <span class="badge green">~5 Minuten</span>
+                <span class="badge">Wirkung: hoch</span>
+              </div>
+            </div>
+          </div>
+          <div class="todo-body">
+            <p>Bing speist auch DuckDuckGo und ChatGPT-Suchergebnisse. Mit "Import aus Google Search Console" geht die Verifizierung sofort.</p>
+            <p><strong>Benötigt:</strong> Microsoft-Konto.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Priority 2 -->
+      <div class="priority-bar amber">
+        <span class="dot"></span>
+        <span class="label">Hohe Wirkung · Mittlerer Aufwand · Diesen Monat erledigen</span>
+      </div>
+
+      <div class="todo-grid">
+
+        <div class="todo-card">
+          <div class="todo-head">
+            <div class="todo-num">3</div>
+            <div>
+              <h3 class="todo-title">Google Business Profile beanspruchen</h3>
+              <div class="todo-meta">
+                <span class="badge green">30 Min Setup + 5–14 Tage Postkarte</span>
+                <span class="badge amber">Größter Hebel für lokale Sichtbarkeit</span>
+              </div>
+            </div>
+          </div>
+          <div class="todo-body">
+            <p>Sorgt dafür, dass ViveCura in Google&nbsp;Maps für Suchen wie "Funktionelle Medizin Berlin" oder "Arzt Berlin" im 3er-Pack auftaucht. Das ist der wichtigste lokale SEO-Hebel überhaupt.</p>
+            <p><strong>Hinweis:</strong> Sobald die verifizierte Praxisadresse vorliegt, bitte an den Entwickler zurückmelden. Die Adresse wird dann in das MedicalClinic-Schema auf der Startseite eingebaut (~30&nbsp;Sekunden Arbeit).</p>
+          </div>
+        </div>
+
+        <div class="todo-card">
+          <div class="todo-head">
+            <div class="todo-num">4</div>
+            <div>
+              <h3 class="todo-title">Verzeichnisse pflegen (Jameda, Sanego, Apple Maps, Bing Places, Arzttermine.de …)</h3>
+              <div class="todo-meta">
+                <span class="badge green">~3–5 Stunden gesamt</span>
+                <span class="badge">Wirkung: hoch</span>
+              </div>
+            </div>
+          </div>
+          <div class="todo-body">
+            <p>Jeder Eintrag wirkt doppelt: als Patientenquelle und als "Citation", die das lokale Google-Ranking stärkt.</p>
+          </div>
+        </div>
+
+        <div class="todo-card">
+          <div class="todo-head">
+            <div class="todo-num">5</div>
+            <div>
+              <h3 class="todo-title">NAP-Audit (Name · Adresse · Telefon)</h3>
+              <div class="todo-meta">
+                <span class="badge green">~2–3 Stunden</span>
+                <span class="badge">Wirkung: hoch</span>
+              </div>
+            </div>
+          </div>
+          <div class="todo-body">
+            <p>Sicherstellen, dass <strong>Name, Adresse und Telefonnummer</strong> überall <strong>identisch</strong> geschrieben sind: Website, Google Business Profile, Doctolib, Jameda, Sanego, Social Media. Inkonsistenzen verwirren den lokalen Algorithmus.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Priority 3 -->
+      <div class="priority-bar blue">
+        <span class="dot"></span>
+        <span class="label">Hohe Wirkung · Laufend</span>
+      </div>
+
+      <div class="todo-grid">
+
+        <div class="todo-card">
+          <div class="todo-head">
+            <div class="todo-num">6</div>
+            <div>
+              <h3 class="todo-title">Cornerstone-Blogartikel erstellen</h3>
+              <div class="todo-meta">
+                <span class="badge green">1–2 Stunden Briefing pro Artikel + Schreibzeit</span>
+                <span class="badge">Wirkung: hoch &amp; langfristig</span>
+              </div>
+            </div>
+          </div>
+          <div class="todo-body">
+            <p>5 ausführliche Artikel im Frage-Antwort-Format, damit ChatGPT und Perplexity sie zitieren können.</p>
+            <p><strong>Vorschlagsthemen:</strong> Ketamin-Therapie in Berlin · Funktionelle Medizin verständlich erklärt · Longevity-Diagnostik · NAD+ Infusionen · HRV-Messung. Jeder Artikel wird zu einem dauerhaften Traffic-Asset.</p>
+          </div>
+        </div>
+
+        <div class="todo-card">
+          <div class="todo-head">
+            <div class="todo-num">7</div>
+            <div>
+              <h3 class="todo-title">Patientenbewertungen auf Google sammeln</h3>
+              <div class="todo-meta">
+                <span class="badge green">5 Min pro Patient</span>
+                <span class="badge">Zweitwichtigster lokaler Faktor nach dem Profil selbst</span>
+              </div>
+            </div>
+          </div>
+          <div class="todo-body">
+            <p>QR-Code an der Anmeldung mit dem Google-Bewertungslink. Patienten scannen → Bewertung in 60&nbsp;Sekunden. Konstant antworten (gut wie schlecht) zeigt Google Aktivität.</p>
+          </div>
+        </div>
+
+        <div class="todo-card">
+          <div class="todo-head">
+            <div class="todo-num">8</div>
+            <div>
+              <h3 class="todo-title">Externe Sichtbarkeit aufbauen</h3>
+              <div class="todo-meta">
+                <span class="badge green">Laufend</span>
+                <span class="badge">Wirkung: stark, aber langsam</span>
+              </div>
+            </div>
+          </div>
+          <div class="todo-body">
+            <p>LinkedIn-Unternehmensseite einrichten · Podcast-Auftritte (Gesundheit, Longevity) · Pressekontakte zu Gesundheitsjournalist:innen. Stärkt das, was Google "E-E-A-T" nennt – Vertrauen und Autorität in den Augen der Suchmaschine. Genau die Signale, die KI-Engines auch nutzen, um zu entscheiden, wen sie zitieren.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="ask-note">
+        <p>💡 <strong>Tipp:</strong> Für jeden dieser Schritte kann <strong>Claude</strong> eine ausführliche Schritt-für-Schritt-Anleitung liefern. Einfach den jeweiligen Punkt nennen und um eine Detailanleitung bitten – z.&nbsp;B. <em>"Wie genau richte ich Google Search Console ein?"</em> oder <em>"Was steht in einer guten Google-Bewertungsanfrage?"</em>.</p>
+      </div>
+
+    </section>
+
+    <p class="signoff">Erstellt für Dr.&nbsp;Shukri Jarmoukli · ViveCura</p>
+
+  </div>
+</body>
+</html>

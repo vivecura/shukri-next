@@ -1,0 +1,652 @@
+<!-- Vivecura · Ohne Wunderpille, aber mit konkretem Plan -->
+<style>
+  .plan-section {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 80px 24px;
+    color: #1a1f24;
+  }
+
+  .plan-section h2 {
+    font-size: clamp(30px, 4.2vw, 46px);
+    font-weight: 700;
+    color: #43A9AB;
+    margin: 0 0 20px 0;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    max-width: 900px;
+  }
+
+  .plan-intro {
+    font-size: 17px;
+    line-height: 1.65;
+    color: #6b7378;
+    max-width: 640px;
+    margin: 0 0 72px 0;
+  }
+
+  /* ----- Main interactive split ----- */
+  .plan-split {
+    display: grid;
+    grid-template-columns: 1fr 1.25fr;
+    gap: 56px;
+    align-items: start;
+    margin-bottom: 80px;
+  }
+
+  @media (max-width: 960px) {
+    .plan-split {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+  }
+
+  /* ----- Left: stacked hebels ----- */
+  .plan-hebels {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .plan-hebel {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    background: #ffffff;
+    border: 1px solid #e5efef;
+    border-radius: 14px;
+    padding: 18px 22px;
+    cursor: pointer;
+    font-family: inherit;
+    text-align: left;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .plan-hebel::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: #43A9AB;
+    transform: scaleY(0);
+    transform-origin: center;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .plan-hebel:hover {
+    border-color: rgba(67, 169, 171, 0.5);
+    transform: translateX(4px);
+  }
+
+  .plan-hebel.is-active {
+    border-color: #43A9AB;
+    box-shadow: 0 8px 24px rgba(67, 169, 171, 0.1);
+    transform: translateX(6px);
+  }
+
+  .plan-hebel.is-active::before {
+    transform: scaleY(1);
+  }
+
+  .plan-hebel-num {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #f4faf9;
+    border: 1.5px solid rgba(67, 169, 171, 0.3);
+    color: #43A9AB;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 15px;
+    flex-shrink: 0;
+    transition: all 0.35s ease;
+  }
+
+  .plan-hebel.is-active .plan-hebel-num {
+    background: #43A9AB;
+    color: #ffffff;
+    border-color: #43A9AB;
+  }
+
+  .plan-hebel-label {
+    flex: 1;
+    font-size: 16px;
+    font-weight: 500;
+    color: #1a1f24;
+    line-height: 1.4;
+  }
+
+  .plan-hebel.is-active .plan-hebel-label {
+    font-weight: 600;
+  }
+
+  .plan-hebel-arrow {
+    width: 20px;
+    height: 20px;
+    color: rgba(67, 169, 171, 0.5);
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateX(-4px);
+  }
+
+  .plan-hebel:hover .plan-hebel-arrow,
+  .plan-hebel.is-active .plan-hebel-arrow {
+    opacity: 1;
+    transform: translateX(0);
+    color: #43A9AB;
+  }
+
+  /* ----- Right: detail card ----- */
+  .plan-detail {
+    position: sticky;
+    top: 40px;
+    background: linear-gradient(160deg, #f7fbfb 0%, #ffffff 70%);
+    border: 1px solid rgba(67, 169, 171, 0.18);
+    border-radius: 22px;
+    padding: 48px 44px;
+    min-height: 440px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  @media (max-width: 960px) {
+    .plan-detail {
+      position: static;
+      padding: 36px 28px;
+    }
+  }
+
+  .plan-detail::before {
+    content: '';
+    position: absolute;
+    top: -80px;
+    right: -80px;
+    width: 280px;
+    height: 280px;
+    background: radial-gradient(circle, rgba(67, 169, 171, 0.1), transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .plan-detail-content {
+    display: none;
+    animation: detailFade 0.4s ease;
+    position: relative;
+    z-index: 1;
+  }
+
+  .plan-detail-content.is-active {
+    display: block;
+  }
+
+  @keyframes detailFade {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .plan-detail-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #43A9AB;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+
+  .plan-detail-eyebrow-dot {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #43A9AB;
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    letter-spacing: 0;
+  }
+
+  .plan-detail-title {
+    font-size: clamp(26px, 3vw, 34px);
+    font-weight: 700;
+    color: #1a1f24;
+    margin: 0 0 18px 0;
+    letter-spacing: -0.015em;
+    line-height: 1.2;
+  }
+
+  .plan-detail-lead {
+    font-size: 17px;
+    line-height: 1.55;
+    color: #43A9AB;
+    font-style: italic;
+    font-weight: 500;
+    margin: 0 0 24px 0;
+  }
+
+  .plan-detail-text {
+    font-size: 15.5px;
+    line-height: 1.75;
+    color: #4a5258;
+    margin: 0 0 32px 0;
+  }
+
+  .plan-detail-bullets {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 24px 0;
+    border-top: 1px solid rgba(67, 169, 171, 0.18);
+    border-bottom: 1px solid rgba(67, 169, 171, 0.18);
+    margin-bottom: 28px;
+  }
+
+  .plan-detail-bullet {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: #4a5258;
+  }
+
+  .plan-detail-bullet-check {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: rgba(67, 169, 171, 0.12);
+    color: #43A9AB;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .plan-detail-bullet-check svg {
+    width: 11px;
+    height: 11px;
+  }
+
+  /* ----- Detail footer: related hebels ----- */
+  .plan-detail-footer {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .plan-detail-footer-label {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #9aa2a7;
+    font-weight: 600;
+  }
+
+  .plan-detail-footer-list {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .plan-detail-footer-item {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 1.5px solid rgba(67, 169, 171, 0.35);
+    color: #43A9AB;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+  }
+
+  .plan-detail-footer-item:hover {
+    background: #43A9AB;
+    color: #ffffff;
+    border-color: #43A9AB;
+    transform: translateY(-2px);
+  }
+
+  /* ----- Closing block ----- */
+  .plan-closing {
+    position: relative;
+    background: #ffffff;
+    border-radius: 22px;
+    padding: 56px 48px;
+    border: 1px solid #e5efef;
+    overflow: hidden;
+  }
+
+  @media (max-width: 720px) {
+    .plan-closing {
+      padding: 40px 28px;
+    }
+  }
+
+  .plan-closing::before {
+    content: '';
+    position: absolute;
+    bottom: -100px;
+    left: -100px;
+    width: 320px;
+    height: 320px;
+    background: radial-gradient(circle, rgba(67, 169, 171, 0.06), transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .plan-closing-eyebrow {
+    display: inline-block;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #43A9AB;
+    font-weight: 600;
+    margin-bottom: 18px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .plan-closing-title {
+    font-size: clamp(24px, 2.8vw, 30px);
+    font-weight: 700;
+    color: #1a1f24;
+    margin: 0 0 22px 0;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+  }
+
+  .plan-closing-text {
+    font-size: 16px;
+    line-height: 1.75;
+    color: #4a5258;
+    margin: 0;
+    max-width: 780px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .plan-closing-highlight {
+    color: #1a1f24;
+    font-weight: 600;
+    background: linear-gradient(180deg, transparent 65%, rgba(67, 169, 171, 0.18) 65%);
+    padding: 0 2px;
+  }
+</style>
+
+<section class="plan-section">
+  <h2>Ohne Wunderpille, aber mit konkretem Plan</h2>
+  <p class="plan-intro">
+    Es gibt selten die eine Lösung. Aber es gibt Hebel, die viel verändern können, wenn sie richtig priorisiert sind.
+  </p>
+
+  <div class="plan-split">
+
+    <!-- Left: hebel list -->
+    <div class="plan-hebels" id="planHebels" role="tablist">
+      <button class="plan-hebel is-active" data-num="1" role="tab">
+        <span class="plan-hebel-num">1</span>
+        <span class="plan-hebel-label">Lebensstil als Grundlage</span>
+        <svg class="plan-hebel-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M 5 10 L 15 10 M 11 6 L 15 10 L 11 14"/></svg>
+      </button>
+      <button class="plan-hebel" data-num="2" role="tab">
+        <span class="plan-hebel-num">2</span>
+        <span class="plan-hebel-label">Pflanzliche Therapien gezielt eingesetzt</span>
+        <svg class="plan-hebel-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M 5 10 L 15 10 M 11 6 L 15 10 L 11 14"/></svg>
+      </button>
+      <button class="plan-hebel" data-num="3" role="tab">
+        <span class="plan-hebel-num">3</span>
+        <span class="plan-hebel-label">Hochdosis-Nährstofftherapien, wenn passend, nicht als Trend</span>
+        <svg class="plan-hebel-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M 5 10 L 15 10 M 11 6 L 15 10 L 11 14"/></svg>
+      </button>
+      <button class="plan-hebel" data-num="4" role="tab">
+        <span class="plan-hebel-num">4</span>
+        <span class="plan-hebel-label">Entgiftungsstrategien präzise angewendet</span>
+        <svg class="plan-hebel-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M 5 10 L 15 10 M 11 6 L 15 10 L 11 14"/></svg>
+      </button>
+      <button class="plan-hebel" data-num="5" role="tab">
+        <span class="plan-hebel-num">5</span>
+        <span class="plan-hebel-label">Mentoring für echte Umsetzung im Alltag</span>
+        <svg class="plan-hebel-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M 5 10 L 15 10 M 11 6 L 15 10 L 11 14"/></svg>
+      </button>
+    </div>
+
+    <!-- Right: detail card -->
+    <div class="plan-detail">
+
+      <!-- Hebel 1 -->
+      <div class="plan-detail-content is-active" id="d1">
+        <div class="plan-detail-eyebrow"><span class="plan-detail-eyebrow-dot">1</span> Hebel</div>
+        <h3 class="plan-detail-title">Lebensstil als Grundlage</h3>
+        <p class="plan-detail-lead">Keine Therapie der Welt kann ersetzen, was dein Alltag täglich tut.</p>
+        <p class="plan-detail-text">
+          Schlaf, Ernährung, Bewegung, Licht und Stress sind die stärksten Hebel überhaupt. Sie wirken jeden Tag, in jede Zelle hinein. Bevor wir über zusätzliche Therapien sprechen, schauen wir was dein Lebensstil bereits für dich tut, und wo er dich bremst.
+        </p>
+        <div class="plan-detail-bullets">
+          <div class="plan-detail-bullet">
+            <span class="plan-detail-bullet-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></span>
+            Schlafqualität, Rhythmus und Regeneration
+          </div>
+          <div class="plan-detail-bullet">
+            <span class="plan-detail-bullet-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></span>
+            Ernährung, die zu deinem Stoffwechsel passt
+          </div>
+          <div class="plan-detail-bullet">
+            <span class="plan-detail-bullet-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></span>
+            Bewegung, Licht und Stressregulation im Alltag
+          </div>
+        </div>
+        <div class="plan-detail-footer">
+          <span class="plan-detail-footer-label">Weiter zu</span>
+          <div class="plan-detail-footer-list">
+            <button class="plan-detail-footer-item" data-jump="2">2</button>
+            <button class="plan-detail-footer-item" data-jump="3">3</button>
+            <button class="plan-detail-footer-item" data-jump="4">4</button>
+            <button class="plan-detail-footer-item" data-jump="5">5</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hebel 2 -->
+      <div class="plan-detail-content" id="d2">
+        <div class="plan-detail-eyebrow"><span class="plan-detail-eyebrow-dot">2</span> Hebel</div>
+        <h3 class="plan-detail-title">Pflanzliche Therapien gezielt eingesetzt</h3>
+        <p class="plan-detail-lead">Pflanzen sind keine Alternative, sondern ein präzises Werkzeug.</p>
+        <p class="plan-detail-text">
+          Richtig ausgewählt können pflanzliche Wirkstoffe genau dort ansetzen, wo dein Körper Unterstützung braucht. Bei chronischem Stress, Entzündung, hormoneller Dysbalance oder Schlafstörungen. Entscheidend ist nicht die Anzahl, sondern die Passung zu deinem individuellen Bild.
+        </p>
+        <div class="plan-detail-bullets">
+          <div class="plan-detail-bullet">
+            <span class="plan-detail-bullet-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></span>
+            Adaptogene bei Stress und Erschöpfung
+          </div>
+          <div class="plan-detail-bullet">
+            <span class="plan-detail-bullet-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></span>
+            Phytotherapie bei stiller Entzündung
+          </div>
+          <div class="plan-detail-bullet">
+            <span class="plan-detail-bullet-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></span>
+            Unterstützung von Leber, Darm und Nervensystem
+          </div>
+        </div>
+        <div class="plan-detail-footer">
+          <span class="plan-detail-footer-label">Weiter zu</span>
+          <div class="plan-detail-footer-list">
+            <button class="plan-detail-footer-item" data-jump="1">1</button>
+            <button class="plan-detail-footer-item" data-jump="3">3</button>
+            <button class="plan-detail-footer-item" data-jump="4">4</button>
+            <button class="plan-detail-footer-item" data-jump="5">5</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hebel 3 -->
+      <div class="plan-detail-content" id="d3">
+        <div class="plan-detail-eyebrow"><span class="plan-detail-eyebrow-dot">3</span> Hebel</div>
+        <h3 class="plan-detail-title">Hochdosis-Nährstofftherapien, wenn passend</h3>
+        <p class="plan-detail-lead">Nicht als Trend. Nur wenn dein Labor und dein Körper danach rufen.</p>
+        <p class="plan-detail-text">
+          Hochdosierte Mikronährstoffe können in bestimmten Situationen einen echten Unterschied machen. Bei nachgewiesenen Mängeln, erhöhtem Verbrauch oder gezielter Regeneration. Wir arbeiten laborbasiert und dosieren so, dass dein Körper wirklich profitiert, oral oder über Infusionen.
+        </p>
+        <div class="plan-detail-bullets">
+          <div class="plan-detail-bullet">
+            <span class="plan-detail-bullet-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></span>
+            Mikronährstoffe laborbasiert und zielgerichtet
+          </div>
+          <div class="plan-detail-bullet">
+            <span class="plan-detail-bullet-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></span>
+            Infusionen bei gestörter Aufnahme oder akutem Bedarf
+          </div>
+          <div class="plan-detail-bullet">
+            <span class="plan-detail-bullet-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></span>
+            Keine Pauschalprotokolle, sondern individuelle Dosierung
+          </div>
+        </div>
+        <div class="plan-detail-footer">
+          <span class="plan-detail-footer-label">Weiter zu</span>
+          <div class="plan-detail-footer-list">
+            <button class="plan-detail-footer-item" data-jump="1">1</button>
+            <button class="plan-detail-footer-item" data-jump="2">2</button>
+            <button class="plan-detail-footer-item" data-jump="4">4</button>
+            <button class="plan-detail-footer-item" data-jump="5">5</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hebel 4 -->
+      <div class="plan-detail-content" id="d4">
+        <div class="plan-detail-eyebrow"><span class="plan-detail-eyebrow-dot">4</span> Hebel</div>
+        <h3 class="plan-detail-title">Entgiftungsstrategien präzise angewendet</h3>
+        <p class="plan-detail-lead">Entgiftung ist kein Wellness-Thema, sondern ein klinischer Prozess.</p>
+        <p class="plan-detail-text">
+          Dein Körper verfügt über eigene Entgiftungssysteme, Leber, Darm, Nieren, Haut und Lymphe. Wenn sie überlastet sind, helfen gezielte Strategien, sie wieder in Funktion zu bringen. Nicht pauschal, sondern basierend auf Diagnostik und mit klarer Indikation.
+        </p>
+        <div class="plan-detail-bullets">
+          <div class="plan-detail-bullet">
+            <span class="plan-detail-bullet-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></span>
+            Schwermetall- und Belastungsanalyse (z. B. DMPS-Test)
+          </div>
+          <div class="plan-detail-bullet">
+            <span class="plan-detail-bullet-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></span>
+            Leber- und Darm-gerichtete Protokolle
+          </div>
+          <div class="plan-detail-bullet">
+            <span class="plan-detail-bullet-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></span>
+            Gezielte Infusionen zur Entgiftungsunterstützung
+          </div>
+        </div>
+        <div class="plan-detail-footer">
+          <span class="plan-detail-footer-label">Weiter zu</span>
+          <div class="plan-detail-footer-list">
+            <button class="plan-detail-footer-item" data-jump="1">1</button>
+            <button class="plan-detail-footer-item" data-jump="2">2</button>
+            <button class="plan-detail-footer-item" data-jump="3">3</button>
+            <button class="plan-detail-footer-item" data-jump="5">5</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hebel 5 -->
+      <div class="plan-detail-content" id="d5">
+        <div class="plan-detail-eyebrow"><span class="plan-detail-eyebrow-dot">5</span> Hebel</div>
+        <h3 class="plan-detail-title">Mentoring für echte Umsetzung im Alltag</h3>
+        <p class="plan-detail-lead">Zwischen Wissen und Veränderung liegt die eigentliche Arbeit.</p>
+        <p class="plan-detail-text">
+          Jeder Plan scheitert oder gelingt im Alltag. Deswegen begleite ich dich nicht nur diagnostisch, sondern auch in der Umsetzung. Mit klaren Schritten, regelmäßigem Feedback und der Möglichkeit, Dinge anzupassen, wenn dein Leben es braucht.
+        </p>
+        <div class="plan-detail-bullets">
+          <div class="plan-detail-bullet">
+            <span class="plan-detail-bullet-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></span>
+            Regelmäßige Check-ins und Datenbesprechung
+          </div>
+          <div class="plan-detail-bullet">
+            <span class="plan-detail-bullet-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></span>
+            Anpassung statt starrer Protokolle
+          </div>
+          <div class="plan-detail-bullet">
+            <span class="plan-detail-bullet-check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></span>
+            Nachhaltige Integration in deinen Alltag
+          </div>
+        </div>
+        <div class="plan-detail-footer">
+          <span class="plan-detail-footer-label">Zurück zu</span>
+          <div class="plan-detail-footer-list">
+            <button class="plan-detail-footer-item" data-jump="1">1</button>
+            <button class="plan-detail-footer-item" data-jump="2">2</button>
+            <button class="plan-detail-footer-item" data-jump="3">3</button>
+            <button class="plan-detail-footer-item" data-jump="4">4</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Closing statement -->
+  <div class="plan-closing">
+    <span class="plan-closing-eyebrow">Das Gesamtkonzept</span>
+    <h3 class="plan-closing-title">
+      Nachhaltige Gesundheit entsteht nicht durch einzelne Maßnahmen, sondern durch ihr bewusstes Zusammenwirken.
+    </h3>
+    <p class="plan-closing-text">
+      Mein Ansatz verbindet verschiedene Formen der Medizin zu einem ganzheitlichen System. Statt isolierter Einzelmaßnahmen entsteht eine Kombination aus unterschiedlichen Therapieformen, um nicht nur Symptome zu behandeln, sondern <span class="plan-closing-highlight">echte Veränderung zu ermöglichen</span>. Entscheidend ist dabei das Zusammenspiel aus aktiver Eigenverantwortung und präziser Unterstützung meinerseits.
+    </p>
+  </div>
+
+</section>
+
+<script>
+  (function() {
+    const hebels = document.querySelectorAll('#planHebels .plan-hebel');
+    const contents = document.querySelectorAll('.plan-detail-content');
+
+    function activate(num) {
+      hebels.forEach(h => h.classList.remove('is-active'));
+      const activeHebel = document.querySelector(`.plan-hebel[data-num="${num}"]`);
+      if (activeHebel) activeHebel.classList.add('is-active');
+
+      contents.forEach(c => c.classList.remove('is-active'));
+      const activeContent = document.getElementById(`d${num}`);
+      if (activeContent) activeContent.classList.add('is-active');
+    }
+
+    hebels.forEach(hebel => {
+      hebel.addEventListener('click', () => activate(hebel.dataset.num));
+    });
+
+    // Click on "weiter zu" circles
+    document.querySelectorAll('.plan-detail-footer-item').forEach(btn => {
+      btn.addEventListener('click', () => {
+        activate(btn.dataset.jump);
+        // Scroll the detail into view on mobile
+        if (window.innerWidth < 960) {
+          document.querySelector('.plan-detail').scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+  })();
+</script>

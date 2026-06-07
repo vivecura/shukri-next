@@ -1,0 +1,73 @@
+<h2 class="sr-only">Drei Räume, in denen Ketamin wirkt, Mobile Ansicht</h2>
+
+<style>
+.dr-mob-frame{max-width:400px;margin:2rem auto;padding:14px;background:#f1efe8;border-radius:36px;border:1px solid #d3d1c7}
+.dr-mob{font-family:var(--font-sans);padding:2rem 1.25rem;background:#fff;color:#2d3439;line-height:1.65;border-radius:24px;overflow:hidden}
+.dr-mob .dr-h1{font-size:30px;color:#43A9AB;font-weight:500;letter-spacing:-.025em;line-height:1.08;margin:0 0 14px}
+.dr-mob .dr-h1 em{font-style:italic;font-family:var(--font-serif);color:#1a1f24;font-weight:400}
+.dr-mob .dr-intro{font-size:13.5px;color:#4a5259;margin:0 0 2rem;line-height:1.65}
+.dr-mob .dr-circs{display:flex;justify-content:space-between;align-items:center;gap:6px;margin-bottom:1.75rem;position:relative}
+.dr-mob .dr-circs::before{content:"";position:absolute;top:50%;left:12%;right:12%;height:1px;background:repeating-linear-gradient(90deg,#d1d5d8 0 6px,transparent 6px 12px);z-index:0}
+.dr-mob .dr-c{cursor:pointer;border-radius:50%;background:#fff;border:1.5px solid #e8f4f4;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:6px;transition:all .3s cubic-bezier(.2,.8,.3,1);font-weight:500;color:#2d8789;line-height:1.15;user-select:none;position:relative;z-index:1}
+.dr-mob .dr-c.sm{width:92px;height:92px;font-size:10.5px}
+.dr-mob .dr-c.lg{width:118px;height:118px;font-size:11.5px;border-width:2px}
+.dr-mob .dr-c .ico{margin-bottom:4px;opacity:.85}
+.dr-mob .dr-c.on{color:#fff;border-color:transparent}
+.dr-mob .dr-c[data-id=therapie].on{background:#43A9AB;box-shadow:0 14px 26px -12px rgba(67,169,171,.45)}
+.dr-mob .dr-c[data-id=anaesthesie].on,.dr-mob .dr-c[data-id=partydroge].on{background:#1a1f24;box-shadow:0 10px 22px -10px rgba(26,31,36,.5)}
+.dr-mob .dr-c .sb{display:block;font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;opacity:.7;margin-top:2px;font-weight:500}
+.dr-mob .dr-det{background:#f3faf9;border:1px solid #e8f4f4;border-radius:14px;padding:1.5rem 1.25rem;transition:opacity .25s ease;position:relative;overflow:hidden;margin-bottom:1.75rem}
+.dr-mob .dr-det::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:#43A9AB}
+.dr-mob .dr-eb{font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:#2d8789;font-weight:500;margin-bottom:10px}
+.dr-mob .dr-dt{font-size:18px;color:#1a1f24;font-weight:400;font-family:var(--font-serif);margin-bottom:12px;line-height:1.22}
+.dr-mob .dr-dx{font-size:13px;color:#2d3439;line-height:1.7;margin-bottom:16px}
+.dr-mob .dr-facts{display:grid;gap:10px;padding-top:14px;border-top:1px solid #e8f4f4}
+.dr-mob .dr-f{display:grid;grid-template-columns:72px 1fr;gap:10px;font-size:12px;align-items:start}
+.dr-mob .dr-fl{color:#2d8789;font-weight:500;letter-spacing:.12em;text-transform:uppercase;font-size:9.5px;padding-top:3px}
+.dr-mob .dr-fv{color:#2d3439;line-height:1.45}
+.dr-mob .dr-sum{padding:1.5rem 1.25rem;background:#1a1f24;border-radius:14px;position:relative;overflow:hidden}
+.dr-mob .dr-sum::before{content:"";position:absolute;top:0;left:0;bottom:0;width:3px;background:#43A9AB}
+.dr-mob .dr-sl{font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:#43A9AB;font-weight:500;margin-bottom:8px;display:block}
+.dr-mob .dr-sp{font-size:13.5px;color:#fff;line-height:1.55;font-weight:300;margin:0}
+.dr-mob .dr-sp b{color:#43A9AB;font-weight:500}
+.dr-mob .dr-sp i{font-style:italic;font-family:var(--font-serif);font-weight:400}
+</style>
+
+<div class="dr-mob-frame">
+<div class="dr-mob">
+<h1 class="dr-h1">Medizin, nicht <em>Rausch</em></h1>
+<p class="dr-intro">Ketamin wirkt je nach Dosis, Setting und Absicht unterschiedlich. Zwischen Narkose und Partyraum liegt ein dritter, therapeutischer Raum. Tippen Sie sich durch.</p>
+
+<div class="dr-circs">
+<div class="dr-c sm" data-id="anaesthesie" tabindex="0">
+<div class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></div>
+<span>Anästhesie</span><span class="sb">Narkose</span>
+</div>
+<div class="dr-c lg on" data-id="therapie" tabindex="0">
+<div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.5"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12h2.5M19 12h2.5M5.2 5.2l1.8 1.8M17 17l1.8 1.8M5.2 18.8l1.8-1.8M17 7l1.8-1.8"/></svg></div>
+<span>Ketamin<br/>Therapie</span><span class="sb">3. Raum</span>
+</div>
+<div class="dr-c sm" data-id="partydroge" tabindex="0">
+<div class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div>
+<span>Partydroge</span><span class="sb">Special K</span>
+</div>
+</div>
+
+<div class="dr-det" id="dr-det-mob"></div>
+
+<div class="dr-sum">
+<span class="dr-sl">Der Unterschied</span>
+<p class="dr-sp">Der Unterschied liegt nicht im Molekül. Er liegt in <b>Dosis, Setting und Absicht</b>. Genau das macht Ketamin assistierte Therapie zu einem <i>medizinischen</i>, nicht zu einem rauschhaften Erlebnis.</p>
+</div>
+</div>
+</div>
+
+<script>
+(function(){
+const C={anaesthesie:{eb:'Der OP Saal',t:'Anästhesie und Schmerztherapie',x:'Hochdosiert als Narkosemittel, seit den 1960er Jahren in OP Sälen und Notaufnahmen. Atemstabil, präzise dosierbar. Ziel ist die Betäubung. Das Bewusstsein schweigt.',f:[['Dosis','1 bis 2 mg pro kg'],['Setting','Steril, klinisch'],['Ziel','Bewusstlosigkeit']]},therapie:{eb:'Der therapeutische Raum',t:'Ketamin assistierte Therapie',x:'In niedriger, subanästhetischer Dosis wirkt Ketamin entgegengesetzt. Es öffnet, statt zu betäuben. Das Bewusstsein bleibt wach, in einem Zustand, in dem inneres Erleben möglich wird. Begleitet durch Psychotherapie.',f:[['Dosis','Ca. 0,5 mg pro kg'],['Setting','Ärztlich, therapeutisch'],['Ziel','Erleben, Einsicht']]},partydroge:{eb:'Der Partyraum',t:'Special K, der unkontrollierte Rausch',x:'Unkontrolliert hoch dosiert als Partydroge missbraucht. Ohne ärztliche Begleitung, ohne Rahmen, ohne Integration. Reale Risiken: Abhängigkeit, Blasenschäden, psychische Entgleisungen.',f:[['Dosis','Unkontrolliert'],['Setting','Laut, ungeschützt'],['Ziel','Flucht, Rausch']]}};
+const p=document.getElementById('dr-det-mob');
+function render(id){const d=C[id];p.style.opacity=0;setTimeout(()=>{p.innerHTML='<div class="dr-eb">'+d.eb+'</div><div class="dr-dt">'+d.t+'</div><div class="dr-dx">'+d.x+'</div><div class="dr-facts">'+d.f.map(a=>'<div class="dr-f"><div class="dr-fl">'+a[0]+'</div><div class="dr-fv">'+a[1]+'</div></div>').join('')+'</div>';p.style.opacity=1;},160);document.querySelectorAll('.dr-mob .dr-c').forEach(c=>c.classList.toggle('on',c.dataset.id===id));}
+render('therapie');
+document.querySelectorAll('.dr-mob .dr-c').forEach(c=>{c.addEventListener('click',()=>render(c.dataset.id));c.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();render(c.dataset.id);}});});
+})();
+</script>

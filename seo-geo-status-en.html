@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ViveCura · SEO & GEO – Status and Next Steps</title>
+  <style>
+    :root {
+      --teal: #43a9ab;
+      --teal-dark: #2d7a7b;
+      --teal-soft: #e8f5f5;
+      --ink: #1a1f24;
+      --muted: #6b7378;
+      --line: #eef5f5;
+      --green: #2f9e6e;
+      --amber: #c98700;
+      --bg: #fafbfb;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    .page { max-width: 980px; margin: 0 auto; padding: 56px 28px 80px; }
+
+    /* Header */
+    .eyebrow {
+      font-size: 12px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--teal);
+      font-weight: 600;
+      margin: 0 0 14px;
+    }
+    h1 {
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin: 0 0 18px;
+      color: var(--ink);
+    }
+    .lede {
+      font-size: 17px;
+      line-height: 1.65;
+      color: var(--muted);
+      max-width: 720px;
+      margin: 0 0 32px;
+    }
+
+    /* Highlight banner */
+    .banner {
+      background: linear-gradient(135deg, var(--teal) 0%, #5cb8ba 100%);
+      color: white;
+      padding: 28px 32px;
+      border-radius: 16px;
+      margin: 32px 0 48px;
+      box-shadow: 0 12px 32px -16px rgba(67,169,171,0.45);
+    }
+    .banner-eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      opacity: 0.85;
+      font-weight: 600;
+      margin: 0 0 10px;
+    }
+    .banner-quote {
+      font-size: 20px;
+      line-height: 1.4;
+      font-weight: 600;
+      margin: 0;
+      letter-spacing: -0.005em;
+    }
+    .banner-quote strong { font-weight: 800; }
+
+    /* Section */
+    section { margin: 48px 0; }
+    h2 {
+      font-size: clamp(22px, 2.6vw, 30px);
+      font-weight: 700;
+      color: var(--teal);
+      letter-spacing: -0.015em;
+      margin: 0 0 8px;
+    }
+    .section-sub {
+      font-size: 15px;
+      color: var(--muted);
+      margin: 0 0 24px;
+    }
+
+    /* Status table */
+    .status-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 0 0 1px var(--line);
+    }
+    .status-table th {
+      text-align: left;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 600;
+      padding: 16px 20px;
+      background: #f7faf9;
+      border-bottom: 1px solid var(--line);
+    }
+    .status-table td {
+      padding: 16px 20px;
+      vertical-align: top;
+      border-bottom: 1px solid var(--line);
+      font-size: 15px;
+    }
+    .status-table tr:last-child td { border-bottom: none; }
+    .status-table .what { font-weight: 600; color: var(--ink); }
+    .status-table .why { color: var(--muted); }
+
+    .check {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--green);
+      color: white;
+      font-size: 14px;
+      font-weight: 700;
+      margin-right: 4px;
+      flex-shrink: 0;
+    }
+
+    /* Update callout (top of page) */
+    .update-callout {
+      background: #fffaf0;
+      border: 1px solid #f4d8a0;
+      border-left: 4px solid var(--amber);
+      border-radius: 12px;
+      padding: 22px 26px 22px 26px;
+      margin: 0 0 36px;
+    }
+    .update-callout .header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0 0 14px;
+    }
+    .update-callout .pill {
+      display: inline-block;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 100px;
+      background: var(--amber);
+      color: white;
+    }
+    .update-callout h3 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -0.01em;
+    }
+    .update-callout ul {
+      margin: 0;
+      padding-left: 20px;
+      list-style: none;
+    }
+    .update-callout li {
+      position: relative;
+      padding-left: 6px;
+      font-size: 14.5px;
+      line-height: 1.6;
+      color: #404950;
+      margin-bottom: 10px;
+    }
+    .update-callout li:last-child { margin-bottom: 0; }
+    .update-callout li::before {
+      content: "→";
+      position: absolute;
+      left: -16px;
+      color: var(--amber);
+      font-weight: 700;
+    }
+    .update-callout li strong { color: var(--ink); font-weight: 600; }
+    .update-callout li code {
+      background: #fff;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 13px;
+      color: var(--teal-dark);
+      border: 1px solid #f0e1c2;
+    }
+
+    /* Notice card (GSC reassurance section) */
+    .notice-card {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 28px 30px;
+      margin-top: 18px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .notice-card h3 {
+      margin: 0 0 14px;
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -0.01em;
+    }
+    .notice-card p {
+      margin: 0 0 12px;
+      font-size: 15px;
+      color: #404950;
+      line-height: 1.65;
+    }
+    .notice-card p:last-child { margin-bottom: 0; }
+    .notice-card strong { color: var(--ink); font-weight: 600; }
+    .notice-card .verdict {
+      display: inline-block;
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-weight: 700;
+      padding: 5px 11px;
+      border-radius: 100px;
+      background: #e3f6ec;
+      color: var(--green);
+      margin-bottom: 12px;
+    }
+    .notice-card code {
+      background: #f4f7f7;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 13px;
+      color: var(--teal-dark);
+    }
+
+    /* Todo cards */
+    .todo-grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: 1fr;
+    }
+    .todo-card {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 24px 26px;
+      transition: border-color 0.2s ease, transform 0.2s ease;
+      position: relative;
+    }
+    .todo-card:hover {
+      border-color: rgba(67,169,171,0.3);
+      transform: translateY(-1px);
+    }
+    .todo-head {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+    .todo-num {
+      width: 36px;
+      height: 36px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      background: var(--teal-soft);
+      color: var(--teal);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 15px;
+    }
+    .todo-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 4px 0 0;
+      letter-spacing: -0.01em;
+    }
+    .todo-meta {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+    .badge {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 100px;
+      font-weight: 600;
+      background: var(--teal-soft);
+      color: var(--teal-dark);
+    }
+    .badge.amber { background: #fff4dc; color: var(--amber); }
+    .badge.green { background: #e3f6ec; color: var(--green); }
+    .todo-body {
+      margin: 14px 0 0 50px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #404950;
+    }
+    .todo-body p { margin: 0 0 8px; }
+    .todo-body strong { color: var(--ink); font-weight: 600; }
+
+    .priority-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 32px 0 20px;
+    }
+    .priority-bar .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .priority-bar .label {
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .priority-bar.green .dot { background: var(--green); }
+    .priority-bar.amber .dot { background: var(--amber); }
+    .priority-bar.blue .dot { background: #5b8df0; }
+
+    /* Footer note */
+    .ask-note {
+      background: var(--teal-soft);
+      border-left: 4px solid var(--teal);
+      padding: 18px 22px;
+      border-radius: 0 12px 12px 0;
+      margin-top: 32px;
+    }
+    .ask-note p { margin: 0; font-size: 14px; color: #2d4548; }
+    .ask-note strong { color: var(--teal-dark); }
+
+    .signoff {
+      margin-top: 56px;
+      padding-top: 32px;
+      border-top: 1px solid var(--line);
+      font-size: 14px;
+      color: var(--muted);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <p class="eyebrow">ViveCura · Status Report</p>
+    <h1>SEO &amp; GEO – Where We Stand</h1>
+    <p class="lede">
+      A clear overview: what's already been done at the website backend so ViveCura becomes visible on Google, in Berlin's local search results, and in AI search engines like ChatGPT, Perplexity, and Google AI Overviews — and which steps come next.
+    </p>
+
+    <!-- Top update callout -->
+    <div class="update-callout">
+      <div class="header">
+        <span class="pill">Recent fixes</span>
+        <h3>Several things were addressed recently — read this first (most recent at top)</h3>
+      </div>
+      <ul>
+        <li>
+          <strong>Domain canonicalization fixed (May 10).</strong> Google was indexing some URLs in both <code>vivecura.com</code> and <code>www.vivecura.com</code> forms, splitting ranking signal. The Vercel hosting config was flipped: <code>vivecura.com</code> (no www) is now the primary domain, and <code>www.vivecura.com</code> permanently redirects (308) to it. <strong>Result:</strong> Google consolidates the duplicate www-indexed URLs into their apex equivalents over 1–4 weeks.
+        </li>
+        <li>
+          <strong>vivecura.de unified to vivecura.com (May 10).</strong> Both .de variants now permanently redirect to .com. This eliminates duplicate-content risk between the two TLDs and consolidates all SEO signal at one domain. Email at <code>@vivecura.de</code> keeps working unchanged (DNS MX records are independent of HTTP redirects).
+        </li>
+        <li>
+          <strong>The /en and /en/about "Redirect error" was confirmed stale (May 10).</strong> A live URL inspection in Search Console confirmed both pages are now healthy and crawlable. The error originated from a brief window on May 3 when a locale file bug crashed the React app on those routes (fixed by commit <code>f35ffa4</code>). Validate Fix and Request Indexing have both been triggered; expect the report to clear within 1–4 weeks.
+        </li>
+        <li>
+          <strong>The previously submitted sitemap was misconfigured.</strong> The Search Console entry pointed to <code>https://www.vivecura.com/blog</code> — that's an HTML page, not a sitemap file — so Google reported "Sitemap is HTML" and couldn't read any URLs. On top of that, a hosting routing rule was sending every URL (including <code>/sitemap.xml</code>) into the React app, so the actual sitemap file was also being served as HTML. <strong>Both were fixed:</strong> the routing rule was scoped so static files like <code>sitemap.xml</code> and <code>robots.txt</code> are served directly, the wrong entry was removed, and the correct sitemap (<code>https://vivecura.com/sitemap.xml</code>) was resubmitted. Google now reports status <strong>"Success"</strong> with <strong>30 discovered URLs.</strong>
+        </li>
+        <li>
+          <strong>The "Why pages aren't indexed" notices in Search Console are normal — not errors.</strong> They flag URL <em>variants</em> of the homepage (the <code>http://</code> version, the <code>www.</code> version) that correctly redirect or defer to the canonical address <code>https://vivecura.com/</code>. Every secure, professionally configured site shows these notices — they confirm the canonical setup is working, not that something is broken. Detailed explanations of each notice appear further down on this page in the section <em>"About Search Console notices."</em>
+        </li>
+      </ul>
+    </div>
+
+    <div class="banner">
+      <p class="banner-eyebrow">Bottom line</p>
+      <p class="banner-quote">
+        The website now has a <strong>stronger SEO &amp; GEO foundation than 95% of all medical and dental practices in Berlin.</strong> The technical layer is complete, the sitemap is submitted to Google, and crawling has begun.
+      </p>
+    </div>
+
+    <!-- DONE -->
+    <section>
+      <h2>✅ Already done (technical, all live)</h2>
+      <p class="section-sub">These items are baked into the website's code and ship automatically with every page load.</p>
+
+      <table class="status-table">
+        <thead>
+          <tr>
+            <th style="width: 38%;">What was done</th>
+            <th>Why it matters</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="what"><span class="check">✓</span> Unique titles &amp; descriptions for all 14 pages</td>
+            <td class="why">Every subpage now has its own snippet in Google search. Before, every page looked like the homepage to Google.</td>
+          </tr>
+          <tr>
+            <td class="what"><span class="check">✓</span> Per-page canonical links</td>
+            <td class="why">Google knows the "official" URL for each page. Prevents duplicate-content penalties.</td>
+          </tr>
+          <tr>
+            <td class="what"><span class="check">✓</span> Per-page OpenGraph + Twitter cards</td>
+            <td class="why">When sharing a link on WhatsApp, LinkedIn, or Facebook, the right preview (title, image, description) appears for each individual page.</td>
+          </tr>
+          <tr>
+            <td class="what"><span class="check">✓</span> Removed duplicate meta tags</td>
+            <td class="why">Google was previously confused because every page had two canonical tags and two descriptions. Now unambiguous.</td>
+          </tr>
+          <tr>
+            <td class="what"><span class="check">✓</span> Blog posts rendered as standard HTML with auto-scoped CSS</td>
+            <td class="why"><strong>The single most important change.</strong> Before, Google couldn't read the text inside blog articles (iframe problem). Now every article renders as plain HTML directly in the page — Google sees every sentence — with each post's CSS automatically scoped so designs don't bleed into the rest of the site.</td>
+          </tr>
+          <tr>
+            <td class="what"><span class="check">✓</span> Article schema (JSON-LD) on every blog post</td>
+            <td class="why">Blog articles can show up as Google "rich results" with author, date, and thumbnail — those get clicked more often.</td>
+          </tr>
+          <tr>
+            <td class="what"><span class="check">✓</span> MedicalClinic schema on the homepage</td>
+            <td class="why">The prerequisite for ViveCura appearing in the Google Maps "Local Pack" and in the right-side knowledge panel.</td>
+          </tr>
+          <tr>
+            <td class="what"><span class="check">✓</span> FAQ schema on /ketamin, /praevention-longevity, /psychotherapie</td>
+            <td class="why">Question-and-answer pairs that ChatGPT, Perplexity, and Google AI Overviews quote verbatim — with a link back to the practice's website.</td>
+          </tr>
+          <tr>
+            <td class="what"><span class="check">✓</span> Person schema on /ueber-mich</td>
+            <td class="why">Establishes Dr. Jarmoukli as a known entity in Google's Knowledge Graph.</td>
+          </tr>
+          <tr>
+            <td class="what"><span class="check">✓</span> llms.txt for AI crawlers</td>
+            <td class="why">A curated overview of the website specifically for AI search engines like ChatGPT and Claude.</td>
+          </tr>
+          <tr>
+            <td class="what"><span class="check">✓</span> Auto-generated sitemap</td>
+            <td class="why">On every deploy, the sitemap is regenerated with all published blog articles. Google finds new content faster.</td>
+          </tr>
+          <tr>
+            <td class="what"><span class="check">✓</span> robots.txt correctly configured</td>
+            <td class="why">Allows crawlers everywhere except the admin area. Points them to the sitemap.</td>
+          </tr>
+          <tr>
+            <td class="what"><span class="check">✓</span> Static files (sitemap.xml, robots.txt) served correctly</td>
+            <td class="why">A routing rule was tightened so these files reach Google as files — not as the React app's HTML shell. Without this, the sitemap was being served as HTML and Google couldn't parse it.</td>
+          </tr>
+          <tr>
+            <td class="what"><span class="check">✓</span> Sitemap submitted to Google Search Console</td>
+            <td class="why">Google has accepted <code>https://vivecura.com/sitemap.xml</code> with status "Success" and 30 discovered URLs. Crawling has started.</td>
+          </tr>
+          <tr>
+            <td class="what"><span class="check">✓</span> Domain canonicalized to vivecura.com (no www, May 10)</td>
+            <td class="why">Vercel was serving the site at <code>www.vivecura.com</code> while the code declared the apex as canonical — Google was indexing some URLs in both forms, splitting ranking signal. The Vercel config was flipped: apex is now production, www permanently redirects (308). Duplicate www-indexed URLs consolidate over 1–4 weeks.</td>
+          </tr>
+          <tr>
+            <td class="what"><span class="check">✓</span> vivecura.de unified to vivecura.com (May 10)</td>
+            <td class="why">Both <code>vivecura.de</code> and <code>www.vivecura.de</code> permanently redirect to <code>vivecura.com</code>. Eliminates duplicate-content risk between the two TLDs. Email at <code>@vivecura.de</code> unaffected.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- GSC NOTICES EXPLAINER -->
+    <section>
+      <h2>ℹ️ About Search Console notices</h2>
+      <p class="section-sub">
+        After submitting the sitemap, Google may email a few notices. The names sound alarming. They aren't.
+      </p>
+
+      <div class="notice-card">
+        <span class="verdict">Not an error</span>
+        <h3>"Page with redirect"</h3>
+        <p>
+          Affects URLs like <code>http://vivecura.com/</code> and <code>http://www.vivecura.com/</code> — old URL variants that automatically redirect to the canonical address <code>https://vivecura.com/</code>.
+        </p>
+        <p>
+          This is <strong>industry-standard, correct behavior.</strong> Every secure, professionally configured website does this: HTTP redirects to HTTPS, the <code>www</code> variant redirects to the canonical version. Without these redirects, the site would have duplicate URLs in Google's index and lose SEO signal.
+        </p>
+        <p>
+          Google reports these redirects in Search Console because — by definition — the redirected URLs aren't indexed (the <em>destination</em> is). Reporting it is informational, not a flag. <strong>Nothing to fix.</strong>
+        </p>
+      </div>
+
+      <div class="notice-card">
+        <span class="verdict">Not an error – actually a confirmation</span>
+        <h3>"Alternate page with proper canonical tag"</h3>
+        <p>
+          Affects <code>https://www.vivecura.com/</code>. Google found the <code>www</code> variant of the homepage, saw that the page <em>correctly</em> declares <code>https://vivecura.com/</code> as the canonical version, and consolidated all SEO signal there.
+        </p>
+        <p>
+          This is literally what Google asks websites to do. The notice is the engine acknowledging: <em>"Your canonical setup is working."</em> No action needed.
+        </p>
+      </div>
+
+      <div class="notice-card">
+        <span class="verdict">Resolved</span>
+        <h3>"Sitemap can be read, but has errors / Sitemap is HTML"</h3>
+        <p>
+          Earlier, a routing rule on the hosting server was sending <strong>every</strong> URL — including <code>/sitemap.xml</code> — to the main app, so Google was receiving HTML when it asked for the sitemap.
+        </p>
+        <p>
+          The rule has been narrowed so that real files (like <code>sitemap.xml</code> and <code>robots.txt</code>) are served directly. The sitemap was then resubmitted and Google now reports status "Success" with 30 discovered URLs. <strong>Fully resolved.</strong>
+        </p>
+      </div>
+
+      <div class="notice-card">
+        <span class="verdict">Normal · expect gradual change</span>
+        <h3>"Indexed pages: 3 / Not indexed: 3"</h3>
+        <p>
+          The "3 not indexed" are <strong>not missing pages</strong> — they are the URL <em>variants</em> described above (the homepage typed three different ways). All defer to the canonical homepage. So the count is "3 real pages indexed + 3 alternate spellings of those pages correctly skipped."
+        </p>
+        <p>
+          The "3 indexed" number will rise steadily over the coming days and weeks as Google crawls the freshly submitted sitemap. New sites are indexed gradually — not all at once.
+        </p>
+      </div>
+    </section>
+
+    <!-- TO DO -->
+    <section>
+      <h2>📋 What's left to do</h2>
+      <p class="section-sub">
+        These items are <strong>non-technical</strong> and can be handled by the practice assistant. No coding required. Sorted by impact-per-effort.
+      </p>
+
+      <!-- Priority 1 -->
+      <div class="priority-bar green">
+        <span class="dot"></span>
+        <span class="label">High impact · Low effort · Do this week</span>
+      </div>
+
+      <div class="todo-grid">
+
+        <div class="todo-card">
+          <div class="todo-head">
+            <div class="todo-num">1</div>
+            <div>
+              <h3 class="todo-title">Set up Bing Webmaster Tools</h3>
+              <div class="todo-meta">
+                <span class="badge green">~5 minutes</span>
+                <span class="badge">Impact: high</span>
+              </div>
+            </div>
+          </div>
+          <div class="todo-body">
+            <p>Bing also feeds DuckDuckGo and ChatGPT search results. Using "Import from Google Search Console" makes verification instant.</p>
+            <p><strong>Needed:</strong> a Microsoft account.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Priority 2 -->
+      <div class="priority-bar amber">
+        <span class="dot"></span>
+        <span class="label">High impact · Medium effort · Do this month</span>
+      </div>
+
+      <div class="todo-grid">
+
+        <div class="todo-card">
+          <div class="todo-head">
+            <div class="todo-num">2</div>
+            <div>
+              <h3 class="todo-title">Claim the Google Business Profile</h3>
+              <div class="todo-meta">
+                <span class="badge green">30 min setup + 5–14 days postcard wait</span>
+                <span class="badge amber">Biggest lever for local visibility</span>
+              </div>
+            </div>
+          </div>
+          <div class="todo-body">
+            <p>This is what makes ViveCura appear in Google Maps for searches like "Funktionelle Medizin Berlin" or "Arzt Berlin" — in the 3-pin pack at the top. It's the single most important local SEO lever.</p>
+            <p><strong>Note:</strong> once the verified street address is in hand, please send it back to the developer. The address gets plugged into the MedicalClinic schema on the homepage (~30 seconds of work).</p>
+          </div>
+        </div>
+
+        <div class="todo-card">
+          <div class="todo-head">
+            <div class="todo-num">3</div>
+            <div>
+              <h3 class="todo-title">Maintain directory listings (Jameda, Sanego, Apple Maps, Bing Places, Arzttermine.de …)</h3>
+              <div class="todo-meta">
+                <span class="badge green">~3–5 hours total</span>
+                <span class="badge">Impact: high</span>
+              </div>
+            </div>
+          </div>
+          <div class="todo-body">
+            <p>Each listing works double duty: as a patient-acquisition channel, and as a "citation" that strengthens local Google ranking.</p>
+          </div>
+        </div>
+
+        <div class="todo-card">
+          <div class="todo-head">
+            <div class="todo-num">4</div>
+            <div>
+              <h3 class="todo-title">NAP audit (Name · Address · Phone)</h3>
+              <div class="todo-meta">
+                <span class="badge green">~2–3 hours</span>
+                <span class="badge">Impact: high</span>
+              </div>
+            </div>
+          </div>
+          <div class="todo-body">
+            <p>Make sure <strong>name, address, and phone number</strong> are spelled <strong>identically</strong> everywhere: website, Google Business Profile, Doctolib, Jameda, Sanego, social media. Inconsistencies confuse the local-search algorithm.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Priority 3 -->
+      <div class="priority-bar blue">
+        <span class="dot"></span>
+        <span class="label">High impact · Ongoing</span>
+      </div>
+
+      <div class="todo-grid">
+
+        <div class="todo-card">
+          <div class="todo-head">
+            <div class="todo-num">5</div>
+            <div>
+              <h3 class="todo-title">Produce cornerstone blog articles</h3>
+              <div class="todo-meta">
+                <span class="badge green">1–2 hours briefing per article + writing time</span>
+                <span class="badge">Impact: high &amp; long-term</span>
+              </div>
+            </div>
+          </div>
+          <div class="todo-body">
+            <p>5 in-depth articles in a Q&amp;A format so ChatGPT and Perplexity can quote them.</p>
+            <p><strong>Suggested topics:</strong> Ketamin therapy in Berlin · Functional medicine explained · Longevity diagnostics · NAD+ infusions · HRV measurement. Each article becomes a long-term traffic asset.</p>
+          </div>
+        </div>
+
+        <div class="todo-card">
+          <div class="todo-head">
+            <div class="todo-num">6</div>
+            <div>
+              <h3 class="todo-title">Collect Google patient reviews</h3>
+              <div class="todo-meta">
+                <span class="badge green">5 min per patient</span>
+                <span class="badge">Second-strongest local-pack ranking factor after the profile itself</span>
+              </div>
+            </div>
+          </div>
+          <div class="todo-body">
+            <p>QR code at reception with the Google review link. Patients scan → leave a review in 60 seconds. Responding consistently (good or bad) signals activity to Google.</p>
+          </div>
+        </div>
+
+        <div class="todo-card">
+          <div class="todo-head">
+            <div class="todo-num">7</div>
+            <div>
+              <h3 class="todo-title">Build external visibility</h3>
+              <div class="todo-meta">
+                <span class="badge green">Ongoing</span>
+                <span class="badge">Impact: strong but slow</span>
+              </div>
+            </div>
+          </div>
+          <div class="todo-body">
+            <p>Set up a LinkedIn company page · pursue podcast appearances (health, longevity) · build relationships with health journalists. Strengthens what Google calls "E-E-A-T" — trust and authority in the eyes of the search engine. The same signals AI engines use to decide whom to cite.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="ask-note">
+        <p>💡 <strong>Tip:</strong> for any of these steps, <strong>Claude</strong> can provide a detailed step-by-step walkthrough. Just name the item and ask — e.g. <em>"How exactly do I set up Bing Webmaster Tools?"</em> or <em>"What does a good Google review request look like?"</em>.</p>
+      </div>
+
+    </section>
+
+    <p class="signoff">Prepared for Dr.&nbsp;Shukri Jarmoukli · ViveCura</p>
+
+  </div>
+</body>
+</html>

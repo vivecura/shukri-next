@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/lifesummit", "destination": "/lifesummit.html" },
+    { "source": "/((?!.*\\..*).*)", "destination": "/" }
+  ]
+}

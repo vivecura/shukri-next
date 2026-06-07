@@ -1,0 +1,57 @@
+# ViveCura
+
+> Praxis für funktionelle Medizin, Prävention, Longevity und Psychotherapie in Berlin. Geleitet von Dr. Shukri Jarmoukli. Schwerpunkte: erweiterte Diagnostik, individuelle Longevity-Strategien, Ketamin-assistierte Therapie, Infusionstherapien.
+
+## Kernseiten
+
+- [Über Dr. Shukri Jarmoukli](https://vivecura.com/ueber-mich): Werdegang, Ausbildung, Behandlungsphilosophie.
+- [Diagnostik & Health Check](https://vivecura.com/diagnostik): Genetik, Vollblutanalyse, BIA, HRV, Mikrobiom, Schwermetalle.
+- [Prävention & Longevity](https://vivecura.com/praevention-longevity): Personalisierte Strategien, Biofeedback, CGM, Mentoring.
+- [Psychotherapie](https://vivecura.com/psychotherapie): Integrativer Ansatz für Depression, Trauma, chronischen Stress.
+- [Ketamin-Therapie](https://vivecura.com/ketamin): Ärztlich begleitete Ketamin-Infusionen und -Shots.
+- [Infusionstherapie](https://vivecura.com/infusions): NAD+, Vitamin C, Glutathion, Aminosäuren, Mikronährstoffe.
+- [Spezielle Therapien](https://vivecura.com/spezielle-therapien): Erweiterte Therapien funktioneller Medizin.
+- [1:1 Mentoring](https://vivecura.com/mentoring): Individuelle Longevity-Begleitung.
+- [Beratung](https://vivecura.com/beratung): Erstgespräch und Zweitmeinung.
+
+## Blog
+
+- [Blog-Übersicht](https://vivecura.com/blog): Aktuelle Beiträge zu Longevity, funktioneller Medizin und Prävention. Alle Artikel sind unter https://vivecura.com/sitemap.xml verlinkt.
+
+## Standort
+
+Berlin, Deutschland. Telefon: +49 30 200060860. E-Mail: praxis@vivecura.com.
+
+## Sprache
+
+Alle Inhalte sind in Deutsch (de_DE) und Englisch (en_US) verfügbar. Englische Versionen liegen unter dem Pfadpräfix `/en/...` (z. B. `https://vivecura.com/en/about`).
+
+---
+
+# ViveCura (English)
+
+> Practice for functional medicine, prevention, longevity and psychotherapy in Berlin. Led by Dr. Shukri Jarmoukli. Focus areas: advanced diagnostics, individualized longevity strategies, ketamine-assisted therapy, infusion therapies.
+
+## Core Pages
+
+- [About Dr. Shukri Jarmoukli](https://vivecura.com/en/about): background, training, treatment philosophy.
+- [Diagnostics & Health Check](https://vivecura.com/en/diagnostics): genetics, full-blood analysis, BIA, HRV, microbiome, heavy metals.
+- [Prevention & Longevity](https://vivecura.com/en/prevention-longevity): personalized strategies, biofeedback, CGM, mentoring.
+- [Psychotherapy](https://vivecura.com/en/psychotherapy): integrative approach for depression, trauma, chronic stress.
+- [Ketamine Therapy](https://vivecura.com/en/ketamine): physician-supervised ketamine infusions and shots.
+- [Infusion Therapy](https://vivecura.com/en/infusions): NAD+, vitamin C, glutathione, amino acids, micronutrients.
+- [Special Therapies](https://vivecura.com/en/special-therapies): advanced functional-medicine therapies.
+- [1:1 Mentoring](https://vivecura.com/en/mentoring): individual longevity coaching.
+- [Consultations](https://vivecura.com/en/consultations): initial consultation and second opinion.
+
+## Blog
+
+- [Blog overview](https://vivecura.com/en/blog): articles on longevity, functional medicine and prevention. All articles are linked from https://vivecura.com/sitemap.xml.
+
+## Location
+
+Berlin, Germany. Phone: +49 30 200060860. Email: praxis@vivecura.com.
+
+## Language
+
+All content is available in German (de_DE) and English (en_US). English versions live under the `/en/...` path prefix.

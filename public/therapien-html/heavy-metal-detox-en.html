@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Heavy Metals: What's Really Inside Your Body | Vivecura Berlin</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --teal:#43A9AB;
+  --teal-dark:#2d8789;
+  --teal-darker:#1f6e70;
+  --teal-pale:#e8f4f4;
+  --teal-subtle:#f3faf9;
+  --charcoal:#1a1f24;
+  --dark:#2d3439;
+  --mid:#4a5259;
+  --muted:#6b7378;
+  --soft:#9ca3a8;
+  --light:#d1d5d8;
+  --pale:#e8ebed;
+  --bg:#fafbfc;
+  --card:#ffffff;
+}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--dark);line-height:1.75;font-weight:400;-webkit-font-smoothing:antialiased}
+
+/* HERO */
+.hero{background:linear-gradient(160deg,var(--charcoal) 0%,#232a30 22%,var(--teal-darker) 58%,var(--teal-dark) 82%,var(--teal) 100%);padding:96px 24px 94px;text-align:center;position:relative;overflow:hidden;min-height:480px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.hero::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:60px;background:var(--bg);clip-path:ellipse(56% 100% at 50% 100%)}
+.drops{position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none}
+.drop{position:absolute;border-radius:50%;background:radial-gradient(circle at 35% 35%,rgba(67,169,171,.3),rgba(45,135,137,.15),transparent);animation:float 10s ease-in-out infinite}
+.drop:nth-child(1){width:90px;height:90px;top:18%;left:8%;animation-delay:0s}
+.drop:nth-child(2){width:55px;height:55px;top:12%;right:14%;animation-delay:2.5s}
+.drop:nth-child(3){width:120px;height:120px;bottom:22%;left:18%;animation-delay:5s}
+.drop:nth-child(4){width:70px;height:70px;bottom:18%;right:10%;animation-delay:3.5s}
+.drop:nth-child(5){width:45px;height:45px;top:40%;left:45%;animation-delay:7s}
+.drop:nth-child(6){width:60px;height:60px;top:60%;right:28%;animation-delay:1.5s}
+@keyframes float{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-14px) scale(1.05)}}
+.hero-eyebrow{position:relative;z-index:2;display:inline-block;font-size:.7rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:22px;font-weight:700}
+.hero h1{position:relative;z-index:2;font-size:clamp(1.8rem,4.8vw,2.7rem);color:#fff;max-width:760px;margin:0 auto 14px;line-height:1.15;font-weight:800;letter-spacing:-.02em}
+.hero-sub{position:relative;z-index:2;color:rgba(255,255,255,.72);font-size:.98rem;font-weight:400;max-width:540px;margin:0 auto 26px;line-height:1.6}
+.hero-badges{position:relative;z-index:2;display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.hero-badge{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:5px 14px;font-size:.72rem;color:rgba(255,255,255,.7);font-weight:500;letter-spacing:.05em}
+
+/* MAIN */
+main{max-width:720px;margin:0 auto;padding:60px 24px 90px}
+h2{font-size:1.6rem;color:var(--charcoal);margin:58px 0 8px;line-height:1.22;font-weight:800;letter-spacing:-.02em}
+.divider{width:42px;height:3px;background:var(--teal);border-radius:3px;margin:0 0 20px}
+h3{font-size:1.1rem;color:var(--teal-darker);margin:32px 0 11px;font-weight:700;letter-spacing:-.01em}
+p{margin-bottom:15px;font-size:1rem;color:var(--dark);line-height:1.75}
+strong{font-weight:700;color:var(--charcoal)}
+em{font-style:italic;color:var(--teal-darker)}
+
+/* SPECIALTY BOX */
+.specialty{background:var(--teal-subtle);border:1.5px solid var(--teal-pale);border-radius:16px;padding:26px 30px;margin:32px 0;position:relative;overflow:hidden;display:flex;gap:20px;align-items:flex-start}
+.specialty::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--teal)}
+.specialty-icon{font-size:2.4rem;flex-shrink:0;margin-top:2px}
+.specialty-body h4{font-size:1.08rem;color:var(--charcoal);margin-bottom:7px;font-weight:700;letter-spacing:-.01em}
+.specialty-body p{font-size:.87rem;margin:0;color:var(--dark);line-height:1.8}
+.spec-tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px}
+.stag{font-size:.67rem;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:20px;font-weight:600;background:var(--card);color:var(--mid);border:1px solid var(--pale)}
+.stag-a{background:var(--teal);color:#fff;border-color:var(--teal)}
+
+/* PERSONAL / STORY */
+.personal{background:var(--teal-subtle);border:1px solid var(--teal-pale);border-radius:16px;padding:26px 28px;margin:30px 0;position:relative;overflow:hidden}
+.personal::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--teal);border-radius:16px 16px 0 0}
+.personal-label{font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;color:var(--teal-dark);font-weight:600;margin-bottom:12px;display:block}
+.personal p{font-size:.9rem;margin-bottom:11px;line-height:1.86}
+.personal p:last-child{margin:0}
+
+/* BOXES */
+.box-cta{background:var(--teal-subtle);border-left:3px solid var(--teal);border-radius:0 12px 12px 0;padding:18px 22px;margin:26px 0;font-size:.88rem}
+.box-cta strong{display:block;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--teal-dark);margin-bottom:5px;font-weight:700}
+.reframe{background:var(--teal-subtle);border:1px solid var(--teal-pale);border-radius:14px;padding:22px 26px;margin:28px 0;position:relative}
+.reframe::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--teal);border-radius:14px 14px 0 0}
+.reframe-label{font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;color:var(--teal-dark);font-weight:600;margin-bottom:9px;display:block}
+.reframe p{margin:0;font-size:.9rem}
+.study{background:var(--card);border:1px solid var(--pale);border-radius:12px;padding:20px 22px;margin:22px 0;position:relative;overflow:hidden}
+.study::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--teal)}
+.study-label{font-size:.67rem;letter-spacing:.15em;text-transform:uppercase;color:var(--teal-dark);font-weight:600;margin-bottom:8px;display:block}
+.study p{font-size:.86rem;margin-bottom:9px}
+.study p:last-child{margin:0}
+.study cite{font-size:.78rem;font-style:italic;color:var(--muted);display:block;margin-top:9px;padding-top:9px;border-top:1px solid var(--pale)}
+.alert{background:var(--teal-subtle);border-left:3px solid var(--teal);border-radius:0 12px 12px 0;padding:18px 22px;margin:26px 0;font-size:.88rem}
+.alert strong{color:var(--teal-dark);display:block;margin-bottom:4px;font-weight:700}
+.nuance{background:var(--card);border:1.5px solid var(--pale);border-radius:14px;padding:18px 22px;margin:22px 0}
+.nuance-label{font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;color:var(--teal-dark);font-weight:600;margin-bottom:7px;display:block}
+.nuance p{font-size:.87rem;margin:0}
+
+/* BIG HIGHLIGHT */
+.big-highlight{background:linear-gradient(145deg,var(--charcoal),var(--teal-darker));border-radius:18px;padding:36px 32px;margin:36px 0;position:relative;overflow:hidden}
+.big-highlight::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,rgba(67,169,171,.3),transparent);border-radius:50%}
+.big-highlight h3{font-size:1.28rem;color:#fff;margin:0 0 14px;position:relative;z-index:1;font-weight:700;letter-spacing:-.01em}
+.big-highlight p{color:rgba(255,255,255,.75);font-size:.9rem;margin-bottom:11px;position:relative;z-index:1}
+.big-highlight p:last-child{margin:0}
+.big-highlight strong{color:#fff}
+.big-highlight .hl-number{font-size:3.5rem;color:rgba(255,255,255,.12);position:absolute;right:28px;bottom:16px;line-height:1;font-weight:800}
+
+/* HWZ VISUAL */
+.hwz-visual{background:var(--card);border:1px solid var(--pale);border-radius:14px;padding:26px 24px;margin:26px 0}
+.hwz-visual h4{font-size:1.08rem;color:var(--charcoal);margin-bottom:20px;font-weight:700;letter-spacing:-.01em}
+.hwz-bar-row{margin-bottom:18px}
+.hwz-label{font-size:.8rem;font-weight:600;color:var(--charcoal);margin-bottom:5px;display:flex;justify-content:space-between;align-items:baseline}
+.hwz-label span{font-weight:300;color:var(--muted);font-size:.76rem}
+.hwz-track{background:rgba(67,169,171,.08);border-radius:6px;height:12px;overflow:visible;position:relative}
+.hwz-bar{height:12px;border-radius:6px}
+.bar-hg-blut{width:8%;background:linear-gradient(90deg,var(--teal),var(--teal-dark))}
+.bar-hg-niere{width:18%;background:linear-gradient(90deg,var(--teal-dark),var(--teal-darker))}
+.bar-hg-hirn{width:56%;background:linear-gradient(90deg,var(--teal-darker),var(--charcoal))}
+.bar-pb-blut{width:6%;background:linear-gradient(90deg,var(--teal),var(--teal-dark))}
+.bar-pb-knochen{width:90%;background:linear-gradient(90deg,var(--charcoal),var(--teal-darker));position:relative}
+.bar-pb-knochen::after{content:'20–30 years';position:absolute;right:-80px;top:-2px;font-size:.72rem;color:var(--muted);white-space:nowrap}
+.bar-cd-niere{width:82%;background:linear-gradient(90deg,var(--teal-dark),var(--charcoal))}
+.bar-as-urin{width:12%;background:linear-gradient(90deg,var(--teal),var(--teal-dark))}
+.hwz-note{font-size:.78rem;color:var(--muted);margin-top:14px;font-style:italic;line-height:1.6}
+
+/* MATH BOX */
+.math-box{background:var(--teal-subtle);border:1.5px solid var(--teal-pale);border-radius:14px;padding:26px 28px;margin:28px 0}
+.math-box h4{font-size:1.05rem;color:var(--charcoal);margin-bottom:16px;font-weight:700;letter-spacing:-.01em}
+.math-row{display:flex;align-items:center;gap:14px;margin-bottom:11px;padding:12px 14px;background:var(--card);border-radius:10px}
+.math-icon{font-size:1.4rem;flex-shrink:0}
+.math-text{font-size:.86rem;color:var(--dark);line-height:1.6}
+.math-text strong{color:var(--charcoal)}
+.math-arrow{text-align:center;font-size:1.4rem;color:var(--teal);margin:3px 0;opacity:.5}
+.math-result{background:linear-gradient(135deg,var(--teal-darker),var(--teal-dark));color:#fff;border-radius:10px;padding:15px 18px;font-size:.9rem;margin-top:8px;line-height:1.65}
+.math-result strong{color:#fff}
+
+/* MECHANISM STEPS */
+.mechanism-steps{margin:22px 0}
+.mstep{display:flex;gap:16px;margin-bottom:18px;align-items:flex-start}
+.mstep-num{width:36px;height:36px;min-width:36px;border-radius:50%;background:var(--teal);color:#fff;font-size:1rem;display:flex;align-items:center;justify-content:center;font-weight:700}
+.mstep-body h4{font-size:.98rem;color:var(--charcoal);margin-bottom:4px;font-weight:700;letter-spacing:-.01em}
+.mstep-body p{font-size:.86rem;margin:0;color:var(--dark);line-height:1.7}
+
+/* KLINISCH */
+.klinisch{background:var(--teal-subtle);border:1px solid var(--teal-pale);border-radius:16px;padding:26px 28px;margin:28px 0;position:relative}
+.klinisch::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--teal);border-radius:16px 16px 0 0}
+.klinisch-label{font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;color:var(--teal-dark);font-weight:600;margin-bottom:13px;display:block}
+.klinisch p{font-size:.9rem;margin-bottom:11px;line-height:1.8}
+.klinisch p:last-child{margin:0}
+
+/* SYMPTOM GRID */
+.symptom-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:22px 0}
+@media(max-width:500px){.symptom-grid{grid-template-columns:1fr}}
+.symptom-card{background:var(--card);border:1px solid var(--pale);border-radius:12px;padding:18px;position:relative;overflow:hidden}
+.symptom-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--teal)}
+.symptom-card h4{font-size:.95rem;color:var(--charcoal);margin-bottom:6px;font-weight:700;letter-spacing:-.01em}
+.symptom-card ul{list-style:none;padding:0}
+.symptom-card li{font-size:.82rem;color:var(--dark);padding:4px 0 4px 18px;position:relative;border-bottom:1px solid var(--pale);line-height:1.6}
+.symptom-card li:last-child{border:none}
+.symptom-card li::before{content:'';position:absolute;left:0;top:10px;width:6px;height:6px;border-radius:50%;background:var(--teal)}
+
+/* METAL CARDS */
+.metal-section{background:var(--card);border:1px solid var(--pale);border-radius:16px;margin:28px 0;overflow:hidden;position:relative}
+.metal-stripe{height:3px;width:100%;background:var(--teal)}
+.metal-header{padding:22px 24px 0;display:flex;align-items:flex-start;gap:16px}
+.metal-icon{font-size:2rem;flex-shrink:0;line-height:1;margin-top:3px}
+.metal-title-block h3{font-size:1.18rem;color:var(--charcoal);margin:0 0 5px;font-weight:700;letter-spacing:-.01em}
+.metal-title-block .metal-sub{font-size:.78rem;color:var(--muted);font-style:italic;display:block}
+.metal-body{padding:14px 24px 24px}
+.metal-body p{font-size:.88rem;margin-bottom:10px;color:var(--dark)}
+.metal-body p:last-child{margin:0}
+.metal-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.mtag{font-size:.67rem;letter-spacing:.08em;text-transform:uppercase;padding:2px 9px;border-radius:10px;font-weight:600;border:1px solid;background:var(--teal-subtle);color:var(--teal-dark);border-color:var(--teal-pale)}
+.mtag-warn{background:rgba(67,169,171,.15);color:var(--teal-darker);border-color:var(--teal)}
+
+/* FISH TABLE */
+.fish-table-wrap{overflow-x:auto;margin:22px 0}
+.fish-table{width:100%;border-collapse:collapse;font-size:.84rem}
+.fish-table th{background:var(--charcoal);color:#fff;padding:10px 14px;text-align:left;font-weight:600;font-size:.92rem}
+.fish-table td{padding:9px 14px;border-bottom:1px solid var(--pale);color:var(--dark);vertical-align:middle}
+.fish-table tr:nth-child(even) td{background:var(--teal-subtle)}
+.fish-level-bar{display:flex;align-items:center;gap:8px}
+.fish-bar-track{flex:1;height:8px;background:rgba(67,169,171,.1);border-radius:4px;overflow:hidden}
+.fish-bar-fill{height:100%;border-radius:4px}
+.fish-bar-low{background:linear-gradient(90deg,var(--teal),var(--teal-dark))}
+.fish-bar-mid{background:linear-gradient(90deg,#c08020,#e0a840)}
+.fish-bar-high{background:linear-gradient(90deg,#c04040,#e06060)}
+.fish-val{font-weight:600;min-width:55px;text-align:right;font-size:.82rem}
+.fish-name{font-weight:500;color:var(--charcoal)}
+.fish-rec{font-size:.76rem;border-radius:8px;padding:2px 7px;font-weight:600}
+.fish-safe{background:var(--teal-subtle);color:var(--teal-darker)}
+.fish-limit{background:rgba(192,144,32,.12);color:#7a5a08}
+.fish-avoid{background:rgba(192,64,64,.1);color:#a03030}
+.fish-note{font-size:.8rem;color:var(--muted);margin-top:10px;font-style:italic}
+
+/* COCKTAIL */
+.cocktail-box{background:var(--teal-subtle);border:1.5px solid var(--teal-pale);border-radius:16px;padding:26px 28px;margin:28px 0;position:relative;overflow:hidden}
+.cocktail-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--teal)}
+.cocktail-label{font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;color:var(--teal-dark);font-weight:600;margin-bottom:12px;display:block}
+.cocktail-math{background:var(--card);border-radius:10px;padding:14px 16px;margin:14px 0;display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:.88rem}
+.cocktail-math strong{color:var(--teal-dark)}
+.cocktail-arrow{color:var(--teal);font-size:1.2rem;opacity:.6}
+
+/* EVIDENCE TABLE */
+.evidence-table{width:100%;border-collapse:collapse;margin:22px 0;font-size:.83rem}
+.evidence-table th{background:var(--charcoal);color:#fff;padding:10px 14px;text-align:left;font-weight:600;font-size:.9rem}
+.evidence-table td{padding:10px 14px;border-bottom:1px solid var(--pale);color:var(--dark);vertical-align:top}
+.evidence-table tr:nth-child(even) td{background:var(--teal-subtle)}
+.ev-strong{color:var(--teal-darker);font-weight:600}
+.ev-medium{color:#6a4a08;font-weight:600}
+.ev-weak{color:#a03030;font-weight:600}
+.ev-none{color:var(--muted)}
+
+/* PANEL */
+.panel{background:var(--card);border-radius:14px;padding:22px 24px;margin:20px 0;border:1px solid var(--pale)}
+.panel h4{font-size:1.02rem;color:var(--charcoal);margin-bottom:13px;font-weight:700;letter-spacing:-.01em}
+.panel ul{list-style:none;padding:0}
+.panel li{font-size:.88rem;padding:8px 0 8px 24px;position:relative;border-bottom:1px solid var(--pale);color:var(--dark);line-height:1.72}
+.panel li:last-child{border:none}
+.panel li::before{content:'';position:absolute;left:0;top:14px;width:7px;height:7px;border-radius:50%;background:var(--teal)}
+
+/* CHELAT COMPARISON */
+.chelat-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:22px 0}
+@media(max-width:540px){.chelat-grid{grid-template-columns:1fr}}
+.chelat-card{background:var(--card);border:1px solid var(--pale);border-radius:13px;padding:20px 18px;position:relative;overflow:hidden}
+.chelat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--teal)}
+.chelat-name{font-size:1.05rem;color:var(--charcoal);margin-bottom:6px;font-weight:700;letter-spacing:-.01em}
+.chelat-sub{font-size:.76rem;color:var(--muted);display:block;margin-bottom:10px;font-style:italic}
+.chelat-row{display:flex;justify-content:space-between;font-size:.82rem;padding:4px 0;border-bottom:1px solid var(--pale)}
+.chelat-row:last-child{border:none}
+.chelat-key{color:var(--muted)}
+.chelat-val{font-weight:500;color:var(--charcoal)}
+.ev-badge{display:inline-block;font-size:.63rem;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:10px;font-weight:600;margin-top:10px}
+.evb-gut{background:var(--teal-subtle);color:var(--teal-darker);border:1px solid var(--teal-pale)}
+.evb-mittel{background:rgba(106,74,8,.1);color:#6a4a08;border:1px solid rgba(106,74,8,.2)}
+.evb-schwach{background:rgba(160,48,48,.08);color:#a03030;border:1px solid rgba(160,48,48,.15)}
+
+/* VIVECURA PROTOCOL */
+.viv-protocol{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:26px 0}
+@media(max-width:560px){.viv-protocol{grid-template-columns:1fr}}
+.viv-card{background:var(--card);border:1px solid var(--pale);border-radius:14px;padding:22px 20px;position:relative;overflow:hidden}
+.viv-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--teal)}
+.viv-phase{font-size:.63rem;letter-spacing:.17em;text-transform:uppercase;color:var(--teal-dark);font-weight:600;margin-bottom:5px;display:block}
+.viv-card h4{font-size:1rem;color:var(--charcoal);margin-bottom:10px;font-weight:700;letter-spacing:-.01em}
+.viv-card ul{list-style:none;padding:0;margin:0}
+.viv-card li{font-size:.83rem;color:var(--dark);padding:5px 0 5px 18px;position:relative;border-bottom:1px solid var(--pale);line-height:1.65}
+.viv-card li:last-child{border:none}
+.viv-card li::before{content:'→';position:absolute;left:0;color:var(--teal);font-size:.74rem;font-weight:700;line-height:1.9}
+
+/* CONNECTION GRID */
+.connection-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin:22px 0}
+@media(max-width:560px){.connection-grid{grid-template-columns:1fr 1fr}}
+.conn-card{background:var(--card);border:1px solid var(--pale);border-radius:12px;padding:16px 13px;text-align:center;position:relative;overflow:hidden}
+.conn-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--teal)}
+.conn-card.active-conn{background:var(--teal-subtle);border-color:var(--teal)}
+.conn-icon{font-size:1.4rem;display:block;margin-bottom:6px}
+.conn-card h5{font-size:.87rem;color:var(--charcoal);font-weight:700;margin-bottom:4px;letter-spacing:-.005em}
+.conn-card p{font-size:.72rem;color:var(--muted);margin:0;line-height:1.5}
+.conn-badge{display:inline-block;font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;background:var(--teal);color:#fff;border-radius:9px;padding:2px 7px;margin-top:5px;font-weight:600}
+
+/* HL GRID */
+.hl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
+@media(max-width:480px){.hl-grid{grid-template-columns:1fr 1fr}}
+.hl-card{background:var(--card);border:1px solid var(--pale);border-radius:10px;padding:16px;text-align:center}
+.hl-num{font-size:1.55rem;color:var(--teal);font-weight:800;display:block;margin-bottom:4px}
+.hl-label{font-size:.75rem;color:var(--muted);line-height:1.4}
+
+/* PULL QUOTE */
+.pull-quote{border-left:3px solid var(--teal);margin:32px 0;padding:14px 22px;background:var(--teal-subtle)}
+.pull-quote p{font-size:1.12rem;color:var(--charcoal);margin:0;line-height:1.7;font-weight:500;letter-spacing:-.005em}
+.pull-quote cite{font-size:.78rem;color:var(--muted);display:block;margin-top:8px;font-style:normal;font-weight:500}
+
+/* DIAG STEPS */
+.diag-steps{margin:26px 0}
+.dstep{display:flex;gap:16px;margin-bottom:22px;align-items:flex-start}
+.dstep-num{width:38px;height:38px;min-width:38px;border-radius:50%;background:var(--teal);color:#fff;font-size:1.05rem;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0}
+.dstep-body h4{font-size:.98rem;color:var(--charcoal);margin-bottom:5px;font-weight:700;letter-spacing:-.01em}
+.dstep-body p{font-size:.87rem;margin:0;color:var(--dark);line-height:1.76}
+
+/* CTA */
+.cta{text-align:center;margin:72px 0 0;padding:56px 32px;background:linear-gradient(155deg,var(--charcoal) 0%,#0f1317 35%,#1f4e4f 75%,var(--teal) 100%);border-radius:22px;position:relative;overflow:hidden}
+.cta::before{content:'';position:absolute;top:-70px;right:-70px;width:280px;height:280px;background:radial-gradient(circle,rgba(67,169,171,.18),transparent);border-radius:50%}
+.cta::after{content:'';position:absolute;bottom:-50px;left:-50px;width:220px;height:220px;background:radial-gradient(circle,rgba(67,169,171,.12),transparent);border-radius:50%}
+.cta h2{font-family:'Inter',sans-serif;color:#ffffff;margin:0 0 14px;font-size:clamp(1.3rem,3vw,1.65rem);position:relative;z-index:1;font-weight:700;letter-spacing:-.015em}
+.cta p{color:rgba(255,255,255,.72);margin-bottom:30px;font-size:.95rem;position:relative;z-index:1;max-width:480px;margin-left:auto;margin-right:auto;line-height:1.7}
+.cta a{display:inline-block;background:var(--teal);color:#ffffff;font-weight:600;padding:15px 46px;border-radius:32px;text-decoration:none;font-size:.94rem;letter-spacing:.02em;position:relative;z-index:1;box-shadow:0 6px 24px rgba(67,169,171,.35);transition:transform .2s,box-shadow .2s,background .2s}
+.cta a:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(67,169,171,.48);background:var(--teal-dark)}
+
+/* SOURCES */
+.sources{margin-top:48px;padding-top:28px;border-top:1px solid var(--pale)}
+.sources h2{font-size:1.05rem;margin:0 0 18px;color:var(--charcoal);font-weight:700;letter-spacing:-.01em}
+.sources ol{padding-left:22px}
+.sources li{font-size:.78rem;font-style:italic;color:var(--muted);margin-bottom:7px;line-height:1.65}
+
+@media(max-width:520px){
+  .hero{padding:70px 20px 80px;min-height:460px}
+  main{padding:42px 18px 60px}
+  h2{font-size:1.28rem;margin-top:44px}
+  .big-highlight{padding:26px 20px}
+  .math-box{padding:20px 18px}
+  .specialty{flex-direction:column;gap:10px}
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════ HERO ════════════════════════ -->
+<div class="hero">
+  <div class="mercury-drops">
+    <div class="drop"></div><div class="drop"></div><div class="drop"></div>
+    <div class="drop"></div><div class="drop"></div><div class="drop"></div>
+  </div>
+  <div class="hero-eyebrow">Special Therapies · Vivecura Berlin</div>
+  <h1>Heavy Metals: What's Really Inside Your Body</h1>
+  <p class="hero-sub">Mercury, lead, arsenic, cadmium, aluminum: sources, mechanisms, diagnostics, and the logic of a medical detoxification.</p>
+  <div class="hero-badges">
+    <span class="hero-badge">⚗️ Evidence-based</span>
+    <span class="hero-badge">🔬 Mechanisms explained</span>
+    <span class="hero-badge">🧪 Transparent diagnostics</span>
+    <span class="hero-badge">💉 Chelation therapy available</span>
+  </div>
+</div>
+
+<main>
+
+<!-- SPECIALTY POSITIONING -->
+<div class="specialty">
+  <div class="specialty-icon">⚗️</div>
+  <div class="specialty-body">
+    <h4>Special Focus at Vivecura: Heavy-Metal Diagnostics &amp; Chelation Therapy</h4>
+    <p>Heavy-metal detoxification is one of my four core areas, alongside Gut Reset, Mold Therapy, and ketamine-assisted treatment. I work with the DMPS provocation test according to the protocol of the German Medical Society for Metal Toxicology (Ärztliche Gesellschaft für Metalltoxikologie) and conduct structured chelation-therapy cycles with full mineral monitoring.</p>
+    <div class="spec-tags">
+      <span class="stag stag-a">Current area</span>
+      <span class="stag">Closely related: Gut Reset</span>
+      <span class="stag">Closely related: Mold</span>
+    </div>
+  </div>
+</div>
+
+<!-- INTRO -->
+<h2>Why I take this topic so seriously</h2>
+<div class="divider"></div>
+
+<p>Chronic exhaustion. Brain fog that no amount of sleep can clear. Muscle pain with no orthopedic findings. Mood swings without a psychiatric cause. Hormonal imbalances that fail to respond to any therapy. And, again and again, the same sentence: <em>"Your blood values are unremarkable."</em></p>
+
+<p>In such cases, when patients come who have already tried a great deal, whose lab values look fine on paper, and whose suffering is nonetheless real, the next question I ask myself is: <strong>Which environmental toxins have never been measured?</strong></p>
+
+<p>Heavy metals sit right at the top of that list. Not because they are always the cause, but because they are systematically under-tested, and because the difference between a standard blood test and genuine tissue diagnostics is fundamental.</p>
+
+<div class="personal">
+  <span class="personal-label">Why this special focus</span>
+  <p>Over years in my practice I have made a consistent observation: in patients who do not respond to classical and functional therapies, or who respond only briefly, DMPS provocation tests reveal elevated mobilizable mercury amounts in a notable number of cases, even when spontaneous urinary values were entirely unremarkable. Under the influence of a chelator, the body releases metals that it would not mobilize on its own. That is precisely the diagnostic value of this procedure.</p>
+  <p>What is particularly striking: patients whose amalgam fillings were removed 10, 15, or 20 years ago, often without adequate protective measures, frequently still carry relevant mobilizable amounts. That is not coincidence. That is half-life mathematics. The mercury isn't gone just because the filling is gone.</p>
+</div>
+
+<div class="box-cta">
+  <strong>What you'll find in this article</strong>
+  Every relevant heavy metal explained individually: sources, cellular mechanism, symptom patterns, diagnostics. The underestimated topic of methylmercury from fish consumption. The cocktail effect of synergistic toxicity. An honest assessment of all therapy options. And what a structured protocol at Vivecura looks like in concrete terms.
+</div>
+
+<!-- ════════════════════════ MERCURY ════════════════════════ -->
+<h2>Mercury, the best known of the heavy metals</h2>
+<div class="divider"></div>
+
+<div class="metal-section">
+  <div class="metal-stripe"></div>
+  <div class="metal-header">
+    <div class="metal-icon">🪨</div>
+    <div class="metal-title-block">
+      <h3>Mercury (Hg)</h3>
+      <span class="metal-sub">Amalgam · Fish · Industrial emissions · Thermometers</span>
+    </div>
+  </div>
+  <div class="metal-body">
+    <p>Mercury exists in three forms whose behavior differs fundamentally: <strong>elemental mercury</strong> (Hg⁰) from amalgam and industrial emissions, <strong>inorganic mercury</strong> (Hg²⁺) as a tissue breakdown product, and <strong>methylmercury</strong> (MeHg), the organic, biologically active form taken up from fish. Confusing these three forms, with their entirely different kinetics, is the source of most misunderstandings on this topic.</p>
+    <p><strong>Amalgam:</strong> Dental fillings consist of approximately 50% elemental mercury. Through chewing, grinding, hot drinks, and dental procedures performed without protective protocol, Hg vapor escapes, is taken up via the lungs, and is deposited as inorganic Hg²⁺ in the kidneys, brain, and other organs. The EU banned dental amalgam as of January 1, 2025, primarily on environmental grounds (~340 tons/year worldwide), not as explicit proof of clinical harm in healthy adults. At the same time, autopsy studies show: amalgam carriers have significantly higher mercury concentrations in the brain than non-carriers.</p>
+    <div class="metal-tags">
+      <span class="mtag mtag">Amalgam</span>
+      <span class="mtag mtag">Fish consumption</span>
+      <span class="mtag mtag">Industrial emissions</span>
+      <span class="mtag mtag">Thermometers/barometers</span>
+      <span class="mtag mtag-warn">DMPS-chelatable</span>
+    </div>
+  </div>
+</div>
+
+<h3>What mercury does inside cells, the mechanism</h3>
+<p>Mercury binds with extreme affinity to <strong>sulfhydryl groups (–SH)</strong>. These are found in cysteine residues of vital enzymes, in glutathione, and in the selenocysteine residues of selenoproteins. The binding is nearly irreversible, which explains why mercury can affect so many different organ systems simultaneously: wherever sulfhydryl-bearing enzymes occupy critical control points, mercury can intervene.</p>
+
+<div class="panel">
+  <h4>Blocked enzymes, what this means in everyday life</h4>
+  <ul>
+    <li><strong>Glutathione peroxidase:</strong> Primary antioxidant enzyme → inhibition → oxidative stress, cell-membrane damage, accelerated aging at the cellular level</li>
+    <li><strong>Thioredoxin reductase:</strong> Key enzyme for selenoprotein function. Hg binds selenocysteine with 10⁶-fold higher affinity than cysteine → <em>functional selenium deficiency</em>, even when blood selenium appears normal</li>
+    <li><strong>Mn-superoxide dismutase (Mn-SOD):</strong> Mitochondrial antioxidant → blockade promotes mitochondrial damage and chronic exhaustion at the cellular level</li>
+    <li><strong>Respiratory chain (complexes I, II, III):</strong> Direct disruption of energy production → ATP deficit → fatigue, cold intolerance, cognitive slowing</li>
+    <li><strong>Neuregulin and BDNF signaling:</strong> Hg disrupts synaptic plasticity and growth factors → brain fog, mood instability, cognitive decline</li>
+  </ul>
+</div>
+
+<h3>Why genetic susceptibility is so decisive</h3>
+<p>Not everyone responds the same way to the same exposure. Polymorphisms in the genes CPOX4 (coproporphyrinogen oxidase), SLC6A4 (serotonin transporter), and MT1M/MT2A (metallothioneins) substantially modulate individual susceptibility. In the NIH-funded Casa Pia data, mercury exposure in boys carrying the SLC6A4 deletion allele explained up to 17.5% of the variance in a memory test, versus only 1.1% in wild-type boys. <strong>At population level, no effect. In the genetically defined subgroup, unmistakable.</strong></p>
+
+<p>That explains the apparent contradiction: the person at the next table with similarly many amalgam fillings has no symptoms because they carry different metallothionein polymorphisms, are better supplied with selenium, or carry less systemic stress. That is biology, not imagination.</p>
+
+<!-- ════════════════════════ FISH ════════════════════════ -->
+<h2>Methylmercury from fish, the underestimated everyday problem</h2>
+<div class="divider"></div>
+
+<p>Most of the people I test for heavy metals no longer have any amalgam. And yet we still find mobilizable mercury. The most commonly overlooked cause: <strong>regular consumption of tuna, swordfish, or other large predatory fish.</strong></p>
+
+<p>Methylmercury is the organic form of mercury, which is enriched in marine food chains through biomagnification. A tuna at the top of the food chain concentrates the mercury from thousands of smaller fish, up to <strong>one million times higher</strong> than the concentration in the surrounding water. The problem: methylmercury crosses the blood-brain barrier using a trick that inorganic mercury cannot exploit.</p>
+
+<div class="reframe">
+  <span class="reframe-label">The LAT1 trick, why MeHg is so dangerous</span>
+  <p>In the bloodstream, methylmercury binds the amino acid cysteine to form a complex that structurally resembles the amino acid methionine. The L-type amino-acid transporter (LAT1) at the blood-brain barrier, which normally ferries methionine and leucine into the brain, recognizes this complex and actively shuttles it through. Inorganic mercury has no such transport route; it must diffuse passively and does so far less efficiently. That makes methylmercury from fish neurobiologically more aggressive than the mercury vapor from amalgam.</p>
+</div>
+
+<h3>Which fish are safe, and which are not?</h3>
+<p>The FDA has analyzed more than 1,300 samples of commercial fish species. The differences are dramatic, more than 100-fold between the safest and the most dangerous species. The decisive variables: lifespan of the fish, position in the food chain, and geographic origin.</p>
+
+<div class="fish-table-wrap">
+  <table class="fish-table">
+    <thead>
+      <tr>
+        <th>Fish species</th>
+        <th>Avg. Hg (ppm)</th>
+        <th>Burden</th>
+        <th>Recommendation</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="fish-name">Swordfish</td>
+        <td>
+          <div class="fish-level-bar">
+            <div class="fish-bar-track"><div class="fish-bar-fill fish-bar-high" style="width:100%"></div></div>
+            <span class="fish-val">0.995</span>
+          </div>
+        </td>
+        <td><span style="font-size:.8rem;color:var(--teal-dark);font-weight:600">⬛ Very high</span></td>
+        <td><span class="fish-rec fish-avoid">Avoid</span></td>
+      </tr>
+      <tr>
+        <td class="fish-name">Shark (incl. spiny dogfish/"Schillerlocke")</td>
+        <td>
+          <div class="fish-level-bar">
+            <div class="fish-bar-track"><div class="fish-bar-fill fish-bar-high" style="width:98%"></div></div>
+            <span class="fish-val">0.979</span>
+          </div>
+        </td>
+        <td><span style="font-size:.8rem;color:var(--teal-dark);font-weight:600">⬛ Very high</span></td>
+        <td><span class="fish-rec fish-avoid">Avoid</span></td>
+      </tr>
+      <tr>
+        <td class="fish-name">Large mackerel (king mackerel)</td>
+        <td>
+          <div class="fish-level-bar">
+            <div class="fish-bar-track"><div class="fish-bar-fill fish-bar-high" style="width:73%"></div></div>
+            <span class="fish-val">0.730</span>
+          </div>
+        </td>
+        <td><span style="font-size:.8rem;color:#c06020;font-weight:600">🟧 High</span></td>
+        <td><span class="fish-rec fish-avoid">Avoid</span></td>
+      </tr>
+      <tr>
+        <td class="fish-name">Tuna (canned albacore)</td>
+        <td>
+          <div class="fish-level-bar">
+            <div class="fish-bar-track"><div class="fish-bar-fill fish-bar-mid" style="width:35%"></div></div>
+            <span class="fish-val">0.350</span>
+          </div>
+        </td>
+        <td><span style="font-size:.8rem;color:#c06020;font-weight:600">🟧 Medium-high</span></td>
+        <td><span class="fish-rec fish-limit">Limit (1×/week)</span></td>
+      </tr>
+      <tr>
+        <td class="fish-name">Tuna (canned light)</td>
+        <td>
+          <div class="fish-level-bar">
+            <div class="fish-bar-track"><div class="fish-bar-fill fish-bar-mid" style="width:13%"></div></div>
+            <span class="fish-val">0.126</span>
+          </div>
+        </td>
+        <td><span style="font-size:.8rem;color:#a08020;font-weight:600">🟨 Medium</span></td>
+        <td><span class="fish-rec fish-limit">Limit (2×/week)</span></td>
+      </tr>
+      <tr>
+        <td class="fish-name">Atlantic cod</td>
+        <td>
+          <div class="fish-level-bar">
+            <div class="fish-bar-track"><div class="fish-bar-fill fish-bar-mid" style="width:11%"></div></div>
+            <span class="fish-val">0.111</span>
+          </div>
+        </td>
+        <td><span style="font-size:.8rem;color:#a08020;font-weight:600">🟨 Low-medium</span></td>
+        <td><span class="fish-rec fish-limit">Moderate amounts</span></td>
+      </tr>
+      <tr>
+        <td class="fish-name">Wild salmon (Atlantic/Pacific)</td>
+        <td>
+          <div class="fish-level-bar">
+            <div class="fish-bar-track"><div class="fish-bar-fill fish-bar-low" style="width:2%"></div></div>
+            <span class="fish-val">0.022</span>
+          </div>
+        </td>
+        <td><span style="font-size:.8rem;color:#2a6a18;font-weight:600">🟩 Very low</span></td>
+        <td><span class="fish-rec fish-safe">Safe</span></td>
+      </tr>
+      <tr>
+        <td class="fish-name">Sardines</td>
+        <td>
+          <div class="fish-level-bar">
+            <div class="fish-bar-track"><div class="fish-bar-fill fish-bar-low" style="width:1.3%"></div></div>
+            <span class="fish-val">0.013</span>
+          </div>
+        </td>
+        <td><span style="font-size:.8rem;color:#2a6a18;font-weight:600">🟩 Very low</span></td>
+        <td><span class="fish-rec fish-safe">Safe</span></td>
+      </tr>
+      <tr>
+        <td class="fish-name">Mackerel (Atlantic, small)</td>
+        <td>
+          <div class="fish-level-bar">
+            <div class="fish-bar-track"><div class="fish-bar-fill fish-bar-low" style="width:5%"></div></div>
+            <span class="fish-val">0.050</span>
+          </div>
+        </td>
+        <td><span style="font-size:.8rem;color:#2a6a18;font-weight:600">🟩 Low</span></td>
+        <td><span class="fish-rec fish-safe">Safe</span></td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="fish-note">Data: FDA Mercury in Commercial Fish 1990–2012 (n=1,300+ samples). EU limits: 0.3 mg/kg for most fish species, 1.0 mg/kg for predatory fish (tuna, shark, swordfish). Small Atlantic mackerel ≠ king mackerel, a common mix-up. ppm = mg/kg fresh weight.</p>
+</div>
+
+<h3>The Faroe-Seychelles controversy, why the studies disagree</h3>
+<p>Two of the most important studies on prenatal methylmercury exposure reach opposite conclusions, and that is not a measurement error but biologically highly informative.</p>
+
+<div class="study">
+  <span class="study-label">Faroe Islands study · Grandjean et al.</span>
+  <p>1,022 children whose mothers regularly ate <strong>pilot whale</strong> (the main mercury source) were followed from birth. By school age: significant deficits in attention, memory, language, and fine motor skills. At 14 years: persistent impairments. At 22 years: cognitive deficits measurable even at maternal hair levels of 10–20 µg/g, previously regarded as "safe." This study formed the primary data basis for the US EPA reference value of 0.1 µg/kg/day.</p>
+  <cite>Grandjean et al., Neurotoxicol Teratol. 1997; Budtz-Jørgensen et al., Neurotoxicol. 1999</cite>
+</div>
+
+<div class="study">
+  <span class="study-label">Seychelles study · Davidson, Myers et al.</span>
+  <p>779 children of mothers who ate <strong>ocean fish</strong> (avg. Hg in hair: 6.8 ppm), through age 24, showed no consistent negative neurodevelopmental effects. The decisive difference from the Faroe study: a different mercury source, far more omega-3 fatty acids and selenium in the fish, and barely any PCB contamination (as found in pilot whale). This suggests: <em>it is not mercury alone that decides, but the mercury-to-selenium ratio, and the accompanying substances.</em></p>
+  <cite>Myers et al., Neurotoxicol. 1997; Davidson et al., Neurotoxicol Teratol. 2017</cite>
+</div>
+
+<div class="reframe">
+  <span class="reframe-label">The Selenium Health Benefit Value, a new way of thinking</span>
+  <p>Mercury binds selenium with an affinity orders of magnitude higher than its binding to cysteine. In fish with a positive Se:Hg ratio (i.e., more moles of selenium than mercury), including salmon, sardines, and cod, selenium largely neutralizes the mercury. In fish with a negative ratio (swordfish, pilot whale), this protective buffer is missing. This approach (<em>Selenium Health Benefit Value, HBVSe</em>, Ralston &amp; Raymond) explains why ocean-fish consumers do not necessarily suffer neurological harm despite measurable Hg levels in the blood, and why swordfish can be more dangerous than certain tuna species despite similar Hg values.</p>
+</div>
+
+<h3>Special risk: pregnancy and childhood</h3>
+<p>The developing nervous system is particularly vulnerable to methylmercury, because neuronal migration, synaptogenesis, and myelination are precisely timed processes that are easily knocked out of rhythm by ion-channel disruption and oxidative stress. The FDA and EFSA recommend, for pregnant and breastfeeding women and for children up to age 12: <strong>no swordfish, shark, king mackerel, marlin, or bigeye tuna</strong>, and 2–3 servings (225–340 g) of low-mercury fish per week. This recommendation matters, because omega-3 fatty acids from fish are essential for brain development; the mistake would be to avoid all fish.</p>
+
+<!-- ════════════════════════ LEAD ════════════════════════ -->
+<h2>Lead, the forgotten ubiquity</h2>
+<div class="divider"></div>
+
+<div class="metal-section">
+  <div class="metal-stripe"></div>
+  <div class="metal-header">
+    <div class="metal-icon">🏗️</div>
+    <div class="metal-title-block">
+      <h3>Lead (Pb)</h3>
+      <span class="metal-sub">Old water pipes · paint · soil contamination · lead glazes · food</span>
+    </div>
+  </div>
+  <div class="metal-body">
+    <p>Lead is the heavy metal most often underestimated in Germany. Since the bans on lead in gasoline (1996 in the EU), paint, and water pipes, the topic seems closed, but <strong>90–95% of the cumulative body burden of an adult sits in bone</strong>, with a half-life of 20–30 years. The lead from childhood exposures of the 1960s–80s is still circulating today.</p>
+    <p>Current sources: old water pipes (Berlin still has an estimated 35,000 lead service lines, mandatory replacement by 2026 under the EU Drinking Water Directive), lead-contaminated soils in urban areas, hunting ammunition (widespread in game meat), traditional spices and herbs from Asia/Eastern Europe (some contaminated with lead-chromate pigments), lead glazes on ceramics, and Ayurvedic preparations.</p>
+    <div class="metal-tags">
+      <span class="mtag mtag">Old building water lines</span>
+      <span class="mtag mtag">Soil contamination (urban)</span>
+      <span class="mtag mtag">Hunting ammunition / game</span>
+      <span class="mtag mtag">Traditional spices</span>
+      <span class="mtag mtag-warn">EDTA/DMSA-chelatable</span>
+      <span class="mtag mtag-warn">No safe threshold</span>
+    </div>
+  </div>
+</div>
+
+<h3>The calcium-mimicry problem</h3>
+<p>Lead is so toxicologically dangerous because, biochemically, it <strong>mimics calcium</strong>. The Pb²⁺ ion has an ionic radius similar to Ca²⁺ and carries the same charge; this opens calcium channels, lead enters cells, activates calcium-dependent signaling pathways in faulty ways, and displaces calcium from bone, neurons, and cardiac muscle cells.</p>
+
+<div class="panel">
+  <h4>What lead does in the body, a system overview</h4>
+  <ul>
+    <li><strong>Nervous system (children):</strong> For every 1 µg/dL increase in blood level: measurable IQ reduction. No lower threshold known. The CDC has progressively lowered its reference value from 60 to <strong>3.5 µg/dL</strong> (2021) since 1971, and states: there is no safe blood level for children.</li>
+    <li><strong>Cardiovascular system:</strong> Lead reduces nitric-oxide bioavailability, raises angiotensin II, and promotes atherosclerosis. Menke et al. (2006, <em>Circulation</em>, n=13,946): hazard ratio 1.55 for cardiovascular mortality at blood Pb ≥3.62 µg/dL vs. &lt;1.94 µg/dL. Lanphear et al. (2018): ~412,000 annual US deaths from lead-related cardiovascular disease.</li>
+    <li><strong>Inhibition of hemoglobin synthesis:</strong> Lead blocks δ-aminolevulinic acid dehydratase (ALAD) and accumulates neurotoxic ALA precursors, one of the oldest known toxicological effects.</li>
+    <li><strong>Bone as silent depot:</strong> A 20–30-year half-life means the lead from a childhood exposure in a 1970s old building is still ~50% present in a 50-year-old today. With menopause, fractures, or diseases that involve bone resorption, this lead is remobilized.</li>
+    <li><strong>Epigenetic changes:</strong> Prenatal lead exposure has been shown to alter DNA methylation patterns in key immune-system and nervous-system genes, effects that have been observed across generations.</li>
+  </ul>
+</div>
+
+<div class="study">
+  <span class="study-label">TACT trial · EDTA chelation therapy in post-MI patients</span>
+  <p>The TACT trial (2003–2012, n=1,708 patients after myocardial infarction) showed an <strong>18% reduction in cardiovascular events</strong> (HR 0.82, p=0.035) with EDTA chelation. In diabetic patients the effect was dramatic: HR 0.59 (NNT 6.5). The follow-up TACT2 (2024) was negative, presumably because baseline lead levels in the current population have fallen significantly. The TACT data suggest: in people with significant lead body burden, EDTA chelation can reduce cardiovascular risk.</p>
+  <cite>Lamas GA et al. JAMA. 2013;309(12):1241–1250 (TACT) · Lamas GA et al. ACC 2024 (TACT2, preliminary negative)</cite>
+</div>
+
+<!-- ════════════════════════ ARSENIC ════════════════════════ -->
+<h2>Arsenic, the poison in rice and drinking water</h2>
+<div class="divider"></div>
+
+<div class="metal-section">
+  <div class="metal-stripe"></div>
+  <div class="metal-header">
+    <div class="metal-icon">🌾</div>
+    <div class="metal-title-block">
+      <h3>Arsenic (As)</h3>
+      <span class="metal-sub">Rice · groundwater · pesticides · wood preservatives</span>
+    </div>
+  </div>
+  <div class="metal-body">
+    <p>Arsenic is an IARC Group 1 carcinogen, that is: confirmed to cause cancer in humans. Primary cancers: skin, lung, bladder, kidney. The most widespread misconception: that arsenic is only a problem in developing countries. Sources relevant in Germany: <strong>rice and rice products</strong> (rice milk, rice cakes, rice flour, particularly problematic for small children and patients with celiac disease), drinking water from areas with arsenic-rich groundwater layers (especially Bavaria, certain well areas), traditional medicinal herbs from Asia, smoked fish without speciation. In 2015 the EU set, for the first time, maximum levels for inorganic arsenic in rice: 0.2 mg/kg for white rice, 0.1 mg/kg for rice products for infants.</p>
+    <div class="metal-tags">
+      <span class="mtag mtag">Rice &amp; rice products</span>
+      <span class="mtag mtag">Drinking water (wells)</span>
+      <span class="mtag mtag">Smoked fish</span>
+      <span class="mtag mtag">Ayurvedic remedies</span>
+      <span class="mtag mtag-warn">DMSA-partially chelatable</span>
+      <span class="mtag mtag-warn">IARC Group 1</span>
+    </div>
+  </div>
+</div>
+
+<h3>The methylation paradox, why genetics decide</h3>
+<p>In the body, arsenic is converted by the enzyme AS3MT through a methylation cascade: inorganic arsenic → MMA(III) → DMA(V). The problem: the intermediate <strong>MMA(III) (monomethylarsonous acid, trivalent)</strong> is <em>more</em> toxic than the original inorganic arsenic, not less. People who eat a lot of arsenic and methylate poorly accumulate this particularly harmful intermediate.</p>
+
+<p>AS3MT gene activity varies enormously between population groups. Indigenous Andean communities, who have consumed arsenic-rich drinking water for generations, carry protective AS3MT polymorphisms at frequencies of 72–76%, possibly the result of evolutionary selection. These variants produce more DMA(V) and less MMA(III), which is associated with lower cancer risk. <strong>Folic acid and vitamin B12</strong> are direct regulators of this methylation pathway, an argument for methylation support as a protective strategy.</p>
+
+<div class="alert">
+  <strong>Important practical note: rice cakes and rice milk</strong>
+  For small children who use rice products as a main staple (often when gluten intolerance is suspected), and for celiac patients with high rice consumption, speciation of urinary arsenic is worth considering. The EU limits for infant rice products (0.1 mg/kg) have only been in force since 2016. Older brands and organic products from certain growing regions may exceed the limits.
+</div>
+
+<!-- ════════════════════════ CADMIUM ════════════════════════ -->
+<h2>Cadmium, the silent kidney killer</h2>
+<div class="divider"></div>
+
+<div class="metal-section">
+  <div class="metal-stripe"></div>
+  <div class="metal-header">
+    <div class="metal-icon">🚬</div>
+    <div class="metal-title-block">
+      <h3>Cadmium (Cd)</h3>
+      <span class="metal-sub">Smoking · grains/vegetables · liver/kidneys · chocolate</span>
+    </div>
+  </div>
+  <div class="metal-body">
+    <p>Cadmium is particularly insidious for three reasons: it has a <strong>half-life of 10–30 years in the kidney</strong>, it accumulates silently without early symptoms, and, the fact that is decisive for therapy, there is <em>no effective chelator</em> for chronic exposure. Prevention here matters more than any treatment.</p>
+    <p>Main source in the general population: smoking (each cigarette contains roughly 2 µg Cd, ~50% absorbed via the lungs; smokers carry roughly twice the body burden of non-smokers). Dietary: grains, leafy vegetables, spinach, kidney, liver, cocoa from soils with naturally high cadmium content (e.g., Latin America). EFSA has set the tolerable weekly intake at 2.5 µg/kg, a value that is already nearly exhausted by an average European diet.</p>
+    <div class="metal-tags">
+      <span class="mtag mtag">Smoking (main source)</span>
+      <span class="mtag mtag">Grains, spinach</span>
+      <span class="mtag mtag">Chocolate / cocoa</span>
+      <span class="mtag mtag">Organ meats</span>
+      <span class="mtag mtag-warn">No effective chelator</span>
+      <span class="mtag mtag-warn">Half-life 10–30 years (kidney)</span>
+    </div>
+  </div>
+</div>
+
+<h3>Kidney toxicity and Itai-itai disease</h3>
+<p>The organ target of cadmium is the proximal renal tubule. Cadmium-metallothionein complexes are filtered glomerularly and reabsorbed tubularly, where they accumulate up to a critical cortical concentration of about 200 µg/g. The first measurable biomarker is elevated <strong>urinary beta-2-microglobulin</strong> (&gt;300 µg/g creatinine). Advanced cadmium damage leads to Fanconi syndrome: renal calcium and phosphorus loss, osteomalacia, and osteoporosis.</p>
+
+<p>The best-known historical case: <em>Itai-itai</em> disease in Japan (1950s–70s) in the Jinzū River basin, where industrial cadmium contaminated the groundwater. Affected individuals (mostly postmenopausal women suffering from malnutrition) developed extreme bone pain and multiple spontaneous fractures. 196 officially recognized cases, with many more undiagnosed.</p>
+
+<div class="reframe">
+  <span class="reframe-label">Cadmium as a xenoestrogen, a hormonal problem</span>
+  <p>Cadmium directly binds and activates estrogen receptor alpha (ERα) with an affinity comparable to 17β-estradiol; it is a <em>metalloestrogen</em>. In laboratory models, cadmium stimulates estrogen-responsive gene expression, breast-cancer-cell proliferation, and PCOS-like ovarian changes. In epidemiological studies, blood cadmium correlates with elevated breast-cancer risk in postmenopausal women. This has clinical relevance: in patients with unexplained estrogen dominance, cycle disturbances, or hormone-associated cancer risks, cadmium should not be missing from the toxin history.</p>
+</div>
+
+<div class="nuance">
+  <span class="nuance-label">Therapeutic reality with cadmium</span>
+  <p>DMPS and DMSA have no established efficacy in chronic cadmium exposure, and may even increase kidney burden if cadmium is mobilized in larger amounts without being optimally excreted. In acute cadmium poisoning (a rare exception), DMSA can be used immediately after exposure. <strong>For chronic exposure, the rule is: smoking cessation is the most effective intervention.</strong> Supportively: zinc and calcium competitively inhibit Cd uptake in the gut; an optimized nutrient status reduces biological availability.</p>
+</div>
+
+<!-- ════════════════════════ ALUMINUM ════════════════════════ -->
+<h2>Aluminum, the most controversial metal</h2>
+<div class="divider"></div>
+
+<div class="metal-section">
+  <div class="metal-stripe"></div>
+  <div class="metal-header">
+    <div class="metal-icon">🫙</div>
+    <div class="metal-title-block">
+      <h3>Aluminum (Al)</h3>
+      <span class="metal-sub">Cookware · deodorants · antacids · food additives</span>
+    </div>
+  </div>
+  <div class="metal-body">
+    <p>Aluminum is the most controversial topic in heavy-metal medicine, and I'll take the liberty of being honest about the state of the research: there is a <strong>proven link between high aluminum exposure and neurotoxicity</strong> (dialysis encephalopathy, 1970s–80s). Whether normal environmental exposures cause clinically relevant harm has not yet been conclusively answered scientifically. I communicate this transparently because the distinction is clinically important.</p>
+    <p>Sources: antacids (up to 208 mg Al per tablet, the largest civilian aluminum source with long-term use), deodorants (aluminum chlorohydrate; dermal absorption is very low, but cumulative with daily use), cookware and aluminum foil (especially with acidic foods), food additives (E541 sodium aluminum phosphate in baking powder, E173 aluminum as a colorant), drinking water treated with aluminum salts.</p>
+    <div class="metal-tags">
+      <span class="mtag mtag">Antacids (main source)</span>
+      <span class="mtag mtag">Deodorants</span>
+      <span class="mtag mtag">Cookware / aluminum foil</span>
+      <span class="mtag mtag">Food additives</span>
+      <span class="mtag mtag-warn">Alzheimer's: controversial</span>
+      <span class="mtag mtag-warn">Dialysis encephalopathy: proven</span>
+    </div>
+  </div>
+</div>
+
+<h3>What is proven, and what is not</h3>
+<p>The <strong>dialysis encephalopathy</strong> of the 1970s/80s proves: at high concentrations, aluminum is a potent neurotoxin. Patients who received aluminum-containing dialysate solutions and phosphate binders developed speech and movement disorders, seizures, and dementia. This finding is undisputed. But the neuropathology does <em>not</em> resemble Alzheimer's disease: no amyloid plaques, no tau filaments, no neurodegenerative progression pattern.</p>
+
+<div class="study">
+  <span class="study-label">Epidemiological evidence · Aluminum and Alzheimer's</span>
+  <p>Rondeau et al. (PAQUID cohort, 2000): Al &gt;0.1 mg/L in drinking water → relative Alzheimer's risk 2.20 (95% CI: 1.24–3.89). Silicon ≥11.25 mg/L was protective (RR 0.75). Subsequent studies have not consistently replicated this finding. Meta-analyses tend to show elevated aluminum levels in the brain, serum, and CSF of Alzheimer's patients, but causality remains unproven. EFSA and Alzheimer's societies classify the evidence as inconsistent.</p>
+  <cite>Rondeau V et al. Am J Epidemiol. 2000;152(1):59–66 · Lidsky TI. J Occup Environ Med. 2014;56(Suppl 5)</cite>
+</div>
+
+<h3>Silicon-rich mineral water as a natural detox</h3>
+<p>Orthosilicic acid in silicon-rich mineral water (≥30 mg/L) forms soluble hydroxyaluminosilicate complexes with aluminum, which are excreted renally. Davenward et al. (2013) gave 15 Alzheimer's patients up to 1 liter daily for 12 weeks: aluminum body burden fell measurably, and 3 of 15 patients showed clinically relevant cognitive improvement. The evidence is <strong>preliminary and methodologically limited</strong> (small, open-label study, no control group). But the intervention is safe, low-threshold, and inexpensive, which makes it a sensible component of a more comprehensive protocol.</p>
+
+<!-- ════════════════════════ COCKTAIL ════════════════════════ -->
+<h2>The cocktail effect, why single-substance limits lie</h2>
+<div class="divider"></div>
+
+<p>All limit values, for mercury in fish, lead in drinking water, cadmium in foods, are <strong>set in isolation</strong>. That is regulatorily pragmatic, but biologically potentially dangerous. When several heavy metals are present at the same time, their toxicities do not add up, they multiply.</p>
+
+<div class="cocktail-box">
+  <span class="cocktail-label">The most disturbing experiment in metal toxicology</span>
+  <div class="cocktail-math">
+    <strong>LD1 mercury</strong> (kills 1% of animals)
+    <span class="cocktail-arrow">+</span>
+    <strong>1/20 of LD1 lead</strong> (kills 0% of animals)
+    <span class="cocktail-arrow">→</span>
+    <strong style="color:var(--teal-dark)">100% mortality</strong>
+  </div>
+  <p style="font-size:.87rem;margin:10px 0 0;color:#1a1814;line-height:1.8">Schubert et al. (1978, <em>Journal of Toxicology and Environmental Health</em>) combined sublethal doses of mercury and lead in rats: although neither dose alone caused any or hardly any deaths, 100% of the animals died with the combination. This finding is 46 years old and is still not fully reflected in regulation.</p>
+</div>
+
+<p>More recent data confirm the mechanism: <em>Frontiers in Public Health</em> (2023) showed that Pb/Hg/Cd mixtures in mice produce significantly stronger neurobehavioral impairments than any metal alone, via disruption of dopaminergic and serotonergic systems in the striatum. The ATSDR (US Toxic Substances Agency) notes: arsenic-cadmium-lead combinations show <strong>greater-than-additive effects</strong> on neurological endpoints.</p>
+
+<div class="reframe">
+  <span class="reframe-label">Clinical consequence</span>
+  <p>Patients who once had amalgam, eat tuna regularly, lived in an old building with lead pipes, and smoke or used to smoke, carry a cumulative metal mixture burden that, taken as a whole, may be more toxicologically relevant than any individual measurement suggests. This is an argument for a <em>holistic view</em> and against thinking in terms of single-substance limits.</p>
+</div>
+
+<!-- ════════════════════════ SYMPTOMS ════════════════════════ -->
+<h2>Typical symptom patterns, what I see in practice</h2>
+<div class="divider"></div>
+
+<p>Heavy-metal exposures show no pathognomonic symptoms; that is one of the central diagnostic problems. The complaints overlap with burnout, thyroid disease, autoimmune processes, mold exposure, and chronic stress. What I do: I look at the pattern, not at a single symptom.</p>
+
+<div class="symptom-grid">
+  <div class="symptom-card">
+    <h4>Energy &amp; nervous system</h4>
+    <ul>
+      <li>Chronic exhaustion, no restful sleep</li>
+      <li>Performance crashes after small efforts</li>
+      <li>Brain fog, concentration problems</li>
+      <li>Inner restlessness, irritability</li>
+      <li>Sleep disturbances, trouble falling asleep</li>
+      <li>Cold intolerance without thyroid findings</li>
+    </ul>
+  </div>
+  <div class="symptom-card">
+    <h4>Muscles &amp; joints</h4>
+    <ul>
+      <li>Diffuse muscle pain without findings</li>
+      <li>Migrating joint and tendon pain</li>
+      <li>Morning stiffness, cramps</li>
+      <li>Slow recovery after exercise</li>
+      <li>Muscle tremor, coordination problems</li>
+      <li>Carpal-tunnel-like complaints</li>
+    </ul>
+  </div>
+  <div class="symptom-card">
+    <h4>Gut &amp; detoxification</h4>
+    <ul>
+      <li>Bloating, alternating stools</li>
+      <li>New food intolerances</li>
+      <li>Paradoxical reactions to antioxidants</li>
+      <li>Elevated liver values without clear cause</li>
+      <li>Metallic taste in the mouth</li>
+      <li>Increased chemical sensitivity</li>
+    </ul>
+  </div>
+  <div class="symptom-card">
+    <h4>Psyche, hormones &amp; circulation</h4>
+    <ul>
+      <li>Depressive symptoms without psychiatric cause</li>
+      <li>Heart palpitations (cardiology unremarkable)</li>
+      <li>Blood-pressure swings, dizziness</li>
+      <li>Hormonal imbalances without endocrinological findings</li>
+      <li>Borderline-elevated kidney values</li>
+      <li>"Not quite feeling like myself anymore"</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ════════════════════════ WHY BLOOD TEST FAILS ════════════════════════ -->
+<h2>Why the blood test so often lies</h2>
+<div class="divider"></div>
+
+<p>"But my mercury blood value was normal." I hear this sentence regularly. And it is usually correct, and at the same time largely meaningless for the question of tissue burden.</p>
+
+<p>Blood is primarily a <strong>transport medium</strong>, not a storage organ. It shows what is currently circulating, not what is bound in tissue. And of the relevant heavy metals, a large portion is stored in tissue:</p>
+
+<div class="hwz-visual">
+  <h4>Half-lives and storage sites at a glance</h4>
+  <div class="hwz-bar-row">
+    <div class="hwz-label">Methylmercury in blood <span>→ acute exposure visible</span></div>
+    <div class="hwz-track"><div class="hwz-bar bar-hg-blut"></div></div>
+    <div style="font-size:.78rem;color:var(--muted);margin-top:4px">~70–80 days · blood reflects ongoing fish consumption</div>
+  </div>
+  <div class="hwz-bar-row">
+    <div class="hwz-label">Inorganic Hg in kidney <span>→ medium duration</span></div>
+    <div class="hwz-track"><div class="hwz-bar bar-hg-niere"></div></div>
+    <div style="font-size:.78rem;color:var(--muted);margin-top:4px">~40–90 days</div>
+  </div>
+  <div class="hwz-bar-row">
+    <div class="hwz-label">Inorganic Hg in brain <span>→ long-term storage</span></div>
+    <div class="hwz-track"><div class="hwz-bar bar-hg-hirn"></div></div>
+    <div style="font-size:.78rem;color:var(--muted);margin-top:4px">Months to 27+ years · the blood test shows NONE of this</div>
+  </div>
+  <div class="hwz-bar-row">
+    <div class="hwz-label">Lead in blood <span>→ acute exposure</span></div>
+    <div class="hwz-track"><div class="hwz-bar bar-pb-blut"></div></div>
+    <div style="font-size:.78rem;color:var(--muted);margin-top:4px">~30 days · 90–95% of the body burden sits in bone</div>
+  </div>
+  <div class="hwz-bar-row">
+    <div class="hwz-label">Lead in bone</div>
+    <div class="hwz-track"><div class="hwz-bar bar-pb-knochen"></div></div>
+    <div style="font-size:.78rem;color:var(--muted);margin-top:4px">20–30 years · not measurable in blood test</div>
+  </div>
+  <div class="hwz-bar-row">
+    <div class="hwz-label">Cadmium in kidney</div>
+    <div class="hwz-track"><div class="hwz-bar bar-cd-niere"></div></div>
+    <div style="font-size:.78rem;color:var(--muted);margin-top:4px">10–30 years · cumulative, no effective chelator</div>
+  </div>
+  <div class="hwz-bar-row">
+    <div class="hwz-label">Arsenic in urine (spontaneous)</div>
+    <div class="hwz-track"><div class="hwz-bar bar-as-urin"></div></div>
+    <div style="font-size:.78rem;color:var(--muted);margin-top:4px">~4 days · urine reflects current exposure well</div>
+  </div>
+  <p class="hwz-note">Bar width = relative residence time. Blood measurement primarily shows the short-term transport fraction, not the cumulative tissue burden, which is what is toxicologically decisive.</p>
+</div>
+
+<div class="big-highlight">
+  <h3>The half-life calculation, why 10 infusions do more than 10 years of waiting</h3>
+  <p>Imagine you had your last amalgam fillings removed at age 30. The fillings are gone, but the mercury that has been deposited in brain tissue over years is still there.</p>
+  <p>If the half-life of inorganic mercury in the brain is 15–27 years, that means: <strong>without active intervention, you would be 45–57 years old before half of it had been naturally eliminated.</strong> Until three quarters were gone: another 30–54 years.</p>
+  <p>With one DMPS infusion, the body excretes more mercury renally in a few hours than in many weeks without intervention. Cumulatively over 8–12 cycles, a portion of the mobilizable tissue burden is actively reduced, the kind that the body alone would only shed over decades. That is not magic. That is pharmacology.</p>
+  <span class="hl-number">27</span>
+</div>
+
+<!-- ════════════════════════ DIAGNOSTICS ════════════════════════ -->
+<h2>Diagnostics, what I actually measure</h2>
+<div class="divider"></div>
+
+<p>There is no single perfect diagnostic for heavy metals. Each test has a particular informational value, a particular limitation, and a particular clinical context in which it makes sense. That is not a weakness, that is toxicology.</p>
+
+<div class="diag-steps">
+  <div class="dstep">
+    <div class="dstep-num">1</div>
+    <div class="dstep-body">
+      <h4>Baseline labs, what I always collect</h4>
+      <p>Complete blood count, kidney function (creatinine, cystatin C, GFR), liver values (AST, ALT, GGT), thyroid (TSH, fT3/fT4 if needed), ferritin/iron, zinc, selenium, magnesium, vitamin D; this baseline status is mandatory before any further metal diagnostics, because it gauges the system's detoxification capacity and prevents other causes from being overlooked.</p>
+    </div>
+  </div>
+  <div class="dstep">
+    <div class="dstep-num">2</div>
+    <div class="dstep-body">
+      <h4>Spot urine (screening), first orientation</h4>
+      <p>Multi-hour or first-morning urine sample for mercury, lead, cadmium, arsenic, and aluminum if indicated. The German HBM-I values (Federal Environment Agency): Hg 5 µg/L blood, 7 µg/L urine. These values give an initial orientation, but do not rule out significant tissue burdens when the result is normal. Particularly important: arsenic speciation (separate measurement of iAs, MMA, DMA) and the time interval since the last fish meal (≥72h for valid Hg measurement).</p>
+    </div>
+  </div>
+  <div class="dstep">
+    <div class="dstep-num">3</div>
+    <div class="dstep-body">
+      <h4>DMPS provocation test, the heart of heavy-metal diagnostics</h4>
+      <p>Intravenous administration of DMPS (individually dosed by body weight and kidney function), followed by 4–6 hours of urine collection and measurement of mobilized metals in a specialty laboratory. This test shows what the body releases from the tissue-blood equilibrium under chelator influence, that is, the <em>mobilizable</em> burden, not just the circulating one. Performed according to the protocol of the German Medical Society for Metal Toxicology (AGM). Important: the test is diagnostic, not therapeutic; the provocation infusion does excrete metals, but a structured therapy cycle is something distinct from it. Note: American toxicology societies (ACMT) reject the post-chelator provocation test as a diagnostic instrument because no population-based reference ranges exist. In German integrative medicine it is nonetheless used; I employ it as one component within the clinical context, not as standalone proof.</p>
+    </div>
+  </div>
+  <div class="dstep">
+    <div class="dstep-num">4</div>
+    <div class="dstep-body">
+      <h4>Urinary porphyrin profile, a functional biomarker</h4>
+      <p>Mercury specifically inhibits the enzyme uroporphyrinogen decarboxylase, which leads to accumulation of precoproporphyrin in urine, a pattern considered highly specific for Hg burden. This test does not measure metal concentration but the <em>biological effect</em> of the metal on the enzyme system. Particularly valuable in patients whose provocation test is borderline but whose clinical picture strongly suggests a metal burden.</p>
+    </div>
+  </div>
+  <div class="dstep">
+    <div class="dstep-num">5</div>
+    <div class="dstep-body">
+      <h4>MELISA test, immunological reactivity</h4>
+      <p>The Memory Lymphocyte Immunostimulation Assay measures T-cell sensitization to various metals and dental materials. Important: MELISA measures immunological sensitivity, not toxic body burden. These are different questions. A patient can have a high body burden without MELISA reactivity, and vice versa. I use MELISA when autoimmune processes are in the foreground, or when an amalgam removal is being planned and the tolerance of alternative materials needs to be checked.</p>
+    </div>
+  </div>
+  <div class="dstep">
+    <div class="dstep-num">6</div>
+    <div class="dstep-body">
+      <h4>Hair mineral analysis, limited but specific uses</h4>
+      <p>Hair reflects systemic metal exposure from 1–3 months ago. The main limitation: external contamination from shampoos, hair dyes, and the environment. The EPA and CDC do not recommend hair analysis for clinical decisions. One relevant exception: chronic arsenic exposure, because arsenobetaine from seafood (which distorts urinary tests) does not accumulate in hair. In selected constellations, hair can be useful; as a stand-alone diagnostic test, it is too unreliable.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════ DMPS MECHANISM ════════════════════════ -->
+<h2>DMPS: how chelation therapy works physiologically</h2>
+<div class="divider"></div>
+
+<p>DMPS (2,3-dimercapto-1-propanesulfonic acid) is no miracle drug. It is a precisely acting molecule with a clearly describable mechanism. Once you understand what DMPS physiologically does, and what the body would do without it, the logic becomes obvious.</p>
+
+<div class="mechanism-steps">
+  <div class="mstep">
+    <div class="mstep-num">1</div>
+    <div class="mstep-body">
+      <h4>Distribution in the extracellular space</h4>
+      <p>DMPS is administered intravenously and quickly distributes through the blood and extracellular space. It barely penetrates the blood-brain barrier, a safety advantage, because deep CNS deposits are not abruptly mobilized. It works where mercury is currently circulating: in the blood, in extracellular fluid, on membrane surfaces.</p>
+    </div>
+  </div>
+  <div class="mstep">
+    <div class="mstep-num">2</div>
+    <div class="mstep-body">
+      <h4>The pincer-grip principle of chelation</h4>
+      <p>DMPS has two free –SH groups. They clamp the Hg²⁺ ion at two points simultaneously; the resulting ring binding is more stable than any monodentate sulfur group. DMPS successfully competes against the body's own glutathione, cysteine residues, and other thiol biomolecules for the mercury, and wins. The result: a water-soluble, biochemically inert DMPS-Hg complex.</p>
+    </div>
+  </div>
+  <div class="mstep">
+    <div class="mstep-num">3</div>
+    <div class="mstep-body">
+      <h4>Mobilization from the tissue-blood equilibrium</h4>
+      <p>Mercury in tissues stands in a dynamic equilibrium with blood; a small share is constantly circulating. When DMPS binds and removes the free Hg in blood, this equilibrium shifts: more Hg passes from the tissue depot into the bloodstream and is captured immediately, before it can redeposit. This gradient effect is the actual therapeutic core, active capture, not passive waiting.</p>
+    </div>
+  </div>
+  <div class="mstep">
+    <div class="mstep-num">4</div>
+    <div class="mstep-body">
+      <h4>Renal excretion in hours instead of decades</h4>
+      <p>The DMPS-Hg complex is water-soluble and renally excretable. It is actively secreted in the tubules and excreted in high concentrations in urine within 4–6 hours. In a single infusion night, the body excretes more mercury than it would without intervention in months. Cumulatively over a complete cycle: a measurable reduction of the mobilizable burden.</p>
+    </div>
+  </div>
+  <div class="mstep">
+    <div class="mstep-num">5</div>
+    <div class="mstep-body">
+      <h4>Cycles instead of a single dose</h4>
+      <p>A single cycle does not mobilize everything. The tissue releases Hg step by step, which is why we work in cycles with controlled pauses, during which minerals are rebuilt and the system recovers. The amount excreted per infusion typically declines over time, a sign that the mobilizable burden is decreasing.</p>
+    </div>
+  </div>
+</div>
+
+<div class="pull-quote">
+  <p>"The body excretes mercury, but with the efficiency of an hourglass. Chelation therapy is the step that turns the hourglass 90 degrees."</p>
+  <cite>— Dr. Shukri Jarmoukli, Vivecura Berlin</cite>
+</div>
+
+<!-- ════════════════════════ CHELATOR COMPARISON ════════════════════════ -->
+<h2>Chelators compared, pharmacological and natural</h2>
+<div class="divider"></div>
+
+<p>There is a fundamental pharmacological difference between systemic chelators and so-called "natural detox agents," and I communicate this difference honestly because it is central to the therapeutic decision.</p>
+
+<div class="chelat-grid">
+  <div class="chelat-card">
+    <div class="chelat-name">DMPS</div>
+    <span class="chelat-sub">2,3-dimercapto-1-propanesulfonic acid</span>
+    <div class="chelat-row"><span class="chelat-key">Main metals</span><span class="chelat-val">Hg &gt; As, Pb</span></div>
+    <div class="chelat-row"><span class="chelat-key">Approval DE</span><span class="chelat-val">Yes (Dimaval®)</span></div>
+    <div class="chelat-row"><span class="chelat-key">Administration</span><span class="chelat-val">IV or oral</span></div>
+    <div class="chelat-row"><span class="chelat-key">BBB penetration</span><span class="chelat-val">Minimal</span></div>
+    <div class="chelat-row"><span class="chelat-key">Risks</span><span class="chelat-val">Mineral loss, redistribution</span></div>
+    <span class="ev-badge evb-gut">Pharmacologically well established</span>
+  </div>
+  <div class="chelat-card">
+    <div class="chelat-name">DMSA</div>
+    <span class="chelat-sub">Dimercaptosuccinic acid (succimer)</span>
+    <div class="chelat-row"><span class="chelat-key">Main metals</span><span class="chelat-val">Pb &gt; Hg, As</span></div>
+    <div class="chelat-row"><span class="chelat-key">Approval</span><span class="chelat-val">US: pediatric Pb poisoning</span></div>
+    <div class="chelat-row"><span class="chelat-key">Administration</span><span class="chelat-val">Oral</span></div>
+    <div class="chelat-row"><span class="chelat-key">BBB penetration</span><span class="chelat-val">Minimal</span></div>
+    <div class="chelat-row"><span class="chelat-key">Risks</span><span class="chelat-val">Transient ALT elevation</span></div>
+    <span class="ev-badge evb-gut">RCT-supported for lead poisoning</span>
+  </div>
+  <div class="chelat-card">
+    <div class="chelat-name">EDTA</div>
+    <span class="chelat-sub">Ethylenediaminetetraacetic acid (CaNa₂EDTA)</span>
+    <div class="chelat-row"><span class="chelat-key">Main metals</span><span class="chelat-val">Pb &gt; Cd, Ca</span></div>
+    <div class="chelat-row"><span class="chelat-key">Approval</span><span class="chelat-val">Severe Pb poisoning</span></div>
+    <div class="chelat-row"><span class="chelat-key">Administration</span><span class="chelat-val">IV (CaNa₂EDTA ONLY!)</span></div>
+    <div class="chelat-row"><span class="chelat-key">Cardio benefit</span><span class="chelat-val">TACT positive, TACT2 negative</span></div>
+    <div class="chelat-row"><span class="chelat-key">Risks</span><span class="chelat-val">Hypocalcemia with Na₂EDTA!</span></div>
+    <span class="ev-badge evb-mittel">Cardio benefit controversial</span>
+  </div>
+  <div class="chelat-card">
+    <div class="chelat-name">Natural approaches</div>
+    <span class="chelat-sub">MCP · chlorella · cilantro · alpha-lipoic acid</span>
+    <div class="chelat-row"><span class="chelat-key">MCP (RCT)</span><span class="chelat-val">As↑, Cd↑, Pb↑ in urine (pilot)</span></div>
+    <div class="chelat-row"><span class="chelat-key">Chlorella</span><span class="chelat-val">Negative alone (RCT, n=350)</span></div>
+    <div class="chelat-row"><span class="chelat-key">Cilantro</span><span class="chelat-val">Anecdotal data only</span></div>
+    <div class="chelat-row"><span class="chelat-key">Alpha-lipoic acid</span><span class="chelat-val">Promising, no RCT</span></div>
+    <div class="chelat-row"><span class="chelat-key">Mode of action</span><span class="chelat-val">Gut, not systemic</span></div>
+    <span class="ev-badge evb-schwach">Limited human data</span>
+  </div>
+</div>
+
+<div class="nuance">
+  <span class="nuance-label">What binders can do, and what they can't</span>
+  <p>Zeolite, activated charcoal, chlorella, and pectin act in the gut: they interrupt the enterohepatic cycle and trap metals that are excreted via bile. That is a sensible component, but they do not enter the blood, the extracellular space, or tissues. They do not shift any tissue-blood equilibrium. The pharmacological difference from systemic chelators is fundamental, not gradual. In my practice I use binders as an adjunct, never as a substitute for systemic chelation therapy when the tissue burden is relevant.</p>
+</div>
+
+<div class="alert">
+  <strong>Critical safety warning: Na₂EDTA vs. CaNa₂EDTA</strong>
+  Only calcium-EDTA (CaNa₂EDTA) is safe. Disodium-EDTA (Na₂EDTA, without calcium) can cause fatal hypocalcemia, with three documented deaths in the United States alone (2003–2005). Anyone considering EDTA chelation: make absolutely sure which form is being given. The seriousness of a practice shows up here, among other places.
+</div>
+
+<!-- ════════════════════════ VIVECURA PROTOCOL ════════════════════════ -->
+<h2>What you can expect at Vivecura, in concrete terms</h2>
+<div class="divider"></div>
+
+<p>No one-size-fits-all schema. But clear principles that I apply to every patient, individually adjusted, in a sequence that protects the system rather than overwhelming it.</p>
+
+<div class="viv-protocol">
+  <div class="viv-card">
+    <span class="viv-phase">Phase 1</span>
+    <h4>History &amp; system status</h4>
+    <ul>
+      <li>Detailed exposure and symptom history</li>
+      <li>Dental and amalgam history, fish-consumption pattern</li>
+      <li>Housing and occupational history (old building, industry)</li>
+      <li>Previous therapy attempts and reactions</li>
+      <li>Bioimpedance analysis (BIA): cellular status</li>
+      <li>HRV measurement: autonomic nervous-system status</li>
+    </ul>
+  </div>
+  <div class="viv-card">
+    <span class="viv-phase">Phase 2</span>
+    <h4>Diagnostics</h4>
+    <ul>
+      <li>Baseline labs: kidneys, liver, minerals, thyroid</li>
+      <li>Spot urine with metal profile (screening)</li>
+      <li>DMPS provocation test per AGM protocol</li>
+      <li>Porphyrin profile if appropriate (functional Hg marker)</li>
+      <li>MELISA if autoimmune suspicion or planning amalgam removal</li>
+      <li>Selenium, zinc, glutathione (antioxidant capacity)</li>
+    </ul>
+  </div>
+  <div class="viv-card">
+    <span class="viv-phase">Phase 3</span>
+    <h4>Preparation &amp; chelation cycles</h4>
+    <ul>
+      <li>Build up minerals and glutathione (4–6 weeks)</li>
+      <li>Stabilize gut and liver, elimination must work</li>
+      <li>DMPS infusions, individually dosed, 8–12 cycles</li>
+      <li>Mineral monitoring after each infusion</li>
+      <li>Cyclical pauses for regeneration and substitution</li>
+      <li>Tracking of excretion amounts over time</li>
+    </ul>
+  </div>
+  <div class="viv-card">
+    <span class="viv-phase">Phase 4</span>
+    <h4>Follow-up &amp; regeneration</h4>
+    <ul>
+      <li>Repeat provocation: how has the burden changed?</li>
+      <li>IV nutrient infusions: vitamin C, glutathione, B-complex</li>
+      <li>Phosphatidylcholine for neurotoxic burden</li>
+      <li>Nutritional and lifestyle optimization</li>
+      <li>Video consultations possible for follow-up and adjustment</li>
+      <li>Honest discussion: another cycle, or close out?</li>
+    </ul>
+  </div>
+</div>
+
+<div class="klinisch">
+  <span class="klinisch-label">Clinical observation from practice</span>
+  <p>Over years I have made a consistent observation: even in patients whose spontaneous urinary and blood mercury values were entirely unremarkable, post-DMPS urine samples show elevated mercury excretion in a notable number of cases. Under the influence of a chelator, the body releases mercury that it would not mobilize on its own.</p>
+  <p>One particularly striking case: Markus, 47, Berlin. Persistent exhaustion after a COVID infection, elevated liver enzymes (ALT 62 U/L), brain fog for 7 months. Spontaneous Hg unremarkable. Amalgam removed 18 years earlier. Chelator provocation test: clearly elevated mercury excretion. After 8 cycles over 6 months with accompanying mineral monitoring: ALT normalized (34 U/L), subjective improvement in cognition, and noticeably better sleep quality.</p>
+  <p>I communicate this transparently: this is a clinical observation, not a randomized trial. Causality cannot be proven here. But the pattern, Hg burden despite long-removed amalgam, measurable excretion under chelator, clinical improvement over the course, is consistent enough in my practice to take this component seriously.</p>
+</div>
+
+<!-- ════════════════════════ CONNECTION ════════════════════════ -->
+<h2>Heavy metals in the system, the link to my other special focus areas</h2>
+<div class="divider"></div>
+
+<p>Heavy-metal exposures rarely come alone. They interact with the gut (impaired elimination), with mold toxins (blocked detoxification enzymes), and with the nervous system (neuroinflammation, which limits psychiatric treatments). My four special focus areas are not coincidence, they are a system.</p>
+
+<div class="connection-grid">
+  <div class="conn-card active-conn">
+    <span class="conn-icon">⚗️</span>
+    <h5>Heavy metals</h5>
+    <p>Long-term storage, tissue burden, chelation therapy</p>
+    <span class="conn-badge">this area</span>
+  </div>
+  <div class="conn-card">
+    <span class="conn-icon">🌿</span>
+    <h5>Gut Reset</h5>
+    <p>Metal elimination via bile and stool, without a healthy gut there's no efficient detoxification cycle</p>
+  </div>
+  <div class="conn-card">
+    <span class="conn-icon">🍄</span>
+    <h5>Mold</h5>
+    <p>Mycotoxins block glutathione synthesis and metallothioneins; with concurrent mold exposure, heavy-metal detoxification deteriorates</p>
+  </div>
+  <div class="conn-card">
+    <span class="conn-icon">💊</span>
+    <h5>Ketamine</h5>
+    <p>Neurotoxic heavy-metal burden can limit the success of psychiatric treatments; reduce the toxin load, then a window for healing opens</p>
+  </div>
+</div>
+
+<!-- ════════════════════════ EVIDENCE TABLE ════════════════════════ -->
+<h2>Evidence overview, what we know and what we don't</h2>
+<div class="divider"></div>
+
+<table class="evidence-table">
+  <thead>
+    <tr>
+      <th>Statement</th>
+      <th>Evidence level</th>
+      <th>Limitation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Amalgam releases Hg vapor</td>
+      <td><span class="ev-strong">Strongly supported</span></td>
+      <td>Causal harm in healthy adults at the group level not proven</td>
+    </tr>
+    <tr>
+      <td>MeHg from fish damages the nervous system prenatally</td>
+      <td><span class="ev-strong">Human studies (Faroe)</span></td>
+      <td>Seychelles study contradicts; selenium protection as a possible explanation</td>
+    </tr>
+    <tr>
+      <td>Genetic vulnerability (CPOX4, MT, SLC6A4)</td>
+      <td><span class="ev-strong">RCT data (NIH)</span></td>
+      <td>Applies to genetically defined subgroups, not all</td>
+    </tr>
+    <tr>
+      <td>Hg half-life in brain: many years</td>
+      <td><span class="ev-medium">Toxicokinetic models</span></td>
+      <td>Direct in vivo measurement in humans difficult; estimates 15–27 years</td>
+    </tr>
+    <tr>
+      <td>Lead: no safe threshold</td>
+      <td><span class="ev-strong">CDC, human studies</span></td>
+      <td>IQ effects already detectable below 5 µg/dL; consensus opinion</td>
+    </tr>
+    <tr>
+      <td>Lead-cardiac risk (TACT)</td>
+      <td><span class="ev-medium">1 positive RCT, 1 negative</span></td>
+      <td>TACT2 negative, presumably due to lower baseline lead levels</td>
+    </tr>
+    <tr>
+      <td>Arsenic: IARC Group 1 carcinogen</td>
+      <td><span class="ev-strong">Established (human)</span></td>
+      <td>Skin, lung, bladder; primarily with high drinking-water exposure</td>
+    </tr>
+    <tr>
+      <td>Cd: kidney damage / hormonal effect</td>
+      <td><span class="ev-strong">Human / in vitro mechanism</span></td>
+      <td>Kidney: human studies solid. Estrogen effect: in vitro well established, human limited</td>
+    </tr>
+    <tr>
+      <td>Al: Alzheimer's link</td>
+      <td><span class="ev-medium">Epidemiology inconsistent</span></td>
+      <td>Dialysis encephalopathy proves neurotoxicity, direct Alzheimer's causality unproven</td>
+    </tr>
+    <tr>
+      <td>DMPS mobilizes Hg renally</td>
+      <td><span class="ev-strong">Pharmacologically supported</span></td>
+      <td>Extent of tissue mobilization individually variable</td>
+    </tr>
+    <tr>
+      <td>Chelation therapy in chronic amalgam exposure</td>
+      <td><span class="ev-medium">Clinical experience</span></td>
+      <td>Grandjean 1997 RCT (n=50) showed no superiority in mild exposure; larger RCTs lacking</td>
+    </tr>
+    <tr>
+      <td>Cocktail effect (Hg + Pb synergy)</td>
+      <td><span class="ev-medium">Animal experiment (Schubert 1978)</span></td>
+      <td>Human dose extrapolation still incomplete; barely reflected in regulation</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- AUNT'S STORY + SELF-CHECK -->
+
+<h2>A story from my family that brings it all to a point</h2>
+<div class="divider"></div>
+
+<div class="klinisch">
+  <span class="klinisch-label">Personal family story</span>
+  <p>My aunt is a dentist. For more than 15 years she has suffered from Hashimoto's thyroiditis, severe hormonal complaints, weight gain despite diets, massive food intolerances, and chronic exhaustion. She has truly tried everything. Dietary changes, hormone therapies, elimination diets, supplement protocols. Brief improvements, but never a real turnaround. Her body seemed to sabotage whatever she tried.</p>
+  <p>For years I had voiced the suspicion that heavy metals could be playing a role. As a dentist she had had daily contact with amalgam for decades. Grinding, removing, placing. Even with protective measures, the exposure during this work is considerable. Mercury vapor is invisible. And it accumulates.</p>
+  <p>Her husband is the chief physician of a hematology-oncology clinic in the United States. He is brilliant, experienced, and deeply rooted in conventional medicine. For five years he politely smiled at my suspicion. Heavy metals, functional medicine, DMPS tests. He listened, nodded politely, and left it at that.</p>
+  <p>Then my aunt decided to take the DMPS provocation test. The results were unambiguous: exceptionally high mobilizable mercury amounts. A burden built up over decades of occupational exposure that no standard blood test had ever shown.</p>
+  <p>She began chelation therapy. What happened afterwards surprised everyone, perhaps her most of all. The weight that had not yielded to any diet for 15 years began to fall. Energy returned. The intolerances eased. She feels more alive than she has in years.</p>
+  <p>Her husband, the oncologist, no longer laughs at me. He had himself examined and treated through functional medicine. He is slowly letting go of the idea that conventional diagnostics captures all relevant burdens. First the proof, then the change. That is human. And I understand it.</p>
+  <p>What I take away from this story: not every cause is recognized with the tools you are used to. Sometimes you need a different question to find a new answer.</p>
+</div>
+
+<h2>Could this be relevant for you? An aid to self-assessment.</h2>
+<div class="divider"></div>
+
+<p>What follows is not a diagnosis and is no substitute for a medical history. It is an honest invitation to pause and reflect. Heavy metals show no pathognomonic symptoms. They rarely surface as a clear cause. But they can act for years in the background as silent contributors, without anyone ever asking about them.</p>
+
+<p>I think the following people should seriously consider whether heavy-metal diagnostics would make sense for them. Not as alarmism. As an informed decision.</p>
+
+<div class="panel">
+  <h4>Group 1: exposures many people have forgotten</h4>
+  <ul>
+    <li><strong>Amalgam fillings, current or past:</strong> You had amalgam fillings, perhaps removed 10, 15, or 20 years ago. The mercury isn't gone just because the filling is gone. The half-life in the brain is up to 27 years.</li>
+    <li><strong>Occupational amalgam exposure:</strong> You are or were a dentist, dental technician, or dental assistant. Years of contact with amalgam during placement and removal mean an exposure that goes well beyond normal, even with protective measures.</li>
+    <li><strong>Regular consumption of tuna or swordfish:</strong> Anyone who eats tuna two or three times a week can build up a relevant methylmercury burden over months and years without noticing.</li>
+    <li><strong>Old building, lead pipes, or lead paint:</strong> You live in a building constructed before 1970. You know the water pipes are made of lead, or you suspect they are. Berlin's old buildings are particularly relevant here.</li>
+    <li><strong>Smoking, current or past:</strong> Cadmium accumulates in the kidney with a half-life of 10 to 30 years. Anyone who has smoked carries this burden for a long time, without knowing it.</li>
+    <li><strong>Regular rice consumption, especially rice milk or rice cakes:</strong> Arsenic preferentially accumulates in rice plants. Anyone who eats rice as their main grain should have their arsenic status checked at least once.</li>
+  </ul>
+</div>
+
+<div class="panel">
+  <h4>Group 2: symptoms without a satisfying explanation</h4>
+  <ul>
+    <li><strong>Brain fog that won't go away:</strong> Mentally you feel as if behind glass. Concentration problems, word-finding difficulties, a head that feels as if in mist. And every blood test was normal.</li>
+    <li><strong>Chronic exhaustion without a clear cause:</strong> You sleep eight hours and still aren't rested in the morning. Small efforts exhaust you out of all proportion. Thyroid, complete blood count, all unremarkable.</li>
+    <li><strong>Hormonal imbalances that fail to respond lastingly to any therapy:</strong> Cycle disturbances, PMS, unexplained weight gain, estrogen dominance with no clear endocrinological cause. Cadmium and zearalenone act as metalloestrogens and can directly disrupt the hormonal system.</li>
+    <li><strong>Thyroid disorders, especially Hashimoto's:</strong> Mercury directly attacks the selenoenzymes needed for thyroid-hormone activation. There is no proven causality. But the mechanistic plausibility is great enough that, in cases of Hashimoto's, I always ask about the heavy-metal history.</li>
+    <li><strong>Autoimmune diseases of any kind:</strong> Rheumatoid arthritis, lupus, multiple sclerosis, inflammatory bowel diseases. Heavy metals can act as chronic triggers for immune activation. No physician can guarantee you that they play a role. But no physician can guarantee you that they don't, without having measured.</li>
+    <li><strong>Migrating muscle and joint pain without orthopedic findings:</strong> Diffuse pain that doesn't really belong anywhere. MRI unremarkable. Rheumatoid factor negative. No inflammatory finding. And yet this pain.</li>
+    <li><strong>Mental health problems that don't respond stably to any classical therapy:</strong> Depression, anxiety disorders, emotional instability, a nervous system that seems permanently on alert. When neurobiological toxicity destabilizes the foundation, psychotherapeutic and pharmacological treatments can only do so much.</li>
+    <li><strong>Kidney values that remain borderline for years:</strong> Slightly elevated creatinine, a slowly declining GFR with no clear cause. Cadmium preferentially attacks the proximal renal tubules, for years without symptoms.</li>
+    <li><strong>Intolerances that keep adding up:</strong> Food intolerances that slowly expand. A body that reacts to more and more things. Heavy metals can destabilize the gut barrier and chronically activate the immune system, which prepares the ground for intolerances.</li>
+    <li><strong>Therapy resistance as a pattern:</strong> You have tried a lot. You have had many diagnoses. Many things helped briefly, but nothing took hold lastingly. For me, this is one of the strongest clinical clues. Not because heavy metals are always the cause, but because they can sabotage other therapies as a silent background load.</li>
+  </ul>
+</div>
+
+<div class="reframe">
+  <span class="reframe-label">My assessment as a physician</span>
+  <p>I consider it medically defensible and sensible to initiate structured heavy-metal diagnostics for anyone who suffers from one or more chronic illnesses, who has demonstrably been exposed to relevant exposures, or who, despite solid therapy attempts, has not achieved stable improvement. Not as the only answer. As one component of a more complete picture. The question is not: "Is it heavy metals?" The question is: "Have we ever sufficiently checked?"</p>
+</div>
+
+<div class="nuance">
+  <span class="nuance-label">What this assessment is not</span>
+  <p>These questions do not replace a medical history or laboratory diagnostics. They are an aid to orientation, not a diagnosis. Not everyone with exhaustion has a heavy-metal burden. And a heavy-metal burden does not automatically explain all symptoms. What counts is the overall clinical context. That is exactly what the initial consultation is for.</p>
+</div>
+
+<!-- CTA -->
+<div class="cta">
+  <h2>Let's look at the complete picture together.</h2>
+  <p>In the first conversation I listen. Without labs, without a checklist. Then we decide together which diagnostics will bring genuinely new information, and which path is right for you.</p>
+  <a href="https://www.doctolib.de/arzt/berlin/shukri-jarmoukli/booking/motives?source=profile" target="_top" rel="noopener noreferrer">Book an appointment at Vivecura</a>
+</div>
+
+<!-- SOURCES -->
+<div class="sources">
+  <h2>Scientific sources</h2>
+  <ol>
+    <li>DeRouen TA et al. Neurobehavioral effects of dental amalgam in children (Casa Pia Trial). JAMA. 2006;295(14):1644–1652.</li>
+    <li>Bellinger DC et al. Neuropsychological and renal effects of dental amalgam in children. JAMA. 2006;295(14):1623–1632.</li>
+    <li>Woods JS et al. Genetic polymorphisms affecting susceptibility to mercury neurotoxicity (Casa Pia substudy). Neurotoxicology. 2014;44:242–249.</li>
+    <li>Ajsuvakova OP et al. Sulfhydryl groups as targets of mercury toxicity. Coord Chem Rev. 2020;417:213343.</li>
+    <li>Grandjean P et al. Cognitive deficit in 7-year-old children with prenatal exposure to methylmercury (Faroe). Neurotoxicol Teratol. 1997;19(6):417–428.</li>
+    <li>Myers GJ et al. Seychelles Child Development Study (Outcome 66 months). Neurotoxicol Teratol. 1997;19(6):401–416.</li>
+    <li>Davidson PW et al. Neurodevelopmental outcomes in Seychelles at age 22 and 24. Neurotoxicol Teratol. 2017;62:69–76.</li>
+    <li>Ralston NVC, Raymond LJ. Mercury's neurotoxicity is characterised by its disruption of selenium biochemistry. Biochim Biophys Acta. 2018;1862(11):2405–2416.</li>
+    <li>FDA. Mercury Levels in Commercial Fish and Shellfish 1990–2012. fda.gov.</li>
+    <li>EU Regulation 2023/915 on maximum levels for contaminants in food.</li>
+    <li>Rooney JPK. The retention time of inorganic mercury in the brain, systematic review. Toxicol Appl Pharmacol. 2014;274(3):425–435.</li>
+    <li>Charkiewicz AE et al. Mercury exposure and health effects. Int J Mol Sci. 2025;26(5):2326.</li>
+    <li>Menke A et al. Blood lead below 0.48 µmol/L and mortality among US adults. Circulation. 2006;114(13):1388–1394.</li>
+    <li>Lanphear BP et al. Low-level lead exposure and mortality in US adults. Lancet Public Health. 2018;3(4):e177–e184.</li>
+    <li>Needleman HL et al. IQ and blood lead levels, pooled international analysis. Environ Health Perspect. 2005;113(7):894–899.</li>
+    <li>Lamas GA et al. Effect of disodium EDTA chelation regimen on cardiovascular events (TACT). JAMA. 2013;309(12):1241–1250.</li>
+    <li>Lamas GA et al. TACT2, EDTA Chelation in Diabetic Post-MI Patients (negative). ACC. 2024.</li>
+    <li>IARC Monographs. Arsenic and arsenic compounds. IARC Monogr Eval Carcinog Risks Hum. 2012;100C.</li>
+    <li>Vahter M. Mechanisms of arsenic biotransformation (AS3MT). Toxicology. 2002;181–182:211–217.</li>
+    <li>EFSA. Arsenic in food, Scientific Opinion. EFSA Journal. 2009;7(10):1351.</li>
+    <li>Stoica A et al. Cadmium activates estrogen receptor alpha. Cancer Res. 2000;60(20):5844–5849.</li>
+    <li>Järup L, Akesson A. Current status of cadmium as an environmental health problem. Toxicol Appl Pharmacol. 2009;238(3):201–208.</li>
+    <li>EFSA. Cadmium dietary exposure in the European population. EFSA Journal. 2012;10(1):2551.</li>
+    <li>Rondeau V et al. Aluminum and silica in drinking water and the risk of Alzheimer's disease. Am J Epidemiol. 2000;152(1):59–66.</li>
+    <li>Lidsky TI. Is the aluminum hypothesis dead? J Occup Environ Med. 2014;56(Suppl 5):S73–S79.</li>
+    <li>Davenward S et al. Silicon-rich mineral water as a non-invasive test of the aluminum hypothesis in Alzheimer's disease. J Alzheimers Dis. 2013;33(2):423–430.</li>
+    <li>Schubert J et al. Combined effects in toxicology, cadmium, mercury, and lead. J Toxicol Environ Health. 1978;4(5–6):763–776.</li>
+    <li>Grandjean P et al. Chelating treatment in patients with symptoms attributed to amalgam fillings, RCT. Occup Environ Med. 1997;54(3):180–188.</li>
+    <li>DMPS (Dimaval®) prescribing information. Heyl Chem.-pharm. Fabrik GmbH, Berlin. BfArM approval since 1996.</li>
+    <li>Aposhian HV et al. Vitamin C, glutathione, lipoic acid did not decrease brain/kidney mercury in rats. J Toxicol Clin Toxicol. 2003;41(4):491–500.</li>
+    <li>EU Council. Council Directive 2020/2184 on drinking water quality (Pb limit 5 µg/L). 2020.</li>
+    <li>Pamphlett R, Bishop DP. Mercury in neurons in Parkinson's disease regions. PLoS One. 2022;17(1):e0262464.</li>
+    <li>Cheng H et al. Heavy Metals Toxicity: Mechanism, Health Effects, and Therapeutic Interventions. MedComm. 2025. DOI: 10.1002/mco2.70241.</li>
+  </ol>
+</div>
+
+</body>
+</html>

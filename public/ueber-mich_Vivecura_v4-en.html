@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PVM2RGELWW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PVM2RGELWW');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About me · Shukri Jarmoukli · Vivecura Berlin</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --teal:#43A9AB;
+  --teal-dark:#2b7f81;
+  --teal-darker:#1d5a5c;
+  --teal-pale:#e8f2f2;
+  --teal-faint:#f3f8f8;
+  --teal-line:rgba(67,169,171,.24);
+  --ink:#2d3d3d;
+  --ink-soft:#495959;
+  --muted:#7a8585;
+  --cream:#f2eadb;
+  --cream-soft:#f7f1e4;
+  --white:#ffffff;
+  --bg:#fafbfb;
+  --line:rgba(45,61,61,.12);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--ink);line-height:1.78;font-weight:300;font-size:17px}
+
+/* HERO */
+.hero{background:linear-gradient(165deg,#f7fafa 0%,#eaf3f3 50%,#d7e8e8 100%);padding:110px 24px 130px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 25% 20%,rgba(67,169,171,.12),transparent 55%),radial-gradient(ellipse at 78% 82%,rgba(67,169,171,.08),transparent 55%);pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:70px;background:var(--bg);clip-path:polygon(0 100%,100% 100%,100% 35%,82% 74%,64% 28%,46% 78%,28% 38%,12% 80%,0 50%)}
+.compass{position:absolute;top:50%;left:50%;transform:translate(-50%,-55%);width:380px;height:380px;pointer-events:none;opacity:.55}
+.compass-ring{position:absolute;inset:0;border:1px solid rgba(67,169,171,.22);border-radius:50%;animation:spin 80s linear infinite}
+.compass-ring:nth-child(2){inset:50px;border-style:dashed;border-color:rgba(67,169,171,.16);animation:spin 60s linear infinite reverse}
+.compass-ring:nth-child(3){inset:105px;border-color:rgba(67,169,171,.3)}
+.compass-dot{position:absolute;top:0;left:50%;width:7px;height:7px;background:var(--teal);border-radius:50%;transform:translateX(-50%) translateY(-3px);box-shadow:0 0 18px rgba(67,169,171,.55)}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.hero-eyebrow{position:relative;z-index:2;display:inline-block;font-family:'Source Sans 3',sans-serif;font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;color:var(--teal-dark);margin-bottom:26px;font-weight:600}
+.hero h1{position:relative;z-index:2;font-family:'Libre Baskerville',serif;font-size:clamp(1.95rem,5vw,3.1rem);color:var(--ink);max-width:790px;margin:0 auto 22px;line-height:1.2;font-weight:400;letter-spacing:-.005em}
+.hero h1 em{font-style:italic;color:var(--teal);font-weight:400}
+.hero-sub{position:relative;z-index:2;color:var(--ink-soft);font-size:1.04rem;font-weight:300;max-width:530px;margin:0 auto;font-family:'Source Sans 3',sans-serif;letter-spacing:.005em}
+.hero-signature{position:relative;z-index:2;margin-top:42px;font-family:'Source Sans 3',sans-serif;font-size:.75rem;color:var(--teal-dark);letter-spacing:.22em;text-transform:uppercase;font-weight:600}
+
+/* MAIN */
+main{max-width:720px;margin:0 auto;padding:40px 24px 100px}
+
+/* OPENING */
+.opening{margin:30px 0 60px;text-align:center}
+.opening-pre{font-family:'Libre Baskerville',serif;font-style:italic;color:var(--teal);font-size:1.1rem;letter-spacing:.01em;margin-bottom:14px;font-weight:400}
+.opening-line{width:56px;height:1px;background:var(--teal);margin:0 auto;opacity:.55}
+
+/* SECTIONS */
+.section{margin:68px 0}
+h2{font-family:'Libre Baskerville',serif;font-size:1.82rem;color:var(--teal);margin:0 0 12px;font-weight:400;font-style:italic;line-height:1.25;letter-spacing:-.005em}
+.section-mark{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+.section-mark::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--teal-line),transparent)}
+.section-mark .dot{width:7px;height:7px;background:var(--teal);border-radius:50%;flex-shrink:0}
+.section-mark .chapter{font-family:'Source Sans 3',sans-serif;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--teal-dark);font-weight:600}
+
+p{margin-bottom:22px;color:var(--ink);font-weight:300}
+p.lead{font-family:'Libre Baskerville',serif;font-size:1.14rem;font-weight:400;color:var(--ink);line-height:1.55;margin-bottom:22px;font-style:normal}
+strong{font-weight:600;color:var(--teal-darker)}
+em{font-style:italic}
+
+/* PULL QUOTE */
+.pullquote{position:relative;margin:44px 0;padding:30px 34px 30px 44px;border-left:3px solid var(--teal);font-family:'Libre Baskerville',serif;font-size:1.26rem;line-height:1.5;color:var(--teal-darker);font-style:italic;background:linear-gradient(90deg,var(--teal-faint),transparent);font-weight:400}
+.pullquote::before{content:'"';position:absolute;left:10px;top:8px;font-family:'Libre Baskerville',serif;font-size:3.4rem;color:var(--teal);opacity:.25;line-height:1}
+.pullquote cite{display:block;margin-top:14px;font-size:.74rem;color:var(--teal-dark);font-style:normal;letter-spacing:.18em;text-transform:uppercase;font-family:'Source Sans 3',sans-serif;font-weight:600}
+
+/* REFRAME */
+.reframe{background:var(--cream);border:1px solid rgba(45,61,61,.06);border-radius:14px;padding:30px 32px;margin:38px 0;position:relative}
+.reframe::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--teal);border-radius:14px 14px 0 0}
+.reframe-label{font-family:'Source Sans 3',sans-serif;font-size:.7rem;letter-spacing:.24em;text-transform:uppercase;color:var(--teal-dark);font-weight:600;margin-bottom:14px;display:block}
+.reframe-title{font-family:'Libre Baskerville',serif;font-size:1.35rem;color:var(--ink);margin-bottom:12px;font-weight:400;line-height:1.35}
+.reframe p{margin:0 0 10px;font-size:.98rem;color:var(--ink);line-height:1.72;font-weight:300}
+.reframe p:last-child{margin-bottom:0}
+
+/* MOMENT */
+.moment{margin:42px 0;padding:28px 30px;background:var(--cream-soft);border-radius:14px;border:1px solid rgba(45,61,61,.06);position:relative}
+.moment-label{font-family:'Libre Baskerville',serif;font-style:italic;color:var(--teal);font-size:.94rem;margin-bottom:10px}
+.moment p{font-size:.96rem;margin-bottom:12px;color:var(--ink);font-weight:300}
+.moment p:last-child{margin:0}
+
+/* IMAGE PLACEHOLDER */
+.image-slot{margin:44px 0;border-radius:14px;overflow:hidden;background:linear-gradient(135deg,var(--teal-pale),var(--teal-faint));aspect-ratio:3/2;position:relative;border:1px solid var(--teal-line)}
+.image-slot::after{content:attr(data-label);position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Libre Baskerville',serif;font-style:italic;color:var(--teal-dark);font-size:.92rem;letter-spacing:.04em;text-align:center;padding:20px}
+.image-slot.with-image::after{display:none}
+.image-slot img{width:100%;height:100%;object-fit:cover;display:block}
+
+/* IMAGE COMPARE (BEFORE/AFTER) */
+.image-compare{margin:44px 0;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.image-compare .slot{border-radius:14px;overflow:hidden;background:linear-gradient(135deg,var(--teal-pale),var(--teal-faint));aspect-ratio:3/4;position:relative;border:1px solid var(--teal-line)}
+.image-compare .slot::after{content:attr(data-label);position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Libre Baskerville',serif;font-style:italic;color:var(--teal-dark);font-size:.86rem;letter-spacing:.02em;text-align:center;padding:16px;line-height:1.4}
+.image-compare .slot.with-image::after{display:none}
+.image-compare .slot img{width:100%;height:100%;object-fit:cover;display:block}
+@media(max-width:560px){
+  .image-compare{grid-template-columns:1fr}
+  .image-compare .slot{aspect-ratio:4/5}
+}
+
+/* TIMELINE MARKERS */
+.waypoint{display:flex;align-items:baseline;gap:14px;margin:32px 0 16px}
+.waypoint-dot{width:9px;height:9px;border-radius:50%;background:var(--teal);flex-shrink:0;position:relative;transform:translateY(-2px)}
+.waypoint-dot::after{content:'';position:absolute;inset:-4px;border:1px solid var(--teal);border-radius:50%;opacity:.35}
+.waypoint-year{font-family:'Libre Baskerville',serif;font-style:italic;color:var(--teal-dark);font-size:.98rem;letter-spacing:.02em}
+.waypoint-place{color:var(--muted);font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;font-weight:600;font-family:'Source Sans 3',sans-serif}
+
+/* SYSTEM SECTION */
+.system-wrap{margin:56px 0 40px;padding:48px 20px 36px;background:linear-gradient(165deg,var(--teal-faint),#ffffff);border-radius:18px;border:1px solid var(--teal-line);text-align:center}
+.system-label{font-family:'Source Sans 3',sans-serif;font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;color:var(--teal-dark);font-weight:600;margin-bottom:12px}
+.system-title{font-family:'Libre Baskerville',serif;font-size:1.55rem;color:var(--ink);margin-bottom:8px;font-weight:400;line-height:1.3}
+.system-title em{font-style:italic;color:var(--teal)}
+.system-sub{font-family:'Source Sans 3',sans-serif;font-size:.94rem;color:var(--muted);margin-bottom:32px;font-weight:300}
+.system-svg{width:100%;max-width:460px;height:auto;margin:0 auto;display:block}
+/* INNER BREAK ORNAMENT */
+.inner-break{text-align:center;margin:40px 0;font-size:1rem;color:var(--teal);opacity:.45;letter-spacing:1em;font-weight:400;user-select:none;pointer-events:none}
+
+/* INTERACTIVE PILLAR NODES */
+.pillar-node{cursor:pointer}
+.pillar-node circle{transition:fill .3s ease,stroke-width .3s ease,stroke-opacity .3s ease,stroke .3s ease}
+.pillar-node text{transition:fill .25s ease;pointer-events:none}
+.pillar-node:hover circle{fill:#f3f8f8;stroke-width:2;stroke-opacity:.9}
+.pillar-node:focus{outline:none}
+.pillar-node:focus-visible circle{stroke:#2b7f81;stroke-width:2.5;stroke-opacity:1}
+.pillar-node.active circle{fill:#e0eeee;stroke:#2b7f81;stroke-width:2.5;stroke-opacity:1}
+.pillar-node.active text{fill:#1d5a5c}
+
+/* PILLAR DETAIL PANEL */
+.pillar-detail{min-height:130px;margin:36px 0 0;padding:28px 30px;background:#ffffff;border:1px solid var(--teal-line);border-radius:14px;text-align:left;transition:opacity .25s ease;position:relative;overflow:hidden}
+.pillar-detail::before{content:'';position:absolute;top:0;left:24px;right:24px;height:2px;background:linear-gradient(90deg,transparent,var(--teal),transparent);opacity:0;transition:opacity .3s ease}
+.pillar-detail.has-content::before{opacity:.55}
+.pillar-detail-hint{text-align:center;color:var(--muted);font-family:'Libre Baskerville',serif;font-style:italic;padding:24px 8px 18px;font-size:1rem;line-height:1.55}
+.pillar-detail-hint .hint-arrow{display:block;margin-top:12px;font-size:1.25rem;color:var(--teal);opacity:.55;font-style:normal}
+.pillar-name-large{font-family:'Source Sans 3',sans-serif;font-size:.74rem;letter-spacing:.22em;text-transform:uppercase;color:var(--teal);font-weight:600;margin-bottom:10px}
+.pillar-desc-large{font-size:1rem;color:var(--ink);line-height:1.72;font-weight:300;margin:0}
+
+/* CTA FINAL */
+.invitation{margin:80px 0 20px;padding:56px 36px;background:linear-gradient(158deg,#1d5a5c,#2b7f81 55%,#43A9AB);border-radius:22px;color:#ffffff;position:relative;overflow:hidden;text-align:center}
+.invitation::before{content:'';position:absolute;top:-60px;right:-60px;width:240px;height:240px;background:radial-gradient(circle,rgba(255,255,255,.16),transparent);border-radius:50%;pointer-events:none}
+.invitation::after{content:'';position:absolute;bottom:-40px;left:-40px;width:180px;height:180px;background:radial-gradient(circle,rgba(255,255,255,.1),transparent);border-radius:50%;pointer-events:none}
+.invitation-eyebrow{position:relative;z-index:1;font-family:'Source Sans 3',sans-serif;font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.8);margin-bottom:18px;font-weight:600}
+.invitation h3{position:relative;z-index:1;font-family:'Libre Baskerville',serif;font-size:1.65rem;font-weight:400;line-height:1.32;color:#ffffff;margin-bottom:18px;font-style:italic;max-width:540px;margin-left:auto;margin-right:auto}
+.invitation p{position:relative;z-index:1;color:rgba(255,255,255,.82);margin-bottom:30px;font-size:.98rem;max-width:500px;margin-left:auto;margin-right:auto;font-weight:300}
+.invitation a.book{position:relative;z-index:1;display:inline-block;background:#ffffff;color:var(--teal-darker);font-weight:600;padding:15px 42px;border-radius:32px;text-decoration:none;font-size:.92rem;letter-spacing:.05em;font-family:'Source Sans 3',sans-serif;transition:transform .2s ease,box-shadow .2s ease;box-shadow:0 8px 26px rgba(0,0,0,.18)}
+.invitation a.book:hover{transform:translateY(-1px);box-shadow:0 12px 32px rgba(0,0,0,.22)}
+
+/* SIGNATURE */
+.signoff{text-align:center;margin:56px 0 20px}
+.signoff-line{font-family:'Libre Baskerville',serif;font-style:italic;color:var(--teal);font-size:1.1rem;margin-bottom:10px;font-weight:400}
+.signoff-name{font-family:'Libre Baskerville',serif;font-size:1.32rem;color:var(--ink);letter-spacing:.005em;font-weight:400}
+.signoff-role{font-family:'Source Sans 3',sans-serif;font-size:.76rem;color:var(--teal-dark);letter-spacing:.22em;text-transform:uppercase;margin-top:8px;font-weight:600}
+
+@media(max-width:560px){
+  body{font-size:16px}
+  .hero{padding:86px 20px 108px}
+  .hero h1{font-size:1.82rem}
+  main{padding:30px 18px 70px}
+  h2{font-size:1.48rem}
+  .pullquote{font-size:1.08rem;padding:24px 22px 24px 34px}
+  .invitation{padding:42px 24px}
+  .invitation h3{font-size:1.32rem}
+  .compass{width:260px;height:260px}
+  .system-wrap{padding:36px 16px 28px}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="compass">
+    <div class="compass-ring"><div class="compass-dot"></div></div>
+    <div class="compass-ring"></div>
+    <div class="compass-ring"></div>
+  </div>
+  <div class="hero-eyebrow">About me · Vivecura Berlin</div>
+  <h1>From Damascus to Berlin. And to a medicine that <em>sees the human being again</em>.</h1>
+  <p class="hero-sub">My story. Why I built this system. And where I want to take it.</p>
+  <div class="hero-signature">Shukri Jarmoukli · Physician and Mentor</div>
+</div>
+
+<main>
+
+<div class="opening">
+  <div class="opening-pre">It didn't begin in a practice. It began on a road.</div>
+  <div class="opening-line"></div>
+</div>
+
+<!-- KAPITEL 1: THE BIKE TOUR HOOK -->
+<section class="section">
+  <div class="section-mark"><span class="dot"></span><span class="chapter">Chapter One · The Crack</span></div>
+  <h2>Somewhere between Ljubljana and Zagreb</h2>
+
+  <p class="lead">I was actually on my way to Greece. 3,200 kilometers by bicycle, starting from Germany. Five bags on the rack. Ten countries. Six weeks. More than 20,000 meters of elevation.</p>
+
+  <p>After about a week on the bike, I bought a bar of chocolate milk in a small village. I took a sip. And I waited.</p>
+
+  <p>Because for two years I had been suffering from lactose intolerance. Not a mild one. A severe one. A sip of milk without an enzyme tablet and my gut would react as if I had drunk poison. My body no longer produced enough lactase. That was the diagnosis. That was the verdict.</p>
+
+  <p>That day, nothing happened. No stomach pain. No diarrhea. Nothing.</p>
+
+  <p>The next morning, I drank a whole glass of milk. Again, nothing. I was stunned. In my studies I had learned: if you don't have lactase, you can't tolerate milk. Period. Either you take the enzyme as a tablet or you abstain. The picture was static. Mechanical. Unambiguous.</p>
+
+  <p>My body had just shown me that the picture wasn't true.</p>
+
+  <p>I hadn't taken a pill. I hadn't received any treatment. I had only changed my life.</p>
+
+  <div class="pullquote">
+    On a road between Ljubljana and Zagreb, the question arose that has not let go of me since. What if, in medicine, we are asking the wrong question?
+    <cite>The moment when everything tipped over</cite>
+  </div>
+</section>
+
+<div class="image-slot" data-label="Bicycle tour from Germany to Greece · 3,200 kilometers, six weeks, ten countries"></div>
+
+<!-- KAPITEL 2: ORIGINS -->
+<section class="section">
+  <div class="section-mark"><span class="dot"></span><span class="chapter">Chapter Two · Origins</span></div>
+  <h2>Damascus, Cologne, and thirty kilos</h2>
+
+  <p>But the story begins earlier.</p>
+
+  <div class="waypoint">
+    <span class="waypoint-dot"></span>
+    <span class="waypoint-year">2012</span>
+    <span class="waypoint-place">Damascus → Frankfurt</span>
+  </div>
+
+  <p>I was born in Damascus. Syria, at the beginning of the war. I was nineteen when I arrived in Germany. A backpack. Not a word of German. No family around me. Only the goal I had carried since childhood. I wanted to become a doctor. To help people. That was the clear part.</p>
+
+  <p>A year later I was sitting at the University of Cologne, beginning to study medicine.</p>
+
+  <p>My flatmate in our shared apartment came from Bavaria. He taught me Germany the way he knew it. I have to admit something. In Syria we drank alcohol very moderately, in measured amounts, for enjoyment. I grew up Christian. But my Bavarian flatmate taught me how to chug beer. After a year, I could drink more than most of my German friends.</p>
+
+  <p>At university I honestly celebrated this. Everyone assumed the Syrian wouldn't touch alcohol. Nobody suspected that I could already down more than they could. It was funny. To me too. A small sign that I had arrived. That I belonged.</p>
+
+  <p>On top of that came fast food. Little movement. Hours of sitting and studying.</p>
+
+  <p>In two years I gained thirty kilos.</p>
+
+  <p>Then came a radical, very stupid diet. Carrots and nuts. Lots of exercise, almost no food. At night I dreamed of plain bread rolls. But it worked. In three months, twenty kilos were gone again. That this was completely unhealthy was something I, even as a medical student, didn't know at the time.</p>
+
+  <p>What remained was the heartburn.</p>
+
+  <div class="image-compare">
+    <div class="slot" data-label="Before · With thirty kilos more"></div>
+    <div class="slot" data-label="After · After returning to myself"></div>
+  </div>
+</section>
+
+<!-- KAPITEL 3: THE FIRST CRACK -->
+<section class="section">
+  <div class="section-mark"><span class="dot"></span><span class="chapter">Chapter Three · The First Gap</span></div>
+  <h2>The heartburn that set everything in motion</h2>
+
+  <p>I went to my family doctors. I asked specifically and politely. What can I do with my diet? Which foods should I avoid? How can I understand the heartburn?</p>
+
+  <p>The answer was always the same. A stomach acid blocker. Indefinitely.</p>
+
+  <p>I was a medical student. I knew what that meant. Side effects. Impaired digestion. Possibly long-term nutrient deficiencies. And it wouldn't solve the underlying problem, only mask it.</p>
+
+  <p>So I started doing my own research. I adjusted my diet, tried things, observed. After a few months my heartburn was gone. Without medication.</p>
+
+  <p>In that moment, I experienced the patient's side for the first time. Not from a textbook. From my own body. Someone looking for a sustainable solution and finding none in conventional medicine. Someone who feels left alone. Not maliciously. Not out of neglect. Just without real answers.</p>
+
+  <p>At the time, I still thought this was a small issue. A special case. An exception.</p>
+
+  <p>I was wrong.</p>
+
+  <div class="inner-break">· · ·</div>
+
+  <p>Because shortly afterwards came a second diagnosis I had to deal with daily. Severe lactose intolerance. Overnight. I couldn't drink a sip of milk without taking an enzyme tablet.</p>
+
+  <p>And then came the bicycle tour. And the lactose intolerance was gone.</p>
+</section>
+
+<!-- KAPITEL 4: PARADIGM SHIFT -->
+<section class="section">
+  <div class="section-mark"><span class="dot"></span><span class="chapter">Chapter Four · The Shift in Perspective</span></div>
+  <h2>The question I couldn't let go of after coming back</h2>
+
+  <p>Back in Germany, I didn't stop reading.</p>
+
+  <p>The only difference between my dorm room and the bicycle tour was my life itself. Sleeping outside. Waking up with the sun. Breathing fresh air. Pedaling for hours. Freedom. Calm. Movement. So I worked my way through studies that focus on exactly these factors.</p>
+
+  <p>I came across the research on indigenous peoples. People who still live in their original way of life. Their genetics are almost identical to ours. And yet they have up to 85 percent fewer chronic diseases than we do.</p>
+
+  <p>If one of them reaches the age of fifteen, on average they live to a similar age as we do. But they don't die after decades on ten medications and with painful mobility. They die fitter. They die more alive.</p>
+
+  <p>That hit me.</p>
+
+  <p>Because our goal in medicine is mostly: reduce symptoms. Manage disease. That is important. That saves lives. But it isn't the whole picture. Often, people with many chronic illnesses get symptom reduction through medication and not a felt sense of vitality. That isn't an accusation. It's a question of definition. And I realized how narrowly we have defined health.</p>
+
+  <div class="reframe">
+    <span class="reframe-label">The reframe that changed everything</span>
+    <div class="reframe-title">From mechanical to regulatory thinking</div>
+    <p>In the mechanical mindset, an enzyme is missing. So you can't tolerate milk. Period.</p>
+    <p>In the regulatory mindset, your body can regulate itself again. The enzyme can be produced again. If the conditions are right.</p>
+    <p>This isn't esoteric. It's biology. We rarely talk about it during medical training.</p>
+  </div>
+
+  <p>From then on, I wanted to understand how the body regulates itself. Which factors block this ability or reawaken it. Nutrition. Sleep. Movement. Breathing. Light. Cold. Warmth. Mindset. Emotional processing. Social structures. None of these were wellness terms to me anymore. They were variables that influence every single cell in the body.</p>
+</section>
+
+<!-- KAPITEL 5: TRANSLATIONSMEDIZIN -->
+<section class="section">
+  <div class="section-mark"><span class="dot"></span><span class="chapter">Chapter Five · The Gap</span></div>
+  <h2>Seventeen years between knowledge and practice</h2>
+
+  <p>The more I read, the clearer something else became.</p>
+
+  <p>There is a phenomenon in science with a sober name. <strong>Translational medicine.</strong> It deals with the question of how long it takes for findings from studies to reach patients. The answer is uncomfortable. On average, seventeen years.</p>
+
+  <p>Seventeen years in which people suffer, even though the knowledge already exists.</p>
+
+  <p>Somewhere in those studies lay the answer to my heartburn, before I went to the doctor. Somewhere lay an explanation for my lactose intolerance, before it disappeared again. Somewhere lay knowledge that no one in my studies had rolled out.</p>
+
+  <p>That's when I made a decision that changed everything for me. I didn't want to do new studies. I wanted to bring the knowledge we already have into practice. For people who are suffering now. Not in seventeen years.</p>
+
+  <p>That became my craft.</p>
+</section>
+
+<!-- KAPITEL 6: COLD THERAPY -->
+<section class="section">
+  <div class="section-mark"><span class="dot"></span><span class="chapter">Chapter Six · The Cold</span></div>
+  <h2>The rain barrel on my terrace</h2>
+
+  <p>While combing through studies, I came across a topic I had hardly touched in my entire studies. Cold therapy. Over 1,300 scientific studies. Effects on the immune system. On inflammation markers. On hormones. On the nervous system. A proven antidepressant effect.</p>
+
+  <p>In medical school, I had to memorize every antidepressant. Cold, no.</p>
+
+  <p>This discrepancy didn't let go of me. Who actually decides what we learn and what we don't?</p>
+
+  <div class="moment">
+    <div class="moment-label">A self-experiment that stuck with me</div>
+    <p>At that time I had had back pain for half a year. So severe that I had to stretch for half an hour in the evening, otherwise I couldn't get out of bed in the morning. I started taking cold showers. Two minutes a day.</p>
+    <p>After a week, my back pain was gone. I had changed nothing else.</p>
+  </div>
+
+  <p>That stunned me so much that I put a rain barrel on the terrace and started taking ice baths. Half an hour of breathing exercises in the morning. Then exercise. Then into the barrel. An investment of one to one and a half hours. Every day.</p>
+
+  <p>And something changed that I hadn't thought possible before. Not just in my body. In my head.</p>
+
+  <p>I started reacting differently. Things that used to throw me off course left me cold. Suddenly I had resources. Distance. Clarity. I hadn't done psychotherapy. I hadn't talked with anyone about my issues. I had only touched my body.</p>
+
+  <p>Out of this self-experiment came a book. Over 70 studies analyzed in it. For anyone who wants to understand how to start safely with cold and what it sets in motion in the body.</p>
+</section>
+
+<div class="image-slot" data-label="Ice bathing · The path to inner calm"></div>
+
+<!-- KAPITEL 7: BODY AND PSYCHE -->
+<section class="section">
+  <div class="section-mark"><span class="dot"></span><span class="chapter">Chapter Seven · Body and Psyche</span></div>
+  <h2>Psychotherapy that doesn't only consist of words</h2>
+
+  <p>The cold had pushed open a door I had never looked through before.</p>
+
+  <p>If a cold bath can change my psyche, then the body is not just a vessel for the mind. Then it is a direct instrument. Then psychotherapy can also happen through the body.</p>
+
+  <p>I dove deeply into approaches that work with exactly this. <strong>Polyvagal theory</strong>, which explains how the autonomic nervous system reads safety and threat and can relearn them. <strong>Somatic Experiencing</strong>, which shows how trauma sits in tissue and can be released through gentle movement. <strong>Biodynamic psychotherapy</strong>, which brings together breath, body awareness, and conversation.</p>
+
+  <p>I came to understand that the fastest path to a real experience of unity does not always go through active work on yourself. Sometimes a passive approach helps, one that briefly quiets the thinking self.</p>
+
+  <p>It was at exactly this point that I came across ketamine.</p>
+</section>
+
+<!-- KAPITEL 8: KETAMINE -->
+<section class="section">
+  <div class="section-mark"><span class="dot"></span><span class="chapter">Chapter Eight · Ketamine</span></div>
+  <h2>A tool, not a miracle</h2>
+
+  <p>Ketamine in low, sub-anesthetic doses can achieve response rates of over 60 percent in treatment-resistant depression. Even when two or more antidepressants have previously failed to work. The data made me sit up and take notice.</p>
+
+  <p>I was skeptical. I read the studies. I did the work on myself. And then I cautiously introduced it into practice, with people who had been stuck for years.</p>
+
+  <p>What I saw was no miracle. It was a tool. One that allows you to see yourself, without the usual defenses. An inner experience that is not only talked about but actually lived. As if it were real. Precisely through this, change becomes possible that previously was stuck.</p>
+
+  <div class="pullquote">
+    Other psychotherapies feel like riding a bicycle. This one is like driving a Ferrari.
+    <cite>A patient, after his third session</cite>
+  </div>
+
+  <p>I do not treat anyone lightly with ketamine. It isn't a starting point. It is embedded in careful diagnostics, conversation, and integration. But when it fits, it changes what previously would not move.</p>
+</section>
+
+<!-- KAPITEL 9: DIE GRENZE (NEW) -->
+<section class="section">
+  <div class="section-mark"><span class="dot"></span><span class="chapter">Chapter Nine · The Limit</span></div>
+  <h2>When my heart stopped me</h2>
+
+  <p>Up to this point in my story, it sounds as if every tool worked. As if I had walked a straight path.</p>
+
+  <p>That isn't the whole truth.</p>
+
+  <p>I had built up all these tools. Breathing techniques I had trained for years. Ice baths. Supplements. Specific strategies to force energy when my body was actually saying no. And they worked. Too well, as would later turn out.</p>
+
+  <p>I had a severe flu. The moment when every healthy person stays in bed. Instead, I went skiing. With targeted breathing techniques that I needed just to be able to breathe through it. With a supplement combination that was supposed to give me extra energy. And I made it. A whole day on the slope, even though my body was screaming.</p>
+
+  <p>The bill came shortly afterwards. Myocarditis.</p>
+
+  <div class="moment">
+    <div class="moment-label">When the body finally says enough</div>
+    <p>For two months I was out of breath when I climbed a single flight of stairs. Just one single flight. After six months, twenty minutes of exercise was possible again. That is fast for this kind of injury. It was only possible because I consistently applied every recovery strategy I knew.</p>
+  </div>
+
+  <p>But the most important work in those months wasn't physical. It was in my head.</p>
+
+  <p>I was forced not to function. Not by a decision. By an injury I couldn't quickly optimize away. I had to rebuild my whole system. And I had to learn what I had bypassed with every tool in the world. To respect my limits.</p>
+
+  <div class="reframe">
+    <span class="reframe-label">What only my heart taught me</span>
+    <div class="reframe-title">Not always more. Sometimes less.</div>
+    <p>For a long time I had only optimized in one direction. More discipline. More tools. More performance. Myocarditis taught me that healing goes in both directions. Pushing forward and letting go. Focus and rest.</p>
+    <p>Flexibility isn't weakness. It is the other half of the equation.</p>
+  </div>
+
+  <p>That is why I love working today, in particular, with people who carry a heavy load. Female entrepreneurs. Executives. Female doctors. People who are used to functioning and to driving their system ever further. I know that internal tone from the inside. I know what happens when you push too long in only one direction.</p>
+
+  <p>I don't speak about these topics from books. I speak from a body that I drove against the wall. And from the months in which I was allowed to rebuild it.</p>
+
+  <p>In hindsight I can say: without that heart injury I would never have gained the heart I have today.</p>
+
+  <div class="inner-break">· · ·</div>
+
+  <p>And that is why I am telling you all of this. Not because I walked a perfect path. I was never perfect. I am not today. But because I have lived every single station of this journey in my own body. I don't come with a prescription pad someone handed me. I come with a body I have walked through all of it with.</p>
+</section>
+
+<!-- KAPITEL 10: YEARS IN BETWEEN (EXPANDED) -->
+<section class="section">
+  <div class="section-mark"><span class="dot"></span><span class="chapter">Chapter Ten · The Years of Apprenticeship</span></div>
+  <h2>Why implementation is the hardest part of medicine</h2>
+
+  <p>In classical institutions, I couldn't find a place to bring all of this together. The expertise I had built over years didn't fit into the prescribed structures.</p>
+
+  <p>So I worked in alternative practices. Coaching. Biohacking with cold chambers. Holistic medicine. Ketamine-assisted therapy. Biodynamic psychotherapy. Work with complex, chronic conditions.</p>
+
+  <p>What I learned there, above all, was something other than what I had expected.</p>
+
+  <p class="lead">Implementation is the hardest part of medicine. Not the diagnosis. Not the plan. The implementation.</p>
+
+  <p>I have done hundreds of one-on-one coachings. With people who knew exactly what they should change. And who, despite that, hadn't gotten around to it for years. People for whom willpower alone wasn't enough. People where it was never about knowledge, but about the life around it. About beliefs, habits, fears, time pressure, old wounds.</p>
+
+  <p>In those hours I learned how to combine mindset work with medical guidance. How to slowly replace habits instead of forcing them with discipline. How to read setbacks as information instead of failure. How to rebuild a life so that the new decisions eventually become easier than the old ones.</p>
+
+  <p>My medicine doesn't work without this work. A good nutrient protocol that no one can implement isn't a protocol. It's paper.</p>
+
+  <div class="inner-break">· · ·</div>
+
+  <p>In parallel, I saw people who had found no answers in conventional medicine. Post-COVID. People with vaccine injuries. Complex exhaustion syndromes. Women with years of cycle problems whose symptoms had been masked with the pill. Men in their mid-thirties, burned out, on antidepressants, without anyone having asked them how they sleep.</p>
+
+  <p>These people had been at many doors. The search was exhausting. Often unsuccessful.</p>
+
+  <p>I haven't been doing luxury medicine. I have tried to help, with the tools I had. And I have seen how much is possible when you don't lock a person into a diagnosis but look at them as a system. When you treat their body and accompany their life at the same time.</p>
+
+  <p>Nutrition. Movement. Breathing. Sleep. Nutrients. Mindset. Emotional processing. Social structures. Cold. Light. Stillness.</p>
+
+  <p>When you change these variables together, with a person who feels understood and is supported in the implementation, something happens that individual pills cannot achieve.</p>
+</section>
+
+<!-- KAPITEL 11: THE SYSTEM -->
+<section class="section">
+  <div class="section-mark"><span class="dot"></span><span class="chapter">Chapter Eleven · The System</span></div>
+  <h2>What emerges when everything is brought together</h2>
+
+  <p>Every chapter of my journey brought a tool into my life. The heartburn taught me <em>functional medicine</em>. The bicycle tour showed me <em>lifestyle medicine</em>. The cold brought me to <em>biohacking</em>. The bodywork led me into the depth of <em>anthroposophic medicine</em>. The work with environmental burdens opened up <em>toxicology</em> for me. The new generation of research showed me the importance of <em>genetics and epigenetics</em>. And the years with patients taught me that knowledge without <em>implementation</em> is worth nothing.</p>
+
+  <p>Seven languages. One human being.</p>
+
+  <p>In classical institutions, each of these disciplines lives on its own. But in the reality of a sick person, they hang together. So I started connecting them systematically. Not as a loose collection. As a system in which each lens complements and corrects the others.</p>
+
+  <div class="system-wrap">
+    <div class="system-label">My approach</div>
+    <div class="system-title">Seven lenses on one <em>human being</em></div>
+    <p class="system-sub">No toolkit. No either-or. An integrated system.</p>
+
+    <svg class="system-svg" viewBox="0 0 460 460" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <radialGradient id="centerG" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#43A9AB"/>
+          <stop offset="100%" stop-color="#2b7f81"/>
+        </radialGradient>
+      </defs>
+      <circle cx="230" cy="230" r="185" fill="none" stroke="#43A9AB" stroke-width="1" stroke-opacity="0.18" stroke-dasharray="3 5"/>
+      <circle cx="230" cy="230" r="140" fill="none" stroke="#43A9AB" stroke-width="1" stroke-opacity="0.12"/>
+
+      <g stroke="#43A9AB" stroke-width="1" stroke-opacity="0.28" stroke-dasharray="2 4">
+        <line x1="230" y1="230" x2="230" y2="75"/>
+        <line x1="230" y1="230" x2="365" y2="152"/>
+        <line x1="230" y1="230" x2="365" y2="308"/>
+        <line x1="230" y1="230" x2="230" y2="385"/>
+        <line x1="230" y1="230" x2="95" y2="308"/>
+        <line x1="230" y1="230" x2="95" y2="152"/>
+        <line x1="230" y1="230" x2="45" y2="230"/>
+      </g>
+
+      <circle cx="230" cy="230" r="54" fill="url(#centerG)"/>
+      <text x="230" y="235" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="12.5" font-weight="600" fill="#ffffff" letter-spacing="1.4">THE HUMAN BEING</text>
+
+      <g font-family="'Source Sans 3',sans-serif" font-size="10" font-weight="600" fill="#2b7f81" letter-spacing="0.8">
+        <g class="pillar-node" data-pillar="funktionelle" role="button" tabindex="0" aria-label="Functional Medicine">
+          <circle cx="230" cy="75" r="38" fill="#ffffff" stroke="#43A9AB" stroke-width="1.5" stroke-opacity="0.5"/>
+          <text x="230" y="72" text-anchor="middle">FUNCTIONAL</text>
+          <text x="230" y="86" text-anchor="middle">MEDICINE</text>
+        </g>
+
+        <g class="pillar-node" data-pillar="anthro" role="button" tabindex="0" aria-label="Anthroposophic Medicine">
+          <circle cx="365" cy="152" r="38" fill="#ffffff" stroke="#43A9AB" stroke-width="1.5" stroke-opacity="0.5"/>
+          <text x="365" y="144" text-anchor="middle">ANTHROPO-</text>
+          <text x="365" y="156" text-anchor="middle">SOPHIC</text>
+          <text x="365" y="168" text-anchor="middle">MEDICINE</text>
+        </g>
+
+        <g class="pillar-node" data-pillar="tox" role="button" tabindex="0" aria-label="Toxicology">
+          <circle cx="365" cy="308" r="38" fill="#ffffff" stroke="#43A9AB" stroke-width="1.5" stroke-opacity="0.5"/>
+          <text x="365" y="305" text-anchor="middle">TOXI-</text>
+          <text x="365" y="319" text-anchor="middle">COLOGY</text>
+        </g>
+
+        <g class="pillar-node" data-pillar="lebensstil" role="button" tabindex="0" aria-label="Lifestyle Medicine">
+          <circle cx="230" cy="385" r="38" fill="#ffffff" stroke="#43A9AB" stroke-width="1.5" stroke-opacity="0.5"/>
+          <text x="230" y="382" text-anchor="middle">LIFESTYLE</text>
+          <text x="230" y="396" text-anchor="middle">MEDICINE</text>
+        </g>
+
+        <g class="pillar-node" data-pillar="genetik" role="button" tabindex="0" aria-label="Genetics and Epigenetics">
+          <circle cx="95" cy="308" r="38" fill="#ffffff" stroke="#43A9AB" stroke-width="1.5" stroke-opacity="0.5"/>
+          <text x="95" y="305" text-anchor="middle">GENETICS &amp;</text>
+          <text x="95" y="319" text-anchor="middle">EPIGENETICS</text>
+        </g>
+
+        <g class="pillar-node" data-pillar="biohacking" role="button" tabindex="0" aria-label="Biohacking">
+          <circle cx="95" cy="152" r="38" fill="#ffffff" stroke="#43A9AB" stroke-width="1.5" stroke-opacity="0.5"/>
+          <text x="95" y="149" text-anchor="middle">BIO-</text>
+          <text x="95" y="163" text-anchor="middle">HACKING</text>
+        </g>
+
+        <g class="pillar-node" data-pillar="coaching" role="button" tabindex="0" aria-label="Coaching and Implementation">
+          <circle cx="45" cy="230" r="38" fill="#ffffff" stroke="#43A9AB" stroke-width="1.5" stroke-opacity="0.5"/>
+          <text x="45" y="227" text-anchor="middle">COACHING &amp;</text>
+          <text x="45" y="241" text-anchor="middle">IMPLEMENT.</text>
+        </g>
+      </g>
+    </svg>
+
+    <div class="pillar-detail" id="pillar-detail">
+      <div class="pillar-detail-hint">
+        Click on one of the seven lenses to learn how I work with it.
+        <span class="hint-arrow">↑</span>
+      </div>
+    </div>
+  </div>
+
+  <p>This system is not a theoretical toolkit. It is what is applied in my practice every day. Every consultation begins with the question of which lens is most important right now. Most of the time, several apply at once.</p>
+
+  <div class="reframe">
+    <span class="reframe-label">What this means in practice</span>
+    <div class="reframe-title">I'm not the doctor who only hands you a prescription.</div>
+    <p>I am not the doctor who prescribes a medication in seven minutes and then walks you to the door. My toolbox is broader.</p>
+    <p>I work with <strong>lifestyle change</strong>. With <strong>targeted supplements</strong>. With <strong>biohacking tools</strong>. With <strong>detoxification strategies</strong>. With <strong>psyche-body integration</strong>. And with <strong>medication</strong>, when it is truly needed.</p>
+    <p>Not either-or. Both. The right tool at the right moment.</p>
+  </div>
+</section>
+
+<!-- KAPITEL 12: VIVECURA -->
+<section class="section">
+  <div class="section-mark"><span class="dot"></span><span class="chapter">Chapter Twelve · Vivecura</span></div>
+  <h2>Care for life, not for survival</h2>
+
+  <p>At some point I reached the moment when I wanted not only to apply this system but also to shape it. A place of my own where medicine and coaching think together. Where I can read a blood panel and, in the same conversation, ask how you sleep. How you breathe. What you eat in the morning. How things are with your parents. How you handle silence.</p>
+
+  <p>Because all of that is your health.</p>
+
+  <p>That's how Vivecura came into being.</p>
+
+  <p><em>Vivere</em> means to live. <em>Cura</em> means care, attention, devotion. Vivecura therefore means: care for life. Not for survival.</p>
+
+  <div class="reframe">
+    <span class="reframe-label">What I understand by health</span>
+    <div class="reframe-title">Vitality. Not normality.</div>
+    <p>Health isn't a lab value within the normal range. Health is being able to get up in the morning with energy. Being able to think clearly. Being able to be present for the people you love. Being able to feel joy and feel heaviness and not run away from either.</p>
+    <p>If by health you mean vitality, then yes. Then that is my goal.</p>
+  </div>
+</section>
+
+<div class="image-slot" data-label="Vivecura Practice · Berlin-Kreuzberg"></div>
+
+<!-- KAPITEL 13: WHERE I'M GOING -->
+<section class="section">
+  <div class="section-mark"><span class="dot"></span><span class="chapter">Chapter Thirteen · Where</span></div>
+  <h2>Carrying more healing into the world</h2>
+
+  <p>I don't only want to be a practice.</p>
+
+  <p>I want medicine to see the whole person again. I want the seventeen years between research and practice to become shorter. I want people to no longer feel left alone when they search for answers no one is giving them.</p>
+
+  <p>I want people to experience <strong>self-efficacy</strong>. I take that word seriously. It means: I can do something. My actions make a difference. I am not at the mercy of fate. My body can learn again. My nervous system can come to rest. My life is changeable.</p>
+
+  <p>I believe that a world with more alive, self-effective people produces a different world.</p>
+
+  <p>Whoever has found peace within themselves carries peace forward. Whoever has healthy thoughts makes healthier decisions. Whoever has inner resources can share resources. Healing isn't selfish. Healing is the only thing we can truly pass on once we are no longer just functioning.</p>
+
+  <div class="pullquote">
+    I want to carry more healing into the world. To make it a more beautiful place for all of us.
+    <cite>My vision</cite>
+  </div>
+
+  <p>That is my contribution. As small as it may seem, in a practice in Berlin-Kreuzberg.</p>
+
+  <p>I want to help people find themselves. So that they can give their best for themselves and for the world around them. One person at a time. Until something larger emerges from it.</p>
+</section>
+
+<!-- INVITATION -->
+<div class="invitation">
+  <div class="invitation-eyebrow">If something here spoke to you</div>
+  <h3>Then this isn't a coincidence. Maybe you're exactly the person who has been searching for years.</h3>
+  <p>I promise you nothing. Healing isn't a commodity. But I can promise you that I will look closely. That I will take you seriously. And that we will search together until we understand what is happening inside you. And then change together what may be changed.</p>
+  <a class="book" href="https://www.doctolib.de/arzt/berlin/shukri-jarmoukli/booking/motives?source=profile" target="_top" rel="noopener noreferrer">Book an appointment</a>
+</div>
+
+<div class="signoff">
+  <div class="signoff-line">I'm looking forward to meeting you.</div>
+  <div class="signoff-name">Shukri Jarmoukli</div>
+  <div class="signoff-role">Physician and Mentor · Berlin</div>
+</div>
+
+</main>
+
+<script>
+(function(){
+  const data = {
+    funktionelle: {n:'Functional Medicine',d:'Why something is happening in the body, at the level of metabolism, hormones, and cell biology.'},
+    anthro: {n:'Anthroposophic Medicine',d:'Accompanying the whole human being, with biography, soul, and spirit as part of the treatment.'},
+    tox: {n:'Toxicology',d:'What acts on us from the outside, from heavy metals to environmental toxins, and what the body needs against it.'},
+    lebensstil: {n:'Lifestyle Medicine',d:'Nutrition, sleep, movement, breathing, light, cold, social life. The things that shape cells every day.'},
+    genetik: {n:'Genetics and Epigenetics',d:'The map you brought with you. And the handwriting with which your life rewrites it.'},
+    biohacking: {n:'Biohacking',d:'Tools that make what works measurable. Self-experiments with system, not with fashion.'},
+    coaching: {n:'Coaching and Implementation',d:'Because knowledge moves nothing if it doesn\'t arrive in everyday life. That\'s where the actual work begins.'}
+  };
+  const nodes = document.querySelectorAll('.pillar-node');
+  const detail = document.getElementById('pillar-detail');
+  if(!detail || !nodes.length) return;
+
+  function show(key){
+    const d = data[key];
+    if(!d) return;
+    nodes.forEach(n => n.classList.toggle('active', n.dataset.pillar === key));
+    detail.style.opacity = '0';
+    setTimeout(function(){
+      detail.innerHTML = '<div class="pillar-name-large">' + d.n + '</div>' +
+                         '<p class="pillar-desc-large">' + d.d + '</p>';
+      detail.classList.add('has-content');
+      detail.style.opacity = '1';
+    }, 160);
+  }
+
+  nodes.forEach(function(node){
+    node.addEventListener('click', function(){ show(node.dataset.pillar); });
+    node.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' || e.key === ' '){
+        e.preventDefault();
+        show(node.dataset.pillar);
+      }
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
