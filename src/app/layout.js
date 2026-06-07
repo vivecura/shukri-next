@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import HtmlLang from "@/components/HtmlLang";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -64,6 +65,7 @@ export default function RootLayout({ children }) {
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />
+        <LanguageSwitcher />
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-PVM2RGELWW"
           strategy="afterInteractive"

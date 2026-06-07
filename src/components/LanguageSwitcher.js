@@ -11,6 +11,15 @@ export default function LanguageSwitcher() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
 
+  if (
+    pathname === "/honorar" ||
+    pathname?.startsWith("/honorar/") ||
+    pathname === "/anamnese" ||
+    pathname?.startsWith("/admin")
+  ) {
+    return null;
+  }
+
   const languages = [
     { code: "en", label: "EN", flag: "/Assets/en.png" },
     { code: "de", label: "DE", flag: "/Assets/de.png" },
