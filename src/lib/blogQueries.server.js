@@ -103,6 +103,32 @@ export async function fetchPostBySlugAndLang(slug, lang) {
   return data;
 }
 
+// Server-side: find the paired-translation slug for a post.
+// Given a DE post, returns the EN slug if there's an EN translation.
+// Given an EN post, returns the DE slug.
+// Returns null if no pair exists.
+export async function findPairedSlugServer(post) {
+  if (!post) return null;
+  const canonicalId = post.translation_of || post.id;
+  const targetLang = post.language === "en" ? "de" : "en";
+  if (targetLang === "de") {
+    const { data } = await supabaseServer
+      .from("blog_posts")
+      .select("slug")
+      .eq("id", canonicalId)
+      .eq("language", "de")
+      .maybeSingle();
+    return data?.slug || null;
+  }
+  const { data } = await supabaseServer
+    .from("blog_posts")
+    .select("slug")
+    .eq("translation_of", canonicalId)
+    .eq("language", "en")
+    .maybeSingle();
+  return data?.slug || null;
+}
+
 // Sitemap helper: every published post with slug, language, updated_at.
 export async function fetchAllPublishedPostsForSitemap() {
   const { data, error } = await supabaseServer

@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import {
   fetchPostBySlugAndLang,
   fetchAllPublishedPostsForSitemap,
+  findPairedSlugServer,
 } from "@/lib/blogQueries.server";
 import { scopeBlogHtml, SCOPE_CLASS } from "@/lib/scopeBlogHtml";
 import BlogScripts from "@/components/BlogScripts";
@@ -22,14 +23,18 @@ export async function generateMetadata({ params }) {
   const { slug } = await params;
   const post = await fetchPostBySlugAndLang(slug, "en");
   if (!post) return { title: "Post not found" };
+
+  const pairedDeSlug = await findPairedSlugServer(post);
+
+  const languages = { en: `/en/blog/${post.slug}` };
+  if (pairedDeSlug) languages.de = `/blog/${pairedDeSlug}`;
+
   return {
     title: post.title,
     description: post.description || post.title,
     alternates: {
       canonical: `/en/blog/${post.slug}`,
-      languages: {
-        en: `/en/blog/${post.slug}`,
-      },
+      languages,
     },
     openGraph: {
       type: "article",
