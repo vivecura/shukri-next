@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
   fetchPostBySlugAndLang,
@@ -5,6 +6,7 @@ import {
   findPairedSlugServer,
 } from "@/lib/blogQueries.server";
 import { scopeBlogHtml, SCOPE_CLASS } from "@/lib/scopeBlogHtml";
+import { tForLang } from "@/lib/i18n";
 import BlogScripts from "@/components/BlogScripts";
 
 // Pre-render all DE post slugs at build time.
@@ -89,25 +91,23 @@ export default async function BlogPostPage({ params }) {
   };
 
   return (
-    <main className="pt-24 px-5 max-w-4xl mx-auto">
+    <div className="min-h-screen pt-20">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
       />
-      {post.thumbnail_url && (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={post.thumbnail_url}
-          alt={post.title}
-          className="w-full h-auto rounded-2xl mb-8"
-        />
-      )}
-      <h1 className="text-3xl sm:text-4xl font-bold text-[#43a9ab] mb-4">
-        {post.title}
-      </h1>
-      {post.description && (
-        <p className="text-lg text-[#515757]/80 mb-8">{post.description}</p>
-      )}
+
+      <div className="max-w-5xl mx-auto px-4 py-4">
+        <Link
+          href="/blog"
+          className="inline-flex items-center gap-2 text-sm text-[#515757]/50 hover:text-[#43a9ab] transition-colors duration-300 no-underline"
+        >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+          {tForLang("de", "blogPost.backToBlog")}
+        </Link>
+      </div>
 
       {styles.map((css, i) => (
         <style key={i} dangerouslySetInnerHTML={{ __html: css }} />
@@ -120,6 +120,25 @@ export default async function BlogPostPage({ params }) {
       />
 
       <BlogScripts scripts={scripts} />
-    </main>
+
+      <div className="bg-[#f7f9f9] py-16 px-4 text-center">
+        <div className="max-w-2xl mx-auto">
+          <h2 className="text-2xl md:text-3xl font-light text-[#515757] mb-4">
+            {tForLang("de", "blogPost.ctaTitle")}
+          </h2>
+          <p className="text-[#515757]/70 mb-8 text-base">
+            {tForLang("de", "blogPost.ctaSubtitle")}
+          </p>
+          <a
+            href="https://www.doctolib.de/arzt/berlin/shukri-jarmoukli/booking/motives?source=profile"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block bg-[#43a9ab] hover:bg-[#3a9496] text-white px-8 py-3 rounded-lg text-base font-medium transition-colors duration-300 no-underline"
+          >
+            {tForLang("de", "blogPost.ctaButton")}
+          </a>
+        </div>
+      </div>
+    </div>
   );
 }
