@@ -48,12 +48,17 @@ Configure now; they activate at the DNS swap.
 
 ## C. blog-mcp-server -> new Render account
 
-DONE OUT-OF-BAND. See `docs/MCP_SERVER_MIGRATION.md` for the runbook.
+DONE on 2026-06-07. Runbook: `docs/MCP_SERVER_MIGRATION.md`.
 
-After it's deployed:
-- [ ] New Render service is live and responds on `/health`
-- [ ] MCP URL updated in Claude desktop config / Anthropic connector
-- [ ] Old Render service archived (not deleted yet)
+- [x] New Render service live at
+      `https://vivecura-blog-mcp-w7q5.onrender.com`
+- [x] `/health` returns `{"status":"ok"}`
+- [x] MCP `/mcp` endpoint responds and advertises 4 tools
+- [x] Claude connector URL updated to the new Render URL
+- [x] Tools verified in Claude: list_blog_posts,
+      list_posts_missing_translation, publish_blog_post, read_blog_post
+- [ ] **Still to do**: suspend (don't delete) the old Render service
+      after ~7 days of new service working. Final delete after ~30 days.
 
 ---
 
