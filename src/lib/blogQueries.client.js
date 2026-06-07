@@ -60,3 +60,43 @@ export async function fetchAllPostsGrouped() {
     return new Date(bDate) - new Date(aDate);
   });
 }
+
+// Client-side featured posts query for the home page ScrollingCards.
+// Mirrors the server-side version in blogQueries.server.js but uses the
+// anon supabase client. EN rows inherit pinned/featured_on_home/created_at
+// from their DE pair so the listing matches the server-rendered ordering.
+export async function fetchFeaturedPostsForLanguage(lang) {
+  const { data, error } = await supabase
+    .from("blog_posts")
+    .select(
+      "id, title, slug, description, thumbnail_url, language, translation_of, pinned, featured_on_home, created_at, topics"
+    )
+    .eq("published", true)
+    .eq("language", lang)
+    .order("created_at", { ascending: false });
+  if (error || !data) return [];
+
+  const enWithDePair = data.filter((p) => p.language === "en" && p.translation_of);
+  if (enWithDePair.length > 0) {
+    const deIds = enWithDePair.map((p) => p.translation_of);
+    const { data: dePosts } = await supabase
+      .from("blog_posts")
+      .select("id, pinned, featured_on_home, created_at, topics")
+      .in("id", deIds);
+    if (dePosts && dePosts.length > 0) {
+      const deMap = new Map(dePosts.map((d) => [d.id, d]));
+      for (const post of data) {
+        if (post.language === "en" && post.translation_of && deMap.has(post.translation_of)) {
+          const de = deMap.get(post.translation_of);
+          post.pinned = de.pinned;
+          post.featured_on_home = de.featured_on_home;
+          post.created_at = de.created_at;
+          post.topics = de.topics;
+        }
+      }
+    }
+  }
+
+  data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  return data.filter((p) => p.featured_on_home);
+}
