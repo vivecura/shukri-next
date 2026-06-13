@@ -1,20 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useT } from "@/hooks/useT";
 import { supabase } from "@/lib/supabaseClient";
 import AdminContactsPanel from "@/components/AdminContactsPanel";
 import AdminLifesummitPanel from "@/components/AdminLifesummitPanel";
 import AdminBlogPanel from "@/components/AdminBlogPanel";
+import AdminAnamnesePanel from "@/components/AdminAnamnesePanel";
 
 function Admin() {
-  const t = useT();
   const [session, setSession] = useState(null);
   const [loading, setLoading] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [authError, setAuthError] = useState("");
-  const [activeTab, setActiveTab] = useState("blog");
+  const [activeTab, setActiveTab] = useState("patients");
   const [newContactsCount, setNewContactsCount] = useState(0);
   const [newLifesummitCount, setNewLifesummitCount] = useState(0);
 
@@ -129,30 +128,21 @@ function Admin() {
 
   // Admin dashboard
   return (
-    <div className="min-h-screen pt-24 pb-16 px-4">
-      <div className="max-w-5xl mx-auto">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h1 className="text-2xl font-light text-[#515757]">
-              {activeTab === "contacts"
-                ? t("admin.contacts.title")
-                : activeTab === "lifesummit"
-                ? "Lifesummit Anmeldungen"
-                : "Blog verwalten"}
-            </h1>
-            <div className="w-10 h-[2px] bg-[#43a9ab]/40 mt-2" />
-          </div>
+    <div className="min-h-screen pt-3 pb-12 px-6">
+      <div className="w-full">
+        {/* Tab nav — logout sits at the right of the same row (no separate header) */}
+        <div className="flex items-center justify-between gap-4 mb-4 border-b border-gray-100">
+          <div className="flex gap-2 flex-wrap">
           <button
-            onClick={handleLogout}
-            className="text-xs text-[#515757]/40 hover:text-[#515757] transition-colors tracking-wider uppercase"
+            onClick={() => setActiveTab("patients")}
+            className={`relative px-4 py-2 text-sm font-medium transition-colors ${
+              activeTab === "patients"
+                ? "text-[#43a9ab] border-b-2 border-[#43a9ab] -mb-px"
+                : "text-[#515757]/50 hover:text-[#515757]"
+            }`}
           >
-            Abmelden
+            Patienten
           </button>
-        </div>
-
-        {/* Tab nav */}
-        <div className="flex gap-2 mb-8 border-b border-gray-100">
           <button
             onClick={() => setActiveTab("blog")}
             className={`relative px-4 py-2 text-sm font-medium transition-colors ${
@@ -193,7 +183,27 @@ function Admin() {
               </span>
             )}
           </button>
+          </div>
+          <div className="shrink-0 flex items-center gap-4 pb-2">
+            <a
+              href="/"
+              className="flex items-center gap-1 text-xs text-[#515757]/40 hover:text-[#43a9ab] transition-colors tracking-wider uppercase"
+            >
+              <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                <path d="M3 10.5L12 3l9 7.5V20a1 1 0 01-1 1h-5v-6h-6v6H4a1 1 0 01-1-1v-9.5z" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              Home
+            </a>
+            <button
+              onClick={handleLogout}
+              className="text-xs text-[#515757]/40 hover:text-[#515757] transition-colors tracking-wider uppercase"
+            >
+              Abmelden
+            </button>
+          </div>
         </div>
+
+        {activeTab === "patients" && <AdminAnamnesePanel />}
 
         {activeTab === "contacts" && <AdminContactsPanel />}
 
