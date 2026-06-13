@@ -129,11 +129,12 @@ export async function findPairedSlugServer(post) {
   return data?.slug || null;
 }
 
-// Sitemap helper: every published post with slug, language, updated_at.
+// Sitemap helper: every published post with the fields needed to emit URLs
+// and pair DE<->EN translations for hreflang (id + translation_of).
 export async function fetchAllPublishedPostsForSitemap() {
   const { data, error } = await supabaseServer
     .from("blog_posts")
-    .select("slug, language, updated_at")
+    .select("id, slug, language, translation_of, updated_at")
     .eq("published", true);
   if (error || !data) return [];
   return data;
