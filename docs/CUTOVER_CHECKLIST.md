@@ -97,11 +97,12 @@ only the ownership TXT.
          new project as 308 -> `vivecura.com`. Verified instantly (DNS
          already pointed at Vercel, no TXT needed). curl-confirmed both
          308 -> https://vivecura.com/ -> 200.
-   - [ ] DEFERRED (2026-06-13): `vivecura.org` + `vivecura.eu`. Both still
-         point to Hostinger parking (A `@` = `2.57.91.91`). To redirect
-         later: add to new project as 308 -> `vivecura.com`, then repoint
-         their A `@` -> `216.198.79.1` + `www` CNAME to Vercel in Hostinger.
-         Not urgent; parked domains only.
+   - [x] `.org` redirects done (2026-06-13): `vivecura.org` + `www.vivecura.org`
+         added as 308 -> `vivecura.com`; repointed A `@` -> `216.198.79.1` and
+         `www` CNAME to the Vercel target in Hostinger. curl-confirmed live
+         (http + https -> apex).
+   - [ ] NOT done (optional): `vivecura.eu` + `lifestyledoctor.eu` still point
+         elsewhere; not redirected. Same recipe as `.org` if wanted later.
 3. [x] Apex + www show Valid Configuration.
 4. [x] Verified live: `https://vivecura.com` -> 200, new build;
        `www` -> 308 -> apex. (curl-confirmed 2026-06-13.)
