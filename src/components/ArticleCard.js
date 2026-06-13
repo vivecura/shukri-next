@@ -31,9 +31,11 @@ function ArticleCard({ post, lang, index = 0 }) {
           </div>
         ) : (
           <div className="aspect-[4/3] bg-gradient-to-br from-[#43a9ab]/10 to-[#43a9ab]/5 flex items-center justify-center">
-            <span className="text-[#43a9ab]/30 text-3xl font-light">
-              {post.title?.[0] || "B"}
-            </span>
+            <img
+              src="/Assets/logo6.png"
+              alt="ViveCura"
+              className="w-1/2 max-w-[160px] object-contain opacity-80"
+            />
           </div>
         )}
 

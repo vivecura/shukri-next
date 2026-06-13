@@ -1,4 +1,6 @@
 import { ImageResponse } from "next/og";
+import { readFile } from "fs/promises";
+import { join } from "path";
 import { fetchPostBySlugAndLang } from "@/lib/blogQueries.server";
 
 export const alt = "ViveCura Blog";
@@ -44,12 +46,17 @@ export default async function OG({ params }) {
     );
   }
 
+  // Default OG image when a post has no thumbnail: the ViveCura logo on white,
+  // with the article title beneath. The logo is read from disk and inlined so
+  // this works with no network fetch in any environment.
+  const logoData = await readFile(join(process.cwd(), "public/Assets/logo6.png"));
+  const logoSrc = `data:image/png;base64,${logoData.toString("base64")}`;
+
   return new ImageResponse(
     (
       <div
         style={{
-          background: "#43a9ab",
-          color: "white",
+          background: "#ffffff",
           width: "100%",
           height: "100%",
           display: "flex",
@@ -57,23 +64,23 @@ export default async function OG({ params }) {
           alignItems: "center",
           justifyContent: "center",
           padding: 80,
-          textAlign: "center",
-          fontFamily: "sans-serif",
         }}
       >
-        <div
-          style={{
-            fontSize: 32,
-            fontWeight: 500,
-            marginBottom: 24,
-            letterSpacing: "0.1em",
-          }}
-        >
-          VIVECURA
-        </div>
-        <div style={{ fontSize: 60, fontWeight: 700, maxWidth: 1000 }}>
-          {post?.title || "Blog"}
-        </div>
+        <img src={logoSrc} style={{ width: 260, height: 260, objectFit: "contain" }} />
+        {post?.title && (
+          <div
+            style={{
+              fontSize: 46,
+              fontWeight: 700,
+              color: "#1f6e70",
+              marginTop: 24,
+              maxWidth: 1040,
+              textAlign: "center",
+            }}
+          >
+            {post.title}
+          </div>
+        )}
       </div>
     ),
     { ...size }

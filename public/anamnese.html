@@ -43,26 +43,6 @@
   }
 
   .page { max-width: 520px; margin: 0 auto; padding: 22px 20px 40px; }
-  /* iPad-friendly: widen the column on tablets so the form doesn't sit
-     as a narrow inset column with empty gutters on either side. */
-  @media (min-width: 720px) {
-    .page { max-width: 720px; padding: 36px 32px 64px; }
-    .hero h1 { font-size: 60px; }
-    .hero-sub { font-size: 17.5px; max-width: 42ch; }
-    .step-title { font-size: 32px; }
-    .step-intro { font-size: 15px; }
-    .question-label { font-size: 15.5px; }
-    .field input[type="text"],
-    .field input[type="email"],
-    .field input[type="tel"],
-    .field input[type="number"],
-    .field input[type="date"],
-    .field textarea { font-size: 15.5px; padding: 13px 16px; }
-    .pill-choice { font-size: 13.5px; padding: 9px 16px; }
-    .step-section { padding: 30px 28px; }
-    .reality { padding: 30px 28px; }
-    .sub-questions { grid-template-columns: 1fr 1fr; gap: 22px; }
-  }
 
   /* Lang toggle bar */
   .topbar {
@@ -736,25 +716,18 @@
   }
   .btn-primary:hover svg, .btn-doctolib:hover svg { transform: translateX(3px); }
 
-  /* File upload — labels default to `display:inline` on iOS Safari, which
-     collapses the box to the width of its inline content and makes the
-     border render as broken corner fragments. Force block + full width. */
+  /* File upload */
   .file-upload {
-    display: block;
     position: relative;
-    width: 100%;
-    box-sizing: border-box;
-    padding: 22px 18px;
-    border: 2px solid var(--teal);
+    padding: 20px 16px;
+    border: 2px dashed var(--line-teal);
     border-radius: 16px;
-    background: rgba(67,169,171,0.06);
+    background: rgba(67,169,171,0.04);
     text-align: center;
     transition: background 0.2s, border-color 0.2s;
     cursor: pointer;
   }
-  .file-upload:hover {
-    background: rgba(67,169,171,0.12);
-  }
+  .file-upload:hover { background: rgba(67,169,171,0.08); border-color: var(--teal); }
   .file-upload input[type="file"] {
     position: absolute;
     inset: 0;
@@ -816,56 +789,6 @@
     padding-top: 10px;
     border-top: 1px solid var(--line);
   }
-
-  /* Sticky CTA */
-  .sticky-bar {
-    position: fixed;
-    left: 0; right: 0; bottom: 0;
-    z-index: 50;
-    padding: 10px 14px;
-    padding-bottom: calc(10px + env(safe-area-inset-bottom));
-    background: rgba(13, 16, 21, 0.82);
-    backdrop-filter: blur(20px) saturate(150%);
-    -webkit-backdrop-filter: blur(20px) saturate(150%);
-    border-top: 1px solid var(--line);
-  }
-  .sticky-inner {
-    max-width: 520px;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  @media (min-width: 720px) {
-    .sticky-inner { max-width: 720px; }
-  }
-  .sticky-btn {
-    flex: 1;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 13px 16px;
-    border-radius: 14px;
-    background: var(--teal);
-    color: var(--cream);
-    font-weight: 700;
-    font-size: 14px;
-    letter-spacing: 0.3px;
-    text-decoration: none;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 8px 24px rgba(67, 169, 171, 0.4);
-    font-family: inherit;
-  }
-  .sticky-meta {
-    flex-shrink: 0;
-    font-size: 11px;
-    color: var(--cream-soft);
-    text-align: right;
-    line-height: 1.3;
-  }
-  .sticky-meta strong { color: var(--cream); font-weight: 700; }
 
   /* Footer */
   .footer {
@@ -1033,6 +956,60 @@
     border-radius: 8px; padding: 6px 14px; font-size: 13px; cursor: pointer;
   }
   .sig-hint { font-size: 12px; color: var(--cream-dim); }
+
+  /* ===== v2: Video / Brief / Vorbereitung / KI-Aufklärung / Belohnung ===== */
+  .intro-video { margin: 0 0 26px; }
+  .intro-video .video-frame {
+    position: relative; width: 100%; border-radius: 20px; overflow: hidden;
+    border: 1px solid var(--line-teal); background: #000; aspect-ratio: 16 / 9;
+    box-shadow: 0 14px 36px rgba(0,0,0,0.4);
+  }
+  .intro-video video, .intro-video iframe { width: 100%; height: 100%; display: block; border: 0; object-fit: cover; }
+  .intro-video .video-placeholder {
+    position: absolute; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 12px; text-align: center;
+    background: radial-gradient(ellipse at 50% 40%, #1c2a2c 0%, #0d1015 80%); padding: 20px;
+  }
+  .intro-video .play-dot {
+    width: 60px; height: 60px; border-radius: 50%; background: var(--teal);
+    display: flex; align-items: center; justify-content: center; color: #fff; font-size: 22px;
+    box-shadow: 0 8px 24px rgba(67,169,171,0.45);
+  }
+  .intro-video .ph-note { font-size: 12px; color: var(--cream-dim); max-width: 32ch; line-height: 1.5; }
+  .intro-video .video-caption { text-align: center; font-size: 12.5px; color: var(--cream-soft); margin-top: 10px; }
+  .letter-card {
+    margin: 0 0 24px; padding: 26px 24px;
+    background: linear-gradient(160deg, var(--bg-card) 0%, var(--bg-soft) 100%);
+    border: 1px solid var(--line-teal); border-radius: 22px;
+  }
+  .letter-card .letter-eyebrow {
+    font-size: 10.5px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--teal-soft); margin-bottom: 14px; text-align: center;
+  }
+  .letter-card p { font-size: 14.5px; color: var(--cream-soft); line-height: 1.65; margin-bottom: 12px; }
+  .letter-card .lead { font-family: 'Libre Baskerville', Georgia, serif; font-style: italic; font-size: 15px; }
+  .letter-card .big { font-size: 16px; font-weight: 700; color: var(--cream); line-height: 1.5; margin: 4px 0 16px; }
+  .letter-card .point b { color: var(--teal-soft); }
+  .letter-card .invite {
+    margin-top: 8px; padding: 14px 16px; border-left: 2px solid var(--line-teal);
+    font-family: 'Libre Baskerville', Georgia, serif; font-style: italic; font-size: 14px; line-height: 1.6;
+  }
+  .letter-card .sign { margin-top: 14px; font-family: 'Libre Baskerville', Georgia, serif; font-style: italic; color: var(--cream); }
+  .prep-card { margin: 0 0 34px; padding: 18px 20px; background: rgba(255,255,255,0.03); border: 1px solid var(--line); border-radius: 16px; }
+  .prep-card h4 { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--teal-soft); margin-bottom: 12px; }
+  .prep-card ul { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+  .prep-card li { font-size: 13.5px; color: var(--cream-soft); line-height: 1.55; padding-left: 16px; position: relative; }
+  .prep-card li::before { content: '·'; position: absolute; left: 4px; color: var(--teal-soft); font-weight: 700; }
+  .prep-card li b { color: var(--cream); }
+  .ai-reassure { margin: -2px 0 6px 26px; background: rgba(67,169,171,0.05); border: 1px solid rgba(67,169,171,0.2); border-radius: 12px; padding: 2px 14px; }
+  .ai-reassure summary { cursor: pointer; font-size: 12.5px; font-weight: 700; color: var(--teal-soft); padding: 9px 0; list-style: none; }
+  .ai-reassure summary::-webkit-details-marker { display: none; }
+  .ai-reassure summary::before { content: '▸ '; }
+  .ai-reassure[open] summary::before { content: '▾ '; }
+  .ai-reassure p { font-size: 12.5px; color: var(--cream-soft); line-height: 1.6; padding: 2px 0 12px; }
+  .reward-box { margin: 0 auto 4px; padding: 16px 18px; max-width: 40ch; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); border-radius: 14px; }
+  .reward-box .reward-em { font-size: 22px; margin-bottom: 6px; }
+  .reward-box p { color: var(--cream) !important; font-size: 14px !important; margin: 0 !important; line-height: 1.55 !important; }
 </style>
 </head>
 <body>
@@ -1049,6 +1026,14 @@
       </button>
     </div>
 
+    <!-- INTRO-VIDEO: Begrüßung von Shukri -->
+    <section class="intro-video">
+      <div class="video-frame">
+        <iframe src="https://www.youtube-nocookie.com/embed/MFFcPE5oQcY?rel=0" title="Begruessung von Shukri" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
+      <div class="video-caption"><span class="de-only">Schau kurz rein — ich sag dir alles selbst.</span><span class="en-only">Take a moment — I'll tell you everything myself.</span></div>
+    </section>
+
     <!-- HERO (Warteraum-Intake) -->
     <section class="hero">
       <h1>
@@ -1059,6 +1044,16 @@
         <span class="de-only">Bitte nehmen Sie sich ein paar Minuten für Ihre Aufnahme. So bin ich für unser Gespräch optimal vorbereitet. Ihre Daten werden vertraulich und DSGVO-konform behandelt.</span>
         <span class="en-only">Please take a few minutes to complete your intake, so I'm well prepared for our conversation. Your data is handled confidentially and in line with GDPR.</span>
       </p>
+    </section>
+
+    <!-- VORBEREITUNG -->
+    <section class="prep-card">
+      <h4><span class="de-only">So bereitest du dich vor</span><span class="en-only">How to prepare</span></h4>
+      <ul>
+        <li><span class="de-only">Wird bei deinem Termin <b>Blut abgenommen</b> (oder erwartest du das)? Bitte <b>nüchtern</b> kommen — die letzten 8–12 Stunden nur Wasser, kein Essen, kein Kaffee, kein Saft.</span><span class="en-only">If blood will be drawn at your appointment (or you expect it): please come <b>fasting</b> — only water for the last 8–12 hours, no food, coffee or juice.</span></li>
+        <li><span class="de-only"><b>Nahrungsergänzungsmittel</b> bitte schon am Tag davor und am Termintag weglassen (sie können Laborwerte verfälschen). <b>Medikamente</b> nimmst du normal weiter — außer ich sage dir ausdrücklich etwas anderes.</span><span class="en-only">Please pause <b>food supplements</b> the day before and on the day of your appointment (they can distort lab values). Keep taking your <b>medications</b> as usual — unless I explicitly tell you otherwise.</span></li>
+        <li><span class="de-only">Bring bitte mit: aktuelle <b>Laborbefunde</b> und eine <b>Liste deiner Medikamente/Supplemente</b>.</span><span class="en-only">Please bring: your current <b>lab results</b> and a <b>list of your medications/supplements</b>.</span></li>
+      </ul>
     </section>
 
     <!-- Steps overview (vertical) -->
@@ -1100,6 +1095,10 @@
         <span class="de-only">Ihr Arzt für Funktionelle Medizin, Anthroposophie, Toxikologie, Biohacking und Longevity.</span>
         <span class="en-only">Your doctor for functional medicine, anthroposophy, toxicology, biohacking and longevity.</span>
       </p>
+      <div class="reward-box">
+        <div class="reward-em">✨</div>
+        <p><span class="de-only">Und weil du dir die Zeit genommen hast: Im Termin wartet eine kleine Belohnung auf dich. Was es ist, verrate ich dir, wenn wir uns sehen.</span><span class="en-only">And because you took the time: a small reward is waiting for you at your appointment. I'll tell you what it is when we meet.</span></p>
+      </div>
       <div class="success-contact">
         <span class="de-only">Noch Fragen? Schreiben Sie mir über das Kontaktformular:</span>
         <span class="en-only">Any questions? Reach me through the contact form:</span>
@@ -1597,10 +1596,14 @@
           <label class="privacy-checkbox">
             <input type="checkbox" name="consent_ki_pseudonym">
             <span>
-              <span class="de-only">Ich willige ein, dass meine Angaben – einschließlich der hier hochgeladenen Befunde und Dateien – KI-gestützt ausgewertet werden dürfen, z. B. zur Vorbereitung meines Behandlungsplans. Soweit möglich werden meine Daten dabei pseudonymisiert (Name und Geburtsdatum durch eine Kennung ersetzt). Diese Einwilligung ist freiwillig und jederzeit mit Wirkung für die Zukunft widerrufbar.</span>
-              <span class="en-only">I consent to my information – including the lab results and files uploaded here – being analysed with AI assistance, e.g. to prepare my treatment plan. Where possible, my data is pseudonymized (name and date of birth replaced by an ID). This consent is voluntary and revocable at any time with future effect.</span>
+              <span class="de-only">Ich willige ein, dass meine Angaben und die hier hochgeladenen Befunde KI-gestützt organisiert und strukturiert werden dürfen (z. B. Sortieren und Zusammenstellen der Unterlagen), damit sie effizienter aufbereitet sind. Die fachliche Auswertung und jede Entscheidung erfolgt ausschließlich durch Shukri Jarmoukli persönlich; er prüft alle Ergebnisse, und ohne seine Freigabe wird nichts verwendet. Soweit möglich werden meine Daten dabei pseudonymisiert (Name und Geburtsdatum durch eine Kennung ersetzt). Diese Einwilligung ist freiwillig und jederzeit mit Wirkung für die Zukunft widerrufbar.</span>
+              <span class="en-only">I consent to my information and the lab results uploaded here being organized and structured with AI support (e.g. sorting and compiling the documents) so they are prepared more efficiently. All medical evaluation and every decision is made exclusively by Shukri Jarmoukli personally; he reviews all results, and nothing is used without his approval. Where possible, my data is pseudonymized (name and date of birth replaced by an ID). This consent is voluntary and revocable at any time with future effect.</span>
             </span>
           </label>
+          <details class="ai-reassure">
+            <summary><span class="de-only">Skeptisch wegen KI &amp; Daten? Kurz, warum ich das mache</span><span class="en-only">Unsure about AI &amp; data? Briefly, why I do this</span></summary>
+            <p><span class="de-only">Skepsis gegenüber KI und Daten verstehe ich total, die hatte ich selbst. Deshalb ganz transparent: Die KI wertet nichts aus und beurteilt nichts. Sie hilft mir nur, deine Unterlagen zu ordnen und zusammenzustellen, damit ich alles schneller beisammen habe. Die fachliche Arbeit mache ich, jedes Ergebnis prüfe und genehmige ich persönlich, und die Verantwortung trage ich. Deine Daten werden dabei soweit möglich pseudonymisiert, dein echter Name bleibt in der Praxis. Für dich heißt das vor allem: mehr Zeit für dich im Gespräch. Und wenn du nicht möchtest, völlig okay, kreuz es einfach nicht an. Deine Behandlung ist dadurch in keiner Weise schlechter.</span><span class="en-only">I completely understand being skeptical about AI and data, I was too. So, transparently: the AI does not analyse or judge anything. It only helps me sort and compile your documents so I have everything together faster. The medical work is mine, I personally review and approve every result, and I carry the responsibility. Where possible your data is pseudonymized, your real name stays in the practice. For you this mainly means more time for you in the consultation. And if you'd rather not, that's completely fine, just leave it unchecked. Your treatment is in no way worse for it.</span></p>
+          </details>
           <label class="privacy-checkbox">
             <input type="checkbox" name="consent_newsletter">
             <span>
@@ -1613,13 +1616,6 @@
             <span>
               <span class="de-only">Ich möchte Einladungen zu Workshops und Vorträgen per Email oder SMS erhalten.</span>
               <span class="en-only">I would like to receive invitations to workshops and talks by email or SMS.</span>
-            </span>
-          </label>
-          <label class="privacy-checkbox">
-            <input type="checkbox" name="consent_email_unverschluesselt">
-            <span>
-              <span class="de-only">Ich bin damit einverstanden, dass mich die Praxis auch per unverschlüsselter Email kontaktiert (z. B. zu Befunden). Mir ist bewusst, dass unverschlüsselte Email kein vollständig sicherer Kanal ist.</span>
-              <span class="en-only">I agree to be contacted by the practice via unencrypted email (e.g. about results). I understand that unencrypted email is not a fully secure channel.</span>
             </span>
           </label>
         </div>
@@ -1673,7 +1669,14 @@
   // limits anon to INSERT only.
   const SUPABASE_URL = 'https://zevrlfpyyndwjnlpidkx.supabase.co';
   const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpldnJsZnB5eW5kd2pubHBpZGt4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyODA2MTUsImV4cCI6MjA5MDg1NjYxNX0.upwfBBFCmlLp9Q-gXjgG89WCXkqqG3hutGiuisyV3CI';
-  const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  // This is a public, unauthenticated form. It must ALWAYS act as the anon
+  // role. Default options would load any admin/login session stored in this
+  // browser's localStorage (same origin as the admin panel) and send requests
+  // as "authenticated", which the anon-only RLS policies reject. Disabling
+  // session persistence forces every request to use the anon key.
+  const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
 
   // ========= LANGUAGE TOGGLE =========
   const html = document.documentElement;
@@ -1973,52 +1976,20 @@
     scrollTo(step4);
   });
 
-  // ========= AUTO-SAVE TO LOCALSTORAGE =========
+  // ========= NO PERSISTENCE — form starts blank on every load/refresh =========
   const form = document.getElementById('mainForm');
   const STORAGE_KEY = 'vc_lifesummit_form';
 
-  function saveForm() {
-    const data = {};
-    const formData = new FormData(form);
-    for (const [key, value] of formData.entries()) {
-      if (data[key]) {
-        if (!Array.isArray(data[key])) data[key] = [data[key]];
-        data[key].push(value);
-      } else {
-        data[key] = value;
-      }
-    }
-    // also save checked states for radios/checkboxes manually
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-  }
+  // Persistence is intentionally disabled: every page load/refresh shows a
+  // clean form and never re-displays previously entered data. Wipe anything a
+  // prior version may have stored so old input cannot reappear.
+  localStorage.removeItem(STORAGE_KEY);
+  form.reset();
 
-  function loadForm() {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (!raw) return;
-      const data = JSON.parse(raw);
-      Object.keys(data).forEach(key => {
-        const inputs = form.querySelectorAll(`[name="${key}"]`);
-        if (inputs.length === 0) return;
-        const value = data[key];
-        const values = Array.isArray(value) ? value : [value];
-        inputs.forEach(input => {
-          if (input.type === 'checkbox' || input.type === 'radio') {
-            if (values.includes(input.value)) input.checked = true;
-          } else if (input.type === 'file') {
-            // can't restore
-          } else {
-            input.value = values[0] || '';
-          }
-        });
-      });
-    } catch (e) { console.warn('Restore failed', e); }
-  }
+  // Kept as a no-op because the supplement-dosage UI calls saveForm(); nothing
+  // is written to localStorage.
+  function saveForm() {}
 
-  form.addEventListener('input', saveForm);
-  form.addEventListener('change', saveForm);
-  loadForm();
-  // Re-render dosage rows in case localStorage restored supplement checkboxes
   renderSuppDosages();
 
   // ========= FILE LIST =========

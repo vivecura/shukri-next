@@ -29,20 +29,32 @@ Pages worth checking:
 
 ---
 
-## B. Multi-domain redirects (5 min Vercel UI)
+## B. Multi-domain redirects (Vercel UI)
 
-In the new Vercel project: **Settings -> Domains -> Add Domain** for each.
-Set type to **Redirect to vivecura.com** with status **308 Permanent**.
+Verified against the OLD project's Domains page on 2026-06-13. The actual
+set is smaller than originally guessed: **1 primary + 3 redirects**. There
+is NO `.org` and NO `lifestyledoctor.eu` attached to the Vercel project.
 
+Each of these is currently attached to the OLD project, so it must be
+removed there before it can be added to the new project. That makes B part
+of the cutover (step D), not a thing to pre-stage. Folded into D below.
+
+Redirects to recreate on the NEW project (type **Redirect to vivecura.com**,
+status **308 Permanent**):
 - [ ] `www.vivecura.com` -> `vivecura.com`
 - [ ] `vivecura.de` -> `vivecura.com`
 - [ ] `www.vivecura.de` -> `vivecura.com`
-- [ ] `vivecura.org` -> `vivecura.com`
-- [ ] `www.vivecura.org` -> `vivecura.com`
-- [ ] `lifestyledoctor.eu` -> `vivecura.com`
-- [ ] `www.lifestyledoctor.eu` -> `vivecura.com`
 
-Configure now; they activate at the DNS swap.
+Primary on the NEW project:
+- [ ] `vivecura.com` (Production)
+
+Do NOT touch:
+- `shukri-sigma.vercel.app` — the old project's auto-assigned Vercel
+  subdomain. Stays with the old project; not migrated.
+
+If `vivecura.org` / `lifestyledoctor.eu` are owned and should redirect too,
+that's a registrar-level task, separate from this Vercel migration. Does
+not block cutover.
 
 ---
 
@@ -66,15 +78,33 @@ DONE on 2026-06-07. Runbook: `docs/MCP_SERVER_MIGRATION.md`.
 
 Run **in this exact order** when A + B + C are green:
 
-1. [ ] **Old Vercel project** -> Settings -> Domains -> remove `vivecura.com`
-       (and all `.de` / `.org` / `lifestyledoctor.eu` entries).
-2. [ ] **New Vercel project** -> Settings -> Domains -> Add Domain ->
-       enter `vivecura.com`. Follow Vercel's DNS instructions. If your DNS
-       is managed by Vercel, it auto-updates; otherwise edit A/CNAME at
-       your registrar.
-3. [ ] Wait for "Valid Configuration" green check (1-5 min usually).
-4. [ ] Open `https://vivecura.com` in browser -> confirm new site, valid
-       cert, no warnings, links work.
+CUTOVER STARTED 2026-06-13. New project = `shukri-next` (DIFFERENT Vercel
+account than old, so each domain needs a cross-account TXT verification at
+`_vercel.<domain>` added in Hostinger DNS). DNS is at Hostinger
+(nameservers dns-parking.com). Apex A record already `216.198.79.1` (Vercel)
+and `www` CNAME already at a vercel-dns target -> no A/CNAME change needed,
+only the ownership TXT.
+
+1. [x] **Old project** -> removed `vivecura.com` + `www.vivecura.com`.
+2. [x] **New project** -> added `vivecura.com` + `www.vivecura.com`.
+       Added TXT `_vercel` = `vc-domain-verify=vivecura.com,5b778d0a070c4e9c887b`
+       and `vc-domain-verify=www.vivecura.com,2c479931b76857bbc0b2` in
+       Hostinger -> both verified -> Valid Configuration.
+   - [x] Fixed redirect direction: `vivecura.com` = Production,
+         `www.vivecura.com` = 308 -> `vivecura.com` (code canonical is the
+         non-www apex: `SITE_URL` in layout/robots/sitemap).
+   - [x] `.de` redirects done: `vivecura.de` + `www.vivecura.de` moved to
+         new project as 308 -> `vivecura.com`. Verified instantly (DNS
+         already pointed at Vercel, no TXT needed). curl-confirmed both
+         308 -> https://vivecura.com/ -> 200.
+   - [ ] DEFERRED (2026-06-13): `vivecura.org` + `vivecura.eu`. Both still
+         point to Hostinger parking (A `@` = `2.57.91.91`). To redirect
+         later: add to new project as 308 -> `vivecura.com`, then repoint
+         their A `@` -> `216.198.79.1` + `www` CNAME to Vercel in Hostinger.
+         Not urgent; parked domains only.
+3. [x] Apex + www show Valid Configuration.
+4. [x] Verified live: `https://vivecura.com` -> 200, new build;
+       `www` -> 308 -> apex. (curl-confirmed 2026-06-13.)
 5. [ ] **Supabase webhook URL update**: Database -> Webhooks ->
        `revalidate-blog-on-change` -> change URL from
        `https://shukri-next-git-main-shukri-s-projects.vercel.app/api/revalidate`

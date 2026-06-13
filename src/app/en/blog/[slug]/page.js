@@ -32,23 +32,29 @@ export async function generateMetadata({ params }) {
   if (pairedDeSlug) languages.de = `/blog/${pairedDeSlug}`;
 
   return {
-    title: post.title,
+    // `absolute` skips the root layout's "%s – ViveCura" template. Post titles
+    // already carry the brand (e.g. "… | ViveCura"), so the template would
+    // double it. This also keeps <title> identical to og:title below.
+    title: { absolute: post.title },
     description: post.description || post.title,
     alternates: {
       canonical: `/en/blog/${post.slug}`,
       languages,
     },
+    // No `images` here on purpose: omitting it lets Next.js use this route's
+    // opengraph-image.js generator, which renders the post thumbnail when one
+    // is set and a branded "VIVECURA + title" card when it isn't — so every
+    // article gets an OG image. An explicit `images` field (even undefined)
+    // suppresses that generator, which is why thumbnail-less posts had none.
     openGraph: {
       type: "article",
       title: post.title,
       description: post.description || post.title,
-      images: post.thumbnail_url ? [{ url: post.thumbnail_url }] : undefined,
     },
     twitter: {
       card: "summary_large_image",
       title: post.title,
       description: post.description || post.title,
-      images: post.thumbnail_url ? [post.thumbnail_url] : undefined,
     },
   };
 }

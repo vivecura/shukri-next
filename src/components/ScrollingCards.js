@@ -65,10 +65,12 @@ export default function ScrollingCards({ speedSeconds = 36, title }) {
         {post.thumbnail_url ? (
           <img src={post.thumbnail_url} alt={post.title} className="w-full h-full object-cover" />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-[#43a9ab]/40">
-            <svg className="w-10 h-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
-              <path d="M12 20h9M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4L16.5 3.5z" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+          <div className="w-full h-full flex items-center justify-center">
+            <img
+              src="/Assets/logo6.png"
+              alt="ViveCura"
+              className="w-1/2 max-w-[160px] object-contain opacity-80"
+            />
           </div>
         )}
       </div>
