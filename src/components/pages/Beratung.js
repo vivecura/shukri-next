@@ -11,7 +11,7 @@ function Beratung() {
     {
       number: "1",
       front: cardsTranslated[0].front,
-      image: "/Assets/Images_Beratung/Aktives Zuhören.png",
+      image: "/Assets/Images_Beratung/aktives-zuhoeren.png",
       back: cardsTranslated[0].back,
     },
     {
