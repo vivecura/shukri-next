@@ -41,7 +41,6 @@ function Beratung() {
         subtitle={t("beratung.subtitle")}
         textLayout="stacked"
         stackedSubtitleMarginLeft="18%"
-        showBottomButton={false}
         cards={beratungCards}
       />
     </div>
