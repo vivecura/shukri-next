@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>vivecura.com – Architektur · Architecture</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    :root {
+      --teal: #43a9ab;
+      --teal-dark: #2f8385;
+      --teal-soft: #e8f5f5;
+      --slate: #515757;
+      --slate-soft: #f6f7f7;
+      --line: #e5e8e8;
+      --bg: #fbfcfc;
+      --card: #ffffff;
+      --shadow-sm: 0 1px 3px rgba(81, 87, 87, 0.05);
+      --shadow-md: 0 4px 16px rgba(81, 87, 87, 0.08);
+      --radius: 14px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      color: var(--slate);
+      background: var(--bg);
+      line-height: 1.6;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--teal-dark); }
+
+    /* ── LANGUAGE TOGGLE ──────────────────────── */
+    .lang-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 100;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 4px;
+      display: flex;
+      gap: 0;
+      box-shadow: var(--shadow-md);
+      font-family: inherit;
+    }
+    .lang-toggle button {
+      background: transparent;
+      border: 0;
+      padding: 7px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      color: rgba(81, 87, 87, 0.55);
+      border-radius: 999px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.2s, color 0.2s;
+    }
+    .lang-toggle button.active {
+      background: var(--teal);
+      color: #fff;
+    }
+    .lng.en { display: none; }
+    body.en .lng.de { display: none; }
+    body.en .lng.en { display: inline; }
+    body.en .lng-block.en { display: block; }
+    .lng-block.en { display: none; }
+    .lng-block.de { display: block; }
+    body.en .lng-block.de { display: none; }
+
+    .wrap {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 64px 24px 96px;
+    }
+
+    /* ── HERO ─────────────────────────────────── */
+    .hero {
+      text-align: center;
+      margin-bottom: 72px;
+    }
+    .hero .eyebrow {
+      display: inline-block;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--teal-dark);
+      background: var(--teal-soft);
+      padding: 6px 14px;
+      border-radius: 999px;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+    .hero h1 {
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      margin: 0 0 16px;
+      color: var(--slate);
+    }
+    .hero h1 strong {
+      font-weight: 500;
+      color: var(--teal-dark);
+    }
+    .hero p {
+      max-width: 640px;
+      margin: 0 auto;
+      color: rgba(81, 87, 87, 0.7);
+      font-size: 17px;
+    }
+
+    /* ── SERVICE CHIPS ────────────────────────── */
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 32px;
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 500;
+      box-shadow: var(--shadow-sm);
+    }
+    .chip .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--teal);
+    }
+    .chip.github .dot { background: #24292f; }
+    .chip.vercel .dot { background: #000; }
+    .chip.render .dot { background: #5e6ad2; }
+    .chip.supabase .dot { background: #3ecf8e; }
+    .chip.claude .dot { background: #cc9b7a; }
+
+    /* ── SECTION ──────────────────────────────── */
+    section {
+      margin-bottom: 80px;
+    }
+    section > h2 {
+      font-size: 26px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      margin: 0 0 8px;
+      color: var(--slate);
+    }
+    section > h2 .num {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--teal-dark);
+      background: var(--teal-soft);
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 28px;
+      margin-right: 12px;
+      vertical-align: 3px;
+    }
+    section > .lede {
+      color: rgba(81, 87, 87, 0.7);
+      max-width: 680px;
+      margin: 0 0 32px;
+      font-size: 15px;
+    }
+
+    /* ── FLOW ────────────────────────────────── */
+    .flow {
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+      flex-wrap: wrap;
+    }
+    .step {
+      flex: 1 1 0;
+      min-width: 180px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 20px 18px;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .step:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    .step .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(81, 87, 87, 0.55);
+      margin-bottom: 10px;
+    }
+    .step .badge .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--teal);
+    }
+    .step h3 {
+      font-size: 16px;
+      font-weight: 600;
+      margin: 0 0 6px;
+      color: var(--slate);
+      line-height: 1.3;
+    }
+    .step p {
+      margin: 0;
+      font-size: 13.5px;
+      color: rgba(81, 87, 87, 0.75);
+      line-height: 1.5;
+    }
+    .step .tech {
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px dashed var(--line);
+      font-size: 11.5px;
+      color: rgba(81, 87, 87, 0.55);
+      font-family: 'SF Mono', ui-monospace, 'Cascadia Mono', Menlo, monospace;
+      letter-spacing: -0.01em;
+      word-break: break-word;
+    }
+    .step.github { border-top: 3px solid #24292f; }
+    .step.vercel { border-top: 3px solid #000; }
+    .step.render { border-top: 3px solid #5e6ad2; }
+    .step.supabase { border-top: 3px solid #3ecf8e; }
+    .step.claude { border-top: 3px solid #cc9b7a; }
+    .step.user { border-top: 3px solid var(--teal); }
+
+    .arrow {
+      flex: 0 0 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--teal);
+      font-size: 22px;
+      opacity: 0.7;
+    }
+    .arrow svg { width: 28px; height: 28px; }
+
+    @media (max-width: 760px) {
+      .flow { flex-direction: column; }
+      .arrow { flex: 0 0 36px; padding: 4px 0; }
+      .arrow svg { transform: rotate(90deg); }
+    }
+
+    /* ── INFO GRID ────────────────────────────── */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    @media (max-width: 760px) {
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    }
+
+    .info-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 22px 22px 20px;
+      box-shadow: var(--shadow-sm);
+    }
+    .info-card h4 {
+      font-size: 15px;
+      font-weight: 600;
+      margin: 0 0 6px;
+      color: var(--slate);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .info-card h4 code {
+      font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+      font-size: 12.5px;
+      background: var(--slate-soft);
+      padding: 2px 8px;
+      border-radius: 6px;
+      color: var(--teal-dark);
+      font-weight: 500;
+    }
+    .info-card p {
+      margin: 0;
+      font-size: 13.5px;
+      color: rgba(81, 87, 87, 0.75);
+      line-height: 1.55;
+    }
+    .info-card .meta {
+      margin-top: 12px;
+      font-size: 11.5px;
+      color: rgba(81, 87, 87, 0.5);
+      font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+    }
+
+    /* ── COSTS TABLE ──────────────────────────── */
+    .costs {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+    .costs table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .costs th, .costs td {
+      padding: 14px 22px;
+      text-align: left;
+      font-size: 14px;
+      border-bottom: 1px solid var(--line);
+    }
+    .costs th {
+      font-weight: 600;
+      font-size: 11.5px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(81, 87, 87, 0.55);
+      background: var(--slate-soft);
+    }
+    .costs tr:last-child td { border-bottom: none; }
+    .costs td.price {
+      font-weight: 500;
+      color: var(--teal-dark);
+      white-space: nowrap;
+    }
+
+    /* ── CALLOUT ──────────────────────────────── */
+    .callout {
+      background: linear-gradient(135deg, var(--teal-soft) 0%, #f0f9f9 100%);
+      border: 1px solid #d8eded;
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .callout .icon {
+      flex: 0 0 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--teal);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .callout p {
+      margin: 0;
+      font-size: 14px;
+      color: var(--slate);
+    }
+    .callout strong { color: var(--teal-dark); }
+
+    /* ── FOOTER ───────────────────────────────── */
+    footer {
+      text-align: center;
+      padding: 32px 0 0;
+      border-top: 1px solid var(--line);
+      margin-top: 64px;
+      color: rgba(81, 87, 87, 0.5);
+      font-size: 12.5px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── LANGUAGE TOGGLE ─── -->
+  <div class="lang-toggle" role="group" aria-label="Language">
+    <button type="button" data-lang="de" class="active">DE</button>
+    <button type="button" data-lang="en">EN</button>
+  </div>
+
+  <div class="wrap">
+
+    <!-- ─────────── HERO ─────────── -->
+    <header class="hero">
+      <span class="eyebrow">
+        <span class="lng de">ViveCura · Architektur</span>
+        <span class="lng en">ViveCura · Architecture</span>
+      </span>
+      <h1>
+        <span class="lng de">So funktioniert <strong>vivecura.com</strong></span>
+        <span class="lng en">How <strong>vivecura.com</strong> works</span>
+      </h1>
+      <p>
+        <span class="lng de">Eine einfache Übersicht: welche Dienste die Website am Leben halten, wer mit wem spricht und was wo gespeichert wird.</span>
+        <span class="lng en">A simple overview: which services keep the website running, who talks to whom, and what gets stored where.</span>
+      </p>
+      <div class="chips">
+        <span class="chip github"><span class="dot"></span>
+          <span class="lng de">GitHub – Code</span>
+          <span class="lng en">GitHub – Code</span>
+        </span>
+        <span class="chip vercel"><span class="dot"></span>
+          <span class="lng de">Vercel – Hosting</span>
+          <span class="lng en">Vercel – Hosting</span>
+        </span>
+        <span class="chip render"><span class="dot"></span>
+          <span class="lng de">Render – MCP-Server</span>
+          <span class="lng en">Render – MCP server</span>
+        </span>
+        <span class="chip supabase"><span class="dot"></span>
+          <span class="lng de">Supabase – Datenbank</span>
+          <span class="lng en">Supabase – Database</span>
+        </span>
+        <span class="chip claude"><span class="dot"></span>
+          <span class="lng de">Claude – Blog-Autor</span>
+          <span class="lng en">Claude – Blog author</span>
+        </span>
+      </div>
+    </header>
+
+    <!-- ─────────── FLOW A: CODE → DEPLOY ─────────── -->
+    <section>
+      <h2><span class="num">A</span>
+        <span class="lng de">Wenn am Code gearbeitet wird</span>
+        <span class="lng en">When the code gets updated</span>
+      </h2>
+      <p class="lede">
+        <span class="lng de">Jede Code-Änderung wandert über GitHub zu Vercel und ist innerhalb von ein paar Minuten live auf vivecura.com. Kein manuelles Hochladen, kein FTP.</span>
+        <span class="lng en">Every code change travels through GitHub to Vercel and is live on vivecura.com within minutes. No manual upload, no FTP.</span>
+      </p>
+
+      <div class="flow">
+        <div class="step user">
+          <span class="badge"><span class="dot"></span>
+            <span class="lng de">Entwickler</span><span class="lng en">Developer</span>
+          </span>
+          <h3>
+            <span class="lng de">Sami am Laptop</span>
+            <span class="lng en">Sami at the laptop</span>
+          </h3>
+          <p>
+            <span class="lng de">Editiert Code, baut neue Funktionen, bessert nach.</span>
+            <span class="lng en">Edits code, builds new features, fixes things.</span>
+          </p>
+          <div class="tech">Next.js 16 · React 19 · Tailwind</div>
+        </div>
+        <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+        <div class="step github">
+          <span class="badge"><span class="dot"></span>
+            <span class="lng de">Speicher</span><span class="lng en">Storage</span>
+          </span>
+          <h3>GitHub</h3>
+          <p>
+            <span class="lng de">Speichert den Code als private Repository. Jeder „Push" landet hier.</span>
+            <span class="lng en">Stores the code as a private repository. Every "push" lands here.</span>
+          </p>
+          <div class="tech">vivecura/shukri-next · branch: main</div>
+        </div>
+        <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+        <div class="step vercel">
+          <span class="badge"><span class="dot"></span>
+            <span class="lng de">Hosting</span><span class="lng en">Hosting</span>
+          </span>
+          <h3>Vercel</h3>
+          <p>
+            <span class="lng de">Erkennt den Push automatisch, baut die Website neu und stellt sie live.</span>
+            <span class="lng en">Detects the push automatically, rebuilds the site, and ships it live.</span>
+          </p>
+          <div class="tech">
+            <span class="lng de">Build ≈ 2 Min · auto deploy</span>
+            <span class="lng en">Build ≈ 2 min · auto deploy</span>
+          </div>
+        </div>
+        <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+        <div class="step user">
+          <span class="badge"><span class="dot"></span>
+            <span class="lng de">Live</span><span class="lng en">Live</span>
+          </span>
+          <h3>vivecura.com</h3>
+          <p>
+            <span class="lng de">Besucher sehen sofort die neue Version – ohne dass jemand etwas tun muss.</span>
+            <span class="lng en">Visitors see the new version instantly — without anyone lifting a finger.</span>
+          </p>
+          <div class="tech">
+            <span class="lng de">HTTPS · automatisch via Vercel</span>
+            <span class="lng en">HTTPS · automatic via Vercel</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────── FLOW B: BLOG PUBLISHING ─────────── -->
+    <section>
+      <h2><span class="num">B</span>
+        <span class="lng de">Wenn ein neuer Blog-Artikel erscheint</span>
+        <span class="lng en">When a new blog post goes up</span>
+      </h2>
+      <p class="lede">
+        <span class="lng de">Artikel werden nicht direkt im Code geschrieben, sondern Claude verfasst sie und schickt sie über einen kleinen Server an die Datenbank. Die Website merkt das und aktualisiert sich von selbst.</span>
+        <span class="lng en">Articles aren't written directly into the code. Claude drafts them and sends them through a small server into the database. The website notices and updates itself.</span>
+      </p>
+
+      <div class="flow">
+        <div class="step claude">
+          <span class="badge"><span class="dot"></span>
+            <span class="lng de">Autor</span><span class="lng en">Author</span>
+          </span>
+          <h3>Claude (Desktop / API)</h3>
+          <p>
+            <span class="lng de">Schreibt den Artikel als komplette HTML-Seite, zeigt Vorschau, und drückt auf „veröffentlichen".</span>
+            <span class="lng en">Writes the article as a complete HTML page, shows a preview, and hits "publish".</span>
+          </p>
+          <div class="tech">MCP Connector</div>
+        </div>
+        <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+        <div class="step render">
+          <span class="badge"><span class="dot"></span>
+            <span class="lng de">Vermittler</span><span class="lng en">Bridge</span>
+          </span>
+          <h3>
+            <span class="lng de">MCP-Server auf Render</span>
+            <span class="lng en">MCP server on Render</span>
+          </h3>
+          <p>
+            <span class="lng de">Ein kleiner Node-Server, der Claudes Anfragen empfängt und sie in saubere Datenbank-Einträge übersetzt.</span>
+            <span class="lng en">A small Node server that receives Claude's requests and translates them into clean database rows.</span>
+          </p>
+          <div class="tech">
+            <span class="lng de">blog-mcp-server · 4 Tools</span>
+            <span class="lng en">blog-mcp-server · 4 tools</span>
+          </div>
+        </div>
+        <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+        <div class="step supabase">
+          <span class="badge"><span class="dot"></span>
+            <span class="lng de">Speicher</span><span class="lng en">Storage</span>
+          </span>
+          <h3>Supabase · blog_posts</h3>
+          <p>
+            <span class="lng de">Speichert den Artikel mit Sprache (DE/EN), Slug, Themen, Bildern und HTML.</span>
+            <span class="lng en">Stores the article with language (DE/EN), slug, topics, images, and HTML.</span>
+          </p>
+          <div class="tech">PostgreSQL · service-role key</div>
+        </div>
+        <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+        <div class="step vercel">
+          <span class="badge"><span class="dot"></span>
+            <span class="lng de">Update</span><span class="lng en">Refresh</span>
+          </span>
+          <h3>Webhook → Vercel</h3>
+          <p>
+            <span class="lng de">Supabase ruft <code>/api/revalidate</code> auf. Vercel aktualisiert die betroffenen Seiten in Sekunden – ohne Rebuild.</span>
+            <span class="lng en">Supabase calls <code>/api/revalidate</code>. Vercel refreshes the affected pages in seconds — no rebuild.</span>
+          </p>
+          <div class="tech">ISR · /blog · /sitemap.xml</div>
+        </div>
+      </div>
+
+      <div class="callout" style="margin-top: 24px;">
+        <span class="icon">i</span>
+        <p>
+          <span class="lng de"><strong>Warum so umständlich?</strong> Weil Claude direkt nicht in die Datenbank schreiben darf (zu unsicher). Der MCP-Server hat einen sicheren „Spezial­zugang" und prüft jede Eingabe, bevor sie reinkommt. Außerdem kann Claude so jederzeit auch alte Artikel lesen, übersetzen oder neu veröffentlichen.</span>
+          <span class="lng en"><strong>Why all the indirection?</strong> Because Claude isn't allowed to write to the database directly (too risky). The MCP server has a secure "special key" and validates every input before it goes in. It also lets Claude read, translate, or re-publish older articles whenever needed.</span>
+        </p>
+      </div>
+    </section>
+
+    <!-- ─────────── FLOW C: PATIENTS ─────────── -->
+    <section>
+      <h2><span class="num">C</span>
+        <span class="lng de">Wenn ein Patient die Anamnese ausfüllt</span>
+        <span class="lng en">When a patient fills out the intake form</span>
+      </h2>
+      <p class="lede">
+        <span class="lng de">Patienten füllen das Online-Formular aus, ihre Antworten und hochgeladenen Befunde landen direkt in Supabase. Die Praxis sieht sie im Admin-Bereich und ergänzt Diagnose, Medikation, Termine und Rechnungen.</span>
+        <span class="lng en">Patients fill out the online form; their answers and uploaded documents go straight into Supabase. The practice sees them in the admin area and adds diagnosis, medication, appointments, and invoices.</span>
+      </p>
+
+      <div class="flow">
+        <div class="step user">
+          <span class="badge"><span class="dot"></span>
+            <span class="lng de">Patient</span><span class="lng en">Patient</span>
+          </span>
+          <h3>/anamnese</h3>
+          <p>
+            <span class="lng de">Öffentliches Formular. Patient gibt Daten ein, lädt Befunde hoch, unterschreibt.</span>
+            <span class="lng en">Public form. Patient enters data, uploads documents, signs.</span>
+          </p>
+          <div class="tech">vivecura.com/anamnese</div>
+        </div>
+        <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+        <div class="step supabase">
+          <span class="badge"><span class="dot"></span>
+            <span class="lng de">Speicher</span><span class="lng en">Storage</span>
+          </span>
+          <h3>Supabase · anamnese_submissions + Storage</h3>
+          <p>
+            <span class="lng de">Antworten landen in der Tabelle, hochgeladene PDFs/Bilder im Storage-Bucket <code>befunde</code>.</span>
+            <span class="lng en">Answers go into the table, uploaded PDFs/images into the storage bucket <code>befunde</code>.</span>
+          </p>
+          <div class="tech">RLS: anon INSERT only</div>
+        </div>
+        <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+        <div class="step user">
+          <span class="badge"><span class="dot"></span>
+            <span class="lng de">Praxis</span><span class="lng en">Practice</span>
+          </span>
+          <h3>
+            <span class="lng de">/admin – Patienten-Tab</span>
+            <span class="lng en">/admin – Patients tab</span>
+          </h3>
+          <p>
+            <span class="lng de">Praxis loggt sich ein, sieht den Patienten, pflegt Diagnose · Medikation · Termin · Notizen · Behandlungsplan · Rechnungen.</span>
+            <span class="lng en">Practice logs in, opens the patient, maintains diagnosis · medication · appointments · notes · treatment plan · invoices.</span>
+          </p>
+          <div class="tech">Supabase Auth · patient_records (JSONB)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────── FLOW D: VISITOR ─────────── -->
+    <section>
+      <h2><span class="num">D</span>
+        <span class="lng de">Wenn jemand einfach die Website besucht</span>
+        <span class="lng en">When someone simply visits the website</span>
+      </h2>
+      <p class="lede">
+        <span class="lng de">Der Weg vom Browser bis zur fertigen Seite.</span>
+        <span class="lng en">The path from browser to finished page.</span>
+      </p>
+
+      <div class="flow">
+        <div class="step user">
+          <span class="badge"><span class="dot"></span>
+            <span class="lng de">Besucher</span><span class="lng en">Visitor</span>
+          </span>
+          <h3>Browser</h3>
+          <p>
+            <span class="lng de">Tippt <code>vivecura.com</code> ein.</span>
+            <span class="lng en">Types <code>vivecura.com</code>.</span>
+          </p>
+        </div>
+        <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+        <div class="step">
+          <span class="badge"><span class="dot"></span>
+            <span class="lng de">DNS</span><span class="lng en">DNS</span>
+          </span>
+          <h3>
+            <span class="lng de">Domain → Vercel</span>
+            <span class="lng en">Domain → Vercel</span>
+          </h3>
+          <p>
+            <span class="lng de">Die Domain <code>vivecura.com</code> zeigt per DNS auf Vercels Server.</span>
+            <span class="lng en">The domain <code>vivecura.com</code> points to Vercel's servers via DNS.</span>
+          </p>
+          <div class="tech">
+            <span class="lng de">A / CNAME · SSL automatisch</span>
+            <span class="lng en">A / CNAME · SSL automatic</span>
+          </div>
+        </div>
+        <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+        <div class="step vercel">
+          <span class="badge"><span class="dot"></span>
+            <span class="lng de">Render</span><span class="lng en">Render</span>
+          </span>
+          <h3>
+            <span class="lng de">Vercel liefert die Seite</span>
+            <span class="lng en">Vercel serves the page</span>
+          </h3>
+          <p>
+            <span class="lng de">Statische Inhalte aus dem Cache, dynamische Inhalte holt Vercel live aus Supabase.</span>
+            <span class="lng en">Static content from the cache, dynamic content fetched live from Supabase.</span>
+          </p>
+          <div class="tech">ISR · CDN edge</div>
+        </div>
+        <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+        <div class="step user">
+          <span class="badge"><span class="dot"></span>
+            <span class="lng de">Sicht</span><span class="lng en">View</span>
+          </span>
+          <h3>
+            <span class="lng de">Fertige Seite</span>
+            <span class="lng en">Finished page</span>
+          </h3>
+          <p>
+            <span class="lng de">Besucher sieht die Inhalte. Google Analytics zählt anonym mit.</span>
+            <span class="lng en">Visitor sees the content. Google Analytics quietly counts in the background.</span>
+          </p>
+          <div class="tech">gtag · G-PVM2RGELWW</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────── SUPABASE TABLES ─────────── -->
+    <section>
+      <h2><span class="num">1</span>
+        <span class="lng de">Was speichert Supabase eigentlich?</span>
+        <span class="lng en">What exactly does Supabase store?</span>
+      </h2>
+      <p class="lede">
+        <span class="lng de">Eine einzige Postgres-Datenbank hält alles zusammen: Blog, Patienten, Kontaktanfragen und Datei-Uploads.</span>
+        <span class="lng en">A single Postgres database holds everything together: blog, patients, contact requests, and file uploads.</span>
+      </p>
+
+      <div class="grid-3">
+        <div class="info-card">
+          <h4><code>blog_posts</code></h4>
+          <p>
+            <span class="lng de">Alle Blog-Artikel. Pro Artikel eine DE-Zeile und eine EN-Zeile, verlinkt über <code>translation_of</code>. Enthält Slug, Themen, HTML, Thumbnail.</span>
+            <span class="lng en">All blog posts. One DE row and one EN row per article, linked via <code>translation_of</code>. Holds slug, topics, HTML, thumbnail.</span>
+          </p>
+          <div class="meta">
+            <span class="lng de">geschrieben von: MCP-Server (Render)</span>
+            <span class="lng en">written by: MCP server (Render)</span>
+          </div>
+        </div>
+        <div class="info-card">
+          <h4><code>anamnese_submissions</code></h4>
+          <p>
+            <span class="lng de">Eingegangene Patientenformulare. Komplette Antworten als JSON, plus E-Mail, Handy, Geburtsdatum, Unterschrift.</span>
+            <span class="lng en">Incoming patient intake forms. All answers as JSON, plus email, phone, date of birth, signature.</span>
+          </p>
+          <div class="meta">
+            <span class="lng de">geschrieben von: anon (Formular)</span>
+            <span class="lng en">written by: anonymous (form)</span>
+          </div>
+        </div>
+        <div class="info-card">
+          <h4><code>patient_records</code></h4>
+          <p>
+            <span class="lng de">Praxis-interne Patientenakte: Diagnose, Medikation, Termine, Notizen, Behandlungsplan, Rechnungen.</span>
+            <span class="lng en">Practice-internal patient record: diagnosis, medication, appointments, notes, treatment plan, invoices.</span>
+          </p>
+          <div class="meta">
+            <span class="lng de">geschrieben von: Admin (eingeloggt)</span>
+            <span class="lng en">written by: admin (logged in)</span>
+          </div>
+        </div>
+        <div class="info-card">
+          <h4><code>contact_requests</code></h4>
+          <p>
+            <span class="lng de">Nachrichten aus dem Kontaktformular der Website.</span>
+            <span class="lng en">Messages from the website's contact form.</span>
+          </p>
+          <div class="meta">
+            <span class="lng de">geschrieben von: anon (Formular)</span>
+            <span class="lng en">written by: anonymous (form)</span>
+          </div>
+        </div>
+        <div class="info-card">
+          <h4><code>lifesummit_submissions</code></h4>
+          <p>
+            <span class="lng de">Anmeldungen / Daten für den LifeSummit-Bereich.</span>
+            <span class="lng en">Sign-ups / data for the LifeSummit area.</span>
+          </p>
+          <div class="meta">
+            <span class="lng de">geschrieben von: anon (Formular)</span>
+            <span class="lng en">written by: anonymous (form)</span>
+          </div>
+        </div>
+        <div class="info-card">
+          <h4><code>befunde</code> · Storage</h4>
+          <p>
+            <span class="lng de">Datei-Bucket für hochgeladene Befunde (Patient) und intern hochgeladene Befunde + Rechnungen (Praxis).</span>
+            <span class="lng en">File bucket for uploaded documents (patient) and internally uploaded documents + invoices (practice).</span>
+          </p>
+          <div class="meta">
+            <span class="lng de">Pfade: <code>&lt;sid&gt;/...</code> · <code>befund/...</code> · <code>rechnungen/...</code></span>
+            <span class="lng en">Paths: <code>&lt;sid&gt;/...</code> · <code>befund/...</code> · <code>rechnungen/...</code></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────── DOMAIN / DNS ─────────── -->
+    <section>
+      <h2><span class="num">2</span>
+        <span class="lng de">Domain, DNS und E-Mail</span>
+        <span class="lng en">Domain, DNS, and email</span>
+      </h2>
+      <p class="lede">
+        <span class="lng de">Domain und Website sind technisch zwei verschiedene Dinge – die Domain ist die Adresse, Vercel ist das Gebäude.</span>
+        <span class="lng en">Domain and website are technically two different things — the domain is the address, Vercel is the building.</span>
+      </p>
+
+      <div class="grid-2">
+        <div class="info-card">
+          <h4>
+            <span class="lng de">Domain · vivecura.com</span>
+            <span class="lng en">Domain · vivecura.com</span>
+          </h4>
+          <p>
+            <span class="lng de">Beim Domain-Registrar gekauft (z.&nbsp;B. Strato / GoDaddy / Cloudflare). Dort ist ein DNS-Eintrag gesetzt, der „vivecura.com" zu Vercels Servern weiterleitet.</span>
+            <span class="lng en">Bought from a domain registrar (e.g. Strato / GoDaddy / Cloudflare). A DNS record there forwards "vivecura.com" to Vercel's servers.</span>
+          </p>
+          <div class="meta">A-Record / CNAME → cname.vercel-dns.com</div>
+        </div>
+        <div class="info-card">
+          <h4>SSL / HTTPS</h4>
+          <p>
+            <span class="lng de">Vercel kümmert sich automatisch um das Zertifikat. Erneuert sich jeden 3. Monat ohne dass jemand etwas tun muss.</span>
+            <span class="lng en">Vercel handles the certificate automatically. Renews itself every 3 months — completely hands-off.</span>
+          </p>
+          <div class="meta">Let's Encrypt · auto-renew</div>
+        </div>
+        <div class="info-card">
+          <h4>
+            <span class="lng de">E-Mail · praxis@vivecura.com</span>
+            <span class="lng en">Email · praxis@vivecura.com</span>
+          </h4>
+          <p>
+            <span class="lng de">Läuft separat über die MX-Einträge der Domain – nicht über Vercel oder Supabase. Der Mail-Hoster ist unabhängig vom Website-Hosting.</span>
+            <span class="lng en">Runs separately through the domain's MX records — not via Vercel or Supabase. The mail host is independent of the website hosting.</span>
+          </p>
+          <div class="meta">
+            <span class="lng de">MX-Records beim Registrar</span>
+            <span class="lng en">MX records at the registrar</span>
+          </div>
+        </div>
+        <div class="info-card">
+          <h4>
+            <span class="lng de">Mehrsprachigkeit · DE + EN</span>
+            <span class="lng en">Multilingual · DE + EN</span>
+          </h4>
+          <p>
+            <span class="lng de">Jede deutsche Seite hat ein englisches Gegenstück unter <code>/en/...</code>. Bei Blog-Artikeln verknüpft Supabase die Sprachen über <code>translation_of</code>.</span>
+            <span class="lng en">Every German page has an English counterpart under <code>/en/...</code>. For blog posts, Supabase links the languages via <code>translation_of</code>.</span>
+          </p>
+          <div class="meta">hreflang · sitemap.xml</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────── COSTS ─────────── -->
+    <section>
+      <h2><span class="num">3</span>
+        <span class="lng de">Kosten-Überblick</span>
+        <span class="lng en">Cost overview</span>
+      </h2>
+      <p class="lede">
+        <span class="lng de">Realistisch: solange der Traffic überschaubar bleibt, ist das meiste kostenlos. Wenn die Seite wächst, lassen sich die Pläne in 5 Minuten upgraden.</span>
+        <span class="lng en">Realistically: as long as traffic stays modest, most of this is free. As the site grows, plans can be upgraded in 5 minutes.</span>
+      </p>
+
+      <div class="costs">
+        <table>
+          <thead>
+            <tr>
+              <th><span class="lng de">Dienst</span><span class="lng en">Service</span></th>
+              <th><span class="lng de">Wozu</span><span class="lng en">Purpose</span></th>
+              <th><span class="lng de">Aktueller Plan</span><span class="lng en">Current plan</span></th>
+              <th><span class="lng de">Kosten</span><span class="lng en">Cost</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>GitHub</td>
+              <td>
+                <span class="lng de">Code-Speicher</span>
+                <span class="lng en">Code storage</span>
+              </td>
+              <td>
+                <span class="lng de">Free (private repo)</span>
+                <span class="lng en">Free (private repo)</span>
+              </td>
+              <td class="price">
+                <span class="lng de">0&nbsp;€</span>
+                <span class="lng en">€0</span>
+              </td>
+            </tr>
+            <tr>
+              <td>Vercel</td>
+              <td>
+                <span class="lng de">Website hosten</span>
+                <span class="lng en">Host the website</span>
+              </td>
+              <td>Hobby</td>
+              <td class="price">
+                <span class="lng de">0&nbsp;€ – 20&nbsp;€/Monat</span>
+                <span class="lng en">€0 – €20/month</span>
+              </td>
+            </tr>
+            <tr>
+              <td>Render</td>
+              <td>
+                <span class="lng de">MCP-Server für Blog-Veröffentlichung</span>
+                <span class="lng en">MCP server for blog publishing</span>
+              </td>
+              <td>
+                <span class="lng de">Free oder Starter</span>
+                <span class="lng en">Free or Starter</span>
+              </td>
+              <td class="price">
+                <span class="lng de">0&nbsp;€ – 7&nbsp;$/Monat</span>
+                <span class="lng en">$0 – $7/month</span>
+              </td>
+            </tr>
+            <tr>
+              <td>Supabase</td>
+              <td>
+                <span class="lng de">Datenbank, Auth, Datei-Speicher</span>
+                <span class="lng en">Database, auth, file storage</span>
+              </td>
+              <td>Pro</td>
+              <td class="price">
+                <span class="lng de">25&nbsp;$/Monat</span>
+                <span class="lng en">$25/month</span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span class="lng de">Domain</span>
+                <span class="lng en">Domain</span>
+              </td>
+              <td>vivecura.com</td>
+              <td>
+                <span class="lng de">jährlich beim Registrar</span>
+                <span class="lng en">annual at the registrar</span>
+              </td>
+              <td class="price">
+                <span class="lng de">≈ 10–20&nbsp;€/Jahr</span>
+                <span class="lng en">≈ €10–20/year</span>
+              </td>
+            </tr>
+            <tr>
+              <td>Claude</td>
+              <td>
+                <span class="lng de">Blog-Artikel schreiben</span>
+                <span class="lng en">Writing blog posts</span>
+              </td>
+              <td>Max</td>
+              <td class="price">
+                <span class="lng de">200&nbsp;$/Monat</span>
+                <span class="lng en">$200/month</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ─────────── ACCESS ─────────── -->
+    <section>
+      <h2><span class="num">4</span>
+        <span class="lng de">Wer hat Zugriff auf was?</span>
+        <span class="lng en">Who can access what?</span>
+      </h2>
+
+      <div class="grid-2">
+        <div class="info-card">
+          <h4>
+            <span class="lng de">Öffentlich</span>
+            <span class="lng en">Public</span>
+          </h4>
+          <p>
+            <span class="lng de">Jeder Besucher kann die Website ansehen, das Anamnese-Formular ausfüllen und das Kontaktformular benutzen. <strong>Lesen</strong> der Datenbank ist nicht möglich – nur einfügen.</span>
+            <span class="lng en">Any visitor can view the website, fill out the intake form, and use the contact form. <strong>Reading</strong> the database is not possible — only inserting.</span>
+          </p>
+        </div>
+        <div class="info-card">
+          <h4>
+            <span class="lng de">Praxis (Admin)</span>
+            <span class="lng en">Practice (admin)</span>
+          </h4>
+          <p>
+            <span class="lng de">Login über <code>/admin</code> mit Supabase Auth. Sieht <strong>alle</strong> Anamnesen, Kontaktanfragen und Patientenakten. Kann Blog-Artikel taggen.</span>
+            <span class="lng en">Login via <code>/admin</code> with Supabase Auth. Sees <strong>all</strong> intake forms, contact requests, and patient records. Can tag blog posts.</span>
+          </p>
+        </div>
+        <div class="info-card">
+          <h4>
+            <span class="lng de">MCP-Server (Render)</span>
+            <span class="lng en">MCP server (Render)</span>
+          </h4>
+          <p>
+            <span class="lng de">Hat einen <strong>service-role-Schlüssel</strong>: darf in <code>blog_posts</code> schreiben, ignoriert dabei die Sicherheitsregeln. Patientendaten <strong>fasst er nicht an</strong>.</span>
+            <span class="lng en">Holds a <strong>service-role key</strong>: can write to <code>blog_posts</code>, bypassing security rules. <strong>Does not touch</strong> patient data.</span>
+          </p>
+        </div>
+        <div class="info-card">
+          <h4>
+            <span class="lng de">Entwickler (Sami)</span>
+            <span class="lng en">Developer (Sami)</span>
+          </h4>
+          <p>
+            <span class="lng de">Über GitHub Zugriff auf den Code, über Vercel / Render / Supabase auf die jeweiligen Dashboards. Patientendaten nur sichtbar über das normale Admin-Login.</span>
+            <span class="lng en">Code access via GitHub, dashboards via Vercel / Render / Supabase. Patient data is visible only through the normal admin login.</span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <span class="lng de">vivecura.com · Architektur-Übersicht</span>
+      <span class="lng en">vivecura.com · architecture overview</span>
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      var btns = document.querySelectorAll('.lang-toggle button');
+      function setLang(lang) {
+        document.body.classList.toggle('en', lang === 'en');
+        document.documentElement.setAttribute('lang', lang);
+        btns.forEach(function (b) {
+          b.classList.toggle('active', b.dataset.lang === lang);
+        });
+        try { localStorage.setItem('arch-lang', lang); } catch (e) {}
+      }
+      var saved = null;
+      try { saved = localStorage.getItem('arch-lang'); } catch (e) {}
+      if (saved === 'en' || saved === 'de') setLang(saved);
+      btns.forEach(function (b) {
+        b.addEventListener('click', function () { setLang(b.dataset.lang); });
+      });
+    })();
+  </script>
+</body>
+</html>

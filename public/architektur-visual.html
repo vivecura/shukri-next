@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>vivecura.com – System-Diagramm · System Diagram</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    :root {
+      --teal: #43a9ab;
+      --teal-dark: #2f8385;
+      --teal-soft: #e8f5f5;
+      --slate: #515757;
+      --slate-soft: #f6f7f7;
+      --line: #e5e8e8;
+      --bg: #fbfcfc;
+      --card: #ffffff;
+      --shadow-sm: 0 1px 3px rgba(81, 87, 87, 0.05);
+      --shadow-md: 0 4px 16px rgba(81, 87, 87, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      color: var(--slate);
+      background: var(--bg);
+      line-height: 1.6;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── LANGUAGE TOGGLE ──────────────────────── */
+    .lang-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 100;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 4px;
+      display: flex;
+      box-shadow: var(--shadow-md);
+    }
+    .lang-toggle button {
+      background: transparent;
+      border: 0;
+      padding: 7px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      color: rgba(81, 87, 87, 0.55);
+      border-radius: 999px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.2s, color 0.2s;
+    }
+    .lang-toggle button.active {
+      background: var(--teal);
+      color: #fff;
+    }
+    .lng.en { display: none; }
+    body.en .lng.de { display: none; }
+    body.en .lng.en { display: inline; }
+
+    .wrap {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 56px 24px 72px;
+    }
+
+    header.hero { text-align: center; margin-bottom: 28px; }
+    .hero .eyebrow {
+      display: inline-block;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--teal-dark);
+      background: var(--teal-soft);
+      padding: 6px 14px;
+      border-radius: 999px;
+      margin-bottom: 16px;
+      font-weight: 600;
+    }
+    .hero h1 {
+      font-size: clamp(26px, 3.5vw, 38px);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      margin: 0 0 12px;
+      color: var(--slate);
+    }
+    .hero h1 strong { font-weight: 500; color: var(--teal-dark); }
+    .hero p {
+      max-width: 580px;
+      margin: 0 auto;
+      color: rgba(81, 87, 87, 0.7);
+      font-size: 15px;
+    }
+
+    /* ── DIAGRAM CARD ─────────────────────────── */
+    .diagram-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: var(--shadow-md);
+      padding: 24px;
+      overflow-x: auto;
+      margin-top: 24px;
+    }
+    .diagram-card svg {
+      width: 100%;
+      height: auto;
+      min-width: 900px;
+      display: block;
+    }
+
+    /* SVG node styling: NO cards. Just logos + labels. */
+    .node-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      fill: var(--slate);
+      text-anchor: middle;
+    }
+    .node-sub {
+      font-family: 'Inter', sans-serif;
+      font-size: 10.5px;
+      font-weight: 500;
+      fill: rgba(81, 87, 87, 0.55);
+      text-anchor: middle;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    /* Arrows */
+    .arrow {
+      fill: none;
+      stroke: var(--teal);
+      stroke-width: 1.8;
+      stroke-dasharray: 6 5;
+      stroke-linecap: round;
+      animation: dashflow 1.4s linear infinite;
+      opacity: 0.85;
+    }
+    .arrow.deploy { stroke: #6b7280; }
+    .arrow.mcp    { stroke: #cc785c; }
+    .arrow.write  { stroke: #3ecf8e; }
+    .arrow.read   { stroke: #000000; opacity: 0.75; }
+    .arrow.user   { stroke: var(--teal); }
+
+    @keyframes dashflow {
+      to { stroke-dashoffset: -22; }
+    }
+
+    .arrow-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      fill: var(--slate);
+      text-anchor: middle;
+    }
+    .arrow-label-bg { fill: #ffffff; }
+    .node-label-mask { fill: #fafbfb; }
+
+    /* Legend */
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      margin-top: 28px;
+      font-size: 12.5px;
+      color: rgba(81, 87, 87, 0.75);
+    }
+    .legend .item {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .legend .swatch {
+      width: 28px;
+      height: 2px;
+      border-radius: 2px;
+      position: relative;
+    }
+    .legend .swatch::after {
+      content: "▶";
+      position: absolute;
+      right: -10px;
+      top: -8px;
+      font-size: 10px;
+      color: inherit;
+    }
+    .legend .deploy   { background: #6b7280; color: #6b7280; }
+    .legend .mcp      { background: #cc785c; color: #cc785c; }
+    .legend .write    { background: #3ecf8e; color: #3ecf8e; }
+    .legend .read     { background: #000000; color: #000000; }
+    .legend .user     { background: var(--teal); color: var(--teal); }
+
+    footer {
+      text-align: center;
+      padding: 28px 0 0;
+      margin-top: 40px;
+      color: rgba(81, 87, 87, 0.5);
+      font-size: 12.5px;
+    }
+    footer a {
+      color: var(--teal-dark);
+      text-decoration: none;
+      border-bottom: 1px dotted var(--teal);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="lang-toggle" role="group" aria-label="Language">
+    <button type="button" data-lang="de" class="active">DE</button>
+    <button type="button" data-lang="en">EN</button>
+  </div>
+
+  <div class="wrap">
+
+    <header class="hero">
+      <span class="eyebrow">
+        <span class="lng de">ViveCura · System-Diagramm</span>
+        <span class="lng en">ViveCura · System Diagram</span>
+      </span>
+      <h1>
+        <span class="lng de">Wie alles bei <strong>vivecura.com</strong> zusammenhängt</span>
+        <span class="lng en">How everything at <strong>vivecura.com</strong> connects</span>
+      </h1>
+      <p>
+        <span class="lng de">Folge den fließenden Pfeilen – jede Farbe ist ein eigener Daten-Fluss.</span>
+        <span class="lng en">Follow the flowing arrows — each color is a separate data flow.</span>
+      </p>
+    </header>
+
+    <div class="diagram-card">
+      <svg viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg">
+
+        <!-- ────────── DEFS ────────── -->
+        <defs>
+          <marker id="arr-deploy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M0,0 L10,5 L0,10 Z" fill="#6b7280"/>
+          </marker>
+          <marker id="arr-mcp" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M0,0 L10,5 L0,10 Z" fill="#cc785c"/>
+          </marker>
+          <marker id="arr-write" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M0,0 L10,5 L0,10 Z" fill="#3ecf8e"/>
+          </marker>
+          <marker id="arr-read" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M0,0 L10,5 L0,10 Z" fill="#000000"/>
+          </marker>
+          <marker id="arr-user" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M0,0 L10,5 L0,10 Z" fill="#43a9ab"/>
+          </marker>
+
+          <!-- ────────── BRAND LOGOS ────────── -->
+
+          <!-- GitHub (official octocat path from simpleicons.org/MIT) -->
+          <symbol id="logo-github" viewBox="0 0 24 24">
+            <path fill="#24292f" d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+          </symbol>
+
+          <!-- Vercel (official triangle mark) -->
+          <symbol id="logo-vercel" viewBox="0 0 24 24">
+            <path fill="#000" d="M24 22.525H0l12-21.05 12 21.05z"/>
+          </symbol>
+
+          <!-- Supabase (official mark — green bolt) -->
+          <symbol id="logo-supabase" viewBox="0 0 24 24">
+            <path fill="#3ecf8e" d="M21.362 9.354H12V.396a.396.396 0 0 0-.716-.233L2.203 12.424l-.401.562a1.04 1.04 0 0 0 .836 1.659h9.362l.001 8.959a.396.396 0 0 0 .716.233l9.081-12.261.402-.562a1.04 1.04 0 0 0-.838-1.66z"/>
+          </symbol>
+
+          <!-- Render (chevron mark on rounded square — matches Render brand) -->
+          <symbol id="logo-render" viewBox="0 0 64 64">
+            <rect width="64" height="64" rx="14" fill="#46e3b7"/>
+            <path d="M20 18 L32 32 L20 46" stroke="#0d2818" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M34 18 L46 32 L34 46" stroke="#0d2818" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </symbol>
+
+          <!-- Claude (official Anthropic mark — two-A motif) -->
+          <symbol id="logo-claude" viewBox="0 0 24 24">
+            <path fill="#cc785c" d="M17.3041 3.541h-3.6718l6.696 16.918H24Zm-10.6082 0L0 20.459h3.7442l1.3693-3.5527h7.0052l1.3693 3.5527h3.7442L10.5363 3.541Zm-.3712 10.2232 2.2914-5.9456 2.2914 5.9456Z"/>
+          </symbol>
+
+          <!-- User role icons (different glyph per role) -->
+          <symbol id="logo-laptop" viewBox="0 0 24 24">
+            <path fill="#43a9ab" d="M20 18c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z"/>
+          </symbol>
+          <symbol id="logo-person" viewBox="0 0 24 24">
+            <path fill="#43a9ab" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+          </symbol>
+          <symbol id="logo-clinic" viewBox="0 0 24 24">
+            <path fill="#43a9ab" d="M12 2 2 7v2h20V7L12 2zm-9 9v9h4v-6h10v6h4v-9H3zm6 9h2v-4h2v4h2v-6h-6v6z"/>
+            <path fill="#fff" d="M11 13h2v2h2v2h-2v2h-2v-2H9v-2h2z"/>
+          </symbol>
+          <symbol id="logo-globe" viewBox="0 0 24 24">
+            <path fill="#43a9ab" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+          </symbol>
+          <symbol id="logo-mail" viewBox="0 0 24 24">
+            <path fill="#43a9ab" d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/>
+          </symbol>
+          <symbol id="logo-summit" viewBox="0 0 24 24">
+            <path fill="#43a9ab" d="M14 6l-4.22 5.63 1.25 1.67L14 9.33 19 16h-8.46l-4.01-5.37L1 18h22L14 6z"/>
+          </symbol>
+          <symbol id="logo-analytics" viewBox="0 0 24 24">
+            <path fill="#F9AB00" d="M22.84 2.998a2.92 2.92 0 0 0-3.262 2.378v13.124a2.886 2.886 0 0 0 2.886 2.998 2.92 2.92 0 0 0 3.262-2.998V5.376a2.92 2.92 0 0 0-2.886-2.378z" transform="scale(0.7) translate(-2, 1)"/>
+            <circle fill="#E37400" cx="12" cy="19" r="2.5"/>
+            <path fill="#E37400" d="M5.5 10a2.5 2.5 0 0 0-2.5 2.5v6a2.5 2.5 0 1 0 5 0v-6A2.5 2.5 0 0 0 5.5 10z"/>
+          </symbol>
+        </defs>
+
+        <!-- ────────── LANE BACKGROUNDS ────────── -->
+        <rect x="20" y="30" width="1240" height="170" rx="14" fill="#fafbfb" stroke="#eef0f0" stroke-dasharray="4 4"/>
+        <text x="40" y="54" font-family="Inter" font-size="10" font-weight="700" letter-spacing="2" fill="#9ca3af">
+          <tspan class="lng-svg de">A · CODE → DEPLOY</tspan>
+          <tspan class="lng-svg en" style="display:none">A · CODE → DEPLOY</tspan>
+        </text>
+
+        <rect x="20" y="240" width="1240" height="170" rx="14" fill="#fafbfb" stroke="#eef0f0" stroke-dasharray="4 4"/>
+        <text x="40" y="264" font-family="Inter" font-size="10" font-weight="700" letter-spacing="2" fill="#9ca3af">
+          <tspan class="lng-svg de">B · BLOG-VERÖFFENTLICHUNG & DATEN-HUB</tspan>
+          <tspan class="lng-svg en" style="display:none">B · BLOG PUBLISHING & DATA HUB</tspan>
+        </text>
+
+        <rect x="20" y="450" width="1240" height="170" rx="14" fill="#fafbfb" stroke="#eef0f0" stroke-dasharray="4 4"/>
+        <text x="40" y="474" font-family="Inter" font-size="10" font-weight="700" letter-spacing="2" fill="#9ca3af">
+          <tspan class="lng-svg de">C · ÖFFENTLICHE FORMULARE & PRAXIS</tspan>
+          <tspan class="lng-svg en" style="display:none">C · PUBLIC FORMS & PRACTICE</tspan>
+        </text>
+
+        <!-- ════════════════════════════════════════ -->
+        <!-- ROW A: CODE → DEPLOY                     -->
+        <!-- ════════════════════════════════════════ -->
+
+        <!-- Sami -->
+        <g>
+          <use href="#logo-laptop" x="120" y="90" width="60" height="60"/>
+          <text class="node-label" x="150" y="172">
+            <tspan class="lng-svg de">Sami</tspan>
+            <tspan class="lng-svg en" style="display:none">Sami</tspan>
+          </text>
+          <text class="node-sub" x="150" y="188">
+            <tspan class="lng-svg de">Entwickler</tspan>
+            <tspan class="lng-svg en" style="display:none">Developer</tspan>
+          </text>
+        </g>
+
+        <!-- GitHub -->
+        <g>
+          <use href="#logo-github" x="330" y="90" width="60" height="60"/>
+          <text class="node-label" x="360" y="172">GitHub</text>
+          <text class="node-sub" x="360" y="188">
+            <tspan class="lng-svg de">Code-Speicher</tspan>
+            <tspan class="lng-svg en" style="display:none">Code storage</tspan>
+          </text>
+        </g>
+
+        <!-- Vercel (label has a mask so the vertical arrows below don't cross the text) -->
+        <g>
+          <use href="#logo-vercel" x="680" y="90" width="60" height="60"/>
+          <rect class="node-label-mask" x="640" y="158" width="140" height="38" rx="4"/>
+          <text class="node-label" x="710" y="172">Vercel</text>
+          <text class="node-sub" x="710" y="188">
+            <tspan class="lng-svg de">Hosting + Routen</tspan>
+            <tspan class="lng-svg en" style="display:none">Hosting + routes</tspan>
+          </text>
+        </g>
+
+        <!-- Visitor -->
+        <g>
+          <use href="#logo-globe" x="1100" y="90" width="60" height="60"/>
+          <text class="node-label" x="1130" y="172">
+            <tspan class="lng-svg de">Besucher</tspan>
+            <tspan class="lng-svg en" style="display:none">Visitor</tspan>
+          </text>
+          <text class="node-sub" x="1130" y="188">vivecura.com</text>
+        </g>
+
+        <!-- Arrows row A -->
+        <path class="arrow deploy" d="M 188 120 L 326 120" marker-end="url(#arr-deploy)"/>
+        <g>
+          <rect class="arrow-label-bg" x="237" y="108" width="40" height="14" rx="3"/>
+          <text class="arrow-label" x="257" y="119">push</text>
+        </g>
+
+        <path class="arrow deploy" d="M 398 120 L 676 120" marker-end="url(#arr-deploy)"/>
+        <g>
+          <rect class="arrow-label-bg" x="497" y="108" width="80" height="14" rx="3"/>
+          <text class="arrow-label" x="537" y="119">auto-deploy</text>
+        </g>
+
+        <path class="arrow user" d="M 748 120 L 1096 120" marker-end="url(#arr-user)"/>
+        <g>
+          <rect class="arrow-label-bg" x="873" y="108" width="98" height="14" rx="3"/>
+          <text class="arrow-label" x="922" y="119">
+            <tspan class="lng-svg de">liefert Seiten</tspan>
+            <tspan class="lng-svg en" style="display:none">serves pages</tspan>
+          </text>
+        </g>
+
+        <!-- ════════════════════════════════════════ -->
+        <!-- ROW B: BLOG PUBLISHING & DATA HUB        -->
+        <!-- ════════════════════════════════════════ -->
+
+        <!-- Claude (Anthropic mark) -->
+        <g>
+          <use href="#logo-claude" x="120" y="300" width="60" height="60"/>
+          <text class="node-label" x="150" y="382">Claude</text>
+          <text class="node-sub" x="150" y="398">
+            <tspan class="lng-svg de">Blog-Autor</tspan>
+            <tspan class="lng-svg en" style="display:none">Blog author</tspan>
+          </text>
+        </g>
+
+        <!-- Render -->
+        <g>
+          <use href="#logo-render" x="330" y="300" width="60" height="60"/>
+          <text class="node-label" x="360" y="382">Render</text>
+          <text class="node-sub" x="360" y="398">MCP server</text>
+        </g>
+
+        <!-- Supabase -->
+        <g>
+          <use href="#logo-supabase" x="680" y="300" width="60" height="60"/>
+          <text class="node-label" x="710" y="382">Supabase</text>
+          <text class="node-sub" x="710" y="398">
+            <tspan class="lng-svg de">DB · Auth · Storage</tspan>
+            <tspan class="lng-svg en" style="display:none">DB · Auth · Storage</tspan>
+          </text>
+        </g>
+
+        <!-- Arrows row B -->
+        <path class="arrow mcp" d="M 188 330 L 326 330" marker-end="url(#arr-mcp)"/>
+        <g>
+          <rect class="arrow-label-bg" x="237" y="318" width="40" height="14" rx="3"/>
+          <text class="arrow-label" x="257" y="329">MCP</text>
+        </g>
+
+        <path class="arrow write" d="M 398 330 L 676 330" marker-end="url(#arr-write)"/>
+        <g>
+          <rect class="arrow-label-bg" x="479" y="318" width="116" height="14" rx="3"/>
+          <text class="arrow-label" x="537" y="329">
+            <tspan class="lng-svg de">schreibt blog_posts</tspan>
+            <tspan class="lng-svg en" style="display:none">writes blog_posts</tspan>
+          </text>
+        </g>
+
+        <!-- Vercel → Supabase (down arrow, "queries") -->
+        <path class="arrow read" d="M 690 196 L 690 296" marker-end="url(#arr-read)"/>
+        <g>
+          <rect class="arrow-label-bg" x="580" y="218" width="116" height="14" rx="3"/>
+          <text class="arrow-label" x="638" y="229">
+            <tspan class="lng-svg de">liest Inhalte</tspan>
+            <tspan class="lng-svg en" style="display:none">queries content</tspan>
+          </text>
+        </g>
+
+        <!-- Supabase → Vercel (up arrow, "webhook → revalidate") -->
+        <path class="arrow user" d="M 730 296 L 730 196" marker-end="url(#arr-user)"/>
+        <g>
+          <rect class="arrow-label-bg" x="734" y="218" width="160" height="14" rx="3"/>
+          <text class="arrow-label" x="814" y="229">
+            <tspan class="lng-svg de">Webhook → /api/revalidate</tspan>
+            <tspan class="lng-svg en" style="display:none">webhook → /api/revalidate</tspan>
+          </text>
+        </g>
+
+        <!-- ════════════════════════════════════════ -->
+        <!-- ROW C: PATIENTS & PRACTICE               -->
+        <!-- ════════════════════════════════════════ -->
+
+        <!-- Patient -->
+        <g>
+          <use href="#logo-person" x="180" y="510" width="60" height="60"/>
+          <text class="node-label" x="210" y="592">
+            <tspan class="lng-svg de">Patient</tspan>
+            <tspan class="lng-svg en" style="display:none">Patient</tspan>
+          </text>
+          <text class="node-sub" x="210" y="608">/anamnese</text>
+        </g>
+
+        <!-- Contact form -->
+        <g>
+          <use href="#logo-mail" x="420" y="510" width="60" height="60"/>
+          <text class="node-label" x="450" y="592">
+            <tspan class="lng-svg de">Kontakt</tspan>
+            <tspan class="lng-svg en" style="display:none">Contact</tspan>
+          </text>
+          <text class="node-sub" x="450" y="608">/kontakt</text>
+        </g>
+
+        <!-- LifeSummit form -->
+        <g>
+          <use href="#logo-summit" x="660" y="510" width="60" height="60"/>
+          <text class="node-label" x="690" y="592">LifeSummit</text>
+          <text class="node-sub" x="690" y="608">/lifesummit</text>
+        </g>
+
+        <!-- Practice -->
+        <g>
+          <use href="#logo-clinic" x="1100" y="510" width="60" height="60"/>
+          <text class="node-label" x="1130" y="592">
+            <tspan class="lng-svg de">Praxis</tspan>
+            <tspan class="lng-svg en" style="display:none">Practice</tspan>
+          </text>
+          <text class="node-sub" x="1130" y="608">/admin</text>
+        </g>
+
+        <!-- Patient → Supabase -->
+        <path class="arrow user"
+              d="M 210 510 C 320 510, 480 430, 680 360"
+              marker-end="url(#arr-user)"/>
+        <g>
+          <rect class="arrow-label-bg" x="296" y="445" width="118" height="14" rx="3"/>
+          <text class="arrow-label" x="355" y="456">
+            <tspan class="lng-svg de">/anamnese</tspan>
+            <tspan class="lng-svg en" style="display:none">/anamnese</tspan>
+          </text>
+        </g>
+
+        <!-- Contact → Supabase -->
+        <path class="arrow user"
+              d="M 450 510 C 510 470, 620 410, 700 360"
+              marker-end="url(#arr-user)"/>
+        <g>
+          <rect class="arrow-label-bg" x="498" y="425" width="120" height="14" rx="3"/>
+          <text class="arrow-label" x="558" y="436">
+            <tspan class="lng-svg de">/kontakt</tspan>
+            <tspan class="lng-svg en" style="display:none">/contact</tspan>
+          </text>
+        </g>
+
+        <!-- LifeSummit → Supabase -->
+        <path class="arrow user"
+              d="M 690 510 Q 700 430, 720 360"
+              marker-end="url(#arr-user)"/>
+        <g>
+          <rect class="arrow-label-bg" x="740" y="425" width="98" height="14" rx="3"/>
+          <text class="arrow-label" x="789" y="436">/lifesummit</text>
+        </g>
+
+        <!-- Practice → Supabase -->
+        <path class="arrow user"
+              d="M 1130 510 C 1020 510, 880 430, 740 360"
+              marker-end="url(#arr-user)"/>
+        <g>
+          <rect class="arrow-label-bg" x="892" y="448" width="116" height="14" rx="3"/>
+          <text class="arrow-label" x="950" y="459">
+            <tspan class="lng-svg de">/admin (via Vercel)</tspan>
+            <tspan class="lng-svg en" style="display:none">/admin (via Vercel)</tspan>
+          </text>
+        </g>
+
+        <!-- Footer note: Supabase tables -->
+        <text x="640" y="680" class="node-sub" text-anchor="middle">
+          <tspan class="lng-svg de" font-size="11">Tabellen in Supabase: blog_posts · anamnese_submissions · patient_records · contact_requests · lifesummit_submissions · Storage „befunde"</tspan>
+          <tspan class="lng-svg en" style="display:none" font-size="11">Tables in Supabase: blog_posts · anamnese_submissions · patient_records · contact_requests · lifesummit_submissions · storage "befunde"</tspan>
+        </text>
+      </svg>
+
+      <div class="legend">
+        <span class="item"><span class="swatch deploy"></span>
+          <span class="lng de">Code-Deploy</span>
+          <span class="lng en">Code deploy</span>
+        </span>
+        <span class="item"><span class="swatch mcp"></span>
+          <span class="lng de">MCP (Claude → Server)</span>
+          <span class="lng en">MCP (Claude → server)</span>
+        </span>
+        <span class="item"><span class="swatch write"></span>
+          <span class="lng de">In Datenbank schreiben</span>
+          <span class="lng en">Writes to database</span>
+        </span>
+        <span class="item"><span class="swatch read"></span>
+          <span class="lng de">Aus Datenbank lesen</span>
+          <span class="lng en">Reads from database</span>
+        </span>
+        <span class="item"><span class="swatch user"></span>
+          <span class="lng de">Nutzer-Aktion</span>
+          <span class="lng en">User action</span>
+        </span>
+      </div>
+    </div>
+
+    <footer>
+      <span class="lng de">Mehr Details? Siehe die ausführliche Version auf <a href="/architektur.html">/architektur.html</a>.</span>
+      <span class="lng en">Want more detail? See the full write-up at <a href="/architektur.html">/architektur.html</a>.</span>
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      var btns = document.querySelectorAll('.lang-toggle button');
+      var svgDE = document.querySelectorAll('.lng-svg.de');
+      var svgEN = document.querySelectorAll('.lng-svg.en');
+      function setLang(lang) {
+        document.body.classList.toggle('en', lang === 'en');
+        document.documentElement.setAttribute('lang', lang);
+        btns.forEach(function (b) { b.classList.toggle('active', b.dataset.lang === lang); });
+        svgDE.forEach(function (el) { el.style.display = lang === 'en' ? 'none' : 'inline'; });
+        svgEN.forEach(function (el) { el.style.display = lang === 'en' ? 'inline' : 'none'; });
+        try { localStorage.setItem('arch-lang', lang); } catch (e) {}
+      }
+      var saved = null;
+      try { saved = localStorage.getItem('arch-lang'); } catch (e) {}
+      if (saved === 'en' || saved === 'de') setLang(saved);
+      else setLang('de');
+      btns.forEach(function (b) {
+        b.addEventListener('click', function () { setLang(b.dataset.lang); });
+      });
+    })();
+  </script>
+</body>
+</html>
