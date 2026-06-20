@@ -87,6 +87,13 @@ function formatDateShort(iso) {
   } catch { return ""; }
 }
 
+// Date-of-birth display: YYYY-MM-DD (HTML date-input format) → DD-MM-YYYY.
+function formatDob(iso) {
+  if (!iso) return "";
+  const m = String(iso).match(/^(\d{4})-(\d{2})-(\d{2})/);
+  return m ? `${m[3]}-${m[2]}-${m[1]}` : iso;
+}
+
 function valueToString(v) {
   if (v === null || v === undefined) return "";
   if (Array.isArray(v)) return v.join(", ");
@@ -501,7 +508,7 @@ export default function AdminAnamnesePanel() {
                   </a>
                 )}
                 {selected.geburtsdatum && (
-                  <span className="text-xs text-[#515757]/70">geb. {selected.geburtsdatum}</span>
+                  <span className="text-xs text-[#515757]/70">geb. {formatDob(selected.geburtsdatum)}</span>
                 )}
                 <span className="text-xs text-[#515757]/70">{(selected.lang || "").toUpperCase()}</span>
               </div>

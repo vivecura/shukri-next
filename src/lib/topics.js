@@ -15,6 +15,8 @@ export const TOPICS = [
   { slug: "darmsanierung",          slug_en: "gut-reset",         de: "Darmsanierung",          en: "Gut Reset",        image: "/Assets/Spezielle%20Therapien2/Darm%20Reset.png" },
   { slug: "hormone",                slug_en: "hormones",          de: "Hormone",                en: "Hormones",         image: "/Assets/Spezielle%20Therapien2/Hormone.png" },
   { slug: "burnout",                slug_en: "burnout",           de: "Burnout",                en: "Burnout",          image: "/Assets/Spezielle%20Therapien2/Burnout_Fix_.png" },
+  { slug: "schlaf",                 slug_en: "sleep",             de: "Schlaf",                 en: "Sleep",            image: "/Assets/Spezielle%20Therapien2/Burnout_Fix_.png" },
+  { slug: "eisen",                  slug_en: "iron",              de: "Eisen",                  en: "Iron",             image: "/Assets/Spezielle%20Therapien2/Schwermetall%20Ausleitung.png" },
 ];
 
 // Lookup by the canonical DE slug (the form stored in Supabase).
