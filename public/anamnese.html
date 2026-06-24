@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#0d1015">
+<meta name="theme-color" content="#43a9ab">
 <title>Patienten-Aufnahme | ViveCura Berlin</title>
 <meta name="description" content="Digitale Patienten-Aufnahme der Praxis ViveCura, Berlin. Kontaktdaten, Anamnese und Einwilligungen, DSGVO-konform.">
 <meta name="robots" content="noindex, nofollow">
@@ -14,17 +14,17 @@
 <style>
   :root {
     --teal: #43A9AB;
-    --teal-soft: #5fc8ca;
+    --teal-soft: #389193;
     --teal-deep: #1f6e70;
-    --bg: #0d1015;
-    --bg-soft: #14181d;
-    --bg-card: #181d22;
-    --cream: #f3faf9;
-    --cream-soft: rgba(243, 250, 249, 0.72);
-    --cream-dim: rgba(243, 250, 249, 0.5);
-    --line: rgba(243, 250, 249, 0.10);
-    --line-teal: rgba(67, 169, 171, 0.35);
-    --error: #e57373;
+    --bg: #f7fafa;
+    --bg-soft: #eef4f4;
+    --bg-card: #ffffff;
+    --cream: #515757;
+    --cream-soft: #6b7378;
+    --cream-dim: #9aa2a7;
+    --line: rgba(81, 87, 87, 0.14);
+    --line-teal: rgba(67, 169, 171, 0.30);
+    --error: #d64545;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -34,7 +34,7 @@
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
     color: var(--cream);
     background: var(--bg);
-    background: radial-gradient(ellipse at 50% 0%, #1a2326 0%, var(--bg) 50%);
+    background: radial-gradient(ellipse at 50% 0%, #e6f1f1 0%, var(--bg) 50%);
     min-height: 100vh;
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
@@ -62,7 +62,7 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    background: rgba(255,255,255,0.06);
+    background: rgba(81,87,87,0.05);
     border: 1px solid var(--line);
     color: var(--cream);
     font-size: 11px;
@@ -73,7 +73,7 @@
     cursor: pointer;
     transition: background 0.2s;
   }
-  .lang-toggle:hover { background: rgba(255,255,255,0.12); }
+  .lang-toggle:hover { background: rgba(81,87,87,0.09); }
   .lang-toggle span.active { color: var(--teal-soft); }
   .lang-toggle span.inactive { color: var(--cream-dim); }
 
@@ -265,7 +265,7 @@
     align-items: center;
     gap: 18px;
     padding: 14px 18px;
-    background: rgba(255,255,255,0.03);
+    background: rgba(81,87,87,0.035);
     border: 1px solid var(--line);
     border-radius: 14px;
   }
@@ -289,9 +289,9 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: rgba(229, 115, 115, 0.10);
-    border: 1px solid rgba(229, 115, 115, 0.35);
-    color: #ffb3a8;
+    background: rgba(229, 115, 115, 0.12);
+    border: 1px solid rgba(229, 115, 115, 0.40);
+    color: #c0392b;
     font-size: 10.5px;
     font-weight: 700;
     letter-spacing: 1.4px;
@@ -340,7 +340,7 @@
   }
   .step-section.active {
     border-color: rgba(67, 169, 171, 0.35);
-    box-shadow: 0 0 0 1px rgba(67, 169, 171, 0.2), 0 12px 28px rgba(0,0,0,0.35);
+    box-shadow: 0 0 0 1px rgba(67, 169, 171, 0.2), 0 12px 28px rgba(67,169,171,0.10);
   }
   .step-eyebrow-row {
     display: flex;
@@ -401,7 +401,7 @@
   .field textarea {
     width: 100%;
     padding: 12px 14px;
-    background: rgba(255,255,255,0.04);
+    background: rgba(81,87,87,0.04);
     border: 1px solid var(--line);
     border-radius: 12px;
     color: var(--cream);
@@ -459,7 +459,7 @@
     display: inline-flex;
     align-items: center;
     padding: 8px 14px;
-    background: rgba(255,255,255,0.04);
+    background: rgba(81,87,87,0.04);
     border: 1px solid var(--line);
     border-radius: 999px;
     cursor: pointer;
@@ -488,7 +488,7 @@
   .other-field input {
     width: 100%;
     padding: 10px 14px;
-    background: rgba(255,255,255,0.03);
+    background: rgba(81,87,87,0.035);
     border: 1px dashed var(--line);
     border-radius: 12px;
     color: var(--cream);
@@ -543,7 +543,7 @@
   .supp-dosage-row input {
     width: 100%;
     padding: 9px 12px;
-    background: rgba(255,255,255,0.04);
+    background: rgba(81,87,87,0.04);
     border: 1px solid var(--line);
     border-radius: 10px;
     color: var(--cream);
@@ -693,24 +693,24 @@
   }
   .btn-primary {
     background: var(--teal);
-    color: var(--cream);
+    color: #fff;
     box-shadow: 0 8px 22px rgba(67, 169, 171, 0.32);
   }
-  .btn-primary:hover { background: var(--teal-soft); color: var(--bg); }
+  .btn-primary:hover { background: var(--teal-soft); color: #fff; }
   .btn-primary:active { transform: scale(0.985); }
   .btn-secondary {
-    background: rgba(255,255,255,0.06);
+    background: rgba(81,87,87,0.05);
     color: var(--cream);
     border: 1px solid var(--line);
   }
-  .btn-secondary:hover { background: rgba(255,255,255,0.12); }
+  .btn-secondary:hover { background: rgba(81,87,87,0.09); }
   .btn-doctolib {
-    background: var(--cream);
-    color: var(--bg);
-    box-shadow: 0 8px 22px rgba(255,255,255,0.12);
+    background: var(--teal);
+    color: #fff;
+    box-shadow: 0 8px 22px rgba(67, 169, 171, 0.28);
     margin-bottom: 12px;
   }
-  .btn-doctolib:hover { background: var(--teal); color: var(--cream); }
+  .btn-doctolib:hover { background: var(--teal-deep); color: #fff; }
   .btn svg, .btn-primary svg, .btn-secondary svg, .btn-doctolib svg {
     transition: transform 0.2s;
   }
@@ -754,7 +754,7 @@
   .privacy-block {
     margin-top: 18px;
     padding: 16px;
-    background: rgba(255,255,255,0.02);
+    background: rgba(81,87,87,0.03);
     border: 1px solid var(--line);
     border-radius: 14px;
   }
@@ -848,8 +848,8 @@
     width: 56px;
     height: 56px;
     border-radius: 50%;
-    background: rgba(255,255,255,0.14);
-    color: var(--cream);
+    background: rgba(255,255,255,0.18);
+    color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -862,7 +862,7 @@
     font-family: 'Anton', sans-serif;
     font-size: 36px;
     line-height: 1;
-    color: var(--cream);
+    color: #fff;
     margin-bottom: 14px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -877,7 +877,7 @@
   .success-sign {
     font-family: 'Libre Baskerville', Georgia, serif;
     font-style: italic;
-    color: var(--cream) !important;
+    color: #fff !important;
     margin-top: 14px !important;
     margin-bottom: 6px !important;
   }
@@ -900,12 +900,12 @@
   .success-contact a {
     display: inline-block;
     margin-top: 6px;
-    color: var(--cream);
+    color: #fff;
     text-decoration: underline;
     font-weight: 700;
     letter-spacing: 0.2px;
   }
-  .success-contact a:hover { color: var(--teal-soft); }
+  .success-contact a:hover { color: #cdebec; }
 
   @media (max-width: 380px) {
     .hero h1 { font-size: 40px; }
@@ -916,9 +916,9 @@
 
   /* ===== Patient-Intake additions ===== */
   .anwalt-banner {
-    background: rgba(220, 160, 60, 0.12);
-    border: 1px solid rgba(220, 160, 60, 0.4);
-    color: #e8c98a;
+    background: rgba(220, 160, 60, 0.14);
+    border: 1px solid rgba(220, 160, 60, 0.5);
+    color: #8a6514;
     border-radius: 12px;
     padding: 10px 14px;
     font-size: 12.5px;
@@ -936,7 +936,7 @@
   .consent-optional-note { font-size: 12px; color: var(--cream-dim); margin: 0 0 6px; }
   .rights-note {
     font-size: 12px; color: var(--cream-dim); line-height: 1.6;
-    border-left: 2px solid rgba(255,255,255,0.12); padding-left: 12px; margin: 14px 0;
+    border-left: 2px solid rgba(81,87,87,0.18); padding-left: 12px; margin: 14px 0;
   }
   .minor-notice {
     display: none; background: rgba(67,169,171,0.1); border: 1px solid rgba(67,169,171,0.35);
@@ -948,11 +948,11 @@
   .sig-label { font-size: 14px; color: var(--cream); margin-bottom: 8px; display: block; }
   .sig-canvas {
     width: 100%; height: 180px; background: #fff; border-radius: 12px;
-    border: 1px solid rgba(255,255,255,0.2); touch-action: none; display: block;
+    border: 1px solid rgba(81,87,87,0.22); touch-action: none; display: block;
   }
   .sig-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
   .sig-clear {
-    background: none; border: 1px solid rgba(255,255,255,0.2); color: var(--cream-dim);
+    background: none; border: 1px solid rgba(81,87,87,0.22); color: var(--cream-dim);
     border-radius: 8px; padding: 6px 14px; font-size: 13px; cursor: pointer;
   }
   .sig-hint { font-size: 12px; color: var(--cream-dim); }
@@ -961,14 +961,14 @@
   .intro-video { margin: 0 0 26px; }
   .intro-video .video-frame {
     position: relative; width: 100%; border-radius: 20px; overflow: hidden;
-    border: 1px solid var(--line-teal); background: #000; aspect-ratio: 16 / 9;
-    box-shadow: 0 14px 36px rgba(0,0,0,0.4);
+    border: 1px solid var(--line-teal); background: #d3e7e7; aspect-ratio: 16 / 9;
+    box-shadow: 0 14px 36px rgba(67,169,171,0.14);
   }
   .intro-video video, .intro-video iframe { width: 100%; height: 100%; display: block; border: 0; object-fit: cover; }
   .intro-video .video-placeholder {
     position: absolute; inset: 0; display: flex; flex-direction: column;
     align-items: center; justify-content: center; gap: 12px; text-align: center;
-    background: radial-gradient(ellipse at 50% 40%, #1c2a2c 0%, #0d1015 80%); padding: 20px;
+    background: radial-gradient(ellipse at 50% 40%, #e6f1f1 0%, #d3e7e7 80%); padding: 20px;
   }
   .intro-video .play-dot {
     width: 60px; height: 60px; border-radius: 50%; background: var(--teal);
@@ -995,7 +995,7 @@
     font-family: 'Libre Baskerville', Georgia, serif; font-style: italic; font-size: 14px; line-height: 1.6;
   }
   .letter-card .sign { margin-top: 14px; font-family: 'Libre Baskerville', Georgia, serif; font-style: italic; color: var(--cream); }
-  .prep-card { margin: 0 0 34px; padding: 18px 20px; background: rgba(255,255,255,0.03); border: 1px solid var(--line); border-radius: 16px; }
+  .prep-card { margin: 0 0 34px; padding: 18px 20px; background: rgba(81,87,87,0.035); border: 1px solid var(--line); border-radius: 16px; }
   .prep-card h4 { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--teal-soft); margin-bottom: 12px; }
   .prep-card ul { list-style: none; display: flex; flex-direction: column; gap: 9px; }
   .prep-card li { font-size: 13.5px; color: var(--cream-soft); line-height: 1.55; padding-left: 16px; position: relative; }
@@ -1007,7 +1007,7 @@
   .ai-reassure summary::before { content: '▸ '; }
   .ai-reassure[open] summary::before { content: '▾ '; }
   .ai-reassure p { font-size: 12.5px; color: var(--cream-soft); line-height: 1.6; padding: 2px 0 12px; }
-  .reward-box { margin: 0 auto 4px; padding: 16px 18px; max-width: 40ch; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); border-radius: 14px; }
+  .reward-box { margin: 0 auto 4px; padding: 16px 18px; max-width: 40ch; background: rgba(67,169,171,0.06); border: 1px solid rgba(67,169,171,0.22); border-radius: 14px; }
   .reward-box .reward-em { font-size: 22px; margin-bottom: 6px; }
   .reward-box p { color: var(--cream) !important; font-size: 14px !important; margin: 0 !important; line-height: 1.55 !important; }
 </style>
@@ -1156,6 +1156,32 @@
               <label class="pill-choice"><input type="radio" name="geschlecht" value="männlich"><span class="de-only">Männlich</span><span class="en-only">Male</span></label>
               <label class="pill-choice"><input type="radio" name="geschlecht" value="divers"><span class="de-only">Divers</span><span class="en-only">Diverse</span></label>
             </div>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="strasse"><span class="de-only">Straße</span><span class="en-only">Street</span></label>
+            <input type="text" id="strasse" name="strasse" required autocomplete="address-line1">
+            <div class="field-error"><span class="de-only">Bitte ausfüllen</span><span class="en-only">Please fill in</span></div>
+          </div>
+          <div class="field">
+            <label for="hausnummer"><span class="de-only">Hausnummer</span><span class="en-only">House number</span></label>
+            <input type="text" id="hausnummer" name="hausnummer" required autocomplete="address-line2">
+            <div class="field-error"><span class="de-only">Bitte ausfüllen</span><span class="en-only">Please fill in</span></div>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="plz"><span class="de-only">Postleitzahl</span><span class="en-only">Postal code</span></label>
+            <input type="text" id="plz" name="plz" required autocomplete="postal-code" inputmode="numeric">
+            <div class="field-error"><span class="de-only">Bitte ausfüllen</span><span class="en-only">Please fill in</span></div>
+          </div>
+          <div class="field">
+            <label for="stadt"><span class="de-only">Stadt</span><span class="en-only">City</span></label>
+            <input type="text" id="stadt" name="stadt" required autocomplete="address-level2">
+            <div class="field-error"><span class="de-only">Bitte ausfüllen</span><span class="en-only">Please fill in</span></div>
           </div>
         </div>
 
@@ -1791,7 +1817,7 @@
 
   // Step 1 Next: validate Stammdaten + consent, POST to backend, unlock next steps
   document.getElementById('step1Next').addEventListener('click', () => {
-    const fields = ['vorname','nachname','email','handy','geburtsdatum'];
+    const fields = ['vorname','nachname','email','handy','geburtsdatum','strasse','hausnummer','plz','stadt'];
     let valid = true;
     fields.forEach(name => {
       const input = document.querySelector(`[name="${name}"]`);
@@ -1843,7 +1869,11 @@
         email: document.querySelector('[name="email"]').value.trim(),
         handy: document.querySelector('[name="handy"]').value.trim(),
         geburtsdatum: geburtsdatumInput.value,
-        geschlecht: geschlecht.value
+        geschlecht: geschlecht.value,
+        strasse: document.querySelector('[name="strasse"]').value.trim(),
+        hausnummer: document.querySelector('[name="hausnummer"]').value.trim(),
+        plz: document.querySelector('[name="plz"]').value.trim(),
+        stadt: document.querySelector('[name="stadt"]').value.trim()
       },
       sorgeberechtigter: document.querySelector('[name="sorgeberechtigter"]').value.trim() || null,
       kontakt_einwilligung: true
@@ -2168,6 +2198,10 @@
       nachname: payload.nachname || null,
       handy: payload.handy || null,
       geburtsdatum: payload.geburtsdatum || null,
+      strasse: payload.strasse || null,
+      hausnummer: payload.hausnummer || null,
+      plz: payload.plz || null,
+      stadt: payload.stadt || null,
       payload,
       signature_dataurl: sigData.value || null,
       befunde_urls,

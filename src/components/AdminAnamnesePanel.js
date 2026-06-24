@@ -510,6 +510,14 @@ export default function AdminAnamnesePanel() {
                 {selected.geburtsdatum && (
                   <span className="text-xs text-[#515757]/70">geb. {formatDob(selected.geburtsdatum)}</span>
                 )}
+                {(payload.strasse || payload.plz || payload.stadt) && (
+                  <span className="text-xs text-[#515757]/70">
+                    {[
+                      [payload.strasse, payload.hausnummer].filter(Boolean).join(" "),
+                      [payload.plz, payload.stadt].filter(Boolean).join(" "),
+                    ].filter(Boolean).join(", ")}
+                  </span>
+                )}
                 <span className="text-xs text-[#515757]/70">{(selected.lang || "").toUpperCase()}</span>
               </div>
               <button

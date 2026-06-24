@@ -16,7 +16,7 @@ export default function AnamneseBody() {
   useEffect(() => {
     const prevBg = document.body.style.background;
     const prevMargin = document.body.style.margin;
-    document.body.style.background = "#0d1015";
+    document.body.style.background = "#f7fafa";
     document.body.style.margin = "0";
     return () => {
       document.body.style.background = prevBg;
@@ -34,7 +34,7 @@ export default function AnamneseBody() {
         width: "100vw",
         height: "100vh",
         border: "none",
-        background: "#0d1015",
+        background: "#f7fafa",
       }}
     />
   );
