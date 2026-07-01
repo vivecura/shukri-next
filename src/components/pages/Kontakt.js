@@ -18,6 +18,15 @@ const TOTAL_STEPS = 4;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_RE = /^[+\d][\d\s\-/()]{5,}$/;
 
+// Geburtsdatum: valides Datum, in der Vergangenheit, plausibel (ab 1900).
+function isValidBirthdate(str) {
+  if (!str) return false;
+  const d = new Date(str);
+  if (Number.isNaN(d.getTime())) return false;
+  const now = new Date();
+  return d <= now && d.getFullYear() >= 1900;
+}
+
 // Replace {{var}} placeholders. tForLang() returns the raw locale string,
 // so we expand i18next-style placeholders client-side.
 function interpolate(str, vars) {
@@ -41,8 +50,13 @@ export default function Kontakt() {
     dauer: "",
     vorname: "",
     nachname: "",
+    geburtsdatum: "",
     email: "",
     telefon: "",
+    strasse: "",
+    hausnummer: "",
+    plz: "",
+    stadt: "",
     versicherung: "",
     preferredDays: [],
     preferredTimes: [],
@@ -78,6 +92,7 @@ export default function Kontakt() {
     if (s === 4) {
       if (!data.vorname || data.vorname.trim().length < 2) e.vorname = t("kontakt.step4.errors.vorname");
       if (!data.nachname || data.nachname.trim().length < 2) e.nachname = t("kontakt.step4.errors.nachname");
+      if (!isValidBirthdate(data.geburtsdatum)) e.geburtsdatum = t("kontakt.step4.errors.geburtsdatum");
       if (!EMAIL_RE.test(data.email)) e.email = t("kontakt.step4.errors.email");
       if (!PHONE_RE.test(data.telefon)) e.telefon = t("kontakt.step4.errors.telefon");
       if (!data.versicherung) e.versicherung = t("kontakt.step4.errors.versicherung");
@@ -115,8 +130,13 @@ export default function Kontakt() {
       dauer: data.dauer || null,
       vorname: data.vorname.trim(),
       nachname: data.nachname.trim(),
+      geburtsdatum: data.geburtsdatum || null,
       email: data.email.trim(),
       telefon: data.telefon.trim(),
+      strasse: data.strasse.trim() || null,
+      hausnummer: data.hausnummer.trim() || null,
+      plz: data.plz.trim() || null,
+      stadt: data.stadt.trim() || null,
       versicherung: data.versicherung,
       preferred_days: data.preferredDays,
       preferred_times: data.preferredTimes,
@@ -309,6 +329,21 @@ export default function Kontakt() {
                     <Err id="nachname" />
                   </div>
                   <div className="vc-grid__full">
+                    <label className="vc-label" htmlFor="geburtsdatum">
+                      {t("kontakt.step4.geburtsdatum")} {t("kontakt.required")}
+                    </label>
+                    <input
+                      id="geburtsdatum"
+                      type="date"
+                      className="vc-input"
+                      value={data.geburtsdatum}
+                      onChange={(e) => setField("geburtsdatum", e.target.value)}
+                      autoComplete="bday"
+                      max={new Date().toISOString().slice(0, 10)}
+                    />
+                    <Err id="geburtsdatum" />
+                  </div>
+                  <div className="vc-grid__full">
                     <label className="vc-label" htmlFor="email">
                       {t("kontakt.step4.email")} {t("kontakt.required")}
                     </label>
@@ -336,6 +371,62 @@ export default function Kontakt() {
                       placeholder={t("kontakt.step4.telefonPlaceholder")}
                     />
                     <Err id="telefon" />
+                  </div>
+
+                  <div className="vc-grid__full">
+                    <label className="vc-label" htmlFor="strasse">
+                      {t("kontakt.step4.adresseLabel")}{" "}
+                      <span className="vc-optional">{t("kontakt.optional")}</span>
+                    </label>
+                  </div>
+                  <div>
+                    <input
+                      id="strasse"
+                      type="text"
+                      className="vc-input"
+                      value={data.strasse}
+                      onChange={(e) => setField("strasse", e.target.value)}
+                      autoComplete="address-line1"
+                      placeholder={t("kontakt.step4.strassePlaceholder")}
+                      aria-label={t("kontakt.step4.strassePlaceholder")}
+                    />
+                  </div>
+                  <div>
+                    <input
+                      id="hausnummer"
+                      type="text"
+                      className="vc-input"
+                      value={data.hausnummer}
+                      onChange={(e) => setField("hausnummer", e.target.value)}
+                      autoComplete="address-line2"
+                      placeholder={t("kontakt.step4.hausnummerPlaceholder")}
+                      aria-label={t("kontakt.step4.hausnummerPlaceholder")}
+                    />
+                  </div>
+                  <div>
+                    <input
+                      id="plz"
+                      type="text"
+                      className="vc-input"
+                      value={data.plz}
+                      onChange={(e) => setField("plz", e.target.value)}
+                      autoComplete="postal-code"
+                      inputMode="numeric"
+                      placeholder={t("kontakt.step4.plzPlaceholder")}
+                      aria-label={t("kontakt.step4.plzPlaceholder")}
+                    />
+                  </div>
+                  <div>
+                    <input
+                      id="stadt"
+                      type="text"
+                      className="vc-input"
+                      value={data.stadt}
+                      onChange={(e) => setField("stadt", e.target.value)}
+                      autoComplete="address-level2"
+                      placeholder={t("kontakt.step4.stadtPlaceholder")}
+                      aria-label={t("kontakt.step4.stadtPlaceholder")}
+                    />
                   </div>
                 </div>
 

@@ -1964,6 +1964,8 @@
       },
       "fields": {
         "name": "Name",
+        "geburtsdatum": "Geburtsdatum",
+        "adresse": "Adresse",
         "email": "E-Mail",
         "telefon": "Telefon",
         "versicherung": "Versicherung",
@@ -2039,9 +2041,15 @@
       "hint": "Wir lesen dein Anliegen vor dem Rückruf und melden uns pünktlich.",
       "vorname": "Vorname",
       "nachname": "Nachname",
+      "geburtsdatum": "Geburtsdatum",
       "email": "E-Mail",
       "telefon": "Telefonnummer",
       "telefonPlaceholder": "+49 …",
+      "adresseLabel": "Adresse",
+      "strassePlaceholder": "Straße",
+      "hausnummerPlaceholder": "Nr.",
+      "plzPlaceholder": "PLZ",
+      "stadtPlaceholder": "Stadt",
       "versicherungLabel": "Versicherungsart",
       "versicherung": {
         "privat": "Privat",
@@ -2067,6 +2075,7 @@
       "errors": {
         "vorname": "Bitte gib deinen Vornamen an.",
         "nachname": "Bitte gib deinen Nachnamen an.",
+        "geburtsdatum": "Bitte gib dein Geburtsdatum an.",
         "email": "Bitte gib eine gültige E-Mail an.",
         "telefon": "Bitte gib eine gültige Telefonnummer an.",
         "versicherung": "Bitte wähl deine Versicherungsart.",

@@ -26,6 +26,24 @@ function formatDate(iso, lang) {
   }
 }
 
+function formatBirthdate(value, lang) {
+  if (!value) return "—";
+  try {
+    // Column is a plain date (YYYY-MM-DD) — show date only, no time/timezone shift.
+    return new Date(`${value}T00:00:00`).toLocaleDateString(lang === "en" ? "en-GB" : "de-DE", {
+      year: "numeric", month: "2-digit", day: "2-digit",
+    });
+  } catch {
+    return value;
+  }
+}
+
+function formatAddress(r) {
+  const line1 = [r.strasse, r.hausnummer].filter(Boolean).join(" ");
+  const line2 = [r.plz, r.stadt].filter(Boolean).join(" ");
+  return [line1, line2].filter(Boolean).join(", ");
+}
+
 export default function AdminContactsPanel() {
   const t = useT();
   const lang = useLanguage();
@@ -291,6 +309,12 @@ export default function AdminContactsPanel() {
                 <a href={`tel:${selected.telefon}`} className="text-[#43a9ab] hover:underline">
                   {selected.telefon}
                 </a>
+              </Field>
+              <Field label={t("admin.contacts.fields.geburtsdatum")}>
+                {formatBirthdate(selected.geburtsdatum, lang)}
+              </Field>
+              <Field label={t("admin.contacts.fields.adresse")} fullSpan>
+                {formatAddress(selected) || "—"}
               </Field>
               <Field label={t("admin.contacts.fields.versicherung")}>
                 {selected.versicherung}

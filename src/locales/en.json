@@ -1964,6 +1964,8 @@
       },
       "fields": {
         "name": "Name",
+        "geburtsdatum": "Date of birth",
+        "adresse": "Address",
         "email": "Email",
         "telefon": "Phone",
         "versicherung": "Insurance",
@@ -2039,9 +2041,15 @@
       "hint": "We'll read your message before the callback and get in touch on time.",
       "vorname": "First name",
       "nachname": "Last name",
+      "geburtsdatum": "Date of birth",
       "email": "Email",
       "telefon": "Phone number",
       "telefonPlaceholder": "+49 …",
+      "adresseLabel": "Address",
+      "strassePlaceholder": "Street",
+      "hausnummerPlaceholder": "No.",
+      "plzPlaceholder": "ZIP",
+      "stadtPlaceholder": "City",
       "versicherungLabel": "Insurance type",
       "versicherung": {
         "privat": "Private",
@@ -2067,6 +2075,7 @@
       "errors": {
         "vorname": "Please enter your first name.",
         "nachname": "Please enter your last name.",
+        "geburtsdatum": "Please enter your date of birth.",
         "email": "Please enter a valid email address.",
         "telefon": "Please enter a valid phone number.",
         "versicherung": "Please choose your insurance type.",
