@@ -71,6 +71,18 @@ export default function RootLayout({ children }) {
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
             gtag('config', 'G-PVM2RGELWW');
+            document.addEventListener('click', function (ev) {
+              var el = ev.target && ev.target.closest ? ev.target.closest('a[href]') : null;
+              if (!el) return;
+              var href = el.href || '';
+              if (href.indexOf('doctolib.de') === -1 || href.indexOf('booking') === -1) return;
+              gtag('event', 'termin_klick', {
+                booking_typ: href.indexOf('booking/new-patient') !== -1 ? 'neupatient'
+                  : href.indexOf('booking/motives') !== -1 ? 'profil' : 'sonstige',
+                link_url: href,
+                transport_type: 'beacon'
+              });
+            }, true);
           `}
         </Script>
       </body>
