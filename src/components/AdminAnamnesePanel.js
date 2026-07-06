@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
+import AdminRecallSection from "@/components/AdminRecallSection";
 
 const STORAGE_BUCKET = "befunde";
 
@@ -59,6 +60,7 @@ const RECORD_TABS = [
   { id: "diagnose",        label: "Diagnose" },
   { id: "medikation",      label: "Medikation" },
   { id: "termin",          label: "Nächster Termin" },
+  { id: "recall",          label: "📞 Anruf" },
   { id: "schritte",        label: "Nächste Schritte" },
   { id: "anamnese",        label: "Anamnese" },
   { id: "doctolib",        label: "Doctolib Notizen" },
@@ -851,6 +853,8 @@ export default function AdminAnamnesePanel() {
                   + Rechnung
                 </button>
               </div>
+            ) : recordTab === "recall" ? (
+              <AdminRecallSection submissionId={selected.id} />
             ) : recordTab === "schritte" ? (
               <TextListEditor
                 items={schritteH.list}
