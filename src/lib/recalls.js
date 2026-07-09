@@ -144,6 +144,16 @@ export function isOverdue(due_date) {
   return String(due_date).slice(0, 10) < today();
 }
 
+// Companion-Alerts (Hilfe-Knopf / Befinden ≤3) erkennt man am grund-Präfix
+// 'Companion:' — gesetzt in src/lib/server/companionServer.js
+// (insertCompanionAlert, ALERT_REASONS). Sie gehören in "Für Shukri", NICHT
+// in Mahmouds Anrufliste: dort würden sie als status='erledigt'-Zeilen die
+// "heute erledigt"-Statistik aufblähen, obwohl nie telefoniert wurde.
+// Auto-Recalls mit anderem grund (z. B. next-step) bleiben bewusst drin.
+export function isCompanionAlert(row) {
+  return String(row?.grund || "").startsWith("Companion:");
+}
+
 // Is this e-mail a call agent (Mahmoud)? Case-insensitive.
 export function isCallAgent(email) {
   if (!email) return false;
@@ -256,7 +266,10 @@ export async function listWorklist() {
     .or(`status.in.(offen,nicht_erreicht),and(status.eq.erledigt,done_at.gte.${t}T00:00:00)`)
     .order("due_date", { ascending: true });
   if (error) throw error;
-  return data || [];
+  // Companion-Alerts raus (JS-Filter nach dem Fetch): sie leben in
+  // "Für Shukri" und dürfen Mahmouds Statistik ("heute erledigt") nicht
+  // aufblähen — siehe isCompanionAlert.
+  return (data || []).filter((r) => !isCompanionAlert(r));
 }
 
 // "Für Shukri": completed red (first) + yellow, still un-cleared. Same join.

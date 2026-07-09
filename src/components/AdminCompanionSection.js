@@ -46,6 +46,7 @@ import {
   createAccess,
   setConsent,
   setActive,
+  resetPin,
   listPlanItems,
   upsertPlanItem,
   deletePlanItem,
@@ -106,6 +107,8 @@ export default function AdminCompanionSection({
   // Block A
   const [consentBusy, setConsentBusy] = useState(false);
   const [accessSaving, setAccessSaving] = useState(false);
+  const [pinResetBusy, setPinResetBusy] = useState(false);
+  const [confirmPinReset, setConfirmPinReset] = useState(false); // Zwei-Schritt-Reset
 
   // Block B
   const [busyImportId, setBusyImportId] = useState(null);
@@ -161,6 +164,7 @@ export default function AdminCompanionSection({
       setForm(emptyForm());
       setConfirmItemId(null);
       setConfirmImportId(null);
+      setConfirmPinReset(false);
       setBusyImportId(null);
       setItemSaved(false);
       try {
@@ -227,6 +231,22 @@ export default function AdminCompanionSection({
       setAccess(await setActive(submissionId, !access.active));
     } catch (e) {
       setErr(e.message || "Konnte den Zugang nicht umschalten.");
+    }
+  };
+
+  // PIN zurücksetzen (zweistufig, NIE window.confirm): pin_hash → null, der
+  // Patient legt beim nächsten Login unter /companion eine neue PIN fest.
+  // resetPin liefert die frische Zeile → setAccess ist Patch UND Refetch.
+  const onResetPin = async () => {
+    setConfirmPinReset(false);
+    setPinResetBusy(true);
+    setErr("");
+    try {
+      setAccess(await resetPin(submissionId));
+    } catch (e) {
+      setErr(e.message || "PIN konnte nicht zurückgesetzt werden.");
+    } finally {
+      setPinResetBusy(false);
     }
   };
 
@@ -472,9 +492,55 @@ export default function AdminCompanionSection({
               </label>
             </div>
             <p className={INFO_BOX}>
-              QR-Code + PIN-Login folgen in Stufe 2 — die Nummer steht schon
-              fest.
+              Patient meldet sich an unter{" "}
+              <span className="font-semibold">vivecura.com/companion</span> mit
+              Nummer{" "}
+              <span className="font-semibold tabular-nums">
+                {access.patient_number}
+              </span>{" "}
+              (PIN legt er beim ersten Login selbst fest).
             </p>
+            <div className="mt-2 flex items-center gap-3 flex-wrap">
+              {/* has_pin ist das abgeleitete Flag der Datenschicht — der
+                  pin_hash selbst erreicht den Admin-Client nie. */}
+              {access.has_pin ? (
+                confirmPinReset ? (
+                  <>
+                    <span className="text-xs text-[#515757]/70">
+                      PIN wirklich zurücksetzen? Der Patient legt beim nächsten
+                      Login eine neue fest.
+                    </span>
+                    <button
+                      type="button"
+                      onClick={onResetPin}
+                      className="text-xs text-red-500 hover:underline"
+                    >
+                      Ja, zurücksetzen
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setConfirmPinReset(false)}
+                      className="text-xs text-[#515757]/50 hover:text-[#515757]"
+                    >
+                      Abbrechen
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => setConfirmPinReset(true)}
+                    disabled={pinResetBusy}
+                    className="text-xs text-[#515757]/50 hover:text-red-500 transition-colors disabled:opacity-40"
+                  >
+                    {pinResetBusy ? "Setzt zurück…" : "PIN zurücksetzen"}
+                  </button>
+                )
+              ) : (
+                <span className="text-xs text-[#515757]/40">
+                  Noch keine PIN festgelegt — passiert beim ersten Login.
+                </span>
+              )}
+            </div>
           </div>
         ) : (
           <button

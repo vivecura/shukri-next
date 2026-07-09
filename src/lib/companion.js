@@ -220,17 +220,32 @@ export function sortPlanItems(rows) {
 // QUERIES (all practice_id-scoped)
 // ---------------------------------------------------------------------------
 
+// companion_access: explizite Spaltenliste statt select("*"). pin_hash wird
+// nur INTERN gelesen (für das abgeleitete has_pin) und verlässt die
+// Datenschicht nie — der Hash hat im Admin-Client-State nichts verloren.
+// Komponenten fragen ausschließlich access.has_pin ab.
+const ACCESS_COLS =
+  "id, practice_id, submission_id, patient_number, pin_hash, qr_token, " +
+  "consent_app_at, consent_source, consent_revoked_at, active, created_at, " +
+  "updated_at";
+
+// pin_hash → has_pin mappen und den Hash aus der Rückgabe tilgen.
+function toAccessView(row) {
+  if (!row) return null;
+  return { ...row, has_pin: !!row.pin_hash, pin_hash: undefined };
+}
+
 // The one access row of a patient, or null (maybeSingle: no row is normal —
 // it just means no app access has been created yet).
 export async function getAccess(submissionId) {
   const { data, error } = await supabase
     .from("companion_access")
-    .select("*")
+    .select(ACCESS_COLS)
     .eq("practice_id", PRACTICE_ID)
     .eq("submission_id", submissionId)
     .maybeSingle();
   if (error) throw error;
-  return data || null;
+  return toAccessView(data);
 }
 
 // Did the patient tick the KI consent in the anamnese form? The gate reads
@@ -283,10 +298,10 @@ export async function createAccess({ submissionId, consentSource }) {
       consent_app_at: new Date().toISOString(),
       consent_source: source,
     })
-    .select("*")
+    .select(ACCESS_COLS)
     .single();
   if (error) throw error;
-  return data;
+  return toAccessView(data);
 }
 
 // Store/withdraw the consent on the access row. granted=false = Widerruf
@@ -318,10 +333,10 @@ export async function setConsent({ submissionId, granted, source }) {
           consent_revoked_at: new Date().toISOString(),
           active: false,
         })
-        .select("*")
+        .select(ACCESS_COLS)
         .single();
       if (error) throw error;
-      return data;
+      return toAccessView(data);
     }
     return createAccess({ submissionId, consentSource: source || "manuell" });
   }
@@ -342,10 +357,10 @@ export async function setConsent({ submissionId, granted, source }) {
     .update(patch)
     .eq("practice_id", PRACTICE_ID)
     .eq("submission_id", submissionId)
-    .select("*")
+    .select(ACCESS_COLS)
     .single();
   if (error) throw error;
-  return data;
+  return toAccessView(data);
 }
 
 // Lock/unlock the access without losing data (active toggle in Block A).
@@ -355,10 +370,29 @@ export async function setActive(submissionId, active) {
     .update({ active: !!active })
     .eq("practice_id", PRACTICE_ID)
     .eq("submission_id", submissionId)
-    .select("*")
+    .select(ACCESS_COLS)
     .single();
   if (error) throw error;
-  return data;
+  return toAccessView(data);
+}
+
+// PIN reset (Block A): pin_hash → null. Beim nächsten Besuch durchläuft der
+// Patient wieder "PIN festlegen" (set-pin claimt nur WHERE pin_hash IS NULL).
+// Bestehende Session-Cookies des Patienten bleiben technisch gültig, solange
+// der Zugang aktiv ist — dokumentiert akzeptiert (Stufe 2); harte Sperre =
+// "Zugang gesperrt" (setActive false).
+export async function resetPin(submissionId) {
+  const { data, error } = await supabase
+    .from("companion_access")
+    .update({ pin_hash: null })
+    .eq("practice_id", PRACTICE_ID)
+    .eq("submission_id", submissionId)
+    .select(ACCESS_COLS)
+    .single();
+  if (error) {
+    throw new Error("PIN konnte nicht zurückgesetzt werden. Bitte erneut versuchen.");
+  }
+  return toAccessView(data);
 }
 
 // All plan items of one patient in display order (Block C).
