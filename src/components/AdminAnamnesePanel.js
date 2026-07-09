@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import AdminRecallSection from "@/components/AdminRecallSection";
+import AdminCompanionSection from "@/components/AdminCompanionSection";
 import { createRecall, plusDays, listForPatient, GRUENDE, defaultFragen } from "@/lib/recalls";
 
 const STORAGE_BUCKET = "befunde";
@@ -62,6 +63,7 @@ const RECORD_TABS = [
   { id: "medikation",      label: "Medikation" },
   { id: "termin",          label: "Nächster Termin" },
   { id: "recall",          label: "📞 Anruf" },
+  { id: "companion",       label: "📱 App" },
   { id: "schritte",        label: "Nächste Schritte" },
   { id: "anamnese",        label: "Anamnese" },
   { id: "doctolib",        label: "Doctolib Notizen" },
@@ -943,6 +945,12 @@ export default function AdminAnamnesePanel() {
               </div>
             ) : recordTab === "recall" ? (
               <AdminRecallSection submissionId={selected.id} />
+            ) : recordTab === "companion" ? (
+              <AdminCompanionSection
+                key={selected.id}
+                submissionId={selected.id}
+                consentFromAnamnese={selected.payload ? !!payload.consent_ki_pseudonym : null}
+              />
             ) : recordTab === "schritte" ? (
               <TextListEditor
                 items={schritteH.list}
