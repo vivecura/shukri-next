@@ -6,6 +6,8 @@ import AdminContactsPanel from "@/components/AdminContactsPanel";
 import AdminLifesummitPanel from "@/components/AdminLifesummitPanel";
 import AdminBlogPanel from "@/components/AdminBlogPanel";
 import AdminAnamnesePanel from "@/components/AdminAnamnesePanel";
+import AdminRecallPanel from "@/components/AdminRecallPanel";
+import { isCallAgent, countDueOpen, countShukriOpen } from "@/lib/recalls";
 
 function Admin() {
   const [session, setSession] = useState(null);
@@ -16,6 +18,20 @@ function Admin() {
   const [activeTab, setActiveTab] = useState("patients");
   const [newContactsCount, setNewContactsCount] = useState(0);
   const [newLifesummitCount, setNewLifesummitCount] = useState(0);
+  // Recall tab badge — dringende: rote ungeklärte (für Shukri) + überfällige/
+  // heute-fällige offene Anrufe. Fed by two head:true count-queries below.
+  const [recallBadge, setRecallBadge] = useState(0);
+
+  // UI-only role gate: is the logged-in account a call agent (Mahmoud)?
+  // This is display logic, NOT data protection — see securityNote in recalls.js.
+  const isCaller = isCallAgent(session?.user?.email);
+
+  // Effective tab. A call agent (Mahmoud) only ever sees "Anrufe": the other
+  // tab buttons and panels are not rendered for him, so we derive his active
+  // tab rather than storing a forced value (avoids setState-in-effect and any
+  // flash of the patients tab before the session resolves). Shukri's stored
+  // activeTab is used verbatim.
+  const currentTab = isCaller ? "anrufe" : activeTab;
 
   // Check session on mount
   useEffect(() => {
@@ -28,6 +44,23 @@ function Admin() {
     });
     return () => subscription.unsubscribe();
   }, []);
+
+  // Recall tab badge: two head:true count-queries (dringende offene + rote
+  // ungeklärte für Shukri), summed. Same deps as the other badges so a
+  // tab-switch refreshes it. Failures fall back to 0 (feature stays quiet).
+  useEffect(() => {
+    if (!session) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const [due, shukri] = await Promise.all([countDueOpen(), countShukriOpen()]);
+        if (!cancelled) setRecallBadge((due || 0) + (shukri || 0));
+      } catch {
+        if (!cancelled) setRecallBadge(0);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [session, activeTab]);
 
   // Fetch new contacts count when logged in (for tab badge)
   useEffect(() => {
@@ -133,20 +166,41 @@ function Admin() {
         {/* Tab nav — logout sits at the right of the same row (no separate header) */}
         <div className="flex items-center justify-between gap-4 mb-4 border-b border-gray-100">
           <div className="flex gap-2 flex-wrap">
+          {!isCaller && (
           <button
             onClick={() => setActiveTab("patients")}
             className={`relative px-4 py-2 text-sm font-medium transition-colors ${
-              activeTab === "patients"
+              currentTab === "patients"
                 ? "text-[#43a9ab] border-b-2 border-[#43a9ab] -mb-px"
                 : "text-[#515757]/50 hover:text-[#515757]"
             }`}
           >
             Patienten
           </button>
+          )}
+          {/* Anrufe — Mahmouds Haupteinstieg (nach Patienten). Immer sichtbar;
+              für einen Call-Agent der einzige Tab. Roter Badge = dringende Fälle. */}
+          <button
+            onClick={() => setActiveTab("anrufe")}
+            className={`relative px-4 py-2 text-sm font-medium transition-colors ${
+              currentTab === "anrufe"
+                ? "text-[#43a9ab] border-b-2 border-[#43a9ab] -mb-px"
+                : "text-[#515757]/50 hover:text-[#515757]"
+            }`}
+          >
+            Anrufe
+            {recallBadge > 0 && (
+              <span className="ml-2 inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 text-[10px] font-bold text-white bg-red-500 rounded-full">
+                {recallBadge}
+              </span>
+            )}
+          </button>
+          {!isCaller && (
+          <>
           <button
             onClick={() => setActiveTab("blog")}
             className={`relative px-4 py-2 text-sm font-medium transition-colors ${
-              activeTab === "blog"
+              currentTab === "blog"
                 ? "text-[#43a9ab] border-b-2 border-[#43a9ab] -mb-px"
                 : "text-[#515757]/50 hover:text-[#515757]"
             }`}
@@ -156,7 +210,7 @@ function Admin() {
           <button
             onClick={() => setActiveTab("contacts")}
             className={`relative px-4 py-2 text-sm font-medium transition-colors ${
-              activeTab === "contacts"
+              currentTab === "contacts"
                 ? "text-[#43a9ab] border-b-2 border-[#43a9ab] -mb-px"
                 : "text-[#515757]/50 hover:text-[#515757]"
             }`}
@@ -171,7 +225,7 @@ function Admin() {
           <button
             onClick={() => setActiveTab("lifesummit")}
             className={`relative px-4 py-2 text-sm font-medium transition-colors ${
-              activeTab === "lifesummit"
+              currentTab === "lifesummit"
                 ? "text-[#43a9ab] border-b-2 border-[#43a9ab] -mb-px"
                 : "text-[#515757]/50 hover:text-[#515757]"
             }`}
@@ -183,6 +237,8 @@ function Admin() {
               </span>
             )}
           </button>
+          </>
+          )}
           </div>
           <div className="shrink-0 flex items-center gap-4 pb-2">
             <a
@@ -203,13 +259,15 @@ function Admin() {
           </div>
         </div>
 
-        {activeTab === "patients" && <AdminAnamnesePanel />}
+        {currentTab === "anrufe" && <AdminRecallPanel callAgent={isCaller} />}
 
-        {activeTab === "contacts" && <AdminContactsPanel />}
+        {!isCaller && currentTab === "patients" && <AdminAnamnesePanel />}
 
-        {activeTab === "lifesummit" && <AdminLifesummitPanel />}
+        {!isCaller && currentTab === "contacts" && <AdminContactsPanel />}
 
-        {activeTab === "blog" && <AdminBlogPanel />}
+        {!isCaller && currentTab === "lifesummit" && <AdminLifesummitPanel />}
+
+        {!isCaller && currentTab === "blog" && <AdminBlogPanel />}
       </div>
     </div>
   );
