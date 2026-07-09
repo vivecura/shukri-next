@@ -20,6 +20,7 @@ import {
   fmtWeekdays,
 } from "@/components/companion/companionUi";
 import { LoadingCard, ErrorCard } from "@/components/companion/CompanionHeute";
+import CompanionContact from "@/components/companion/CompanionContact";
 
 export default function CompanionPlan({ api }) {
   const [loading, setLoading] = useState(true);
@@ -114,6 +115,9 @@ export default function CompanionPlan({ api }) {
           </div>
         ))
       )}
+
+      {/* Kontakt zur Praxis — immer sichtbar am Ende des Plan-Tabs */}
+      <CompanionContact />
     </div>
   );
 }

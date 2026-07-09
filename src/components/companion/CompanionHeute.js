@@ -18,6 +18,7 @@ import {
   fmtDayLong,
 } from "@/components/companion/companionUi";
 import CompanionCheckin from "@/components/companion/CompanionCheckin";
+import CompanionContact from "@/components/companion/CompanionContact";
 
 const KIND_EMOJI = { supplement: "💊", todo: "✅", vorbereitung: "📋" };
 const slotKey = (itemId, time) => `${itemId}|${time ?? ""}`;
@@ -256,6 +257,9 @@ export default function CompanionHeute({ api }) {
           🆘 Ich brauche Hilfe / Rückruf
         </button>
       )}
+
+      {/* Kontakt zur Praxis — immer sichtbar am Ende des Heute-Tabs */}
+      <CompanionContact />
 
       {helpOpen && (
         <HelpSheet

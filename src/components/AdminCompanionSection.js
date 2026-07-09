@@ -24,7 +24,7 @@
 // eine Query; bei null liest die Sektion payload.consent_ki_pseudonym selbst.
 // ============================================================================
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import {
   ITEM_KINDS,
   ITEM_KIND_IDS,
@@ -70,8 +70,53 @@ const BADGE =
 const INFO_BOX = "text-xs text-[#515757]/80 bg-[#43a9ab]/5 rounded-lg p-2";
 const QUIET = "text-sm text-[#515757]/30 italic py-4";
 
+// Chip-Toggles (Art, Uhrzeiten, Wochentage, Nachfragen) — ein Look für alle:
+// aktiv = gefülltes Teal, inaktiv = weiß mit stiller Kante.
+const CHIP = "rounded-full border transition-colors";
+const CHIP_ON = "bg-[#43a9ab] text-white border-[#43a9ab]";
+const CHIP_OFF =
+  "bg-white text-[#515757]/60 border-gray-200 hover:border-[#43a9ab]/40";
+
+// Uhrzeiten-Presets: ein Tipp toggelt die Zeit in der Liste; das Freitext-Feld
+// bleibt die zweite, gleichwertige Eingabe (beide synchron über timesStr).
+const TIME_PRESETS = [
+  { t: "08:00", label: "☀️ Morgens 08:00" },
+  { t: "12:00", label: "🌞 Mittags 12:00" },
+  { t: "20:00", label: "🌙 Abends 20:00" },
+];
+
+// Nachfrage-Presets der Infusions-Nachsorge (Stunden nach der Infusion).
+const OFFSET_PRESETS = [
+  { h: 24, label: "24 h" },
+  { h: 72, label: "3 Tage" },
+  { h: 168, label: "7 Tage" },
+];
+
+const WORKDAYS = [1, 2, 3, 4, 5]; // Mo–Fr
+
+// Welche Felder jede Art braucht — nur die werden gezeigt UND gespeichert
+// (versteckte Felder gehen als leer/null raus, damit z. B. ein To-do nie eine
+// verwaiste Dosis mitschleppt).
+const KIND_FIELDS = {
+  supplement: { dosis: true, hinweis: true, times: true, days: true, range: true, event: false, offsets: false, zieldatum: false },
+  todo: { dosis: false, hinweis: true, times: true, days: true, range: true, event: false, offsets: false, zieldatum: false },
+  vorbereitung: { dosis: false, hinweis: true, times: false, days: false, range: false, event: true, offsets: false, zieldatum: false },
+  next_step: { dosis: false, hinweis: true, times: false, days: false, range: false, event: false, offsets: false, zieldatum: true },
+  infusion_followup: { dosis: false, hinweis: false, times: false, days: false, range: false, event: true, offsets: true, zieldatum: false },
+};
+
+// Name-Platzhalter je Art — kleine Eingabehilfe im Speed-Formular.
+const KIND_PLACEHOLDER = {
+  supplement: "z. B. Magnesium (FormMed)",
+  todo: "z. B. 10 Minuten Spaziergang",
+  vorbereitung: "z. B. Nüchtern zur Blutabnahme",
+  next_step: "z. B. Folgetermin vereinbaren",
+  infusion_followup: "z. B. Eiseninfusion",
+};
+
 // Frisches, leeres Bausteine-Formular (Funktion statt Konstante, damit nie
-// ein Array/Objekt zwischen Renders geteilt wird).
+// ein Array/Objekt zwischen Renders geteilt wird). Startet als Supplement mit
+// dem Smart Default 08:00 (häufigster Fall: "morgens nehmen").
 function emptyForm() {
   return {
     id: null,
@@ -79,7 +124,7 @@ function emptyForm() {
     name: "",
     dosis: "",
     instructions: "",
-    timesStr: "",
+    timesStr: "08:00",
     days: [],
     startDate: "",
     endDate: "",
@@ -119,6 +164,10 @@ export default function AdminCompanionSection({
   const [itemSaving, setItemSaving] = useState(false);
   const [itemSaved, setItemSaved] = useState(false);
   const [confirmItemId, setConfirmItemId] = useState(null); // Zwei-Schritt-Löschen
+  const nameRef = useRef(null); // Fokus-Ziel für die Serien-Eingabe
+  // true, solange die Uhrzeiten nur ein Smart Default sind (nie von Hand
+  // angefasst) — nur dann darf ein Art-Wechsel sie überschreiben/leeren.
+  const autoTimesRef = useRef(true);
 
   // Alles parallel laden; das Anamnese-Häkchen nur, wenn das Panel es nicht
   // schon mitgibt (consentFromAnamnese boolean|null).
@@ -283,7 +332,10 @@ export default function AdminCompanionSection({
 
   // ---- Block C: Handler ----------------------------------------------------
 
-  const resetForm = () => setForm(emptyForm());
+  const resetForm = () => {
+    autoTimesRef.current = true; // frisches Formular = frische Smart Defaults
+    setForm(emptyForm());
+  };
 
   const toggleDay = (n) =>
     setForm((f) => ({
@@ -293,10 +345,67 @@ export default function AdminCompanionSection({
         : [...f.days, n],
     }));
 
+  // "Täglich" = leeres days-Array (fmtWeekdays-Semantik); "Mo–Fr" setzt die
+  // fünf Werktage in einem Tipp. Beides überschreibt die Einzel-Auswahl —
+  // umgekehrt deaktiviert jeder Einzel-Toggle "Täglich" automatisch, weil der
+  // Chip nur bei days.length === 0 leuchtet.
+  const setDaily = () => setForm((f) => ({ ...f, days: [] }));
+  const setWorkdays = () => setForm((f) => ({ ...f, days: [...WORKDAYS] }));
+
+  // Uhrzeit-Preset toggeln — Chips und Freitext teilen sich timesStr als
+  // einzige Wahrheit; ein Chip-Tipp ist damit automatisch im Feld sichtbar.
+  const toggleTime = (t) => {
+    autoTimesRef.current = false;
+    setForm((f) => {
+      const times = parseTimesInput(f.timesStr);
+      const next = times.includes(t)
+        ? times.filter((x) => x !== t)
+        : [...times, t].sort();
+      return { ...f, timesStr: next.join(", ") };
+    });
+  };
+
+  // Nachfrage-Preset toggeln (gleiches Prinzip wie toggleTime, über offsetsStr).
+  const toggleOffset = (h) =>
+    setForm((f) => {
+      const cur = parseOffsetsInput(f.offsetsStr);
+      const next = cur.includes(h)
+        ? cur.filter((x) => x !== h)
+        : [...cur, h].sort((a, b) => a - b);
+      return { ...f, offsetsStr: next.join(", ") };
+    });
+
+  // Art-Wechsel per Chip: kompatible, bereits eingetippte Werte bleiben
+  // stehen; nur leere/automatische Felder bekommen die Smart Defaults der
+  // neuen Art (Supplement → 08:00, To-do → täglich ohne Uhrzeit,
+  // Infusions-Nachsorge → Termin jetzt + alle drei Nachfragen).
+  const switchKind = (kind) =>
+    setForm((f) => {
+      if (f.kind === kind) return f;
+      const next = { ...f, kind };
+      if (kind === "supplement" && parseTimesInput(f.timesStr).length === 0) {
+        next.timesStr = "08:00";
+        autoTimesRef.current = true;
+      }
+      if (kind === "todo" && autoTimesRef.current) {
+        next.timesStr = ""; // Default: täglich, ohne feste Uhrzeit
+      }
+      if (kind === "infusion_followup") {
+        if (!f.eventLocal) {
+          next.eventLocal = toDatetimeLocalInput(new Date().toISOString());
+        }
+        if (parseOffsetsInput(f.offsetsStr).length === 0) {
+          next.offsetsStr = OFFSET_PRESETS.map((o) => o.h).join(", ");
+        }
+      }
+      return next;
+    });
+
   // "Bearbeiten" lädt die Zeile ins Formular (auch Claudes Bausteine — der
   // Update-Pfad der Datenschicht lässt source unangetastet).
   const editItem = (it) => {
     setConfirmItemId(null);
+    autoTimesRef.current = false; // Bestandswerte sind nie "nur Default"
     setForm({
       id: it.id,
       kind: it.kind,
@@ -313,14 +422,15 @@ export default function AdminCompanionSection({
     });
   };
 
-  const showEvent =
-    form.kind === "vorbereitung" || form.kind === "infusion_followup";
-  const showOffsets = form.kind === "infusion_followup";
+  // Die Feld-Landkarte der aktuellen Art steuert Anzeige UND Speicher-Payload
+  // (versteckte Felder gehen leer/null raus).
+  const fields = KIND_FIELDS[form.kind] || KIND_FIELDS.supplement;
 
   const saveItem = async () => {
     setItemSaving(true);
     setItemSaved(false);
     setErr("");
+    const wasEdit = !!form.id;
     try {
       // Beim Bearbeiten active/sort der bestehenden Zeile erhalten;
       // neue Bausteine hängen ans Ende der Anzeige-Reihenfolge.
@@ -331,26 +441,36 @@ export default function AdminCompanionSection({
         source: "manuell",
         kind: form.kind,
         name: form.name,
-        dosis: form.dosis,
-        instructions: form.instructions,
-        times: parseTimesInput(form.timesStr),
-        days_of_week: [...form.days].sort((a, b) => a - b),
+        dosis: fields.dosis ? form.dosis : "",
+        instructions: fields.hinweis ? form.instructions : "",
+        times: fields.times ? parseTimesInput(form.timesStr) : [],
+        days_of_week: fields.days ? [...form.days].sort((a, b) => a - b) : [],
         reminder_enabled: form.reminderEnabled,
-        start_date: form.startDate || null,
-        end_date: form.endDate || null,
-        event_date: showEvent ? datetimeLocalToIso(form.eventLocal) : null,
-        followup_offsets_hours: showOffsets
+        start_date: fields.range ? form.startDate || null : null,
+        end_date:
+          fields.range || fields.zieldatum ? form.endDate || null : null,
+        event_date: fields.event ? datetimeLocalToIso(form.eventLocal) : null,
+        followup_offsets_hours: fields.offsets
           ? parseOffsetsInput(form.offsetsStr)
           : [],
         active: base ? base.active : true,
         sort: base ? base.sort : items.length,
       });
       setItems((rows) =>
-        form.id
+        wasEdit
           ? rows.map((r) => (r.id === saved.id ? saved : r))
           : [...rows, saved]
       );
-      resetForm();
+      if (wasEdit) {
+        resetForm();
+      } else {
+        // Serien-Eingabe: Art, Uhrzeiten, Wochentage, Zeitraum & Co. bleiben
+        // stehen — nur Name/Dosis/Hinweis leeren und Fokus zurück ins
+        // Name-Feld, damit zehn Supplemente in Folge kein Neu-Einstellen
+        // brauchen.
+        setForm((f) => ({ ...f, name: "", dosis: "", instructions: "" }));
+        nameRef.current?.focus();
+      }
       setItemSaved(true);
       // Save-State kurz sichtbar lassen, dann zurück auf Default.
       setTimeout(() => setItemSaved(false), 2500);
@@ -416,13 +536,29 @@ export default function AdminCompanionSection({
   const itemSaveLabel = itemSaving
     ? "Speichert…"
     : itemSaved
-    ? "Gespeichert ✓"
+    ? "✓ Gespeichert"
     : form.id
     ? "✓ Änderungen speichern"
     : "✓ Baustein speichern";
 
+  // Abgeleitete Chip-Zustände des Bausteine-Formulars: Chips und Freitext
+  // teilen sich timesStr/offsetsStr, aktiv ist, was geparst drinsteht.
+  const activeTimes = parseTimesInput(form.timesStr);
+  const activeOffsets = parseOffsetsInput(form.offsetsStr);
+  const isWorkdays =
+    form.days.length === WORKDAYS.length &&
+    WORKDAYS.every((n) => form.days.includes(n));
+
   return (
     <div className="max-w-2xl space-y-6">
+      {/* Weicher Wechsel der kontextuellen Felder beim Art-Klick. */}
+      <style>{`
+        @keyframes acsFadeIn {
+          from { opacity: 0; transform: translateY(3px); }
+          to { opacity: 1; transform: none; }
+        }
+        .acs-fade { animation: acsFadeIn 0.18s ease; }
+      `}</style>
       {err && <p className="text-red-500 text-xs mb-3">{err}</p>}
 
       {/* ================= Block A — Einwilligung & Zugang ================= */}
@@ -603,163 +739,291 @@ export default function AdminCompanionSection({
               nur an Verordnetes, sie empfiehlt selbst nichts.
             </p>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
-              <div>
-                <label className={MICRO_LABEL}>Art</label>
-                <select
-                  value={form.kind}
-                  onChange={(e) =>
-                    setForm((f) => ({ ...f, kind: e.target.value }))
-                  }
-                  className={INPUT}
-                >
-                  {ITEM_KIND_IDS.map((k) => (
-                    <option key={k} value={k}>
-                      {ITEM_KINDS[k].emoji} {ITEM_KINDS[k].label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className={MICRO_LABEL}>Name</label>
-                <input
-                  type="text"
-                  value={form.name}
-                  onChange={(e) =>
-                    setForm((f) => ({ ...f, name: e.target.value }))
-                  }
-                  placeholder="z. B. Magnesium (FormMed)"
-                  className={INPUT}
-                />
-              </div>
-              <div>
-                <label className={MICRO_LABEL}>Dosis</label>
-                <input
-                  type="text"
-                  value={form.dosis}
-                  onChange={(e) =>
-                    setForm((f) => ({ ...f, dosis: e.target.value }))
-                  }
-                  placeholder="z. B. 2 Kapseln à 300 mg"
-                  className={INPUT}
-                />
-              </div>
-              <div>
-                <label className={MICRO_LABEL}>Hinweis</label>
-                <input
-                  type="text"
-                  value={form.instructions}
-                  onChange={(e) =>
-                    setForm((f) => ({ ...f, instructions: e.target.value }))
-                  }
-                  placeholder="z. B. morgens nüchtern"
-                  className={INPUT}
-                />
-              </div>
-              <div>
-                <label className={MICRO_LABEL}>Erinnerungs-Uhrzeiten</label>
-                <input
-                  type="text"
-                  value={form.timesStr}
-                  onChange={(e) =>
-                    setForm((f) => ({ ...f, timesStr: e.target.value }))
-                  }
-                  onBlur={() =>
-                    setForm((f) => ({
-                      ...f,
-                      timesStr: parseTimesInput(f.timesStr).join(", "),
-                    }))
-                  }
-                  placeholder="08:00, 20:00"
-                  className={INPUT}
-                />
-              </div>
-              <div>
-                <label className={MICRO_LABEL}>Zeitraum</label>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="date"
-                    value={form.startDate}
-                    onChange={(e) =>
-                      setForm((f) => ({ ...f, startDate: e.target.value }))
-                    }
-                    aria-label="Start"
-                    className={INPUT}
-                  />
-                  <span className="text-xs text-[#515757]/40 shrink-0">
-                    bis
-                  </span>
-                  <input
-                    type="date"
-                    value={form.endDate}
-                    onChange={(e) =>
-                      setForm((f) => ({ ...f, endDate: e.target.value }))
-                    }
-                    aria-label="Ende"
-                    className={INPUT}
-                  />
-                </div>
-              </div>
-              {showEvent && (
-                <div>
-                  <label className={MICRO_LABEL}>Termin</label>
-                  <input
-                    type="datetime-local"
-                    value={form.eventLocal}
-                    onChange={(e) =>
-                      setForm((f) => ({ ...f, eventLocal: e.target.value }))
-                    }
-                    className={INPUT}
-                  />
-                </div>
-              )}
-              {showOffsets && (
-                <div>
-                  <label className={MICRO_LABEL}>
-                    Check-in nach Infusion (Stunden)
-                  </label>
-                  <input
-                    type="text"
-                    value={form.offsetsStr}
-                    onChange={(e) =>
-                      setForm((f) => ({ ...f, offsetsStr: e.target.value }))
-                    }
-                    onBlur={() =>
-                      setForm((f) => ({
-                        ...f,
-                        offsetsStr: parseOffsetsInput(f.offsetsStr).join(", "),
-                      }))
-                    }
-                    placeholder="24, 72"
-                    className={INPUT}
-                  />
-                </div>
-              )}
-            </div>
-
+            {/* Art-Auswahl: 5 immer sichtbare Chips — ein Klick wechselt die
+                kontextuellen Felder darunter (Speed statt Dropdown). */}
             <div className="mb-4">
-              <label className={MICRO_LABEL}>
-                Wochentage (keine Auswahl = täglich)
-              </label>
+              <label className={MICRO_LABEL}>Art</label>
               <div className="flex flex-wrap gap-1.5">
-                {WEEKDAYS.map((w) => {
-                  const on = form.days.includes(w.n);
+                {ITEM_KIND_IDS.map((k) => {
+                  const on = form.kind === k;
                   return (
                     <button
-                      key={w.n}
+                      key={k}
                       type="button"
-                      onClick={() => toggleDay(w.n)}
-                      className={`text-xs px-2.5 py-1 rounded-full border transition-colors ${
-                        on
-                          ? "bg-[#43a9ab] text-white border-[#43a9ab]"
-                          : "bg-white text-[#515757]/60 border-gray-200 hover:border-[#43a9ab]/40"
+                      onClick={() => switchKind(k)}
+                      aria-pressed={on}
+                      className={`text-xs sm:text-sm px-3 py-1.5 font-medium ${CHIP} ${
+                        on ? CHIP_ON : CHIP_OFF
                       }`}
                     >
-                      {w.label}
+                      {ITEM_KINDS[k].emoji} {ITEM_KINDS[k].label}
                     </button>
                   );
                 })}
               </div>
+            </div>
+
+            {/* Kontextuelle Felder: nur was die Art braucht. key={form.kind}
+                remountet den Block beim Art-Wechsel — der weiche Übergang
+                kommt aus der acs-fade-Animation (Style-Tag oben). */}
+            <div key={form.kind} className="acs-fade">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+                <div>
+                  <label className={MICRO_LABEL}>Name</label>
+                  <input
+                    ref={nameRef}
+                    type="text"
+                    value={form.name}
+                    onChange={(e) =>
+                      setForm((f) => ({ ...f, name: e.target.value }))
+                    }
+                    placeholder={KIND_PLACEHOLDER[form.kind]}
+                    className={INPUT}
+                  />
+                </div>
+                {fields.dosis && (
+                  <div>
+                    <label className={MICRO_LABEL}>Dosis</label>
+                    <input
+                      type="text"
+                      value={form.dosis}
+                      onChange={(e) =>
+                        setForm((f) => ({ ...f, dosis: e.target.value }))
+                      }
+                      placeholder="z. B. 2 Kapseln à 300 mg"
+                      className={INPUT}
+                    />
+                  </div>
+                )}
+                {fields.hinweis && (
+                  <div>
+                    <label className={MICRO_LABEL}>Hinweis</label>
+                    <input
+                      type="text"
+                      value={form.instructions}
+                      onChange={(e) =>
+                        setForm((f) => ({
+                          ...f,
+                          instructions: e.target.value,
+                        }))
+                      }
+                      placeholder="z. B. morgens nüchtern"
+                      className={INPUT}
+                    />
+                  </div>
+                )}
+                {fields.event && (
+                  <div>
+                    <label className={MICRO_LABEL}>
+                      {form.kind === "infusion_followup"
+                        ? "Infusion am"
+                        : "Termin"}
+                    </label>
+                    <input
+                      type="datetime-local"
+                      value={form.eventLocal}
+                      onChange={(e) =>
+                        setForm((f) => ({ ...f, eventLocal: e.target.value }))
+                      }
+                      className={INPUT}
+                    />
+                  </div>
+                )}
+                {fields.zieldatum && (
+                  <div>
+                    <label className={MICRO_LABEL}>Zieldatum (optional)</label>
+                    <input
+                      type="date"
+                      value={form.endDate}
+                      onChange={(e) =>
+                        setForm((f) => ({ ...f, endDate: e.target.value }))
+                      }
+                      className={INPUT}
+                    />
+                  </div>
+                )}
+              </div>
+
+              {/* Uhrzeiten: Preset-Chips + Freitext, beide synchron über
+                  timesStr (ein Chip-Tipp erscheint sofort im Feld). */}
+              {fields.times && (
+                <div className="mb-4">
+                  <label className={MICRO_LABEL}>
+                    {form.kind === "todo"
+                      ? "Uhrzeiten (optional)"
+                      : "Erinnerungs-Uhrzeiten"}
+                  </label>
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    {TIME_PRESETS.map((p) => {
+                      const on = activeTimes.includes(p.t);
+                      return (
+                        <button
+                          key={p.t}
+                          type="button"
+                          onClick={() => toggleTime(p.t)}
+                          aria-pressed={on}
+                          className={`text-xs px-3 py-1.5 ${CHIP} ${
+                            on ? CHIP_ON : CHIP_OFF
+                          }`}
+                        >
+                          {p.label}
+                        </button>
+                      );
+                    })}
+                    <div className="flex-1 min-w-[140px]">
+                      <input
+                        type="text"
+                        value={form.timesStr}
+                        onChange={(e) => {
+                          autoTimesRef.current = false;
+                          setForm((f) => ({ ...f, timesStr: e.target.value }));
+                        }}
+                        onBlur={() =>
+                          setForm((f) => ({
+                            ...f,
+                            timesStr: parseTimesInput(f.timesStr).join(", "),
+                          }))
+                        }
+                        placeholder="08:00, 20:00"
+                        aria-label="Uhrzeiten (Freitext)"
+                        className={INPUT}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Wochentage: prominentes "Täglich" (an, solange kein Tag
+                  gewählt ist) + "Mo–Fr" + die 7 Einzel-Toggles. Ein Tages-Tipp
+                  deaktiviert "Täglich" automatisch — und umgekehrt. */}
+              {fields.days && (
+                <div className="mb-4">
+                  <label className={MICRO_LABEL}>Wochentage</label>
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    <button
+                      type="button"
+                      onClick={setDaily}
+                      aria-pressed={form.days.length === 0}
+                      className={`text-xs px-3 py-1.5 font-semibold ${CHIP} ${
+                        form.days.length === 0 ? CHIP_ON : CHIP_OFF
+                      }`}
+                    >
+                      Täglich
+                    </button>
+                    <button
+                      type="button"
+                      onClick={isWorkdays ? setDaily : setWorkdays}
+                      aria-pressed={isWorkdays}
+                      className={`text-xs px-3 py-1.5 ${CHIP} ${
+                        isWorkdays ? CHIP_ON : CHIP_OFF
+                      }`}
+                    >
+                      Mo–Fr
+                    </button>
+                    <span
+                      className="w-px h-4 bg-gray-200 mx-0.5"
+                      aria-hidden="true"
+                    />
+                    {WEEKDAYS.map((w) => {
+                      const on = form.days.includes(w.n);
+                      return (
+                        <button
+                          key={w.n}
+                          type="button"
+                          onClick={() => toggleDay(w.n)}
+                          aria-pressed={on}
+                          className={`text-xs px-2.5 py-1 ${CHIP} ${
+                            on ? CHIP_ON : CHIP_OFF
+                          }`}
+                        >
+                          {w.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* Zeitraum (optional) */}
+              {fields.range && (
+                <div className="mb-4">
+                  <label className={MICRO_LABEL}>Zeitraum (optional)</label>
+                  <div className="flex items-center gap-2 sm:max-w-sm">
+                    <input
+                      type="date"
+                      value={form.startDate}
+                      onChange={(e) =>
+                        setForm((f) => ({ ...f, startDate: e.target.value }))
+                      }
+                      aria-label="Start"
+                      className={INPUT}
+                    />
+                    <span className="text-xs text-[#515757]/40 shrink-0">
+                      bis
+                    </span>
+                    <input
+                      type="date"
+                      value={form.endDate}
+                      onChange={(e) =>
+                        setForm((f) => ({ ...f, endDate: e.target.value }))
+                      }
+                      aria-label="Ende"
+                      className={INPUT}
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* Nachfragen nach der Infusion: Preset-Chips + Freitext-Fallback,
+                  synchron über offsetsStr. */}
+              {fields.offsets && (
+                <div className="mb-4">
+                  <label className={MICRO_LABEL}>
+                    Nachfrage nach der Infusion
+                  </label>
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    {OFFSET_PRESETS.map((p) => {
+                      const on = activeOffsets.includes(p.h);
+                      return (
+                        <button
+                          key={p.h}
+                          type="button"
+                          onClick={() => toggleOffset(p.h)}
+                          aria-pressed={on}
+                          className={`text-xs px-3 py-1.5 ${CHIP} ${
+                            on ? CHIP_ON : CHIP_OFF
+                          }`}
+                        >
+                          {p.label}
+                        </button>
+                      );
+                    })}
+                    <div className="flex-1 min-w-[140px]">
+                      <input
+                        type="text"
+                        value={form.offsetsStr}
+                        onChange={(e) =>
+                          setForm((f) => ({
+                            ...f,
+                            offsetsStr: e.target.value,
+                          }))
+                        }
+                        onBlur={() =>
+                          setForm((f) => ({
+                            ...f,
+                            offsetsStr: parseOffsetsInput(f.offsetsStr).join(
+                              ", "
+                            ),
+                          }))
+                        }
+                        placeholder="Stunden, z. B. 24, 72, 168"
+                        aria-label="Nachfragen in Stunden (Freitext)"
+                        className={INPUT}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
             <label className="flex items-start gap-2 text-sm cursor-pointer mb-4">
