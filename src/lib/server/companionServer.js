@@ -28,20 +28,25 @@ import { promisify } from "node:util";
 const scryptAsync = promisify(crypto.scrypt);
 
 // ---------------------------------------------------------------------------
-// ENV-GUARD — fehlt eine der drei Variablen, soll der Server sofort und mit
-// klarer Ansage sterben statt später mit kryptischen Fehlern.
+// ENV-GUARD — LAZY: beim Modul-Laden nur lesen, NICHT werfen. Next importiert
+// die Routen-Module schon beim `next build`; ein Wurf hier lässt jeden Build
+// ohne gesetzte Env-Variablen scheitern (z. B. die Vercel-Preview, bevor die
+// Variablen im Dashboard hinterlegt sind). Deshalb: klare Ansage erst beim
+// ERSTEN echten Request (requireCompanionEnv in requireSession/Client-Zugriff).
 // ---------------------------------------------------------------------------
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
 const COMPANION_SESSION_SECRET = process.env.COMPANION_SESSION_SECRET;
 
-if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY || !COMPANION_SESSION_SECRET) {
-  throw new Error(
-    "Companion-Server: Umgebungsvariablen fehlen (SUPABASE_URL, " +
-      "SUPABASE_SERVICE_KEY, COMPANION_SESSION_SECRET). Lokal: .env.local im " +
-      "Repo-Root anlegen; auf Vercel: alle drei Variablen in Preview UND " +
-      "Production setzen. Ohne sie kann die Patienten-App nicht starten."
-  );
+export function requireCompanionEnv() {
+  if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY || !COMPANION_SESSION_SECRET) {
+    throw new Error(
+      "Companion-Server: Umgebungsvariablen fehlen (SUPABASE_URL, " +
+        "SUPABASE_SERVICE_KEY, COMPANION_SESSION_SECRET). Lokal: .env.local im " +
+        "Repo-Root anlegen; auf Vercel: alle drei Variablen in Preview UND " +
+        "Production setzen. Ohne sie kann die Patienten-App nicht starten."
+    );
+  }
 }
 
 // Mandant — gleiche Semantik wie PRACTICE_ID in src/lib/companion.js. Hier
@@ -52,10 +57,25 @@ export const PRACTICE_ID = "vivecura";
 // SERVICE-ROLE-CLIENT — umgeht RLS. Deshalb gilt die harte Invariante: JEDE
 // Query in den Companion-Routen scoped auf practice_id UND submission_id der
 // Session; Writes auf fremde ids werden vorher per Ownership-SELECT geprüft.
+// LAZY hinter einem Proxy: erzeugt erst beim ersten Zugriff (Request-Zeit),
+// damit `next build` auch ohne Env-Variablen durchläuft (siehe ENV-GUARD).
 // ---------------------------------------------------------------------------
-export const companionAdmin = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY, {
-  auth: { persistSession: false, autoRefreshToken: false },
-});
+let _companionAdmin = null;
+export const companionAdmin = new Proxy(
+  {},
+  {
+    get(_target, prop) {
+      if (!_companionAdmin) {
+        requireCompanionEnv();
+        _companionAdmin = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY, {
+          auth: { persistSession: false, autoRefreshToken: false },
+        });
+      }
+      const value = _companionAdmin[prop];
+      return typeof value === "function" ? value.bind(_companionAdmin) : value;
+    },
+  }
+);
 
 // ---------------------------------------------------------------------------
 // JSON-Fehler (deutsche Meldungen). Wird als Response GEWORFEN — die Routen
@@ -146,6 +166,8 @@ const SESSION_MAX_AGE_S = 2592000; // 30 Tage
 const SESSION_RENEW_AFTER_S = 604800; // 7 Tage — danach greift das Sliding-Renewal
 
 function hmacB64url(payloadB64url) {
+  // Env-Check zur Request-Zeit (Modul-Laden darf ohne Env durchgehen — Build).
+  requireCompanionEnv();
   return crypto
     .createHmac("sha256", COMPANION_SESSION_SECRET)
     .update(payloadB64url)
