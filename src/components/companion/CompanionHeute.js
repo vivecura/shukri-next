@@ -1,7 +1,17 @@
 "use client";
 
-// CompanionHeute — der Heute-Tab: Abhak-Liste (optimistisch mit Rollback +
-// Teal-Pop), Check-in-Karte und der 🆘-Knopf mit Bestätigungs-Bottom-Sheet.
+// CompanionHeute — der Heute-Tab als Tages-Timeline: alle heutigen Baustein-
+// Vorkommen werden nach Uhrzeit in Tagesabschnitte gruppiert (☀️ Morgens bis
+// 10:59 · 🌞 Mittags 11–14:59 · 🌤 Nachmittags 15–17:59 · 🌙 Abends ab 18:00 ·
+// 📌 Jederzeit heute ohne Uhrzeit) und an einer schlanken Zeitleiste abgehakt.
+// Ein Item mit 08:00 + 20:00 erscheint morgens UND abends — jedes Vorkommen
+// hakt seinen eigenen Slot ab (toggle-item mit due_time, Optimistic UI mit
+// Rollback + Teal-Pop wie gehabt).
+//
+// Aufklapp-Logik: der Abschnitt zur aktuellen Berlin-Uhrzeit ist offen,
+// frühere Abschnitte mit offenen Punkten ebenfalls (nichts Offenes bleibt
+// versteckt); alles andere ist eingeklappt, aber als Kopfzeile mit
+// Fortschritt + Ein-Zeilen-Zusammenfassung scanbar.
 //
 // Der 🆘-Knopf ist ruhig, aber präsent gestaltet (outlined, kein Alarm-Rot-
 // Geschrei): die App ist KEIN Notfallkanal — das Sheet und die Bestätigung
@@ -23,12 +33,93 @@ import CompanionContact from "@/components/companion/CompanionContact";
 const KIND_EMOJI = { supplement: "💊", todo: "✅", vorbereitung: "📋" };
 const slotKey = (itemId, time) => `${itemId}|${time ?? ""}`;
 
+// Tagesabschnitte der Timeline (Reihenfolge = Tagesverlauf, 📌 zuletzt).
+const SLOT_DEFS = [
+  { id: "morgens", emoji: "☀️", label: "Morgens" },
+  { id: "mittags", emoji: "🌞", label: "Mittags" },
+  { id: "nachmittags", emoji: "🌤", label: "Nachmittags" },
+  { id: "abends", emoji: "🌙", label: "Abends" },
+  { id: "jederzeit", emoji: "📌", label: "Jederzeit heute" },
+];
+const TIME_SLOT_IDS = ["morgens", "mittags", "nachmittags", "abends"];
+
+// "HH:MM" | null → Abschnitts-Id. Grenzen: <11 morgens, <15 mittags,
+// <18 nachmittags, sonst abends; ohne Uhrzeit → jederzeit.
+function slotIdForTime(time) {
+  if (!time) return "jederzeit";
+  const h = parseInt(String(time).slice(0, 2), 10);
+  if (Number.isNaN(h)) return "jederzeit";
+  if (h < 11) return "morgens";
+  if (h < 15) return "mittags";
+  if (h < 18) return "nachmittags";
+  return "abends";
+}
+
+// Aktuelle Uhrzeit in Europe/Berlin als "HH:MM" (Gerätezeit kann anders
+// ticken — Reisende, falsche Systemzeit; Fallback: lokale Zeit).
+function berlinNowHM() {
+  try {
+    const s = new Intl.DateTimeFormat("de-DE", {
+      timeZone: "Europe/Berlin",
+      hour: "2-digit",
+      minute: "2-digit",
+      hourCycle: "h23",
+    }).format(new Date());
+    const m = s.match(/(\d{1,2})\D(\d{2})/);
+    if (m) return `${m[1].padStart(2, "0")}:${m[2]}`;
+  } catch {
+    // Intl-Ausfall → Fallback unten
+  }
+  const d = new Date();
+  return `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+}
+
+// Items (mit slots[]) → gefüllte Timeline-Abschnitte. Ein Item taucht in
+// JEDEM Abschnitt auf, in dem es eine Uhrzeit hat; leere Abschnitte fliegen
+// raus. Innerhalb eines Abschnitts nach Uhrzeit sortiert (stabil → bei
+// gleicher Zeit bleibt die Server-Sortierung erhalten).
+function buildTimeline(items) {
+  const buckets = SLOT_DEFS.map((def) => ({ ...def, entries: [] }));
+  for (const item of items) {
+    for (const slot of item.slots) {
+      const bucket = buckets.find((b) => b.id === slotIdForTime(slot.time));
+      bucket.entries.push({ item, slot });
+    }
+  }
+  for (const b of buckets) {
+    b.entries.sort((a, z) =>
+      (a.slot.time || "").localeCompare(z.slot.time || "")
+    );
+  }
+  return buckets.filter((b) => b.entries.length > 0);
+}
+
+// Anfangszustand der Aufklappung: aktueller Berlin-Abschnitt offen, frühere
+// Abschnitte mit offenen Punkten offen, "Jederzeit" offen solange dort etwas
+// unerledigt ist, Rest zu.
+function initialExpanded(items) {
+  const buckets = buildTimeline(items);
+  const nowIdx = TIME_SLOT_IDS.indexOf(slotIdForTime(berlinNowHM()));
+  const expanded = {};
+  for (const b of buckets) {
+    const hasOpen = b.entries.some((e) => !e.slot.done);
+    if (b.id === "jederzeit") {
+      expanded[b.id] = hasOpen;
+    } else {
+      const idx = TIME_SLOT_IDS.indexOf(b.id);
+      expanded[b.id] = idx === nowIdx || (idx < nowIdx && hasOpen);
+    }
+  }
+  return expanded;
+}
+
 export default function CompanionHeute({ api }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [date, setDate] = useState("");
   const [items, setItems] = useState([]);
   const [checkin, setCheckin] = useState(null);
+  const [expanded, setExpanded] = useState(null); // {abschnittId: bool} | null
   const [toast, setToast] = useState("");
   const [popping, setPopping] = useState(null); // slotKey mit laufender Pop-Animation
   const [helpOpen, setHelpOpen] = useState(false);
@@ -41,6 +132,9 @@ export default function CompanionHeute({ api }) {
       setDate(data.date);
       setItems(data.items || []);
       setCheckin(data.checkin);
+      // Aufklappung nur beim ersten erfolgreichen Laden setzen — manuelles
+      // Auf-/Zuklappen des Patienten nicht überschreiben.
+      setExpanded((prev) => prev ?? initialExpanded(data.items || []));
       setLoading(false);
     } catch (err) {
       setError(err.message);
@@ -101,105 +195,91 @@ export default function CompanionHeute({ api }) {
   if (loading) return <LoadingCard />;
   if (error) return <ErrorCard text={error} onRetry={load} />;
 
+  const timeline = buildTimeline(items);
   const totalSlots = items.reduce((n, it) => n + it.slots.length, 0);
   const doneSlots = items.reduce(
     (n, it) => n + it.slots.filter((s) => s.done).length,
     0
   );
   const allDone = totalSlots > 0 && doneSlots === totalSlots;
+  const pct = totalSlots > 0 ? Math.round((doneSlots / totalSlots) * 100) : 0;
 
   return (
     <div style={{ display: "grid", gap: 14 }}>
-      {/* Kopfzeile mit Datum + Fortschritt */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "baseline",
-          padding: "0 2px",
-        }}
-      >
-        <h2 style={{ ...sectionTitle, margin: 0, fontSize: 19 }}>
-          {fmtDayLong(date)}
-        </h2>
+      {/* Kopfzeile: Datum + Fortschritt als schlanker Balken */}
+      <div style={{ padding: "0 2px", display: "grid", gap: 8 }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "baseline",
+            gap: 10,
+          }}
+        >
+          <h2 style={{ ...sectionTitle, margin: 0, fontSize: 19 }}>
+            {fmtDayLong(date)}
+          </h2>
+          {totalSlots > 0 && (
+            <span
+              style={{
+                fontSize: 13,
+                fontWeight: 700,
+                color: C.tealSoft,
+                flexShrink: 0,
+              }}
+            >
+              {doneSlots} von {totalSlots} erledigt
+            </span>
+          )}
+        </div>
         {totalSlots > 0 && (
-          <span style={{ fontSize: 13, fontWeight: 700, color: C.tealSoft }}>
-            {doneSlots} von {totalSlots} erledigt
-          </span>
+          <div
+            role="progressbar"
+            aria-valuemin={0}
+            aria-valuemax={totalSlots}
+            aria-valuenow={doneSlots}
+            style={{
+              height: 6,
+              borderRadius: 3,
+              background: C.tealPale,
+              overflow: "hidden",
+            }}
+          >
+            <div
+              style={{
+                height: "100%",
+                width: `${pct}%`,
+                background: C.teal,
+                borderRadius: 3,
+                transition: "width 0.3s ease",
+              }}
+            />
+          </div>
         )}
       </div>
 
-      {/* Abhak-Liste */}
+      {/* Tages-Timeline */}
       {items.length === 0 ? (
         <div style={{ ...cardStyle, textAlign: "center", color: C.textSoft, fontSize: 14 }}>
           Für heute steht nichts auf deiner Liste.
         </div>
       ) : (
-        <div style={{ ...cardStyle, padding: "6px 14px" }}>
-          {items.map((item, idx) => (
-            <div
-              key={item.id}
-              style={{
-                padding: "13px 0",
-                borderTop: idx === 0 ? "none" : `1px solid ${C.tealPale}`,
-              }}
-            >
-              <div style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
-                <span style={{ fontSize: 18, lineHeight: "24px" }}>
-                  {KIND_EMOJI[item.kind] || "•"}
-                </span>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div
-                    style={{
-                      display: "flex",
-                      gap: 8,
-                      alignItems: "center",
-                      flexWrap: "wrap",
-                    }}
-                  >
-                    <span
-                      style={{
-                        fontSize: 15.5,
-                        fontWeight: 700,
-                        color: C.text,
-                      }}
-                    >
-                      {item.name}
-                    </span>
-                    <EmpfehlungBadge />
-                  </div>
-                  {(item.dosis || item.instructions) && (
-                    <div style={{ fontSize: 13, color: C.textSoft, marginTop: 2, lineHeight: 1.45 }}>
-                      {[item.dosis, item.instructions].filter(Boolean).join(" · ")}
-                    </div>
-                  )}
-
-                  {/* Slots: mehrere Uhrzeiten → Chips; sonst ein Tages-Haken */}
-                  {item.slots.length > 1 || item.slots[0]?.time ? (
-                    <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 8 }}>
-                      {item.slots.map((slot) => (
-                        <SlotChip
-                          key={slotKey(item.id, slot.time)}
-                          slot={slot}
-                          popping={popping === slotKey(item.id, slot.time)}
-                          onToggle={() => toggle(item, slot)}
-                        />
-                      ))}
-                    </div>
-                  ) : null}
-                </div>
-
-                {/* Einzelner Tages-Slot ohne Uhrzeit → großer Haken rechts */}
-                {item.slots.length === 1 && !item.slots[0].time && (
-                  <CheckCircle
-                    done={item.slots[0].done}
-                    popping={popping === slotKey(item.id, null)}
-                    onToggle={() => toggle(item, item.slots[0])}
-                    label={item.name}
-                  />
-                )}
-              </div>
-            </div>
+        <div style={{ ...cardStyle, padding: "8px 14px 8px 10px" }}>
+          {timeline.map((bucket, idx) => (
+            <SlotSection
+              key={bucket.id}
+              bucket={bucket}
+              isLast={idx === timeline.length - 1}
+              expanded={!!expanded?.[bucket.id]}
+              onToggleExpand={() =>
+                setExpanded((prev) => ({
+                  ...(prev || {}),
+                  [bucket.id]: !prev?.[bucket.id],
+                }))
+              }
+              popping={popping}
+              onToggleSlot={toggle}
+            />
           ))}
         </div>
       )}
@@ -296,59 +376,257 @@ export default function CompanionHeute({ api }) {
 }
 
 // ---------------------------------------------------------------------------
-// Bausteine
+// Timeline-Bausteine
 // ---------------------------------------------------------------------------
 
-function CheckCircle({ done, popping, onToggle, label }) {
+// Ein Tagesabschnitt: Schiene links (Punkt + Linie), rechts die tappbare
+// Kopfzeile (Emoji + Name + x/y ✓ + Zusammenfassung) und — aufgeklappt —
+// die abhakbaren Zeilen.
+function SlotSection({
+  bucket,
+  isLast,
+  expanded,
+  onToggleExpand,
+  popping,
+  onToggleSlot,
+}) {
+  const done = bucket.entries.filter((e) => e.slot.done).length;
+  const total = bucket.entries.length;
+  const complete = total > 0 && done === total;
+  const summary = bucket.entries
+    .map((e) => `${KIND_EMOJI[e.item.kind] || "•"} ${e.item.name}`)
+    .join(" · ");
+
   return (
-    <button
-      type="button"
-      onClick={onToggle}
-      aria-label={done ? `${label} wieder öffnen` : `${label} abhaken`}
-      className={popping ? "companion-pop" : undefined}
-      style={{
-        width: 34,
-        height: 34,
-        borderRadius: "50%",
-        flexShrink: 0,
-        border: `2px solid ${done ? C.teal : C.line}`,
-        background: done ? C.teal : "#fff",
-        color: "#fff",
-        fontSize: 18,
-        fontWeight: 800,
-        lineHeight: 1,
-        cursor: "pointer",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        transition: "background 0.15s ease, border-color 0.15s ease",
-      }}
-    >
-      {done ? "✓" : ""}
-    </button>
+    <div style={{ display: "flex" }}>
+      {/* Zeitleisten-Schiene: Punkt auf Höhe der Kopfzeile + Verbindungslinie */}
+      <div
+        style={{
+          width: 24,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          flexShrink: 0,
+          paddingTop: 17,
+        }}
+      >
+        <span
+          aria-hidden="true"
+          style={{
+            width: 12,
+            height: 12,
+            borderRadius: "50%",
+            flexShrink: 0,
+            boxSizing: "border-box",
+            background: complete ? C.teal : "#fff",
+            border: `2px solid ${complete ? C.teal : C.line}`,
+            transition: "background 0.2s ease, border-color 0.2s ease",
+          }}
+        />
+        {!isLast && (
+          <span
+            aria-hidden="true"
+            style={{ width: 2, flex: 1, background: C.tealPale, marginTop: 3 }}
+          />
+        )}
+      </div>
+
+      <div style={{ flex: 1, minWidth: 0, padding: "4px 0 12px" }}>
+        {/* Kopfzeile — komplette Fläche klappt auf/zu */}
+        <button
+          type="button"
+          onClick={onToggleExpand}
+          aria-expanded={expanded}
+          style={{
+            display: "block",
+            width: "100%",
+            background: "none",
+            border: "none",
+            padding: "8px 0 0",
+            margin: 0,
+            textAlign: "left",
+            cursor: "pointer",
+            fontFamily: "inherit",
+            color: "inherit",
+          }}
+        >
+          <span style={{ display: "flex", alignItems: "center", gap: 7 }}>
+            <span style={{ fontSize: 16, lineHeight: 1 }}>{bucket.emoji}</span>
+            <span
+              style={{
+                fontSize: 15,
+                fontWeight: 800,
+                color: C.tealDeep,
+                whiteSpace: "nowrap",
+              }}
+            >
+              {bucket.label}
+            </span>
+            <span
+              style={{
+                marginLeft: "auto",
+                fontSize: 12.5,
+                fontWeight: 800,
+                color: complete ? C.teal : C.textSoft,
+                flexShrink: 0,
+                fontVariantNumeric: "tabular-nums",
+              }}
+            >
+              {done}/{total} ✓
+            </span>
+            <span
+              aria-hidden="true"
+              style={{
+                fontSize: 10,
+                color: C.textSoft,
+                flexShrink: 0,
+                transform: expanded ? "rotate(90deg)" : "none",
+                transition: "transform 0.15s ease",
+              }}
+            >
+              ▶
+            </span>
+          </span>
+          {!expanded && (
+            <span
+              style={{
+                display: "block",
+                marginTop: 3,
+                fontSize: 12.5,
+                color: C.textSoft,
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
+              {summary}
+            </span>
+          )}
+        </button>
+
+        {expanded && (
+          <div style={{ marginTop: 8 }}>
+            {bucket.entries.map(({ item, slot }) => (
+              <TimelineRow
+                key={slotKey(item.id, slot.time)}
+                item={item}
+                slot={slot}
+                popping={popping === slotKey(item.id, slot.time)}
+                onToggle={() => onToggleSlot(item, slot)}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
 
-function SlotChip({ slot, popping, onToggle }) {
+// Eine abhakbare Zeile: die GANZE Zeile ist der Tap-Target — großer runder
+// Haken links, Name + Dosis/Hinweis, Uhrzeit klein rechts. Erledigt →
+// durchgestrichen + ausgeblendet (Opacity), Pop-Animation beim Abhaken.
+function TimelineRow({ item, slot, popping, onToggle }) {
+  const done = slot.done;
   return (
     <button
       type="button"
       onClick={onToggle}
-      className={popping ? "companion-pop" : undefined}
+      aria-label={done ? `${item.name} wieder öffnen` : `${item.name} abhaken`}
       style={{
-        border: `1.5px solid ${slot.done ? C.teal : C.line}`,
-        background: slot.done ? C.teal : "#fff",
-        color: slot.done ? "#fff" : C.text,
-        borderRadius: 999,
-        padding: "7px 13px",
-        fontSize: 14,
-        fontWeight: 700,
+        display: "flex",
+        width: "100%",
+        alignItems: "center",
+        gap: 11,
+        background: "none",
+        border: "none",
+        borderTop: `1px solid ${C.tealPale}`,
+        padding: "11px 0",
+        margin: 0,
+        textAlign: "left",
         cursor: "pointer",
-        transition: "background 0.15s ease, border-color 0.15s ease",
+        fontFamily: "inherit",
+        color: "inherit",
+        WebkitTapHighlightColor: "transparent",
       }}
     >
-      {slot.done ? "✓ " : ""}
-      {slot.time ? `${slot.time} Uhr` : "Erledigt"}
+      <span
+        aria-hidden="true"
+        className={popping ? "companion-pop" : undefined}
+        style={{
+          width: 30,
+          height: 30,
+          borderRadius: "50%",
+          flexShrink: 0,
+          boxSizing: "border-box",
+          border: `2px solid ${done ? C.teal : C.line}`,
+          background: done ? C.teal : "#fff",
+          color: "#fff",
+          fontSize: 16,
+          fontWeight: 800,
+          lineHeight: 1,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          transition: "background 0.15s ease, border-color 0.15s ease",
+        }}
+      >
+        {done ? "✓" : ""}
+      </span>
+
+      <span
+        style={{
+          flex: 1,
+          minWidth: 0,
+          opacity: done ? 0.5 : 1,
+          transition: "opacity 0.2s ease",
+        }}
+      >
+        <span
+          style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}
+        >
+          <span style={{ fontSize: 14, lineHeight: 1 }}>
+            {KIND_EMOJI[item.kind] || "•"}
+          </span>
+          <span
+            style={{
+              fontSize: 15,
+              fontWeight: 700,
+              color: C.text,
+              textDecoration: done ? "line-through" : "none",
+            }}
+          >
+            {item.name}
+          </span>
+          <EmpfehlungBadge small />
+        </span>
+        {(item.dosis || item.instructions) && (
+          <span
+            style={{
+              display: "block",
+              fontSize: 12.5,
+              color: C.textSoft,
+              marginTop: 2,
+              lineHeight: 1.4,
+            }}
+          >
+            {[item.dosis, item.instructions].filter(Boolean).join(" · ")}
+          </span>
+        )}
+      </span>
+
+      {slot.time && (
+        <span
+          style={{
+            fontSize: 12,
+            fontWeight: 700,
+            color: C.textSoft,
+            flexShrink: 0,
+            fontVariantNumeric: "tabular-nums",
+          }}
+        >
+          {slot.time}
+        </span>
+      )}
     </button>
   );
 }

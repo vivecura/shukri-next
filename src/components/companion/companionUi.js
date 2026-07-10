@@ -78,17 +78,20 @@ export const sectionTitle = {
 
 // Das Pflicht-Label an jedem Baustein: die App erinnert nur an das, was
 // Shukri verordnet hat — sie empfiehlt selbst NIE etwas (kein Medizinprodukt).
-export function EmpfehlungBadge() {
+// small=true → leisere Variante für dichte Listen (Heute-Timeline): kleiner,
+// nur zarter Rahmen statt Pillen-Hintergrund — Label bleibt trotzdem PFLICHT.
+export function EmpfehlungBadge({ small = false }) {
   return (
     <span
       style={{
         display: "inline-block",
-        background: C.tealPale,
-        color: C.tealDeep,
+        background: small ? "transparent" : C.tealPale,
+        color: small ? C.tealSoft : C.tealDeep,
+        border: small ? `1px solid ${C.tealPale}` : "none",
         borderRadius: 999,
-        padding: "2px 9px",
-        fontSize: 11,
-        fontWeight: 700,
+        padding: small ? "1px 7px" : "2px 9px",
+        fontSize: small ? 10 : 11,
+        fontWeight: small ? 600 : 700,
         whiteSpace: "nowrap",
       }}
     >

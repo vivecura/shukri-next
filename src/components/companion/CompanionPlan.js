@@ -8,7 +8,7 @@
 // Baustein trägt das Badge "Empfehlung von Shukri" (die App empfiehlt nie
 // selbst etwas).
 
-import { useCallback, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
 import {
   C,
   cardStyle,
@@ -48,6 +48,9 @@ export default function CompanionPlan({ api }) {
   if (loading) return <LoadingCard />;
   if (error) return <ErrorCard text={error} onRetry={load} />;
 
+  const supplements =
+    groups.find((g) => g.kind === "supplement")?.items || [];
+
   return (
     <div style={{ display: "grid", gap: 14 }}>
       <div style={{ padding: "0 2px" }}>
@@ -59,6 +62,10 @@ export default function CompanionPlan({ api }) {
           du direkt mit Shukri.
         </p>
       </div>
+
+      {supplements.length > 0 && (
+        <SupplementDayOverview items={supplements} />
+      )}
 
       {groups.length === 0 ? (
         <div style={{ ...cardStyle, textAlign: "center", color: C.textSoft, fontSize: 14 }}>
@@ -118,6 +125,194 @@ export default function CompanionPlan({ api }) {
 
       {/* Kontakt zur Praxis — immer sichtbar am Ende des Plan-Tabs */}
       <CompanionContact />
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Kompakter Supplement-Tagesüberblick oben im Plan: eine Zeile je aktivem
+// Supplement, drei Tageszeit-Spalten (☀️ bis 10:59 · 🌞🌤 11:00–17:59 ·
+// 🌙 ab 18:00) mit der exakten Uhrzeit als Teal-Chip. Ohne Uhrzeit → "Nach
+// Bedarf" darunter. Reine Anzeige — abgehakt wird im Heute-Tab.
+// ---------------------------------------------------------------------------
+
+const OVERVIEW_COLS = [
+  { id: "morgens", emoji: "☀️", label: "Morgens" },
+  { id: "tagsueber", emoji: "🌞🌤", label: "Mittags/Nachmittags" },
+  { id: "abends", emoji: "🌙", label: "Abends" },
+];
+
+// "HH:MM" → Spalten-Id (<11 morgens, <18 tagsüber, sonst abends).
+function overviewColForTime(time) {
+  const h = parseInt(String(time).slice(0, 2), 10);
+  if (Number.isNaN(h) || h < 11) return "morgens";
+  if (h < 18) return "tagsueber";
+  return "abends";
+}
+
+function SupplementDayOverview({ items }) {
+  const timed = items.filter((it) => (it.times || []).length > 0);
+  const untimed = items.filter((it) => (it.times || []).length === 0);
+  const cellBorder = `1px solid ${C.tealPale}`;
+
+  return (
+    <div style={cardStyle}>
+      <h3 style={{ ...sectionTitle, fontSize: 15 }}>
+        💊 Deine Supplemente im Tagesüberblick
+      </h3>
+
+      {timed.length > 0 && (
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "minmax(0, 1fr) 54px 54px 54px",
+            alignItems: "stretch",
+          }}
+        >
+          {/* Kopfzeile: Tageszeit-Emojis */}
+          <span />
+          {OVERVIEW_COLS.map((col) => (
+            <span
+              key={col.id}
+              title={col.label}
+              aria-label={col.label}
+              style={{
+                textAlign: "center",
+                fontSize: 14,
+                paddingBottom: 6,
+                whiteSpace: "nowrap",
+              }}
+            >
+              {col.emoji}
+            </span>
+          ))}
+
+          {timed.map((item) => (
+            <Fragment key={item.id}>
+              <span
+                style={{
+                  borderTop: cellBorder,
+                  padding: "8px 6px 8px 0",
+                  minWidth: 0,
+                }}
+              >
+                <span
+                  style={{
+                    display: "block",
+                    fontSize: 13.5,
+                    fontWeight: 700,
+                    color: C.text,
+                    lineHeight: 1.35,
+                  }}
+                >
+                  {item.name}
+                </span>
+                {item.dosis && (
+                  <span
+                    style={{
+                      display: "block",
+                      fontSize: 11.5,
+                      fontWeight: 600,
+                      color: C.textSoft,
+                      marginTop: 1,
+                    }}
+                  >
+                    {item.dosis}
+                  </span>
+                )}
+                {(item.days_of_week || []).length > 0 && (
+                  <span
+                    style={{
+                      display: "block",
+                      fontSize: 11,
+                      fontWeight: 600,
+                      color: C.tealSoft,
+                      marginTop: 1,
+                    }}
+                  >
+                    nur {fmtWeekdays(item.days_of_week)}
+                  </span>
+                )}
+              </span>
+              {OVERVIEW_COLS.map((col) => {
+                const times = (item.times || []).filter(
+                  (t) => overviewColForTime(t) === col.id
+                );
+                return (
+                  <span
+                    key={col.id}
+                    style={{
+                      borderTop: cellBorder,
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: 3,
+                      padding: "8px 2px",
+                    }}
+                  >
+                    {times.length > 0 ? (
+                      times.map((t) => (
+                        <span
+                          key={t}
+                          style={{
+                            fontSize: 11.5,
+                            fontWeight: 800,
+                            color: C.tealDeep,
+                            background: C.tealPale,
+                            borderRadius: 999,
+                            padding: "2px 7px",
+                            fontVariantNumeric: "tabular-nums",
+                            whiteSpace: "nowrap",
+                          }}
+                        >
+                          {t}
+                        </span>
+                      ))
+                    ) : (
+                      <span
+                        aria-hidden="true"
+                        style={{ fontSize: 12, color: C.line, fontWeight: 700 }}
+                      >
+                        –
+                      </span>
+                    )}
+                  </span>
+                );
+              })}
+            </Fragment>
+          ))}
+        </div>
+      )}
+
+      {untimed.length > 0 && (
+        <div
+          style={{
+            fontSize: 12.5,
+            color: C.textSoft,
+            lineHeight: 1.55,
+            marginTop: timed.length > 0 ? 10 : 0,
+            paddingTop: timed.length > 0 ? 8 : 0,
+            borderTop: timed.length > 0 ? cellBorder : "none",
+          }}
+        >
+          <strong style={{ color: C.tealSoft }}>Nach Bedarf:</strong>{" "}
+          {untimed
+            .map((it) => (it.dosis ? `${it.name} (${it.dosis})` : it.name))
+            .join(" · ")}
+        </div>
+      )}
+
+      <div
+        style={{
+          fontSize: 11.5,
+          color: C.textSoft,
+          marginTop: 10,
+          lineHeight: 1.4,
+        }}
+      >
+        Abhaken kannst du alles im Tab ☀️ Heute.
+      </div>
     </div>
   );
 }
