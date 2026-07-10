@@ -9,6 +9,11 @@
 // statt aus @/lib/companion importiert — jene Datei zieht den Admin-Supabase-
 // Client mit, der in Patienten-Client-Komponenten nichts verloren hat.
 
+// Kanonische Tageszeit-Slots — EINE Quelle für Admin-Editor UND Patienten-App.
+// Definiert in @/lib/daySlots (pur, clientsicher), hier re-exportiert, damit
+// die Patienten-Komponenten bei ihrem einen Import-Pfad bleiben.
+export { DAY_SLOTS, CANONICAL_SLOTS, slotForTime } from "@/lib/daySlots";
+
 export const C = {
   teal: "#43A9AB",
   tealSoft: "#389193",

@@ -2,8 +2,11 @@
 
 // CompanionHeute — der Heute-Tab als Tages-Timeline: alle heutigen Baustein-
 // Vorkommen werden nach Uhrzeit in Tagesabschnitte gruppiert (☀️ Morgens bis
-// 10:59 · 🌞 Mittags 11–14:59 · 🌤 Nachmittags 15–17:59 · 🌙 Abends ab 18:00 ·
-// 📌 Jederzeit heute ohne Uhrzeit) und an einer schlanken Zeitleiste abgehakt.
+// 10:59 · 🌞 Mittags 11–14:59 · 🌤 Nachmittags 15–16:59 · 🌙 Abends 17–20:59 ·
+// 🛌 Vor dem Schlafen ab 21:00 · 📌 Jederzeit heute ohne Uhrzeit) und an einer
+// schlanken Zeitleiste abgehakt. Die Abschnitte und ihre Grenzen kommen aus
+// den kanonischen Tageszeit-Slots (@/lib/daySlots via companionUi) — dieselbe
+// Quelle, aus der der Admin-Editor seine Slot-Chips (1-0-1-Schema) speist.
 // Ein Item mit 08:00 + 20:00 erscheint morgens UND abends — jedes Vorkommen
 // hakt seinen eigenen Slot ab (toggle-item mit due_time, Optimistic UI mit
 // Rollback + Teal-Pop wie gehabt).
@@ -26,6 +29,8 @@ import {
   sectionTitle,
   EmpfehlungBadge,
   fmtDayLong,
+  DAY_SLOTS,
+  slotForTime,
 } from "@/components/companion/companionUi";
 import CompanionCheckin from "@/components/companion/CompanionCheckin";
 import CompanionContact from "@/components/companion/CompanionContact";
@@ -33,26 +38,21 @@ import CompanionContact from "@/components/companion/CompanionContact";
 const KIND_EMOJI = { supplement: "💊", todo: "✅", vorbereitung: "📋" };
 const slotKey = (itemId, time) => `${itemId}|${time ?? ""}`;
 
-// Tagesabschnitte der Timeline (Reihenfolge = Tagesverlauf, 📌 zuletzt).
+// Tagesabschnitte der Timeline (Reihenfolge = Tagesverlauf, 📌 zuletzt):
+// die kanonischen Tageszeit-Slots mit ihrem Patienten-Label ("Vor dem
+// Schlafen" statt ärztlichem "Zur Nacht") + der Jederzeit-Sammler. Leere
+// Abschnitte fliegen in buildTimeline raus (🌤 Nachmittags erscheint also
+// nur, wenn dort wirklich etwas liegt).
 const SLOT_DEFS = [
-  { id: "morgens", emoji: "☀️", label: "Morgens" },
-  { id: "mittags", emoji: "🌞", label: "Mittags" },
-  { id: "nachmittags", emoji: "🌤", label: "Nachmittags" },
-  { id: "abends", emoji: "🌙", label: "Abends" },
+  ...DAY_SLOTS.map((s) => ({ id: s.key, emoji: s.emoji, label: s.patientLabel })),
   { id: "jederzeit", emoji: "📌", label: "Jederzeit heute" },
 ];
-const TIME_SLOT_IDS = ["morgens", "mittags", "nachmittags", "abends"];
+const TIME_SLOT_IDS = DAY_SLOTS.map((s) => s.key);
 
-// "HH:MM" | null → Abschnitts-Id. Grenzen: <11 morgens, <15 mittags,
-// <18 nachmittags, sonst abends; ohne Uhrzeit → jederzeit.
+// "HH:MM" | null → Abschnitts-Id über die geteilten Slot-Grenzen
+// (@/lib/daySlots); ohne/mit unlesbarer Uhrzeit → jederzeit.
 function slotIdForTime(time) {
-  if (!time) return "jederzeit";
-  const h = parseInt(String(time).slice(0, 2), 10);
-  if (Number.isNaN(h)) return "jederzeit";
-  if (h < 11) return "morgens";
-  if (h < 15) return "mittags";
-  if (h < 18) return "nachmittags";
-  return "abends";
+  return slotForTime(time)?.key || "jederzeit";
 }
 
 // Aktuelle Uhrzeit in Europe/Berlin als "HH:MM" (Gerätezeit kann anders

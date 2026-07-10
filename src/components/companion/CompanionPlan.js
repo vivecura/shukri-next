@@ -18,6 +18,8 @@ import {
   fmtDate,
   fmtTimes,
   fmtWeekdays,
+  CANONICAL_SLOTS,
+  slotForTime,
 } from "@/components/companion/companionUi";
 import { LoadingCard, ErrorCard } from "@/components/companion/CompanionHeute";
 import CompanionContact from "@/components/companion/CompanionContact";
@@ -131,23 +133,26 @@ export default function CompanionPlan({ api }) {
 
 // ---------------------------------------------------------------------------
 // Kompakter Supplement-Tagesüberblick oben im Plan: eine Zeile je aktivem
-// Supplement, drei Tageszeit-Spalten (☀️ bis 10:59 · 🌞🌤 11:00–17:59 ·
-// 🌙 ab 18:00) mit der exakten Uhrzeit als Teal-Chip. Ohne Uhrzeit → "Nach
-// Bedarf" darunter. Reine Anzeige — abgehakt wird im Heute-Tab.
+// Supplement, vier Tageszeit-Spalten aus den kanonischen Slots (☀️ Morgens ·
+// 🌞 Mittags · 🌙 Abends · 🛌 Zur Nacht) mit der exakten Uhrzeit als
+// Teal-Chip; Nachmittags-Uhrzeiten (15–16:59) falten in die 🌞-Spalte. Ohne
+// Uhrzeit → "Nach Bedarf" darunter. Reine Anzeige — abgehakt wird im
+// Heute-Tab. Slot-Grenzen: @/lib/daySlots (dieselbe Quelle wie der
+// Admin-Editor und die Heute-Timeline).
 // ---------------------------------------------------------------------------
 
-const OVERVIEW_COLS = [
-  { id: "morgens", emoji: "☀️", label: "Morgens" },
-  { id: "tagsueber", emoji: "🌞🌤", label: "Mittags/Nachmittags" },
-  { id: "abends", emoji: "🌙", label: "Abends" },
-];
+const OVERVIEW_COLS = CANONICAL_SLOTS.map((s) => ({
+  id: s.key,
+  emoji: s.emoji,
+  label: s.key === "mittags" ? "Mittags/Nachmittags" : s.label,
+}));
 
-// "HH:MM" → Spalten-Id (<11 morgens, <18 tagsüber, sonst abends).
+// "HH:MM" → Spalten-Id über die geteilten Slot-Grenzen; nachmittags (kein
+// eigener Spalten-Slot) faltet in die 🌞-Spalte, Unlesbares defensiv links.
 function overviewColForTime(time) {
-  const h = parseInt(String(time).slice(0, 2), 10);
-  if (Number.isNaN(h) || h < 11) return "morgens";
-  if (h < 18) return "tagsueber";
-  return "abends";
+  const slot = slotForTime(time);
+  if (!slot) return "morgens";
+  return slot.time ? slot.key : "mittags";
 }
 
 function SupplementDayOverview({ items }) {
@@ -165,7 +170,9 @@ function SupplementDayOverview({ items }) {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "minmax(0, 1fr) 54px 54px 54px",
+            // 4 schmale Slot-Spalten (~44px), damit die Namensspalte auf dem
+            // Handy lesbar bleibt.
+            gridTemplateColumns: "minmax(0, 1fr) 44px 44px 44px 44px",
             alignItems: "stretch",
           }}
         >
@@ -261,7 +268,7 @@ function SupplementDayOverview({ items }) {
                             color: C.tealDeep,
                             background: C.tealPale,
                             borderRadius: 999,
-                            padding: "2px 7px",
+                            padding: "2px 5px", // schmal genug für die 44px-Spalte
                             fontVariantNumeric: "tabular-nums",
                             whiteSpace: "nowrap",
                           }}

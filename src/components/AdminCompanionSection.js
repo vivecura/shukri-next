@@ -54,6 +54,13 @@ import {
   acceptImport,
   rejectImport,
 } from "@/lib/companion";
+import {
+  CANONICAL_SLOTS,
+  timesToSchema,
+  parseSchema,
+  applySchemaToTimes,
+  fmtTimesAsSlots,
+} from "@/lib/daySlots";
 
 // ---- Haus-Tokens als geteilte Klassen-Strings (ein Ort, ein Look) ----------
 const CARD = "rounded-xl border border-gray-200 p-4";
@@ -77,13 +84,13 @@ const CHIP_ON = "bg-[#43a9ab] text-white border-[#43a9ab]";
 const CHIP_OFF =
   "bg-white text-[#515757]/60 border-gray-200 hover:border-[#43a9ab]/40";
 
-// Uhrzeiten-Presets: ein Tipp toggelt die Zeit in der Liste; das Freitext-Feld
-// bleibt die zweite, gleichwertige Eingabe (beide synchron über timesStr).
-const TIME_PRESETS = [
-  { t: "08:00", label: "☀️ Morgens 08:00" },
-  { t: "12:00", label: "🌞 Mittags 12:00" },
-  { t: "20:00", label: "🌙 Abends 20:00" },
-];
+// Uhrzeiten: die vier kanonischen Tageszeit-Slots aus @/lib/daySlots (☀️🌞🌙🛌)
+// sind die Chips — ein Tipp toggelt die kanonische Uhrzeit des Slots in der
+// Liste. Dazu das kompakte Schema-Feld (klassische Notation "1-0-1") und das
+// Freitext-Feld für freie Uhrzeiten; alle drei synchron über timesStr.
+// Kompaktes Schema-Feld: wie INPUT, nur mit fester Breite statt w-full.
+const SCHEMA_INPUT =
+  "w-44 flex-none px-3 py-2 text-sm border border-gray-200 rounded-lg text-[#515757] focus:outline-none focus:border-[#43a9ab]";
 
 // Nachfrage-Presets der Infusions-Nachsorge (Stunden nach der Infusion).
 const OFFSET_PRESETS = [
@@ -168,6 +175,12 @@ export default function AdminCompanionSection({
   // true, solange die Uhrzeiten nur ein Smart Default sind (nie von Hand
   // angefasst) — nur dann darf ein Art-Wechsel sie überschreiben/leeren.
   const autoTimesRef = useRef(true);
+  // Schema-Feld (klassische Notation "1-0-1"): Anzeige ist normal AUS timesStr
+  // abgeleitet (Chips → Schema); nur während des Tippens hält schemaDraft den
+  // rohen Text, damit unfertige Eingaben ("1-0") nicht weggerissen werden.
+  // null = abgeleitet anzeigen. Jede andere Uhrzeiten-Quelle (Chip, Freitext,
+  // Art-Wechsel, Bearbeiten, Reset) setzt den Draft zurück.
+  const [schemaDraft, setSchemaDraft] = useState(null);
 
   // Alles parallel laden; das Anamnese-Häkchen nur, wenn das Panel es nicht
   // schon mitgibt (consentFromAnamnese boolean|null).
@@ -211,6 +224,7 @@ export default function AdminCompanionSection({
       setLoading(true);
       setErr("");
       setForm(emptyForm());
+      setSchemaDraft(null);
       setConfirmItemId(null);
       setConfirmImportId(null);
       setConfirmPinReset(false);
@@ -334,6 +348,7 @@ export default function AdminCompanionSection({
 
   const resetForm = () => {
     autoTimesRef.current = true; // frisches Formular = frische Smart Defaults
+    setSchemaDraft(null);
     setForm(emptyForm());
   };
 
@@ -352,10 +367,12 @@ export default function AdminCompanionSection({
   const setDaily = () => setForm((f) => ({ ...f, days: [] }));
   const setWorkdays = () => setForm((f) => ({ ...f, days: [...WORKDAYS] }));
 
-  // Uhrzeit-Preset toggeln — Chips und Freitext teilen sich timesStr als
-  // einzige Wahrheit; ein Chip-Tipp ist damit automatisch im Feld sichtbar.
+  // Slot-Chip toggeln (kanonische Uhrzeit rein/raus) — Chips, Schema und
+  // Freitext teilen sich timesStr als einzige Wahrheit; ein Chip-Tipp ist
+  // damit automatisch in Feld UND Schema sichtbar.
   const toggleTime = (t) => {
     autoTimesRef.current = false;
+    setSchemaDraft(null);
     setForm((f) => {
       const times = parseTimesInput(f.timesStr);
       const next = times.includes(t)
@@ -363,6 +380,24 @@ export default function AdminCompanionSection({
         : [...times, t].sort();
       return { ...f, timesStr: next.join(", ") };
     });
+  };
+
+  // Schema-Eingabe (klassische Notation): live parsen — sobald "1-0-1" bzw.
+  // "1-0-1-1" lesbar ist, werden die kanonischen Slot-Uhrzeiten in timesStr
+  // gesetzt/entfernt (freie Uhrzeiten bleiben stehen). Unfertiges bleibt als
+  // Draft im Feld; onBlur normalisiert auf die abgeleitete Anzeige.
+  const onSchemaChange = (raw) => {
+    setSchemaDraft(raw);
+    const parsed = parseSchema(raw);
+    if (parsed) {
+      autoTimesRef.current = false;
+      setForm((f) => ({
+        ...f,
+        timesStr: applySchemaToTimes(parseTimesInput(f.timesStr), parsed.on).join(
+          ", "
+        ),
+      }));
+    }
   };
 
   // Nachfrage-Preset toggeln (gleiches Prinzip wie toggleTime, über offsetsStr).
@@ -379,7 +414,8 @@ export default function AdminCompanionSection({
   // stehen; nur leere/automatische Felder bekommen die Smart Defaults der
   // neuen Art (Supplement → 08:00, To-do → täglich ohne Uhrzeit,
   // Infusions-Nachsorge → Termin jetzt + alle drei Nachfragen).
-  const switchKind = (kind) =>
+  const switchKind = (kind) => {
+    setSchemaDraft(null);
     setForm((f) => {
       if (f.kind === kind) return f;
       const next = { ...f, kind };
@@ -400,11 +436,13 @@ export default function AdminCompanionSection({
       }
       return next;
     });
+  };
 
   // "Bearbeiten" lädt die Zeile ins Formular (auch Claudes Bausteine — der
   // Update-Pfad der Datenschicht lässt source unangetastet).
   const editItem = (it) => {
     setConfirmItemId(null);
+    setSchemaDraft(null);
     autoTimesRef.current = false; // Bestandswerte sind nie "nur Default"
     setForm({
       id: it.id,
@@ -545,6 +583,13 @@ export default function AdminCompanionSection({
   // teilen sich timesStr/offsetsStr, aktiv ist, was geparst drinsteht.
   const activeTimes = parseTimesInput(form.timesStr);
   const activeOffsets = parseOffsetsInput(form.offsetsStr);
+  // Freie Uhrzeiten (kein kanonischer Slot) erscheinen als eigene Extra-Chips;
+  // das Schema-Feld zeigt den Tipp-Draft, sonst die abgeleitete Notation.
+  const customTimes = activeTimes.filter(
+    (t) => !CANONICAL_SLOTS.some((s) => s.time === t)
+  );
+  const schemaValue = schemaDraft ?? timesToSchema(activeTimes);
+  const schemaAmountHint = !!parseSchema(schemaValue)?.hasAmount;
   const isWorkdays =
     form.days.length === WORKDAYS.length &&
     WORKDAYS.every((n) => form.days.includes(n));
@@ -844,8 +889,10 @@ export default function AdminCompanionSection({
                 )}
               </div>
 
-              {/* Uhrzeiten: Preset-Chips + Freitext, beide synchron über
-                  timesStr (ein Chip-Tipp erscheint sofort im Feld). */}
+              {/* Uhrzeiten: die vier Tageszeit-Slot-Chips (kanonische Uhrzeit
+                  rein/raus) + freie Uhrzeiten als Extra-Chips, darunter das
+                  kompakte Schema-Feld (1-0-1) und der Freitext — alles
+                  synchron über timesStr (ein Tipp erscheint sofort überall). */}
               {fields.times && (
                 <div className="mb-4">
                   <label className={MICRO_LABEL}>
@@ -854,28 +901,53 @@ export default function AdminCompanionSection({
                       : "Erinnerungs-Uhrzeiten"}
                   </label>
                   <div className="flex flex-wrap items-center gap-1.5">
-                    {TIME_PRESETS.map((p) => {
-                      const on = activeTimes.includes(p.t);
+                    {CANONICAL_SLOTS.map((s) => {
+                      const on = activeTimes.includes(s.time);
                       return (
                         <button
-                          key={p.t}
+                          key={s.key}
                           type="button"
-                          onClick={() => toggleTime(p.t)}
+                          onClick={() => toggleTime(s.time)}
                           aria-pressed={on}
+                          title={`${s.time} Uhr`}
                           className={`text-xs px-3 py-1.5 ${CHIP} ${
                             on ? CHIP_ON : CHIP_OFF
                           }`}
                         >
-                          {p.label}
+                          {s.emoji} {s.label}
                         </button>
                       );
                     })}
+                    {customTimes.map((t) => (
+                      <button
+                        key={t}
+                        type="button"
+                        onClick={() => toggleTime(t)}
+                        aria-pressed={true}
+                        title="Eigene Uhrzeit — Tipp entfernt sie"
+                        className={`text-xs px-3 py-1.5 ${CHIP} ${CHIP_ON}`}
+                      >
+                        🕐 {t}
+                      </button>
+                    ))}
+                  </div>
+                  <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
+                    <input
+                      type="text"
+                      value={schemaValue}
+                      onChange={(e) => onSchemaChange(e.target.value)}
+                      onBlur={() => setSchemaDraft(null)}
+                      placeholder="z. B. 1-0-1 oder 1-0-1-1"
+                      aria-label="Schema (klassische Notation)"
+                      className={SCHEMA_INPUT}
+                    />
                     <div className="flex-1 min-w-[140px]">
                       <input
                         type="text"
                         value={form.timesStr}
                         onChange={(e) => {
                           autoTimesRef.current = false;
+                          setSchemaDraft(null);
                           setForm((f) => ({ ...f, timesStr: e.target.value }));
                         }}
                         onBlur={() =>
@@ -890,6 +962,11 @@ export default function AdminCompanionSection({
                       />
                     </div>
                   </div>
+                  {schemaAmountHint && (
+                    <p className="mt-1 text-xs text-[#515757]/50">
+                      Menge (z. B. 2 Kapseln) gehört in die Dosis.
+                    </p>
+                  )}
                 </div>
               )}
 
@@ -1256,7 +1333,9 @@ function PlanItemRow({
   const inactive = it.active === false;
 
   const meta = [];
-  if (Array.isArray(it.times) && it.times.length) meta.push(fmtTimes(it.times));
+  // Uhrzeiten als Slot-Worte ("morgens · abends"); freie Zeiten bleiben roh.
+  if (Array.isArray(it.times) && it.times.length)
+    meta.push(fmtTimesAsSlots(it.times));
   if (
     (Array.isArray(it.times) && it.times.length) ||
     (Array.isArray(it.days_of_week) && it.days_of_week.length)
