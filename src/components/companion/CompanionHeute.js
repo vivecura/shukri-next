@@ -34,6 +34,7 @@ import {
 } from "@/components/companion/companionUi";
 import CompanionCheckin from "@/components/companion/CompanionCheckin";
 import CompanionContact from "@/components/companion/CompanionContact";
+import CompanionPush from "@/components/companion/CompanionPush";
 
 const KIND_EMOJI = { supplement: "💊", todo: "✅", vorbereitung: "📋" };
 const slotKey = (itemId, time) => `${itemId}|${time ?? ""}`;
@@ -120,6 +121,7 @@ export default function CompanionHeute({ api }) {
   const [items, setItems] = useState([]);
   const [checkin, setCheckin] = useState(null);
   const [symptoms, setSymptoms] = useState([]);
+  const [hasReminderItems, setHasReminderItems] = useState(false);
   const [expanded, setExpanded] = useState(null); // {abschnittId: bool} | null
   const [toast, setToast] = useState("");
   const [popping, setPopping] = useState(null); // slotKey mit laufender Pop-Animation
@@ -134,6 +136,7 @@ export default function CompanionHeute({ api }) {
       setItems(data.items || []);
       setCheckin(data.checkin);
       setSymptoms(data.symptoms || []);
+      setHasReminderItems(!!data.hasReminderItems);
       // Aufklappung nur beim ersten erfolgreichen Laden setzen — manuelles
       // Auf-/Zuklappen des Patienten nicht überschreiben.
       setExpanded((prev) => prev ?? initialExpanded(data.items || []));
@@ -299,6 +302,10 @@ export default function CompanionHeute({ api }) {
           Alles erledigt für heute — stark! 🎉
         </div>
       )}
+
+      {/* Erinnerungs-Karte (Web-Push) — erscheint nur, wenn es laut /today
+          etwas zu erinnern gibt (hasReminderItems) und Push möglich ist. */}
+      <CompanionPush api={api} hasReminderItems={hasReminderItems} />
 
       {/* Check-in-Karte */}
       <div style={cardStyle}>

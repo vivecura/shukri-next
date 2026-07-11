@@ -465,6 +465,15 @@ export default function AdminCompanionSection({
   const fields = KIND_FIELDS[form.kind] || KIND_FIELDS.supplement;
 
   const saveItem = async () => {
+    // Pflichtfeld-Gate: vorbereitung/infusion_followup (fields.event) ohne
+    // Termin-Datum würden gespeichert, aber vom Erinnerungs-Sweep still NIE
+    // erinnert (Regel B/C brauchen event_date) — deshalb hart blocken.
+    if (fields.event && !datetimeLocalToIso(form.eventLocal)) {
+      setErr(
+        "Bitte Termin-Datum angeben — ohne Datum kann die App nicht erinnern."
+      );
+      return;
+    }
     setItemSaving(true);
     setItemSaved(false);
     setErr("");

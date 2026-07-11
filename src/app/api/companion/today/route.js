@@ -9,6 +9,8 @@
 // Dazu der heutige Tages-Check-in ('tag') oder null sowie die AKTIVEN
 // individuellen Symptome [{id, name}] des Patienten — das Check-in-Formular
 // baut daraus seine 0-10-Symptom-Regler und füllt sie aus symptom_scores vor.
+// Zusätzlich hasReminderItems (bool): hat der Patient erinnerbare Items
+// (Sweep-Semantik) — gated die Erinnerungs-Karte (CompanionPush, Stufe 3).
 //
 // Diese Tabellen enthalten per Schema keine Diagnose-Felder — die Antwort ist
 // inhärent label-sicher (§9).
@@ -25,6 +27,12 @@ import {
 } from "@/lib/server/companionServer";
 
 const TODAY_KINDS = ["supplement", "todo", "vorbereitung"];
+
+// Erinnerbare Arten — MUSS mit REMINDER_KINDS in companionReminders.js
+// übereinstimmen (bewusst nicht importiert: das Modul zieht web-push mit).
+// Bewusst NICHT TODAY_KINDS: infusion_followup erinnert (Regel C im Sweep),
+// erscheint aber nicht in der Heute-Liste.
+const REMINDER_KINDS = ["supplement", "todo", "vorbereitung", "infusion_followup"];
 
 export async function GET(req) {
   try {
@@ -118,6 +126,27 @@ export async function GET(req) {
       return jsonError(500, "Da ist etwas schiefgelaufen. Bitte versuche es später erneut.");
     }
 
+    // Gibt es für diesen Patienten überhaupt erinnerbare Items? Steuert die
+    // Sichtbarkeit der Erinnerungs-Karte (CompanionPush) — Semantik wie die
+    // Sweep-Worklist in companionReminders.js: active + reminder_enabled +
+    // REMINDER_KINDS (inkl. infusion_followup, NICHT in TODAY_KINDS!).
+    // Datumsfenster wie oben: Items mit abgelaufenem end_date erinnern nie
+    // wieder → zählen nicht (start/end_date sind bei infusion_followup NULL
+    // und passieren die OR-Filter). Leichte HEAD-Count-Query, keine Zeilen.
+    const { count: reminderCount, error: remErr } = await companionAdmin
+      .from("companion_plan_items")
+      .select("id", { count: "exact", head: true })
+      .eq("practice_id", PRACTICE_ID)
+      .eq("submission_id", submissionId)
+      .eq("active", true)
+      .eq("reminder_enabled", true)
+      .in("kind", REMINDER_KINDS)
+      .or(`start_date.is.null,start_date.lte.${date}`)
+      .or(`end_date.is.null,end_date.gte.${date}`);
+    if (remErr) {
+      return jsonError(500, "Da ist etwas schiefgelaufen. Bitte versuche es später erneut.");
+    }
+
     return Response.json(
       {
         ok: true,
@@ -125,6 +154,7 @@ export async function GET(req) {
         items: result,
         checkin: checkin || null,
         symptoms: symptoms || [],
+        hasReminderItems: (reminderCount || 0) > 0,
       },
       { headers: sessionHeaders(session) }
     );
