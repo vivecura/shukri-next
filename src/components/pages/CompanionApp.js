@@ -31,6 +31,7 @@ import {
   sectionTitle,
   Disclaimer,
   fmtDate,
+  CHECKIN_SCALES,
 } from "@/components/companion/companionUi";
 
 const FALLBACK_ERROR =
@@ -297,6 +298,7 @@ function TagebuchTab({ api }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [checkin, setCheckin] = useState(null);
+  const [symptoms, setSymptoms] = useState([]);
   const [recent, setRecent] = useState([]);
 
   const load = useCallback(async () => {
@@ -307,6 +309,7 @@ function TagebuchTab({ api }) {
         api("/verlauf"),
       ]);
       setCheckin(today.checkin);
+      setSymptoms(today.symptoms || []);
       setRecent((verlauf.checkins || []).slice(0, 7));
       setLoading(false);
     } catch (err) {
@@ -331,6 +334,7 @@ function TagebuchTab({ api }) {
         <CompanionCheckin
           api={api}
           initial={checkin}
+          symptoms={symptoms}
           onSaved={(c) => {
             setCheckin(c);
             // Vorschau lokal nachziehen (heutiger Eintrag nach oben).
@@ -366,12 +370,17 @@ function TagebuchTab({ api }) {
                 <span style={{ fontSize: 13.5, fontWeight: 700, color: C.tealDeep }}>
                   {fmtDate(c.checkin_date)}
                 </span>
-                <span style={{ fontSize: 13, color: C.textSoft, fontWeight: 600 }}>
-                  {[
-                    c.feeling != null ? `Befinden ${c.feeling}` : null,
-                    c.energy != null ? `Energie ${c.energy}` : null,
-                    c.sleep != null ? `Schlaf ${c.sleep}` : null,
-                  ]
+                <span
+                  style={{
+                    fontSize: 13,
+                    color: C.textSoft,
+                    fontWeight: 600,
+                    textAlign: "right",
+                  }}
+                >
+                  {CHECKIN_SCALES.map((s) =>
+                    c[s.key] != null ? `${s.label} ${c[s.key]}` : null
+                  )
                     .filter(Boolean)
                     .join(" · ") || "ohne Werte"}
                 </span>

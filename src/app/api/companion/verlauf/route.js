@@ -1,5 +1,10 @@
 // GET /api/companion/verlauf — Verlauf + Serien.
-//   * Letzte 30 Tages-Check-ins (checkin_date absteigend) für die Sparklines.
+//   * Letzte 30 Tages-Check-ins (checkin_date absteigend) für die Sparklines —
+//     inkl. der drei neuen Skalen (verdauung/stress/klarheit) und der
+//     individuellen symptom_scores.
+//   * symptoms: ALLE Symptome des Patienten (auch deaktivierte!) als
+//     id→Name-Basis — deaktivierte Symptome stecken noch in alten
+//     symptom_scores und sollen im Verlauf beschriftet bleiben.
 //   * Serien: je aktivem supplement/todo-Item ein einfacher Streak =
 //     aufeinanderfolgende Berlin-Tage bis heute (bzw. gestern, wenn heute
 //     noch nichts abgehakt ist) mit >= 1 item_log, berechnet aus den letzten
@@ -41,7 +46,10 @@ export async function GET(req) {
     // alle Daten zusammen füttern den Check-in-Streak.
     const { data: checkinRows, error: checkinErr } = await companionAdmin
       .from("companion_checkins")
-      .select("id, checkin_date, feeling, energy, sleep, notes, help_flag")
+      .select(
+        "id, checkin_date, feeling, energy, sleep, verdauung, stress, " +
+          "klarheit, symptom_scores, notes, help_flag"
+      )
       .eq("practice_id", PRACTICE_ID)
       .eq("submission_id", submissionId)
       .eq("context_kind", "tag")
@@ -97,8 +105,21 @@ export async function GET(req) {
     );
     const checkinStreak = streakEndingToday(checkinDates, today);
 
+    // ALLE Symptome (auch inaktive — Beschriftung alter symptom_scores, siehe
+    // Kopfkommentar); der Client filtert selbst auf "hat Daten im Fenster".
+    const { data: symptoms, error: symErr } = await companionAdmin
+      .from("companion_patient_symptoms")
+      .select("id, name, active")
+      .eq("practice_id", PRACTICE_ID)
+      .eq("submission_id", submissionId)
+      .order("sort", { ascending: true })
+      .order("created_at", { ascending: true });
+    if (symErr) {
+      return jsonError(500, "Da ist etwas schiefgelaufen. Bitte versuche es später erneut.");
+    }
+
     return Response.json(
-      { ok: true, checkins, serien, checkinStreak },
+      { ok: true, checkins, serien, checkinStreak, symptoms: symptoms || [] },
       { headers: sessionHeaders(session) }
     );
   } catch (e) {

@@ -6,7 +6,9 @@
 //   (days_of_week leer oder enthält den heutigen ISO-Wochentag).
 // Jedes Item wird in Slots expandiert (times[] bzw. EIN Tages-Slot ohne
 // Uhrzeit) und mit den heutigen companion_item_logs gejoint → done + logId.
-// Dazu der heutige Tages-Check-in ('tag') oder null.
+// Dazu der heutige Tages-Check-in ('tag') oder null sowie die AKTIVEN
+// individuellen Symptome [{id, name}] des Patienten — das Check-in-Formular
+// baut daraus seine 0-10-Symptom-Regler und füllt sie aus symptom_scores vor.
 //
 // Diese Tabellen enthalten per Schema keine Diagnose-Felder — die Antwort ist
 // inhärent label-sicher (§9).
@@ -89,7 +91,10 @@ export async function GET(req) {
     // Heutiger Tages-Check-in ('tag', ohne Baustein-Bezug) oder null.
     const { data: checkin, error: checkinErr } = await companionAdmin
       .from("companion_checkins")
-      .select("id, checkin_date, feeling, energy, sleep, notes, help_flag")
+      .select(
+        "id, checkin_date, feeling, energy, sleep, verdauung, stress, " +
+          "klarheit, symptom_scores, notes, help_flag"
+      )
       .eq("practice_id", PRACTICE_ID)
       .eq("submission_id", submissionId)
       .eq("checkin_date", date)
@@ -100,8 +105,27 @@ export async function GET(req) {
       return jsonError(500, "Da ist etwas schiefgelaufen. Bitte versuche es später erneut.");
     }
 
+    // Aktive individuelle Symptome — Reihenfolge wie im Formular gewünscht.
+    const { data: symptoms, error: symErr } = await companionAdmin
+      .from("companion_patient_symptoms")
+      .select("id, name")
+      .eq("practice_id", PRACTICE_ID)
+      .eq("submission_id", submissionId)
+      .eq("active", true)
+      .order("sort", { ascending: true })
+      .order("created_at", { ascending: true });
+    if (symErr) {
+      return jsonError(500, "Da ist etwas schiefgelaufen. Bitte versuche es später erneut.");
+    }
+
     return Response.json(
-      { ok: true, date, items: result, checkin: checkin || null },
+      {
+        ok: true,
+        date,
+        items: result,
+        checkin: checkin || null,
+        symptoms: symptoms || [],
+      },
       { headers: sessionHeaders(session) }
     );
   } catch (e) {

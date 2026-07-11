@@ -119,6 +119,7 @@ export default function CompanionHeute({ api }) {
   const [date, setDate] = useState("");
   const [items, setItems] = useState([]);
   const [checkin, setCheckin] = useState(null);
+  const [symptoms, setSymptoms] = useState([]);
   const [expanded, setExpanded] = useState(null); // {abschnittId: bool} | null
   const [toast, setToast] = useState("");
   const [popping, setPopping] = useState(null); // slotKey mit laufender Pop-Animation
@@ -132,6 +133,7 @@ export default function CompanionHeute({ api }) {
       setDate(data.date);
       setItems(data.items || []);
       setCheckin(data.checkin);
+      setSymptoms(data.symptoms || []);
       // Aufklappung nur beim ersten erfolgreichen Laden setzen — manuelles
       // Auf-/Zuklappen des Patienten nicht überschreiben.
       setExpanded((prev) => prev ?? initialExpanded(data.items || []));
@@ -301,7 +303,12 @@ export default function CompanionHeute({ api }) {
       {/* Check-in-Karte */}
       <div style={cardStyle}>
         <h3 style={sectionTitle}>Wie geht es dir heute?</h3>
-        <CompanionCheckin api={api} initial={checkin} onSaved={setCheckin} />
+        <CompanionCheckin
+          api={api}
+          initial={checkin}
+          symptoms={symptoms}
+          onSaved={setCheckin}
+        />
       </div>
 
       {/* Hilfe-Knopf — ruhig, aber gut sichtbar */}

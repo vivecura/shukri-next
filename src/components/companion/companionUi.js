@@ -14,6 +14,24 @@
 // die Patienten-Komponenten bei ihrem einen Import-Pfad bleiben.
 export { DAY_SLOTS, CANONICAL_SLOTS, slotForTime } from "@/lib/daySlots";
 
+// Die sechs festen Check-in-Skalen (1-10) — EINE Quelle für das Check-in-
+// Formular UND den Verlauf. higherIsBetter steuert die Verlaufs-Erklärung:
+// bei Stressbelastung heißt höher MEHR Stress (1 entspannt, 10 Vollgas —
+// gleiche Richtung wie Anamnese-Frage 5, siehe Migrations-Kommentar
+// 2026-07-11-checkin-erweiterung.sql).
+export const CHECKIN_SCALES = [
+  { key: "feeling", label: "Befinden", low: "sehr schlecht", high: "sehr gut", higherIsBetter: true },
+  { key: "energy", label: "Energie", low: "leer", high: "voll da", higherIsBetter: true },
+  { key: "sleep", label: "Schlaf", low: "sehr schlecht", high: "sehr gut", higherIsBetter: true },
+  { key: "verdauung", label: "Verdauung", low: "sehr schlecht", high: "sehr gut", higherIsBetter: true },
+  { key: "stress", label: "Stressbelastung", low: "entspannt", high: "Vollgas", higherIsBetter: false },
+  { key: "klarheit", label: "Klarheit", low: "Brain Fog", high: "glasklar", higherIsBetter: true },
+];
+
+// Skala der individuellen Patienten-Symptome: 0-10 STÄRKE, höher = stärker
+// (also andersherum als die "gut"-Skalen — 0 ist hier der Wunschwert).
+export const SYMPTOM_SCALE = { min: 0, max: 10, low: "gar nicht", high: "sehr stark" };
+
 export const C = {
   teal: "#43A9AB",
   tealSoft: "#389193",
