@@ -1,9 +1,9 @@
 import PageBody from "@/components/pages/MeinBuch";
 
 export const metadata = {
-  title: "Mein Buch – Dr. Shukri Jarmoukli",
+  title: "Mein Buch – Shukri Jarmoukli",
   description:
-    "Das Buch von Dr. Shukri Jarmoukli zu funktioneller Medizin, Prävention und Longevity – ein Wegweiser für nachhaltige Gesundheit.",
+    "Das Buch von Shukri Jarmoukli zu funktioneller Medizin, Prävention und Longevity – ein Wegweiser für nachhaltige Gesundheit.",
   alternates: {
     canonical: "/mein-buch",
     languages: {

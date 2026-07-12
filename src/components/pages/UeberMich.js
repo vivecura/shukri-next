@@ -35,7 +35,7 @@ function useScrollFadeIn(delay = 0) {
 const physicianJsonLd = {
   "@context": "https://schema.org",
   "@type": "Physician",
-  name: "Dr. Shukri Jarmoukli",
+  name: "Shukri Jarmoukli",
   url: "https://vivecura.com/ueber-mich",
   image: "https://vivecura.com/Assets/Shukr.jpg",
   medicalSpecialty: ["Functional Medicine", "Preventive Medicine", "Longevity"],
@@ -87,7 +87,7 @@ function UeberMich() {
             </div>
             <div className="lg:w-[40%]">
               <div className="rounded-2xl overflow-hidden">
-                <img src="/Assets/%C3%9Cber%20mich.png" alt="Dr. Shukri" className="w-full h-auto object-cover" />
+                <img src="/Assets/%C3%9Cber%20mich.png" alt="Shukri Jarmoukli" className="w-full h-auto object-cover" />
               </div>
             </div>
           </div>
