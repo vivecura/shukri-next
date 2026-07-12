@@ -402,7 +402,6 @@ function Composer({ api, apiUpload, onPosted }) {
             ref={photoInputRef}
             type="file"
             accept="image/jpeg,image/png,image/webp,image/heic"
-            capture="environment"
             multiple
             hidden
             onChange={(e) => {
