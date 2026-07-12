@@ -32,7 +32,7 @@ export const PRACTICE_ID = "vivecura";
 // in here, Admin.js boots into the "Anrufe" tab and renders ONLY that tab.
 // This is UI-level display logic, NOT data protection (see isCallAgent).
 export const CALL_AGENT_EMAILS = [
-  "mahmoud@vivecura.com", // <- replace with Mahmoud's real Supabase login e-mail
+  "m.alwazir97@gmail.com", // Mahmoud (von Shukri bestätigt, 12.7.)
 ];
 
 // Standard reasons for a recall call.
