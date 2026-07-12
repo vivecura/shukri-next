@@ -79,7 +79,7 @@ export default async function BlogPostPage({ params }) {
     dateModified: post.updated_at || post.created_at,
     author: {
       "@type": "Person",
-      name: "Dr. Shukri Jarmoukli",
+      name: "Shukri Jarmoukli",
       url: "https://vivecura.com/en/about",
     },
     publisher: {
