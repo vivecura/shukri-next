@@ -15,6 +15,8 @@
 // client-gelieferte Kontextwerte an (context_kind hat keinen DB-CHECK).
 // Ein Update setzt help_flag NIE zurück (der Hilfe-Knopf bleibt gedrückt).
 // feeling <= 3 → roter Für-Shukri-Alert (dedupet pro Berlin-Tag).
+// Nach dem Speichern räumt Stufe 4 (Smart Recall) auf: offene
+// "App: Keine Rückmeldung"-Aufgaben des Patienten werden gelöscht.
 
 import {
   companionAdmin,
@@ -24,6 +26,7 @@ import {
   PRACTICE_ID,
   requireSession,
   sessionHeaders,
+  SR_GRUND_PREFIX,
 } from "@/lib/server/companionServer";
 
 const CHECKIN_COLS =
@@ -208,6 +211,38 @@ export async function POST(req) {
             : ""),
         checkinId: checkin.id,
       });
+    }
+
+    // STUFE 4 (Smart Recall): eine Rückmeldung räumt auf — alle OFFENEN und
+    // ZURÜCKGESTELLTEN ("nicht_erreicht") "App: Keine Rückmeldung"-Auto-
+    // Aufgaben dieses Patienten LÖSCHEN statt erledigen, damit Mahmouds
+    // "heute erledigt"-Statistik keine Phantom-Anrufe zählt und der Patient
+    // komplett von der Anrufliste verschwindet (der Check-in selbst ist der
+    // Beleg, dass er sich gemeldet hat). Das grund-Präfix SR_GRUND_PREFIX
+    // ist die GETEILTE Konstante aus companionServer.js — beide Seiten
+    // bleiben automatisch synchron.
+    // Still und best effort: ein Fehler hier darf den bereits gespeicherten
+    // Check-in nie scheitern lassen.
+    try {
+      const { error: srErr } = await companionAdmin
+        .from("recall_tasks")
+        .delete()
+        .eq("practice_id", PRACTICE_ID)
+        .eq("submission_id", submissionId)
+        .eq("created_by", "auto")
+        .in("status", ["offen", "nicht_erreicht"])
+        .like("grund", SR_GRUND_PREFIX + "%");
+      if (srErr) {
+        console.error(
+          "companion/checkin: Smart-Recall-Aufräumen fehlgeschlagen:",
+          srErr
+        );
+      }
+    } catch (e) {
+      console.error(
+        "companion/checkin: Smart-Recall-Aufräumen fehlgeschlagen:",
+        e
+      );
     }
 
     return Response.json(

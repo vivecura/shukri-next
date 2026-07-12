@@ -19,6 +19,9 @@ import { createHash, timingSafeEqual } from "node:crypto";
 import { jsonError } from "@/lib/server/companionServer";
 import { runReminderSweep } from "@/lib/server/companionReminders";
 
+// Vercel-Funktionslimit: der 09:00-Lauf (Stufe 4) schreibt in einer Schleife je stillem Patienten Claim + Aufgabe — 60 s Puffer statt Default.
+export const maxDuration = 60;
+
 // Timing-sicherer Secret-Vergleich: beide Seiten erst sha256-hashen (gleiche,
 // feste Länge — timingSafeEqual verlangt das und die Länge des echten Secrets
 // bleibt unbeobachtbar), dann timingSafeEqual statt ===. Ein ===-Vergleich

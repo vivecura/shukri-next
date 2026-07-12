@@ -53,6 +53,14 @@ export function requireCompanionEnv() {
 // bewusst dupliziert, damit der Server-Kern ohne den Anon-Client-Layer lädt.
 export const PRACTICE_ID = "vivecura";
 
+// Grund-Präfix der Smart-Recall-Aufgaben (Stufe 4) — GETEILTE Konstante:
+// companionReminders.js legt die Anruf-Aufgaben mit diesem Präfix an, die
+// Check-in-Route (checkin/route.js) räumt sie über LIKE '<Präfix>%' wieder
+// ab. Beide importieren von hier — es gibt genau EINE Quelle. Darf NIE mit
+// "Companion:" beginnen: dieses Präfix filtert recalls.js/isCompanionAlert
+// aus Mahmouds Anrufliste heraus (das sind die Für-Shukri-Alerts).
+export const SR_GRUND_PREFIX = "App: Keine Rückmeldung";
+
 // ---------------------------------------------------------------------------
 // SERVICE-ROLE-CLIENT — umgeht RLS. Deshalb gilt die harte Invariante: JEDE
 // Query in den Companion-Routen scoped auf practice_id UND submission_id der

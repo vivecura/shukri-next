@@ -23,7 +23,7 @@ create table if not exists companion_push_log (
 comment on table companion_push_log is
   'Companion Stufe 3: Claim-Log des Push-Versands. Eine Zeile = eine beanspruchte Erinnerungs-Instanz. Insert VOR dem Versand; Unique-Konflikt = anderer Lauf hat schon geclaimt. Kein Klarname, keine Push-Texte — nur Referenzen.';
 comment on column companion_push_log.ref_key is
-  'Instanz-Schlüssel: "<plan_item_id>|<HH:MM>" (Einnahme/Empfehlung), "<plan_item_id>|prep-evening" / "<plan_item_id>|prep-morning" (Vorbereitung), "<plan_item_id>|fu-<h>h" (Infusions-Nachfrage, h = Offset in Stunden).';
+  'Instanz-Schlüssel: "<plan_item_id>|<HH:MM>" (Einnahme/Empfehlung), "<plan_item_id>|prep-evening" / "<plan_item_id>|prep-morning" (Vorbereitung), "<plan_item_id>|fu-<h>h" (Infusions-Nachfrage, h = Offset in Stunden), "sr-noresponse" (Smart Recall Stufe 4: Tages-Claim je Patient + Berlin-Tag, ohne Item-Bezug).';
 comment on column companion_push_log.sent_on is
   'Berlin-Kalendertag der Erinnerungs-Instanz (Europe/Berlin) — NICHT das UTC-Datum und NICHT der Lauf-Zeitpunkt.';
 
