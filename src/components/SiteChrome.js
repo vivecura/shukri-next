@@ -8,7 +8,7 @@ import LanguageSwitcher from "@/components/LanguageSwitcher";
 // Renders the public site chrome (navbar, footer, language switcher) around
 // the page — except on internal tool routes like /admin, which get a bare
 // full-height shell so the dashboard isn't pushed down by the tall navbar.
-const BARE_PREFIXES = ["/admin"];
+const BARE_PREFIXES = ["/admin", "/companion"];
 
 export default function SiteChrome({ children }) {
   const pathname = usePathname() || "";

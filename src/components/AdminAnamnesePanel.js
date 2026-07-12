@@ -2,6 +2,9 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
+import AdminRecallSection from "@/components/AdminRecallSection";
+import AdminCompanionSection from "@/components/AdminCompanionSection";
+import { createRecall, plusDays, listForPatient, GRUENDE, defaultFragen } from "@/lib/recalls";
 
 const STORAGE_BUCKET = "befunde";
 
@@ -59,6 +62,8 @@ const RECORD_TABS = [
   { id: "diagnose",        label: "Diagnose" },
   { id: "medikation",      label: "Medikation" },
   { id: "termin",          label: "Nächster Termin" },
+  { id: "recall",          label: "📞 Anruf" },
+  { id: "companion",       label: "📱 App" },
   { id: "schritte",        label: "Nächste Schritte" },
   { id: "anamnese",        label: "Anamnese" },
   { id: "doctolib",        label: "Doctolib Notizen" },
@@ -110,6 +115,16 @@ function fileName(path) {
   return seg.replace(/^\d+_/, "");
 }
 
+// Stable signature of a "Nächste Schritte" list ([{id,text}]) for change
+// detection: the non-empty trimmed texts, order-preserving, joined. Two lists
+// with the same visible content produce the same string regardless of ids.
+function schritteSnap(list) {
+  return (Array.isArray(list) ? list : [])
+    .map((x) => String(x?.text || "").trim())
+    .filter(Boolean)
+    .join("");
+}
+
 // Summarize the supplements the patient reported, with dosages.
 // The form slugifies each supplement name into a `dosis_<slug>` field.
 function supplementeSummary(p) {
@@ -150,6 +165,12 @@ export default function AdminAnamnesePanel() {
   const [saving, setSaving] = useState(false);
   const [savedId, setSavedId] = useState(null);
   const loadedRef = useRef({});
+  // Snapshot of the "Nächste Schritte" text per patient at load/last-save time,
+  // so handleSave can tell whether they actually changed this round.
+  const schritteSnapRef = useRef({});
+  // Lightweight one-click auto-recall prompt after a successful save (created_by
+  // 'auto'). Holds { submissionId, creating } | null. Never blocks saving.
+  const [recallPrompt, setRecallPrompt] = useState(null);
 
   useEffect(() => { fetchRows(); }, []);
 
@@ -181,6 +202,8 @@ export default function AdminAnamnesePanel() {
       if (Array.isArray(d.naechsteSchritte)) {
         setSchritteByPatient((m) => ({ ...m, [selectedId]: d.naechsteSchritte }));
       }
+      // Baseline for change-detection of the "Nächste Schritte" tab.
+      schritteSnapRef.current[selectedId] = schritteSnap(d.naechsteSchritte);
       if (Array.isArray(d.notizen)) {
         setNotizenByPatient((m) => ({ ...m, [selectedId]: d.notizen }));
       }
@@ -394,8 +417,51 @@ export default function AdminAnamnesePanel() {
       setRechnungenByPatient((m) => ({ ...m, [selected.id]: savedRechnungen }));
       setBefundeByPatient((m) => ({ ...m, [selected.id]: savedBefunde }));
       setSavedId(selected.id);
+
+      // --- Auto-recall suggestion (created_by 'auto'), strictly AFTER a
+      // successful upsert and never blocking it. If "Nächste Schritte" changed
+      // and the patient has no open recall yet, offer a dezenten one-click
+      // prompt to schedule a follow-up call in 7 days. All failures swallowed.
+      const savedSubmissionId = selected.id;
+      const prevSnap = schritteSnapRef.current[savedSubmissionId] || "";
+      const nextSnap = schritteSnap(data.naechsteSchritte);
+      schritteSnapRef.current[savedSubmissionId] = nextSnap; // new baseline
+      if (nextSnap && nextSnap !== prevSnap) {
+        (async () => {
+          try {
+            const existing = await listForPatient(savedSubmissionId);
+            const hasOpen = (existing || []).some((r) => r.status === "offen");
+            if (!hasOpen) {
+              setRecallPrompt({ submissionId: savedSubmissionId, creating: false });
+            }
+          } catch {
+            // silent — the suggestion is a nicety, not a requirement
+          }
+        })();
+      }
     } finally {
       setSaving(false);
+    }
+  };
+
+  // Create the auto-recall the prompt offers. Non-blocking; refreshes the
+  // patient's recall list (AdminRecallSection re-reads on mount) by closing
+  // the prompt on success.
+  const acceptRecallPrompt = async () => {
+    if (!recallPrompt || recallPrompt.creating) return;
+    setRecallPrompt((p) => (p ? { ...p, creating: true } : p));
+    try {
+      await createRecall({
+        submissionId: recallPrompt.submissionId,
+        grund: GRUENDE[0],
+        dueDate: plusDays(7),
+        fragen: defaultFragen(),
+        createdBy: "auto",
+      });
+      setRecallPrompt(null);
+    } catch {
+      // leave the prompt open so Shukri can retry; do not disrupt anything else
+      setRecallPrompt((p) => (p ? { ...p, creating: false } : p));
     }
   };
 
@@ -453,7 +519,7 @@ export default function AdminAnamnesePanel() {
               return (
                 <li key={r.id}>
                   <button
-                    onClick={() => setSelectedId(r.id)}
+                    onClick={() => { setSelectedId(r.id); setRecallPrompt(null); }}
                     className={`w-full text-left px-3 py-2 rounded-lg border transition-all ${
                       isSelected
                         ? "border-[#43a9ab] bg-[#43a9ab]/5"
@@ -528,6 +594,32 @@ export default function AdminAnamnesePanel() {
                 {saving ? "Speichert…" : savedId === selected.id ? "Gespeichert ✓" : "Speichern"}
               </button>
             </div>
+
+            {/* Auto-recall suggestion — appears after saving when "Nächste
+                Schritte" changed and no open recall exists. Dezent, ein Klick,
+                nicht blockierend. */}
+            {recallPrompt && recallPrompt.submissionId === selected.id && (
+              <div className="mt-4 flex flex-wrap items-center gap-3 rounded-lg border border-gray-100 bg-[#43a9ab]/5 px-3 py-2">
+                <span className="text-xs text-[#515757]/70">
+                  Anruf durch Mahmoud in 7 Tagen vormerken?
+                </span>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={acceptRecallPrompt}
+                    disabled={recallPrompt.creating}
+                    className="text-xs px-3 py-1.5 rounded-full bg-[#43a9ab] text-white hover:bg-[#3a9597] transition-colors disabled:opacity-40"
+                  >
+                    {recallPrompt.creating ? "Legt an…" : "Ja, anlegen"}
+                  </button>
+                  <button
+                    onClick={() => setRecallPrompt(null)}
+                    className="text-xs px-3 py-1.5 rounded-full border border-[#43a9ab] text-[#43a9ab] hover:bg-[#43a9ab]/5 transition-colors"
+                  >
+                    Nein
+                  </button>
+                </div>
+              </div>
+            )}
 
             {/* Record tabs */}
             <div className="flex flex-wrap gap-1.5 mt-5 mb-5 border-b border-gray-100 pb-3">
@@ -851,6 +943,14 @@ export default function AdminAnamnesePanel() {
                   + Rechnung
                 </button>
               </div>
+            ) : recordTab === "recall" ? (
+              <AdminRecallSection submissionId={selected.id} />
+            ) : recordTab === "companion" ? (
+              <AdminCompanionSection
+                key={selected.id}
+                submissionId={selected.id}
+                consentFromAnamnese={selected.payload ? !!payload.consent_ki_pseudonym : null}
+              />
             ) : recordTab === "schritte" ? (
               <TextListEditor
                 items={schritteH.list}

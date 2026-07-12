@@ -1,0 +1,22 @@
+{
+  "name": "ViveCura Companion",
+  "short_name": "Companion",
+  "start_url": "/companion",
+  "scope": "/companion",
+  "display": "standalone",
+  "background_color": "#f7fafa",
+  "theme_color": "#43a9ab",
+  "icons": [
+    {
+      "src": "/Assets/LOGO7.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/Assets/LOGO.png",
+      "sizes": "500x500",
+      "type": "image/png"
+    }
+  ]
+}
