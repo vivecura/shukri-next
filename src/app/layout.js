@@ -52,6 +52,46 @@ export const viewport = {
   initialScale: 1,
 };
 
+// Schema.org: Praxis-Grunddaten für Suchmaschinen & KI-Assistenten (GEO).
+// Angaben müssen mit Impressum + Google Business Profile übereinstimmen (NAP-Konsistenz).
+const clinicJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "MedicalClinic",
+  "@id": `${SITE_URL}/#praxis`,
+  name: "ViveCura – Praxis für funktionelle Medizin",
+  url: SITE_URL,
+  logo: `${SITE_URL}/Assets/logo6.png`,
+  image: `${SITE_URL}/Assets/logo6.png`,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "Skalitzer Straße 137",
+    postalCode: "10999",
+    addressLocality: "Berlin",
+    addressCountry: "DE",
+  },
+  founder: {
+    "@type": "Physician",
+    name: "Shukri Jarmoukli",
+    url: `${SITE_URL}/ueber-mich`,
+    sameAs: [
+      "https://www.doctolib.de/arzt/berlin/shukri-jarmoukli",
+      "https://www.instagram.com/vivecura/",
+      "https://www.linkedin.com/in/shukri-jarmoukli/",
+    ],
+  },
+  availableService: [
+    { "@type": "MedicalProcedure", name: "Ganzheitliche Diagnostik" },
+    { "@type": "MedicalProcedure", name: "Eiseninfusion" },
+    { "@type": "MedicalProcedure", name: "Infusionstherapie" },
+    { "@type": "MedicalProcedure", name: "Prävention und Longevity-Medizin" },
+  ],
+  sameAs: [
+    "https://www.doctolib.de/arzt/berlin/shukri-jarmoukli",
+    "https://www.instagram.com/vivecura/",
+    "https://www.linkedin.com/in/shukri-jarmoukli/",
+  ],
+};
+
 export default function RootLayout({ children }) {
   return (
     <html
@@ -60,6 +100,10 @@ export default function RootLayout({ children }) {
     >
       <body className="min-h-full flex flex-col">
         <HtmlLang />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(clinicJsonLd) }}
+        />
         <SiteChrome>{children}</SiteChrome>
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-PVM2RGELWW"
