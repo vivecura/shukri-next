@@ -274,9 +274,15 @@ export default function CompanionApp() {
               </button>
             </header>
 
-            {/* Tab-Inhalt: nur der aktive Tab ist gemountet und lädt frisch */}
-            {tab === "heute" && <CompanionHeute api={api} />}
-            {tab === "tagebuch" && <TagebuchTab api={api} />}
+            {/* Tab-Inhalt: nur der aktive Tab ist gemountet und lädt frisch.
+                onGoVerlauf reicht den Tab-Wechsel der Shell an die Feedback-
+                Karte durch ("Ganzen Verlauf ansehen" springt zum Verlauf). */}
+            {tab === "heute" && (
+              <CompanionHeute api={api} onGoVerlauf={() => setTab("verlauf")} />
+            )}
+            {tab === "tagebuch" && (
+              <TagebuchTab api={api} onGoVerlauf={() => setTab("verlauf")} />
+            )}
             {tab === "plan" && <CompanionPlan api={api} />}
             {tab === "verlauf" && <CompanionVerlauf api={api} />}
             {tab === "community" && (
@@ -378,7 +384,7 @@ export default function CompanionApp() {
 // Lokal in der Shell, weil er nur zwei bestehende Routen kombiniert.
 // ---------------------------------------------------------------------------
 
-function TagebuchTab({ api }) {
+function TagebuchTab({ api, onGoVerlauf }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [checkin, setCheckin] = useState(null);
@@ -419,6 +425,7 @@ function TagebuchTab({ api }) {
           api={api}
           initial={checkin}
           symptoms={symptoms}
+          onGoVerlauf={onGoVerlauf}
           onSaved={(c) => {
             setCheckin(c);
             // Vorschau lokal nachziehen (heutiger Eintrag nach oben).
@@ -510,6 +517,49 @@ function GlobalStyles() {
         50% { opacity: 0.45; }
       }
       .companion-pulse { animation: companionPulse 1.4s ease-in-out infinite; }
+
+      /* Einstiegs-/Abhak-Choreografie von Heute-Tab und Feedback-Karte.
+         Animations-Budget: nur transform, opacity und stroke-dashoffset
+         (compositor-freundlich, 60fps auch auf alten Geräten).
+         fill-mode both ist Pflicht: gestaffelte animationDelay-Werte halten
+         die Elemente sonst nicht unsichtbar bis zu ihrem Einsatz. */
+      @keyframes companionRise {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .companion-rise {
+        animation: companionRise 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+      }
+
+      /* Atmender Rail-Punkt des aktuellen Tagesabschnitts — bewusst langsam
+         und klein (kein Alarm, nur ein ruhiges "hier bist du gerade"). */
+      @keyframes companionBreath {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.3); }
+      }
+      .companion-breath {
+        animation: companionBreath 2.4s ease-in-out infinite;
+      }
+
+      /* Das ✓ zeichnet sich als SVG-Pfad ein: pathLength=1 am <path>, hier
+         nur noch dasharray/dashoffset von 1 auf 0 — kein getTotalLength. */
+      @keyframes companionCheckdraw {
+        from { stroke-dashoffset: 1; }
+        to { stroke-dashoffset: 0; }
+      }
+      .companion-checkdraw {
+        stroke-dasharray: 1;
+        animation: companionCheckdraw 0.35s ease-out both;
+      }
+
+      /* Wer reduzierte Bewegung wünscht, bekommt alles sofort und ruhig —
+         dank fill-mode both bleibt ohne Animation nichts unsichtbar. */
+      @media (prefers-reduced-motion: reduce) {
+        .companion-rise, .companion-breath, .companion-checkdraw,
+        .companion-pop {
+          animation: none !important;
+        }
+      }
 
       input.companion-slider {
         -webkit-appearance: none;
