@@ -22,14 +22,53 @@
 // Sitzung wirklich bearbeitet wurde — sonst würde ein veralteter lokaler
 // Stand die serverseitig angehängte Hilfe-Knopf-Notiz (POST /help hängt an
 // notes an) beim nächsten Regler-Speichern überschreiben.
+//
+// Sofort-Feedback: der Server antwortet seit dem Verlauf-Ausbau mit
+// { ok, checkin, vergleich } — vergleich enthält gestern, den gleichen
+// Wochentag der Vorwoche und den 7-Tage-Schnitt. Direkt unter dem Save-
+// Button erscheint dann "Dein Eintrag im Vergleich". Alte API-Antworten
+// ohne vergleich sind KEIN Fehler — dann gibt es einfach kein Feedback
+// (Deploy-Regel: die UI setzt neue Felder nie voraus). Die Darstellung
+// bleibt §6-neutral: Pfeile zeigen nur die numerische Richtung, alles Teal,
+// kein "besser/schlechter", kein Lob-Kitsch (Stress ist invertiert und
+// Symptome sind 0-10 Stärke — jede Färbung wäre Interpretation).
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   C,
+  cardStyle,
+  ghostBtn,
   primaryBtn,
   CHECKIN_SCALES,
   SYMPTOM_SCALE,
 } from "@/components/companion/companionUi";
+import { DeltaBadge, fmtNum } from "@/components/companion/CompanionCharts";
+
+// Anzeige-Emojis der sechs festen Skalen — reine Optik der Feedback-Zeilen
+// (CHECKIN_SCALES selbst bleibt die kanonische Quelle für Keys/Labels und
+// trägt bewusst keine Emojis, damit Formular und Verlauf frei bleiben).
+const SCALE_EMOJI = {
+  feeling: "🙂",
+  energy: "⚡",
+  sleep: "😴",
+  verdauung: "🍽️",
+  stress: "🌊",
+  // 🧠 wie im Verlauf-Ticker — beide Ansichten zeigen dieselbe Skala,
+  // also dasselbe Symbol (sonst wirkt es wie zwei verschiedene Werte).
+  klarheit: "🧠",
+};
+
+// 'YYYY-MM-DD' (Berlin-Datumsstring aus checkin_date) → Wochentagsname.
+// Explizit in UTC formatiert: der String wird als UTC-Mitternacht geparst,
+// die Geräte-Zeitzone darf den Kalendertag nie verschieben (PWA weltweit).
+function weekdayFromIso(iso, style) {
+  const d = new Date(String(iso || "") + "T00:00:00Z");
+  if (isNaN(d.getTime())) return "";
+  return new Intl.DateTimeFormat("de-DE", {
+    weekday: style,
+    timeZone: "UTC",
+  }).format(d);
+}
 
 // Formular-Zustand aus dem Server-Check-in ableiten (null = unberührt).
 function valuesFrom(initial) {
@@ -41,7 +80,13 @@ function scoresFrom(initial) {
   return { ...(initial?.symptom_scores || {}) };
 }
 
-export default function CompanionCheckin({ api, initial, symptoms, onSaved }) {
+export default function CompanionCheckin({
+  api,
+  initial,
+  symptoms,
+  onSaved,
+  onGoVerlauf,
+}) {
   const [values, setValues] = useState(() => valuesFrom(initial));
   const [symptomScores, setSymptomScores] = useState(() => scoresFrom(initial));
   const [notes, setNotes] = useState(initial?.notes ?? "");
@@ -50,6 +95,11 @@ export default function CompanionCheckin({ api, initial, symptoms, onSaved }) {
   const [notesEdited, setNotesEdited] = useState(false);
   const [status, setStatus] = useState("idle"); // idle | saving | saved
   const [error, setError] = useState("");
+  // Sofort-Feedback nach dem Save: { vergleich, checkin } oder null. Bleibt
+  // bis zum nächsten Save stehen — der Patient soll den Vergleich in Ruhe
+  // ansehen können, nicht nur 2,5 Sekunden lang.
+  const [feedback, setFeedback] = useState(null);
+  const feedbackRef = useRef(null);
 
   // Symptomliste lokal, damit Ergänzen/Entfernen sofort sichtbar ist, ohne
   // dass der Eltern-Tab neu laden muss.
@@ -71,6 +121,13 @@ export default function CompanionCheckin({ api, initial, symptoms, onSaved }) {
     setSymptomScores(scoresFrom(initial));
     setNotes(initial?.notes ?? "");
     setNotesEdited(false);
+    // Feedback nur verwerfen, wenn wirklich ein ANDERER Eintrag hereinkommt.
+    // Gotcha: nach dem allerersten Save wechselt initial.id von null auf die
+    // frisch vergebene id (onSaved → Eltern-State → Prop) — genau dann muss
+    // das eigene Feedback stehen bleiben, sonst verschwände es sofort wieder.
+    setFeedback((prev) =>
+      prev && prev.checkin?.id === (initial?.id ?? null) ? prev : null
+    );
   }
   // Gleiche Technik für die Symptomliste: der Eltern-Tab liefert bei jedem
   // Laden eine NEUE Array-Referenz — Referenzvergleich auf die Prop selbst
@@ -114,6 +171,20 @@ export default function CompanionCheckin({ api, initial, symptoms, onSaved }) {
 
       const res = await api("/checkin", { method: "POST", body });
       onSaved?.(res.checkin);
+      // Sofort-Feedback nur, wenn der Server das vergleich-Feld schon liefert
+      // (Deploy-Regel: neue Felder nie voraussetzen — eine alte API-Antwort
+      // heißt einfach: kein Feedback, kein Fehler).
+      if (res.vergleich && res.checkin) {
+        setFeedback({ vergleich: res.vergleich, checkin: res.checkin });
+        // Erst nach dem Commit scrollen — der "Moment" nach dem Eintrag:
+        // die Karte hebt sich sanft ins Bild, statt außerhalb zu liegen.
+        requestAnimationFrame(() => {
+          feedbackRef.current?.scrollIntoView({
+            behavior: "smooth",
+            block: "nearest",
+          });
+        });
+      }
       if (sentNotes) {
         // Die gesendete Notiz ist jetzt Serverstand — Flag zurücksetzen.
         setNotesEdited(false);
@@ -478,6 +549,201 @@ export default function CompanionCheckin({ api, initial, symptoms, onSaved }) {
               ? "Eintrag aktualisieren"
               : "Eintrag speichern"}
       </button>
+
+      {feedback ? (
+        <FeedbackCard
+          feedback={feedback}
+          syms={syms}
+          onGoVerlauf={onGoVerlauf}
+          innerRef={feedbackRef}
+        />
+      ) : null}
+    </div>
+  );
+}
+
+// Die Feedback-Karte "Dein Eintrag im Vergleich" — erscheint direkt nach dem
+// Speichern. §6-Sprachregeln: nur neutrale Statistik ("gestern", "letzter
+// Di", "7-Tage-Schnitt"), Richtung ausschließlich als Glyph + Zahl im
+// DeltaBadge (immer Teal — Stress ist invertiert, Symptome sind Stärke,
+// grün/rot wäre Bewertung). Fehlende Vergleichswerte zeigen "—", nie 0.
+function FeedbackCard({ feedback, syms, onGoVerlauf, innerRef }) {
+  const { vergleich, checkin } = feedback;
+  const gestern = vergleich?.gestern || null;
+  const vorwoche = vergleich?.vorwoche || null;
+  const schnitt7 = vergleich?.schnitt7 || {};
+
+  // "zum letzten Dienstag": checkin_date minus 7 Tage ist per Konstruktion
+  // derselbe ISO-Wochentag — der Name kommt direkt aus dem heutigen Datum.
+  const wtLang = weekdayFromIso(checkin?.checkin_date, "long");
+  const wtKurz = weekdayFromIso(checkin?.checkin_date, "short").replace(".", "");
+
+  // Zeilen: erst die festen Skalen (kanonische Reihenfolge CHECKIN_SCALES),
+  // dann die Symptome — jeweils nur Felder, die HEUTE einen Wert haben.
+  // Delta nur, wenn beide Seiten non-null sind (DeltaBadge zeigt sonst "—").
+  const delta = (heute, ref) =>
+    typeof heute === "number" && typeof ref === "number" ? heute - ref : null;
+  const rows = [];
+  for (const s of CHECKIN_SCALES) {
+    const heute = checkin?.[s.key];
+    if (typeof heute !== "number") continue;
+    rows.push({
+      id: s.key,
+      emoji: SCALE_EMOJI[s.key],
+      label: s.label,
+      heute,
+      dGestern: delta(heute, gestern?.[s.key]),
+      dVorwoche: delta(heute, vorwoche?.[s.key]),
+      hatBeide:
+        typeof gestern?.[s.key] === "number" &&
+        typeof vorwoche?.[s.key] === "number",
+    });
+  }
+  for (const sym of syms) {
+    const heute = (checkin?.symptom_scores || {})[sym.id];
+    if (typeof heute !== "number") continue;
+    rows.push({
+      id: sym.id,
+      emoji: "🔹",
+      label: sym.name,
+      heute,
+      dGestern: delta(heute, (gestern?.symptom_scores || {})[sym.id]),
+      dVorwoche: delta(heute, (vorwoche?.symptom_scores || {})[sym.id]),
+      hatBeide:
+        typeof (gestern?.symptom_scores || {})[sym.id] === "number" &&
+        typeof (vorwoche?.symptom_scores || {})[sym.id] === "number",
+    });
+  }
+
+  // Erster Eintrag überhaupt: keine Vortages-Zeilen und ein komplett leerer
+  // 7-Tage-Schnitt → ruhiger Einzeiler statt einer Wand aus "—".
+  const schnittLeer =
+    CHECKIN_SCALES.every((s) => schnitt7[s.key] == null) &&
+    Object.values(schnitt7.symptome || {}).every((v) => v == null);
+  const ersterEintrag = !gestern && !vorwoche && schnittLeer;
+
+  if (!ersterEintrag && rows.length === 0) {
+    // Nur die Notiz gespeichert: es gibt nichts zu vergleichen — dann lieber
+    // gar keine Karte als eine leere.
+    return null;
+  }
+
+  const vergleichFehlt = rows.some((r) => !r.hatBeide);
+
+  return (
+    <div
+      ref={innerRef}
+      className="companion-rise"
+      style={{
+        ...cardStyle,
+        background: C.tealPale,
+        border: "none",
+        marginTop: 12,
+      }}
+    >
+      <div style={{ fontSize: 15, fontWeight: 800, color: C.tealDeep }}>
+        Dein Eintrag im Vergleich
+      </div>
+
+      {ersterEintrag ? (
+        <p
+          style={{
+            fontSize: 13.5,
+            color: C.text,
+            lineHeight: 1.6,
+            margin: "8px 0 0",
+          }}
+        >
+          Dein erster Eintrag ist gespeichert. Ab morgen siehst du hier den
+          Vergleich zum Vortag.
+        </p>
+      ) : (
+        <>
+          <div style={{ fontSize: 12, color: C.textSoft, marginTop: 2 }}>
+            {wtLang ? `zu gestern und zum letzten ${wtLang}` : "zu gestern und zur Vorwoche"}
+          </div>
+
+          <div style={{ marginTop: 8 }}>
+            {rows.map((r, i) => (
+              <div
+                key={r.id}
+                className="companion-rise"
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr auto auto auto",
+                  gap: 8,
+                  alignItems: "center",
+                  minHeight: 48,
+                  // Stagger: die Zeilen heben sich nacheinander ins Bild.
+                  animationDelay: `${i * 60}ms`,
+                }}
+              >
+                <span
+                  style={{
+                    fontSize: 13.5,
+                    fontWeight: 600,
+                    color: C.text,
+                    minWidth: 0,
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  <span aria-hidden>{r.emoji}</span> {r.label}
+                </span>
+                <span
+                  style={{ fontSize: 22, fontWeight: 800, color: C.tealDeep }}
+                >
+                  {r.heute}
+                </span>
+                <DeltaBadge onPale delta={r.dGestern} labelBelow="gestern" />
+                <DeltaBadge
+                  onPale
+                  delta={r.dVorwoche}
+                  labelBelow={wtKurz ? `letzter ${wtKurz}` : "Vorwoche"}
+                />
+              </div>
+            ))}
+          </div>
+
+          {vergleichFehlt ? (
+            <p
+              style={{
+                fontSize: 12,
+                color: C.textSoft,
+                lineHeight: 1.5,
+                margin: "8px 0 0",
+              }}
+            >
+              Für einige Felder gibt es noch keinen Vergleichswert — ab morgen
+              füllt sich das.
+            </p>
+          ) : null}
+
+          {schnitt7.feeling != null ? (
+            <div style={{ fontSize: 12.5, color: C.textSoft, marginTop: 10 }}>
+              7-Tage-Schnitt Befinden: {fmtNum(schnitt7.feeling)}
+            </div>
+          ) : null}
+        </>
+      )}
+
+      {onGoVerlauf ? (
+        <button
+          type="button"
+          onClick={onGoVerlauf}
+          style={{
+            ...ghostBtn,
+            // Auf tealPale braucht der Ghost-Button weißen Grund, sonst
+            // verschwimmt er mit der Karte; 44px = Mindest-Touch-Ziel.
+            background: "#fff",
+            minHeight: 44,
+            marginTop: 12,
+          }}
+        >
+          Ganzen Verlauf ansehen
+        </button>
+      ) : null}
     </div>
   );
 }

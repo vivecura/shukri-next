@@ -16,6 +16,17 @@
 // versteckt); alles andere ist eingeklappt, aber als Kopfzeile mit
 // Fortschritt + Ein-Zeilen-Zusammenfassung scanbar.
 //
+// Optik seit dem Verlauf-Ausbau: oben ein freistehender Hero (Begrüßung nach
+// Berlin-Uhrzeit + Tages-Ring statt Balken), der aktuelle Berlin-Abschnitt
+// ist dezent als "Bühne" hervorgehoben (heller Teal-Ring, atmender Rail-
+// Punkt), Auf-/Zuklappen und Abhaken laufen als weiche CSS-Übergänge.
+// Animations-Budget-Regel: nur transform, opacity und stroke-dashoffset
+// animieren (compositor-freundlich, 60fps auch auf alten Geräten) — die
+// grid-rows-Klappe ist die einzige bewusste Layout-Transition. Die Klassen
+// companion-rise / companion-breath / companion-checkdraw kommen aus
+// GlobalStyles in der Shell (inkl. prefers-reduced-motion-Guard); fehlen sie,
+// rendert alles einfach ohne Animation — nichts bricht.
+//
 // Der 🆘-Knopf ist ruhig, aber präsent gestaltet (outlined, kein Alarm-Rot-
 // Geschrei): die App ist KEIN Notfallkanal — das Sheet und die Bestätigung
 // sagen beide klar "Im Notfall 112".
@@ -32,6 +43,7 @@ import {
   DAY_SLOTS,
   slotForTime,
 } from "@/components/companion/companionUi";
+import { RingGauge } from "@/components/companion/CompanionCharts";
 import CompanionCheckin from "@/components/companion/CompanionCheckin";
 import CompanionContact from "@/components/companion/CompanionContact";
 import CompanionPush from "@/components/companion/CompanionPush";
@@ -75,6 +87,15 @@ function berlinNowHM() {
   return `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
 }
 
+// Begrüßung nach Berlin-Uhrzeit — der Shell-Header sagt schon "Hallo
+// {Vorname}", hier deshalb bewusst OHNE Namen (keine Dopplung).
+function greetingForHM(hm) {
+  const h = parseInt(hm.slice(0, 2), 10);
+  if (h < 11) return "Guten Morgen";
+  if (h < 17) return "Guten Tag";
+  return "Guten Abend";
+}
+
 // Items (mit slots[]) → gefüllte Timeline-Abschnitte. Ein Item taucht in
 // JEDEM Abschnitt auf, in dem es eine Uhrzeit hat; leere Abschnitte fliegen
 // raus. Innerhalb eines Abschnitts nach Uhrzeit sortiert (stabil → bei
@@ -114,7 +135,9 @@ function initialExpanded(items) {
   return expanded;
 }
 
-export default function CompanionHeute({ api }) {
+// onGoVerlauf ist optional: die Shell reicht ihren Tab-Wechsel durch, damit
+// die Feedback-Karte des Check-ins in den Verlauf springen kann.
+export default function CompanionHeute({ api, onGoVerlauf }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [date, setDate] = useState("");
@@ -207,60 +230,77 @@ export default function CompanionHeute({ api }) {
     0
   );
   const allDone = totalSlots > 0 && doneSlots === totalSlots;
-  const pct = totalSlots > 0 ? Math.round((doneSlots / totalSlots) * 100) : 0;
+
+  // Aktuelle Berlin-Uhrzeit einmal pro Render: steuert Begrüßung, die
+  // "Bühne" (hervorgehobener aktueller Abschnitt) und den Abend-/Tag-Text.
+  const nowHM = berlinNowHM();
+  const currentSlotId = slotIdForTime(nowHM);
+  const isEvening = parseInt(nowHM.slice(0, 2), 10) >= 17;
+
+  // Gestaffelter Einstieg (companion-rise): Hero zuerst, dann jeder
+  // Timeline-Abschnitt, zuletzt die Check-in-Karte — nur an den Mount
+  // gekoppelt (Tabs remounten ohnehin komplett, kein State nötig).
+  const riseDelay = (i) => ({ animationDelay: `${i * 80}ms` });
+  const checkinRiseIdx = 1 + timeline.length;
 
   return (
     <div style={{ display: "grid", gap: 14 }}>
-      {/* Kopfzeile: Datum + Fortschritt als schlanker Balken */}
-      <div style={{ padding: "0 2px", display: "grid", gap: 8 }}>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "baseline",
-            gap: 10,
-          }}
-        >
-          <h2 style={{ ...sectionTitle, margin: 0, fontSize: 19 }}>
-            {fmtDayLong(date)}
-          </h2>
-          {totalSlots > 0 && (
-            <span
-              style={{
-                fontSize: 13,
-                fontWeight: 700,
-                color: C.tealSoft,
-                flexShrink: 0,
-              }}
-            >
-              {doneSlots} von {totalSlots} erledigt
-            </span>
-          )}
-        </div>
-        {totalSlots > 0 && (
-          <div
-            role="progressbar"
-            aria-valuemin={0}
-            aria-valuemax={totalSlots}
-            aria-valuenow={doneSlots}
+      {/* Hero: Begrüßung + Datum links, Tages-Ring rechts — freistehend auf
+          dem Body-Gradient (bewusst KEINE Card). Der Ring übernimmt die
+          progressbar-Semantik des alten Balkens; jeder Abhak-Klick schiebt
+          ihn per stroke-dashoffset-Transition weich weiter. */}
+      <div
+        className="companion-rise"
+        style={{
+          ...riseDelay(0),
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: 12,
+          padding: "8px 4px 20px",
+        }}
+      >
+        <div style={{ minWidth: 0 }}>
+          <h2
             style={{
-              height: 6,
-              borderRadius: 3,
-              background: C.tealPale,
-              overflow: "hidden",
+              margin: 0,
+              fontSize: 20,
+              fontWeight: 800,
+              color: C.tealDeep,
+              lineHeight: 1.25,
             }}
           >
-            <div
-              style={{
-                height: "100%",
-                width: `${pct}%`,
-                background: C.teal,
-                borderRadius: 3,
-                transition: "width 0.3s ease",
-              }}
-            />
+            {greetingForHM(nowHM)}
+          </h2>
+          <div style={{ fontSize: 13, color: C.textSoft, marginTop: 2 }}>
+            {fmtDayLong(date)}
           </div>
-        )}
+        </div>
+        <span
+          role="progressbar"
+          aria-valuemin={0}
+          aria-valuemax={totalSlots}
+          aria-valuenow={doneSlots}
+          aria-label={`${doneSlots} von ${totalSlots} erledigt`}
+          style={{ flexShrink: 0 }}
+        >
+          <RingGauge
+            percent={totalSlots > 0 ? (100 * doneSlots) / totalSlots : null}
+            size={72}
+            strokeWidth={7}
+          >
+            <span
+              style={{
+                fontSize: 15,
+                fontWeight: 800,
+                color: C.tealDeep,
+                fontVariantNumeric: "tabular-nums",
+              }}
+            >
+              {doneSlots}/{totalSlots}
+            </span>
+          </RingGauge>
+        </span>
       </div>
 
       {/* Tages-Timeline */}
@@ -275,6 +315,8 @@ export default function CompanionHeute({ api }) {
               key={bucket.id}
               bucket={bucket}
               isLast={idx === timeline.length - 1}
+              isCurrent={bucket.id === currentSlotId}
+              riseStyle={riseDelay(1 + idx)}
               expanded={!!expanded?.[bucket.id]}
               onToggleExpand={() =>
                 setExpanded((prev) => ({
@@ -299,26 +341,37 @@ export default function CompanionHeute({ api }) {
             padding: "2px 0",
           }}
         >
-          Alles erledigt für heute — stark! 🎉
+          {isEvening
+            ? "Alles für heute abgehakt. Schönen Abend dir!"
+            : "Alles für heute abgehakt. Schönen Tag dir!"}
         </div>
       )}
 
-      {/* Erinnerungs-Karte (Web-Push) — erscheint nur, wenn es laut /today
-          etwas zu erinnern gibt (hasReminderItems) und Push möglich ist. */}
-      <CompanionPush api={api} hasReminderItems={hasReminderItems} />
-
-      {/* Check-in-Karte */}
-      <div style={cardStyle}>
+      {/* Check-in-Karte — mit zarter Teal-Akzentkante links */}
+      <div
+        className="companion-rise"
+        style={{
+          ...cardStyle,
+          ...riseDelay(checkinRiseIdx),
+          borderLeft: `3px solid ${C.teal}`,
+        }}
+      >
         <h3 style={sectionTitle}>Wie geht es dir heute?</h3>
         <CompanionCheckin
           api={api}
           initial={checkin}
           symptoms={symptoms}
           onSaved={setCheckin}
+          onGoVerlauf={onGoVerlauf}
         />
       </div>
 
-      {/* Hilfe-Knopf — ruhig, aber gut sichtbar */}
+      {/* Erinnerungs-Karte (Web-Push) — erscheint nur, wenn es laut /today
+          etwas zu erinnern gibt (hasReminderItems) und Push möglich ist. */}
+      <CompanionPush api={api} hasReminderItems={hasReminderItems} />
+
+      {/* Hilfe-Knopf — ruhig, aber gut sichtbar: als schmale Fußzeilen-Karte,
+          Mechanik (HelpSheet, help_flag) unverändert */}
       {checkin?.help_flag ? (
         <div
           style={{
@@ -337,19 +390,21 @@ export default function CompanionHeute({ api }) {
           Im Notfall 112.
         </div>
       ) : (
-        <button
-          type="button"
-          onClick={() => setHelpOpen(true)}
-          style={{
-            ...ghostBtn,
-            border: `1.5px solid ${C.red}66`,
-            color: C.red,
-            background: "#fff",
-            fontWeight: 700,
-          }}
-        >
-          🆘 Ich brauche Hilfe / Rückruf
-        </button>
+        <div style={{ ...cardStyle, padding: 10 }}>
+          <button
+            type="button"
+            onClick={() => setHelpOpen(true)}
+            style={{
+              ...ghostBtn,
+              border: `1.5px solid ${C.red}66`,
+              color: C.red,
+              fontWeight: 700,
+              minHeight: 44,
+            }}
+          >
+            🆘 Ich brauche Hilfe / Rückruf
+          </button>
+        </div>
       )}
 
       {/* Kontakt zur Praxis — immer sichtbar am Ende des Heute-Tabs */}
@@ -395,10 +450,16 @@ export default function CompanionHeute({ api }) {
 
 // Ein Tagesabschnitt: Schiene links (Punkt + Linie), rechts die tappbare
 // Kopfzeile (Emoji + Name + x/y ✓ + Zusammenfassung) und — aufgeklappt —
-// die abhakbaren Zeilen.
+// die abhakbaren Zeilen. Der Abschnitt zur aktuellen Berlin-Uhrzeit ist die
+// "Bühne": heller Teal-Ring + sanfter Verlauf + atmender Rail-Punkt — reine
+// Hervorhebung, keine Bewertung. Auf-/Zuklappen läuft als grid-rows-Klappe
+// (die Zeilen bleiben gemountet; visibility nimmt sie eingeklappt aus der
+// Tab-Reihenfolge, damit versteckte Buttons nicht fokussierbar sind).
 function SlotSection({
   bucket,
   isLast,
+  isCurrent,
+  riseStyle,
   expanded,
   onToggleExpand,
   popping,
@@ -412,7 +473,27 @@ function SlotSection({
     .join(" · ");
 
   return (
-    <div style={{ display: "flex" }}>
+    <div
+      className="companion-rise"
+      style={{
+        ...riseStyle,
+        display: "flex",
+        // Bühne für den aktuellen Abschnitt: dezenter Ring in tealPale +
+        // Verlauf, der unten sanft ins Teal ausläuft — bewusst KEIN Alarm.
+        // Eingeklappte, nicht-aktuelle Abschnitte treten leicht zurück.
+        ...(isCurrent
+          ? {
+              boxShadow: `0 0 0 3px ${C.tealPale}`,
+              background: `linear-gradient(180deg, #fff 60%, ${C.tealPale} 160%)`,
+              borderRadius: 12,
+              padding: "0 8px 0 2px",
+              margin: "0 -8px 0 -2px",
+            }
+          : !expanded
+            ? { opacity: 0.88 }
+            : null),
+      }}
+    >
       {/* Zeitleisten-Schiene: Punkt auf Höhe der Kopfzeile + Verbindungslinie */}
       <div
         style={{
@@ -426,6 +507,7 @@ function SlotSection({
       >
         <span
           aria-hidden="true"
+          className={isCurrent ? "companion-breath" : undefined}
           style={{
             width: 12,
             height: 12,
@@ -434,7 +516,9 @@ function SlotSection({
             boxSizing: "border-box",
             background: complete ? C.teal : "#fff",
             border: `2px solid ${complete ? C.teal : C.line}`,
-            transition: "background 0.2s ease, border-color 0.2s ease",
+            // Kleine Choreografie: der Punkt füllt sich erst NACH dem Pop
+            // der letzten Zeile (0.15s Verzögerung).
+            transition: "background 0.4s ease 0.15s, border-color 0.4s ease 0.15s",
           }}
         />
         {!isLast && (
@@ -495,7 +579,7 @@ function SlotSection({
                 color: C.textSoft,
                 flexShrink: 0,
                 transform: expanded ? "rotate(90deg)" : "none",
-                transition: "transform 0.15s ease",
+                transition: "transform 0.3s ease",
               }}
             >
               ▶
@@ -518,19 +602,38 @@ function SlotSection({
           )}
         </button>
 
-        {expanded && (
-          <div style={{ marginTop: 8 }}>
-            {bucket.entries.map(({ item, slot }) => (
-              <TimelineRow
-                key={slotKey(item.id, slot.time)}
-                item={item}
-                slot={slot}
-                popping={popping === slotKey(item.id, slot.time)}
-                onToggle={() => onToggleSlot(item, slot)}
-              />
-            ))}
+        {/* Weiche Klappe: grid-template-rows 0fr↔1fr ist die einzige bewusste
+            Layout-Transition der App. visibility flippt am Übergangs-Ende und
+            hält eingeklappte Zeilen aus Fokus/Screenreader heraus. */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateRows: expanded ? "1fr" : "0fr",
+            transition: "grid-template-rows 0.35s cubic-bezier(0.22,1,0.36,1)",
+          }}
+        >
+          <div
+            style={{
+              overflow: "hidden",
+              minHeight: 0,
+              visibility: expanded ? "visible" : "hidden",
+              transition: "visibility 0.35s",
+            }}
+            aria-hidden={!expanded}
+          >
+            <div style={{ marginTop: 8 }}>
+              {bucket.entries.map(({ item, slot }) => (
+                <TimelineRow
+                  key={slotKey(item.id, slot.time)}
+                  item={item}
+                  slot={slot}
+                  popping={popping === slotKey(item.id, slot.time)}
+                  onToggle={() => onToggleSlot(item, slot)}
+                />
+              ))}
+            </div>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );
@@ -538,7 +641,10 @@ function SlotSection({
 
 // Eine abhakbare Zeile: die GANZE Zeile ist der Tap-Target — großer runder
 // Haken links, Name + Dosis/Hinweis, Uhrzeit klein rechts. Erledigt →
-// durchgestrichen + ausgeblendet (Opacity), Pop-Animation beim Abhaken.
+// durchgestrichen + ausgeblendet (Opacity). Das Abhaken ist ein kleiner
+// Moment: Teal-Pop (companion-pop), das ✓ zeichnet sich als SVG-Pfad ein
+// (companion-checkdraw, pathLength=1 — kein getTotalLength-Messen nötig),
+// Kreis-Füllung und Durchstreichen gleiten als weiche Transitions nach.
 function TimelineRow({ item, slot, popping, onToggle }) {
   const done = slot.done;
   return (
@@ -574,17 +680,26 @@ function TimelineRow({ item, slot, popping, onToggle }) {
           boxSizing: "border-box",
           border: `2px solid ${done ? C.teal : C.line}`,
           background: done ? C.teal : "#fff",
-          color: "#fff",
-          fontSize: 16,
-          fontWeight: 800,
-          lineHeight: 1,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          transition: "background 0.15s ease, border-color 0.15s ease",
+          transition: "background 0.3s ease, border-color 0.3s ease",
         }}
       >
-        {done ? "✓" : ""}
+        {done && (
+          <svg viewBox="0 0 16 16" width={15} height={15} aria-hidden="true" style={{ display: "block" }}>
+            <path
+              d="M3.4 8.6 L6.7 11.6 L12.6 4.9"
+              fill="none"
+              stroke="#fff"
+              strokeWidth={2.4}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              pathLength={1}
+              className="companion-checkdraw"
+            />
+          </svg>
+        )}
       </span>
 
       <span
@@ -592,7 +707,7 @@ function TimelineRow({ item, slot, popping, onToggle }) {
           flex: 1,
           minWidth: 0,
           opacity: done ? 0.5 : 1,
-          transition: "opacity 0.2s ease",
+          transition: "opacity 0.35s ease",
         }}
       >
         <span
