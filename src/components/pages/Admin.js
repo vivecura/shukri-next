@@ -7,7 +7,9 @@ import AdminLifesummitPanel from "@/components/AdminLifesummitPanel";
 import AdminBlogPanel from "@/components/AdminBlogPanel";
 import AdminAnamnesePanel from "@/components/AdminAnamnesePanel";
 import AdminRecallPanel from "@/components/AdminRecallPanel";
+import AdminCommunityPanel from "@/components/AdminCommunityPanel";
 import { isCallAgent, countDueOpen, countShukriOpen } from "@/lib/recalls";
+import { countOpenReports } from "@/lib/companion";
 
 function Admin() {
   const [session, setSession] = useState(null);
@@ -21,6 +23,8 @@ function Admin() {
   // Recall tab badge — dringende: rote ungeklärte (für Shukri) + überfällige/
   // heute-fällige offene Anrufe. Fed by two head:true count-queries below.
   const [recallBadge, setRecallBadge] = useState(0);
+  // Community tab badge — offene Meldungen (Melden-Button der Patienten).
+  const [openReportsCount, setOpenReportsCount] = useState(0);
 
   // UI-only role gate: is the logged-in account a call agent (Mahmoud)?
   // This is display logic, NOT data protection — see securityNote in recalls.js.
@@ -61,6 +65,23 @@ function Admin() {
     })();
     return () => { cancelled = true; };
   }, [session, activeTab]);
+
+  // Community badge: offene Meldungen als head:true count — gleiches Muster
+  // wie die anderen Badges (Tab-Wechsel refresht, Fehler fallen still auf 0).
+  // Nur für Shukri: der Call-Agent sieht den Community-Tab gar nicht.
+  useEffect(() => {
+    if (!session || isCaller) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const count = await countOpenReports();
+        if (!cancelled) setOpenReportsCount(count || 0);
+      } catch {
+        if (!cancelled) setOpenReportsCount(0);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [session, activeTab, isCaller]);
 
   // Fetch new contacts count when logged in (for tab badge)
   useEffect(() => {
@@ -237,6 +258,23 @@ function Admin() {
               </span>
             )}
           </button>
+          {/* Community — Moderation der Patienten-Community (Stufe 6).
+              Nur für Shukri (!isCaller); roter Badge = offene Meldungen. */}
+          <button
+            onClick={() => setActiveTab("community")}
+            className={`relative px-4 py-2 text-sm font-medium transition-colors ${
+              currentTab === "community"
+                ? "text-[#43a9ab] border-b-2 border-[#43a9ab] -mb-px"
+                : "text-[#515757]/50 hover:text-[#515757]"
+            }`}
+          >
+            Community
+            {openReportsCount > 0 && (
+              <span className="ml-2 inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 text-[10px] font-bold text-white bg-red-500 rounded-full">
+                {openReportsCount}
+              </span>
+            )}
+          </button>
           </>
           )}
           </div>
@@ -268,6 +306,8 @@ function Admin() {
         {!isCaller && currentTab === "lifesummit" && <AdminLifesummitPanel />}
 
         {!isCaller && currentTab === "blog" && <AdminBlogPanel />}
+
+        {!isCaller && currentTab === "community" && <AdminCommunityPanel />}
       </div>
     </div>
   );

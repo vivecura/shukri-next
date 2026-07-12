@@ -25,12 +25,18 @@ export async function GET(req) {
       return jsonError(500, "Da ist etwas schiefgelaufen. Bitte versuche es später erneut.");
     }
 
+    // Community-Status (Stufe 6): der Client entscheidet beim Mount des
+    // Community-Tabs anhand nickname + community_joined_at zwischen
+    // Join-Screen und Feed — ohne extra Roundtrip. Der Nickname ist das
+    // Pseudonym, kein Klarname.
     return Response.json(
       {
         ok: true,
         vorname: sub?.vorname || "",
         nachname: sub?.nachname || "",
         nummer: access.patient_number,
+        nickname: access.nickname || null,
+        community_joined_at: access.community_joined_at || null,
       },
       { headers: sessionHeaders(session) }
     );

@@ -161,6 +161,9 @@ export default function AdminCompanionSection({
   const [accessSaving, setAccessSaving] = useState(false);
   const [pinResetBusy, setPinResetBusy] = useState(false);
   const [confirmPinReset, setConfirmPinReset] = useState(false); // Zwei-Schritt-Reset
+  // 🚀 Patient einrichten — Vollbild-Modal (QR + 4 Praxis-Schritte, druckbar).
+  const [setupOpen, setSetupOpen] = useState(false);
+  const [qrDataUrl, setQrDataUrl] = useState("");
 
   // Block B
   const [busyImportId, setBusyImportId] = useState(null);
@@ -310,6 +313,29 @@ export default function AdminCompanionSection({
       setErr(e.message || "PIN konnte nicht zurückgesetzt werden.");
     } finally {
       setPinResetBusy(false);
+    }
+  };
+
+  // 🚀 Patient einrichten: Modal öffnen + QR erzeugen. Der QR kodiert
+  // <origin>/companion — window.location.origin statt hartem Hostnamen, damit
+  // der Code auch auf der Vercel-Preview auf die Preview zeigt. qrcode wird
+  // erst beim Klick dynamisch geladen (client-only, bleibt aus dem
+  // Patienten-Bundle und dem initialen Admin-Chunk raus). Der Data-URL-Cache
+  // überlebt Öffnen/Schließen — der QR ist je Origin immer derselbe.
+  const openSetup = async () => {
+    setErr("");
+    setSetupOpen(true);
+    if (qrDataUrl) return;
+    try {
+      const QRCode = (await import("qrcode")).default;
+      const dataUrl = await QRCode.toDataURL(
+        `${window.location.origin}/companion`,
+        { width: 560, margin: 1 }
+      );
+      setQrDataUrl(dataUrl);
+    } catch {
+      setErr("QR-Code konnte nicht erzeugt werden. Bitte erneut versuchen.");
+      setSetupOpen(false);
     }
   };
 
@@ -731,6 +757,43 @@ export default function AdminCompanionSection({
                 </span>
               )}
             </div>
+
+            {/* Community-Status (Stufe 6): der Beitritt passiert IN der App
+                durch den Patienten selbst (Regeln + Nickname) — hier nur der
+                Lese-Status für das Team. */}
+            <div className="mt-3 flex items-center gap-2 flex-wrap">
+              {access.community_joined_at && access.nickname ? (
+                <>
+                  <span className="text-sm text-[#515757]">
+                    👥 Community-Nickname:{" "}
+                    <span className="font-medium">{access.nickname}</span>
+                  </span>
+                  <span className={BADGE}>
+                    Community-Mitglied seit{" "}
+                    {fmtDate(access.community_joined_at)}
+                  </span>
+                </>
+              ) : (
+                <span className="text-xs text-[#515757]/40">
+                  👥 Noch nicht in der Community — der Beitritt (Regeln +
+                  Nickname) passiert in der App.
+                </span>
+              )}
+            </div>
+
+            {/* 🚀 Patient einrichten — das 2-Minuten-Onboarding am Gerät des
+                Patienten (QR + Nummer + 4 Schritte, druckbar). */}
+            <div className="mt-3">
+              <button
+                type="button"
+                onClick={openSetup}
+                disabled={!consentGiven}
+                title={!consentGiven ? CONSENT_HINT : undefined}
+                className={PILL_PRIMARY}
+              >
+                🚀 Patient einrichten
+              </button>
+            </div>
           </div>
         ) : (
           <button
@@ -742,6 +805,14 @@ export default function AdminCompanionSection({
           >
             {accessSaving ? "Legt an…" : "✓ Zugang anlegen"}
           </button>
+        )}
+
+        {setupOpen && access && (
+          <PatientSetupModal
+            patientNumber={access.patient_number}
+            qrDataUrl={qrDataUrl}
+            onClose={() => setSetupOpen(false)}
+          />
         )}
       </div>
 
@@ -1457,6 +1528,102 @@ function PlanItemRow({
             </button>
           </>
         )}
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// PatientSetupModal — "🚀 Patient einrichten": das 2-Minuten-Onboarding direkt
+// am Gerät des Patienten. Vollbild (fixed inset-0), großer QR auf
+// <origin>/companion, die Patientennummer riesig, die 4 Praxis-Schritte —
+// und druckbar für den Tresen-Aushang: @media print blendet alles außer dem
+// Modal aus (visibility-Trick), die Buttons verschwinden über print:hidden.
+// ---------------------------------------------------------------------------
+function PatientSetupModal({ patientNumber, qrDataUrl, onClose }) {
+  return (
+    <div className="acs-setup-modal fixed inset-0 z-50 bg-white overflow-y-auto">
+      <style>{`
+        @media print {
+          body * { visibility: hidden; }
+          .acs-setup-modal, .acs-setup-modal * { visibility: visible; }
+          .acs-setup-modal { position: absolute !important; inset: 0; overflow: visible; }
+        }
+      `}</style>
+
+      <div className="max-w-md mx-auto px-6 py-10 text-center">
+        <h2 className="text-xl font-semibold text-[#1f6e70]">
+          📱 ViveCura Companion einrichten
+        </h2>
+        <p className="mt-1 text-xs text-[#515757]/50">
+          Direkt am Handy des Patienten — Schritt für Schritt.
+        </p>
+
+        {/* Großer QR — kodiert <origin>/companion (Preview-sicher). */}
+        <div className="mt-6 flex justify-center">
+          {qrDataUrl ? (
+            /* Data-URL aus QRCode.toDataURL — next/image bringt hier nichts. */
+            /* eslint-disable-next-line @next/next/no-img-element */
+            <img
+              src={qrDataUrl}
+              alt="QR-Code zur Companion-App"
+              width={280}
+              height={280}
+              className="w-[280px] h-[280px]"
+            />
+          ) : (
+            <div className="w-[280px] h-[280px] rounded-lg bg-gray-100 animate-pulse" />
+          )}
+        </div>
+        <p className="mt-2 text-xs text-[#515757]/50">
+          Führt zu <span className="font-semibold">vivecura.com/companion</span>
+        </p>
+
+        {/* Die Nummer riesig — sie ist der Login-Name des Patienten. */}
+        <p className="mt-6 text-xs text-[#515757]/50 uppercase tracking-wider">
+          Patientennummer
+        </p>
+        <p className="text-5xl font-semibold text-[#1f6e70] tabular-nums tracking-wider">
+          {patientNumber}
+        </p>
+
+        {/* Die 4 Praxis-Schritte. */}
+        <ol className="mt-8 space-y-3 text-left text-sm text-[#515757]">
+          {[
+            "Safari auf dem Handy des Patienten öffnen",
+            "QR-Code mit der Kamera scannen",
+            "Teilen-Symbol → Zum Home-Bildschirm (App installieren)",
+            "Patient wählt selbst seine PIN und aktiviert 🔔 Mitteilungen",
+          ].map((step, i) => (
+            <li key={i} className="flex items-start gap-3">
+              <span className="flex-none w-6 h-6 rounded-full bg-[#43a9ab] text-white text-xs font-semibold flex items-center justify-center">
+                {i + 1}
+              </span>
+              <span>{step}</span>
+            </li>
+          ))}
+        </ol>
+
+        <p className="mt-6 text-xs text-[#515757]/50">
+          Dauert ca. 2 Minuten — direkt am Gerät des Patienten.
+        </p>
+
+        <div className="mt-8 flex items-center justify-center gap-4 print:hidden">
+          <button
+            type="button"
+            onClick={() => window.print()}
+            className="text-xs px-4 py-2 rounded-full bg-[#43a9ab] text-white hover:bg-[#3a9597] transition-colors"
+          >
+            Drucken
+          </button>
+          <button
+            type="button"
+            onClick={onClose}
+            className="text-xs px-4 py-2 rounded-full border border-gray-200 text-[#515757]/70 hover:text-[#515757] transition-colors"
+          >
+            Schließen
+          </button>
+        </div>
       </div>
     </div>
   );

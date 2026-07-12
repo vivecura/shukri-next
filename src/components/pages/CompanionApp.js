@@ -25,6 +25,7 @@ import CompanionHeute, {
 import CompanionCheckin from "@/components/companion/CompanionCheckin";
 import CompanionPlan from "@/components/companion/CompanionPlan";
 import CompanionVerlauf from "@/components/companion/CompanionVerlauf";
+import CompanionCommunity from "@/components/companion/CompanionCommunity";
 import {
   C,
   cardStyle,
@@ -65,12 +66,14 @@ const TABS = [
   { id: "tagebuch", label: "Tagebuch", emoji: "📖" },
   { id: "plan", label: "Mein Plan", emoji: "📋" },
   { id: "verlauf", label: "Verlauf", emoji: "📈" },
+  { id: "community", label: "Community", emoji: "👥" },
 ];
 
 export default function CompanionApp() {
   const [phase, setPhase] = useState("loading"); // loading | login | app
   const [me, setMe] = useState(null);
   const [tab, setTab] = useState("heute");
+  const [unreadChat, setUnreadChat] = useState(0); // Badge am Community-Tab
   const bootRef = useRef(false); // Strict-Mode-Doppel-Effekt abfangen
 
   // Datenrouten-Helfer: 401 (Session weg / Zugang gesperrt / Widerruf) →
@@ -86,6 +89,57 @@ export default function CompanionApp() {
       throw err;
     }
   }, []);
+
+  // Upload-Helfer für multipart (Community-Beiträge mit Fotos/Videos):
+  // identisch zu apiFetch, aber body = FormData und OHNE Content-Type-Header —
+  // die multipart-Boundary setzt der Browser selbst.
+  const apiUpload = useCallback(async (path, formData) => {
+    const res = await fetch(`/api/companion${path}`, {
+      method: "POST",
+      credentials: "same-origin",
+      body: formData,
+    });
+    let data = null;
+    try {
+      data = await res.json();
+    } catch {
+      // kein JSON (z. B. 413 vom Edge) — generischer Fehler unten
+    }
+    if (!res.ok) {
+      if (res.status === 401) {
+        setMe(null);
+        setPhase("login");
+      }
+      const err = new Error(data?.error || FALLBACK_ERROR);
+      err.status = res.status;
+      throw err;
+    }
+    return data || {};
+  }, []);
+
+  // Ungelesen-Badge: alle 20s die Inbox pollen, aber nur solange die App
+  // sichtbar ist. 403 (noch nicht beigetreten) und alle Fehler → still 0.
+  useEffect(() => {
+    if (phase !== "app") return;
+    let cancelled = false;
+    const tick = async () => {
+      if (document.visibilityState !== "visible") return;
+      try {
+        const data = await apiFetch("/community/inbox");
+        if (!cancelled) setUnreadChat(data.totalUnread || 0);
+      } catch {
+        if (!cancelled) setUnreadChat(0);
+      }
+    };
+    tick();
+    const timer = setInterval(tick, 20000);
+    document.addEventListener("visibilitychange", tick);
+    return () => {
+      cancelled = true;
+      clearInterval(timer);
+      document.removeEventListener("visibilitychange", tick);
+    };
+  }, [phase]);
 
   // Boot: Session-Probe über /me — gibt es ein gültiges Cookie, geht es
   // direkt in die App, sonst zum Login.
@@ -225,6 +279,14 @@ export default function CompanionApp() {
             {tab === "tagebuch" && <TagebuchTab api={api} />}
             {tab === "plan" && <CompanionPlan api={api} />}
             {tab === "verlauf" && <CompanionVerlauf api={api} />}
+            {tab === "community" && (
+              <CompanionCommunity
+                api={api}
+                apiUpload={apiUpload}
+                unread={unreadChat}
+                onUnreadChange={setUnreadChat}
+              />
+            )}
 
             <Disclaimer />
           </div>
@@ -260,6 +322,7 @@ export default function CompanionApp() {
                     aria-current={active ? "page" : undefined}
                     style={{
                       flex: 1,
+                      position: "relative",
                       background: "none",
                       border: "none",
                       cursor: "pointer",
@@ -278,6 +341,27 @@ export default function CompanionApp() {
                   >
                     <span style={{ fontSize: 20, lineHeight: 1 }}>{t.emoji}</span>
                     {t.label}
+                    {t.id === "community" && unreadChat > 0 && (
+                      <span
+                        style={{
+                          position: "absolute",
+                          top: 2,
+                          left: "calc(50% + 8px)",
+                          background: C.red,
+                          color: "#fff",
+                          borderRadius: 999,
+                          fontSize: 10,
+                          fontWeight: 800,
+                          minWidth: 16,
+                          height: 16,
+                          lineHeight: "16px",
+                          padding: "0 4px",
+                          textAlign: "center",
+                        }}
+                      >
+                        {unreadChat > 99 ? "99+" : unreadChat}
+                      </span>
+                    )}
                   </button>
                 );
               })}

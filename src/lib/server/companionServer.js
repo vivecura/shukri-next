@@ -274,10 +274,13 @@ export async function requireSession(req) {
   if (!payload) throw jsonError(401, "Bitte melde dich neu an.");
   const sid = payload.sid;
 
+  // nickname + community_joined_at fahren hier mit, damit der Community-
+  // Wächter (requireCommunityMember in companionCommunity.js) die
+  // Mitgliedschaft OHNE zweite Query prüfen kann.
   const { data: access, error } = await companionAdmin
     .from("companion_access")
     .select(
-      "id, submission_id, patient_number, pin_hash, consent_app_at, consent_source, consent_revoked_at, active"
+      "id, submission_id, patient_number, pin_hash, consent_app_at, consent_source, consent_revoked_at, active, nickname, community_joined_at"
     )
     .eq("practice_id", PRACTICE_ID)
     .eq("submission_id", sid)
@@ -385,6 +388,36 @@ export function registerAuthFailures(req, key) {
 
 export function resetAuthFailures(key) {
   rateMap.delete(key);
+}
+
+// ---------------------------------------------------------------------------
+// AKTIONS-BUDGET (Community, Stufe 6) — gleiches Best-Effort-Muster wie die
+// Brute-Force-Bremse oben (Map im Modul-Scope: pro Lambda-Instanz, leer nach
+// Cold Start — dokumentierte Einschränkung siehe dort). Zählt AKTIONEN pro
+// Key in einem festen Fenster; ist das Budget erschöpft, fliegt eine 429 mit
+// freundlicher deutscher Meldung. Schutz gegen Spam-/Endlos-Schleifen,
+// nicht gegen verteilte Angreifer.
+// ---------------------------------------------------------------------------
+const actionRateMap = new Map(); // key → { count, resetAt }
+
+export function assertActionRateLimit(key, maxPerWindow, windowMs, message) {
+  const now = Date.now();
+  // Opportunistisches Aufräumen, damit die Map nicht unbegrenzt wächst
+  // (gleiches Muster wie registerAuthFailure).
+  if (actionRateMap.size > 1000) {
+    for (const [k, v] of actionRateMap) {
+      if (v.resetAt <= now) actionRateMap.delete(k);
+    }
+  }
+  const entry = actionRateMap.get(key);
+  if (!entry || entry.resetAt <= now) {
+    actionRateMap.set(key, { count: 1, resetAt: now + windowMs });
+    return;
+  }
+  if (entry.count >= maxPerWindow) {
+    throw jsonError(429, message);
+  }
+  entry.count += 1;
 }
 
 // ---------------------------------------------------------------------------
@@ -509,6 +542,19 @@ const ALERT_REASONS = {
     grund: "Companion: Befinden ≤ 3",
     prefix: "📉 Befinden ≤3",
   },
+  // Community-Meldung (Melden-Button, Stufe 6). checkinId ist hier der
+  // Berlin-Tag (YYYY-MM-DD) — der Marker [checkin:<tag>|report] dedupet
+  // zusammen mit submission_id (= Melder) deterministisch pro (Melder,
+  // Berlin-Tag): wiederholte Meldungen desselben Patienten spammen die
+  // Für-Shukri-Liste nicht zu. Der Name auf der Karte ist der MELDER
+  // (nicht der Gemeldete) — Details stehen im Admin unter Community.
+  report: {
+    emoji: "🚩",
+    grund: "Companion: Community-Meldung",
+    prefix: "🚩 Community-Meldung",
+    cardText:
+      "Neue Community-Meldung eingegangen — bitte im Admin unter Community prüfen.",
+  },
 };
 
 export async function insertCompanionAlert({
@@ -555,8 +601,9 @@ export async function insertCompanionAlert({
     "Unbenannt";
 
   // Marker ans Ende der Notiz — für Mahmoud/Shukri unauffällig, für die
-  // Dedupe eindeutig.
-  const detailText = String(detail || "").trim();
+  // Dedupe eindeutig. Ohne explizites detail greift der feste Karten-Text
+  // des Grundes (cardText — z. B. bei Community-Meldungen).
+  const detailText = String(detail || conf.cardText || "").trim();
   const notiz =
     `${conf.prefix} — ${name} (${patientNumber})` +
     (detailText ? `: ${detailText}` : "") +

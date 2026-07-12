@@ -227,9 +227,11 @@ export function sortPlanItems(rows) {
 const ACCESS_COLS =
   "id, practice_id, submission_id, patient_number, pin_hash, qr_token, " +
   "consent_app_at, consent_source, consent_revoked_at, active, created_at, " +
-  "updated_at";
+  "updated_at, nickname, community_joined_at";
 
-// pin_hash → has_pin mappen und den Hash aus der Rückgabe tilgen.
+// pin_hash → has_pin mappen und den Hash aus der Rückgabe tilgen. nickname +
+// community_joined_at (Community-Beitritt, Stufe 6) laufen unverändert durch —
+// der Spread reicht, nur der Hash wird getilgt.
 function toAccessView(row) {
   if (!row) return null;
   return { ...row, has_pin: !!row.pin_hash, pin_hash: undefined };
@@ -631,6 +633,253 @@ export async function rejectImport(importId, note = "") {
     throw new Error("Dieser Entwurf wurde bereits entschieden.");
   }
   return data[0];
+}
+
+// ---------------------------------------------------------------------------
+// COMMUNITY-MODERATION (Stufe 6) — Admin-Sicht auf Beiträge, Kommentare und
+// Meldungen. NUR hier darf die Klarname↔Nickname-Zuordnung sichtbar werden
+// (nickname + patient_number über companion_access); nach außen (Patienten-
+// Routen) gilt weiter das Klarnamen-Verbot. Moderation = hidden-Flag, NIE
+// Hard-Delete (Nachweisbarkeit). Gleiches Query-Muster wie oben: alles
+// practice_id-gescoped über den geteilten Auth-Client.
+// ---------------------------------------------------------------------------
+
+// Deutsche Labels der meldbaren Ziel-Arten (companion_reports.target_kind).
+export const REPORT_KIND_LABELS = {
+  post: "Beitrag",
+  comment: "Kommentar",
+  message: "Nachricht",
+  member: "Mitglied",
+};
+
+// Autoren-Lookup für die Moderation: submission_id → { nickname,
+// patient_number }. EIN gebatchter Select statt N Einzel-Queries.
+async function communityAuthorMap(submissionIds) {
+  const ids = [...new Set((submissionIds || []).filter(Boolean))];
+  if (!ids.length) return {};
+  const { data, error } = await supabase
+    .from("companion_access")
+    .select("submission_id, nickname, patient_number")
+    .eq("practice_id", PRACTICE_ID)
+    .in("submission_id", ids);
+  if (error) throw error;
+  const map = {};
+  for (const r of data || []) {
+    map[r.submission_id] = {
+      nickname: r.nickname || null,
+      patient_number: r.patient_number || null,
+    };
+  }
+  return map;
+}
+
+// Neueste Beiträge INKLUSIVE ausgeblendeter (der Admin sieht alles, gedimmt),
+// je Beitrag die Kommentare (ebenfalls inkl. hidden) und der Autor
+// (nickname + patient_number). Rückgabe: [{...post, author, comments:[{...c,
+// author}]}], neueste zuerst.
+export async function listCommunityPosts({ limit = 50 } = {}) {
+  const { data: posts, error } = await supabase
+    .from("companion_posts")
+    .select("*")
+    .eq("practice_id", PRACTICE_ID)
+    .order("created_at", { ascending: false })
+    .limit(limit);
+  if (error) throw error;
+  const postRows = posts || [];
+  if (!postRows.length) return [];
+
+  const { data: comments, error: cErr } = await supabase
+    .from("companion_comments")
+    .select("*")
+    .eq("practice_id", PRACTICE_ID)
+    .in(
+      "post_id",
+      postRows.map((p) => p.id)
+    )
+    .order("created_at", { ascending: true });
+  if (cErr) throw cErr;
+  const commentRows = comments || [];
+
+  const authors = await communityAuthorMap([
+    ...postRows.map((p) => p.submission_id),
+    ...commentRows.map((c) => c.submission_id),
+  ]);
+
+  const byPost = {};
+  for (const c of commentRows) {
+    (byPost[c.post_id] ||= []).push({
+      ...c,
+      author: authors[c.submission_id] || null,
+    });
+  }
+  return postRows.map((p) => ({
+    ...p,
+    author: authors[p.submission_id] || null,
+    comments: byPost[p.id] || [],
+  }));
+}
+
+// Beitrag aus-/einblenden (Moderation). hidden=true verschwindet sofort aus
+// dem Patienten-Feed (Server filtert hidden=false) — die Daten bleiben.
+export async function setPostHidden(id, hidden) {
+  const { data, error } = await supabase
+    .from("companion_posts")
+    .update({ hidden: !!hidden })
+    .eq("practice_id", PRACTICE_ID)
+    .eq("id", id)
+    .select("*")
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+// Kommentar aus-/einblenden — gleiche Semantik wie setPostHidden.
+export async function setCommentHidden(id, hidden) {
+  const { data, error } = await supabase
+    .from("companion_comments")
+    .update({ hidden: !!hidden })
+    .eq("practice_id", PRACTICE_ID)
+    .eq("id", id)
+    .select("*")
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+// Meldungen (Melden-Button der Patienten), neueste zuerst. resolved=false =
+// offene Warteschlange (Default), resolved=true = erledigte Historie.
+// Jede Meldung kommt mit reporter (nickname/patient_number) und einem
+// aufgelösten Ziel-Preview: das gemeldete Ding selbst (Beitrag/Kommentar/
+// Nachricht als Text-Auszug, Mitglied als Zugang) + dessen Autor. Ziel kann
+// null sein (z. B. nach DSGVO-Löschung des Verfassers — FK CASCADE).
+export async function listReports({ resolved = false } = {}) {
+  const { data, error } = await supabase
+    .from("companion_reports")
+    .select("*")
+    .eq("practice_id", PRACTICE_ID)
+    .eq("resolved", !!resolved)
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  const reports = data || [];
+  if (!reports.length) return [];
+
+  // Ziel-Zeilen je Art in EINEM Batch-Select pro Tabelle holen.
+  const idsByKind = { post: [], comment: [], message: [], member: [] };
+  for (const r of reports) {
+    if (idsByKind[r.target_kind]) idsByKind[r.target_kind].push(r.target_id);
+  }
+  const fetchTargets = async (table, col, ids, cols) => {
+    if (!ids.length) return {};
+    const { data: rows, error: tErr } = await supabase
+      .from(table)
+      .select(cols)
+      .eq("practice_id", PRACTICE_ID)
+      .in(col, [...new Set(ids)]);
+    if (tErr) throw tErr;
+    const map = {};
+    for (const row of rows || []) map[row[col]] = row;
+    return map;
+  };
+  const [postMap, commentMap, messageMap, memberMap] = await Promise.all([
+    fetchTargets(
+      "companion_posts",
+      "id",
+      idsByKind.post,
+      "id, submission_id, body, media, hidden, created_at"
+    ),
+    fetchTargets(
+      "companion_comments",
+      "id",
+      idsByKind.comment,
+      "id, post_id, submission_id, body, hidden, created_at"
+    ),
+    fetchTargets(
+      "companion_messages",
+      "id",
+      idsByKind.message,
+      "id, sender_id, recipient_id, body, created_at"
+    ),
+    fetchTargets(
+      "companion_access",
+      "submission_id",
+      idsByKind.member,
+      "submission_id, nickname, patient_number, active, community_joined_at"
+    ),
+  ]);
+  const targetOf = (r) =>
+    r.target_kind === "post"
+      ? postMap[r.target_id] || null
+      : r.target_kind === "comment"
+      ? commentMap[r.target_id] || null
+      : r.target_kind === "message"
+      ? messageMap[r.target_id] || null
+      : memberMap[r.target_id] || null;
+
+  // Nicknames für Melder + Ziel-Verfasser in einem Rutsch.
+  const authorIds = reports.map((r) => r.reporter_id);
+  for (const r of reports) {
+    const t = targetOf(r);
+    if (!t) continue;
+    if (r.target_kind === "message") authorIds.push(t.sender_id);
+    else if (r.target_kind !== "member") authorIds.push(t.submission_id);
+  }
+  const authors = await communityAuthorMap(authorIds);
+
+  return reports.map((r) => {
+    const t = targetOf(r);
+    let targetAuthor = null;
+    if (t) {
+      if (r.target_kind === "message") targetAuthor = authors[t.sender_id] || null;
+      else if (r.target_kind === "member")
+        targetAuthor = {
+          nickname: t.nickname || null,
+          patient_number: t.patient_number || null,
+        };
+      else targetAuthor = authors[t.submission_id] || null;
+    }
+    return {
+      ...r,
+      reporter: authors[r.reporter_id] || null,
+      target: t,
+      targetAuthor,
+    };
+  });
+}
+
+// Meldung als erledigt markieren (Warteschlange → Historie). Kein Löschen.
+export async function resolveReport(id) {
+  const { data, error } = await supabase
+    .from("companion_reports")
+    .update({ resolved: true })
+    .eq("practice_id", PRACTICE_ID)
+    .eq("id", id)
+    .select("*")
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+// Badge-Zähler: offene Meldungen (Community-Tab im Admin). head:true = nur
+// Count, keine Zeilen — gleiches Muster wie countPendingImports.
+export async function countOpenReports() {
+  const { count, error } = await supabase
+    .from("companion_reports")
+    .select("id", { count: "exact", head: true })
+    .eq("practice_id", PRACTICE_ID)
+    .eq("resolved", false);
+  if (error) throw error;
+  return count || 0;
+}
+
+// Signierte URL für ein Medium aus dem privaten 'community'-Bucket (1 h TTL),
+// über die authentifizierte Admin-Session (Storage-Policy 'authenticated' —
+// gleiches Muster wie das Befund-Öffnen im AdminAnamnesePanel).
+export async function communitySignedUrl(path) {
+  const { data, error } = await supabase.storage
+    .from("community")
+    .createSignedUrl(path, 3600);
+  if (error) throw error;
+  return data?.signedUrl || null;
 }
 
 // ---------------------------------------------------------------------------
