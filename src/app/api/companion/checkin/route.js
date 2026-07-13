@@ -25,7 +25,6 @@
 // den bereits gespeicherten Check-in nie scheitern lassen (dann null).
 
 import {
-  addDaysIso,
   companionAdmin,
   berlinToday,
   insertCompanionAlert,
@@ -35,6 +34,7 @@ import {
   sessionHeaders,
   SR_GRUND_PREFIX,
 } from "@/lib/server/companionServer";
+import { addDaysIso, buildCheckinVergleich } from "@/lib/companionStats";
 
 const CHECKIN_COLS =
   "id, checkin_date, feeling, energy, sleep, verdauung, stress, klarheit, " +
@@ -53,68 +53,6 @@ function parseScale(value, label) {
 
 const UUID_REGEX =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-
-// Die sechs Skalen-Spalten für den Sofort-Vergleich — Reihenfolge egal, der
-// Client sortiert nach CHECKIN_SCALES (companionUi bleibt die eine Quelle).
-const VERGLEICH_SCALE_FIELDS = [
-  "feeling",
-  "energy",
-  "sleep",
-  "verdauung",
-  "stress",
-  "klarheit",
-];
-
-// Mittel der non-null Werte; weniger als minPoints echte Werte → null (ein
-// "Schnitt" aus einem einzigen Tag wäre keiner). null wird AUSGELASSEN, nie
-// als 0 gezählt — Patienten schicken oft nur Teilfelder (parseScale oben).
-// Kein Runden: gerundet/formatiert wird erst in der Anzeige.
-function meanField(rows, getter, minPoints = 2) {
-  let sum = 0;
-  let n = 0;
-  for (const row of rows) {
-    const v = getter(row);
-    if (typeof v === "number" && Number.isFinite(v)) {
-      sum += v;
-      n += 1;
-    }
-  }
-  return n >= minPoints ? sum / n : null;
-}
-
-// Sofort-Vergleich aus der heutigen Zeile + den Zeilen [heute-7 … heute-1]:
-// gestern = heute-1, vorwoche = heute-7 (per Konstruktion GLEICHER ISO-
-// Wochentag — kein Wochentags-Rechnen nötig), schnitt7 = Mittel je Feld und
-// je Symptom-Id über die 7 Vortage. Die Referenz-Zeilen gehen ROH mit
-// (CHECKIN_COLS, keine Diagnose-Daten) — Deltas rechnet der Client, damit
-// er selbst entscheidet, welche Felder er zeigt. Formelgleich mit
-// buildCheckinVergleich in src/lib/companionStats.js (kanonische Heimat der
-// Statistik-Formeln, Bauplan Schritt 1) — hier lokal, damit diese Route
-// nicht auf die Reihenfolge der Ausbau-Schritte angewiesen ist.
-function buildVergleich(todayRow, rows7, today) {
-  const gestern =
-    rows7.find((r) => r.checkin_date === addDaysIso(today, -1)) || null;
-  const vorwoche =
-    rows7.find((r) => r.checkin_date === addDaysIso(today, -7)) || null;
-
-  const schnitt7 = {};
-  for (const field of VERGLEICH_SCALE_FIELDS) {
-    schnitt7[field] = meanField(rows7, (r) => r[field]);
-  }
-  // Alle Symptom-Ids, die in den 7 Vortagen vorkommen — auch inzwischen
-  // deaktivierte: der Client blendet über seine Symptomliste selbst aus.
-  const symIds = new Set();
-  for (const r of rows7) {
-    for (const id of Object.keys(r.symptom_scores || {})) symIds.add(id);
-  }
-  const symptome = {};
-  for (const id of symIds) {
-    symptome[id] = meanField(rows7, (r) => (r.symptom_scores || {})[id]);
-  }
-  schnitt7.symptome = symptome;
-
-  return { gestern, vorwoche, schnitt7 };
-}
 
 // symptomScores {id: 0-10} → geprüftes Objekt oder undefined (nicht dabei).
 // Werte streng 0-10 (int) → sonst 400; Schlüssel, die keine UUID sind oder
@@ -335,7 +273,10 @@ export async function POST(req) {
       if (histErr) {
         console.error("companion/checkin: Vergleichs-Select fehlgeschlagen:", histErr);
       } else {
-        vergleich = buildVergleich(checkin, histRows || [], date);
+        // Formeln aus companionStats (kanonische Heimat): gestern / gleicher
+        // Wochentag Vorwoche / 7-Tage-Schnitt je Skala + Symptom — die
+        // Referenz-Zeilen gehen roh mit, Deltas rechnet der Client.
+        vergleich = buildCheckinVergleich(checkin, histRows || [], date);
       }
     } catch (e) {
       console.error("companion/checkin: Vergleichs-Select fehlgeschlagen:", e);

@@ -14,9 +14,9 @@
 //     Baustein + gesamt, bis GESTERN (der laufende Tag würde die Quote
 //     unfair drücken). Payload dadurch O(Items) statt O(Log-Slots).
 //
-// Die Treue-Formeln sind bewusst formelgleich mit den puren Helfern in
-// CompanionCharts.js (adherencePercent) bzw. dem geplanten kanonischen
-// src/lib/companionStats.js — Shukris spätere Therapie-Statistik rechnet
+// Die Treue-Formeln kommen aus dem KANONISCHEN src/lib/companionStats.js
+// (formelgleich mit den puren Helfern in CompanionCharts.js) — Server-Route,
+// Admin-Patientenblick und Shukris spätere Therapie-Statistik rechnen
 // exakt dieselben Zahlen:
 //   SOLL an Tag D = max(times.length, 1) wenn active UND kind supplement/todo
 //     UND D >= created_at-Tag UND (start_date null oder <= D) UND (end_date
@@ -35,69 +35,27 @@
 
 import {
   companionAdmin,
-  addDaysIso,
   berlinToday,
   jsonError,
-  normTime,
   PRACTICE_ID,
   requireSession,
   sessionHeaders,
 } from "@/lib/server/companionServer";
+import {
+  addDaysIso,
+  buildCheckinStreak,
+  buildSerien,
+  buildTreue,
+  earliestTreueStart,
+  indexLogs,
+  toBerlinDateIso,
+} from "@/lib/companionStats";
 
 const GENERIC = "Da ist etwas schiefgelaufen. Bitte versuche es später erneut.";
 
 // Whitelist der Zeiträume — alles andere fällt hart auf '30' zurück (nie
 // client-gelieferte Werte in Datums-Arithmetik durchreichen).
 const RANGE_DAYS = { 30: 30, 90: 90 };
-
-// ISO-Wochentag (1=Mo … 7=So, Format der days_of_week-Spalte) für ein
-// HISTORISCHES 'YYYY-MM-DD'. berlinWeekdayIso() gilt nur für JETZT — für
-// vergangene Tage ist reine UTC-Arithmetik auf dem Datums-String korrekt
-// und TZ-neutral (der String IST bereits das Berliner Kalenderdatum).
-function isoWeekday(dateIso) {
-  const [y, m, d] = String(dateIso).split("-").map((x) => parseInt(x, 10));
-  return ((new Date(Date.UTC(y, m - 1, d)).getUTCDay() + 6) % 7) + 1;
-}
-
-// timestamptz → 'YYYY-MM-DD' in Europe/Berlin (en-CA formatiert ISO-artig) —
-// nur für den startDate-Fallback aus der Submission.
-function toBerlinDateIso(ts) {
-  return new Intl.DateTimeFormat("en-CA", {
-    timeZone: "Europe/Berlin",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  }).format(new Date(ts));
-}
-
-// SOLL-Slots eines Items an Tag D — Logik-Spiegel der Heute-Route
-// (today/route.js), nur eben für historische Tage. created_at ist die
-// einzige untere Schranke: plan_items haben kein Änderungs-Log, rückwirkend
-// ist SOLL nur näherungsweise rekonstruierbar (der UTC-Tag von created_at
-// reicht als Schranke — die TZ-Kante von max. einem Tag ist bewusst egal).
-function sollSlots(item, dateIso) {
-  const created = String(item.created_at || "").slice(0, 10);
-  if (created && dateIso < created) return 0;
-  if (item.start_date && dateIso < String(item.start_date).slice(0, 10)) return 0;
-  if (item.end_date && dateIso > String(item.end_date).slice(0, 10)) return 0;
-  const days = item.days_of_week || [];
-  if (days.length && !days.includes(isoWeekday(dateIso))) return 0;
-  // times leer = genau EIN Tages-Slot ohne Uhrzeit — sonst zählte ein Item
-  // mit leerem times als 0 und würde nie fällig.
-  return Math.max((item.times || []).length, 1);
-}
-
-// Streak: aufeinanderfolgende Tage (Set aus 'YYYY-MM-DD') rückwärts ab heute;
-// heute ohne Eintrag → Zählung ab gestern (die Serie ist noch nicht gerissen).
-function streakEndingToday(datesSet, today) {
-  let day = datesSet.has(today) ? today : addDaysIso(today, -1);
-  let streak = 0;
-  while (datesSet.has(day)) {
-    streak += 1;
-    day = addDaysIso(day, -1);
-  }
-  return streak;
-}
 
 // Pagination-Schleife gegen das stille PostgREST-Cap von 1000 Zeilen:
 // makeQuery liefert je Durchlauf einen FRISCHEN Query-Builder (Supabase-
@@ -198,17 +156,7 @@ export async function GET(req) {
 
     // Treue-Zeitraum: bei 'all' ab dem frühesten Zähl-Tag über alle Items
     // (später von created_at-Tag und start_date), sonst das feste Fenster.
-    let von = treueVonFenster;
-    if (range === "all") {
-      let earliest = null;
-      for (const it of items || []) {
-        const created = String(it.created_at || "").slice(0, 10);
-        const start = it.start_date ? String(it.start_date).slice(0, 10) : "";
-        const lower = start > created ? start : created;
-        if (lower && (!earliest || lower < earliest)) earliest = lower;
-      }
-      von = earliest && earliest <= bis ? earliest : bis;
-    }
+    const von = range === "all" ? earliestTreueStart(items, bis) : treueVonFenster;
     const letzte14Start = addDaysIso(bis, -13);
 
     // Logs-Fenster: Serien brauchen 60 Tage, Treue braucht [von … bis],
@@ -235,93 +183,15 @@ export async function GET(req) {
     // checkinSince und logsSince laden beide mindestens dieses Fenster.
     const streakSince = addDaysIso(today, -60);
 
-    // Dedupe über den Slot-Schlüssel (item, Tag, COALESCE(due_time,'00:00')) —
-    // exakt die Semantik des UNIQUE-Index uq_companion_item_logs_slot, damit
-    // ein 00:00-Slot und ein NULL-Slot nie doppelt zählen.
-    const seenSlots = new Set();
-    const logCounts = new Map(); // item_id → Map('YYYY-MM-DD' → Anzahl Slots)
-    const daysByItem = new Map(); // item_id → Set('YYYY-MM-DD') für Serien
-    for (const log of logs) {
-      const date = String(log.due_date).slice(0, 10);
-      if (date >= streakSince) {
-        if (!daysByItem.has(log.item_id)) daysByItem.set(log.item_id, new Set());
-        daysByItem.get(log.item_id).add(date);
-      }
-      const slotKey = `${log.item_id}|${date}|${normTime(log.due_time) ?? "00:00"}`;
-      if (seenSlots.has(slotKey)) continue;
-      seenSlots.add(slotKey);
-      let perDay = logCounts.get(log.item_id);
-      if (!perDay) {
-        perDay = new Map();
-        logCounts.set(log.item_id, perDay);
-      }
-      perDay.set(date, (perDay.get(date) || 0) + 1);
-    }
-
-    // Serien: unveränderte Bedeutung (>= 1 Log am Tag → Tag zählt).
-    const serien = (items || []).map((it) => ({
-      itemId: it.id,
-      kind: it.kind,
-      name: it.name,
-      streak: streakEndingToday(daysByItem.get(it.id) || new Set(), today),
-    }));
-
-    // Auch der Check-in-Streak rechnet auf dem konstanten Streak-Fenster —
-    // bei 90/'all' liegen mehr Zeilen im Speicher, zählen aber nicht mit.
-    const checkinDates = new Set(
-      checkinRows
-        .map((c) => String(c.checkin_date).slice(0, 10))
-        .filter((d) => d >= streakSince)
-    );
-    const checkinStreak = streakEndingToday(checkinDates, today);
-
-    // Einnahme-Treue: pro Tag IST auf SOLL deckeln, dann summieren.
-    let gesamtIst = 0;
-    let gesamtSoll = 0;
-    const proItem = [];
-    for (const it of items || []) {
-      const counts = logCounts.get(it.id) || new Map();
-      let ist = 0;
-      let soll = 0;
-      for (let d = von; d <= bis; d = addDaysIso(d, 1)) {
-        const s = sollSlots(it, d);
-        if (!s) continue;
-        soll += s;
-        ist += Math.min(counts.get(d) || 0, s);
-      }
-      gesamtIst += ist;
-      gesamtSoll += soll;
-      // Items ohne SOLL im Zeitraum weglassen — "keine Aussage" ist keine
-      // Zeile wert (der Client zeigt nur, was zählbar war).
-      if (soll <= 0) continue;
-      // MiniBars: fix die letzten 14 Tage bis gestern, unabhängig vom range —
-      // deckelt die Payload und gibt jedem Item dieselbe Mini-Achse.
-      const letzte14 = [];
-      for (let d = letzte14Start; d <= bis; d = addDaysIso(d, 1)) {
-        const s = sollSlots(it, d);
-        letzte14.push({ date: d, ist: Math.min(counts.get(d) || 0, s), soll: s });
-      }
-      proItem.push({
-        itemId: it.id,
-        name: it.name,
-        kind: it.kind,
-        ist,
-        soll,
-        prozent: Math.round((100 * ist) / soll),
-        letzte14,
-      });
-    }
-    const treue = {
-      von,
-      bis,
-      gesamt: {
-        ist: gesamtIst,
-        soll: gesamtSoll,
-        prozent:
-          gesamtSoll > 0 ? Math.round((100 * gesamtIst) / gesamtSoll) : null,
-      },
-      proItem,
-    };
+    // Ab hier rechnet durchgehend companionStats (kanonische Formeln):
+    // Slot-Dedupe (COALESCE-Semantik des UNIQUE-Index), Serien (>= 1 Log am
+    // Tag → Tag zählt), Check-in-Streak auf dem konstanten Streak-Fenster
+    // und die Einnahme-Treue (pro Tag IST auf SOLL gedeckelt, dann summiert;
+    // letzte14 = MiniBars fix bis gestern, unabhängig vom range).
+    const { logCounts, daysByItem } = indexLogs(logs, streakSince);
+    const serien = buildSerien(items, daysByItem, today);
+    const checkinStreak = buildCheckinStreak(checkinRows, streakSince, today);
+    const treue = buildTreue(items, logCounts, von, bis);
 
     // ALLE Symptome (auch inaktive — Beschriftung alter symptom_scores);
     // der Client filtert selbst auf "hat Daten im Fenster".
