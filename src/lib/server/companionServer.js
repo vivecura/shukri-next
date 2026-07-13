@@ -24,6 +24,7 @@
 import { createClient } from "@supabase/supabase-js";
 import crypto from "node:crypto";
 import { promisify } from "node:util";
+import { addDaysIso, berlinTodayIso, normTime } from "@/lib/companionStats";
 
 const scryptAsync = promisify(crypto.scrypt);
 
@@ -427,14 +428,11 @@ export function assertActionRateLimit(key, maxPerWindow, windowMs, message) {
 // Spätabend-Einträge Artefakte am Folgetag und die Dedupe bricht.
 // ---------------------------------------------------------------------------
 
-// Heute als 'YYYY-MM-DD' in Europe/Berlin (en-CA formatiert ISO-artig).
+// Heute als 'YYYY-MM-DD' in Europe/Berlin — kanonische Formel in
+// src/lib/companionStats.js (eine Wahrheit für Server und Admin-Client);
+// der Export-Name berlinToday bleibt für alle bestehenden Server-Importe.
 export function berlinToday() {
-  return new Intl.DateTimeFormat("en-CA", {
-    timeZone: "Europe/Berlin",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  }).format(new Date());
+  return berlinTodayIso();
 }
 
 // ISO-Wochentag in Berlin: 1=Mo … 7=So (Format der days_of_week-Spalte).
@@ -466,17 +464,9 @@ export function berlinStartOfDayIso() {
   return new Date(now.getTime() - elapsedMs).toISOString();
 }
 
-// 'YYYY-MM-DD' ± n Tage (reine Datums-Arithmetik, UTC-neutral).
-export function addDaysIso(dateStr, n) {
-  const [y, m, d] = String(dateStr).split("-").map((x) => parseInt(x, 10));
-  const t = new Date(Date.UTC(y, m - 1, d + n));
-  return t.toISOString().slice(0, 10);
-}
-
-// Postgres-time ("08:00:00") → "HH:MM" fürs API-Format; null bleibt null.
-export function normTime(t) {
-  return t == null ? null : String(t).slice(0, 5);
-}
+// addDaysIso / normTime: kanonisch in companionStats, hier nur re-exportiert,
+// damit alle bestehenden Server-Importe unverändert weiterlaufen.
+export { addDaysIso, normTime };
 
 // ---------------------------------------------------------------------------
 // ZUGANGS-LOOKUPS für Login/Set-PIN (per Nummer statt Session).

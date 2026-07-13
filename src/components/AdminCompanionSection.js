@@ -4,9 +4,12 @@
 // AdminCompanionSection — der per-Patient "📱 App"-Bereich im Akte-Tab
 // (ViveCura Companion, Stufe 1).
 //
-// Drei Blöcke:
+// Vier Blöcke:
 //   A 🔐 Einwilligung & Zugang   — das Einwilligungs-Gate (Leitprinzip 2) und
 //                                  die Patientennummer VC-#### (Pseudonym).
+//   V 📊 So geht es dem Patienten — aufklappbarer Patientenblick (eigene
+//                                  Datei AdminCompanionVerlauf, lädt lazy);
+//                                  nur mit bestehendem Zugang sichtbar.
 //   B 📥 Import-Warteschlange    — Claudes Entwürfe; Shukris "Übernehmen"-Klick
 //                                  = ärztliche Verordnung, erst dann live.
 //   C 💊 Plan-Bausteine          — gleichwertige Handbedienung (KI-Exit):
@@ -61,6 +64,7 @@ import {
   applySchemaToTimes,
   fmtTimesAsSlots,
 } from "@/lib/daySlots";
+import AdminCompanionVerlauf from "@/components/AdminCompanionVerlauf";
 
 // ---- Haus-Tokens als geteilte Klassen-Strings (ein Ort, ein Look) ----------
 const CARD = "rounded-xl border border-gray-200 p-4";
@@ -818,6 +822,11 @@ export default function AdminCompanionSection({
 
       {consentGiven ? (
         <>
+          {/* ========= Block V — So geht es dem Patienten (Verlauf) =========
+              Nur mit bestehendem Zugang: ohne Zugang gibt es keine App und
+              damit keine Selbsteinträge, die man ansehen könnte. */}
+          {access && <AdminCompanionVerlauf submissionId={submissionId} />}
+
           {/* ============== Block B — Import-Warteschlange ============== */}
           <div className={CARD}>
             <h3 className={H3}>📥 Import-Warteschlange</h3>

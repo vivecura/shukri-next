@@ -38,6 +38,16 @@
 // ============================================================================
 
 import { supabase } from "@/lib/supabaseClient";
+import {
+  addDaysIso,
+  berlinTodayIso,
+  buildCheckinStreak,
+  buildSerien,
+  buildTreue,
+  earliestTreueStart,
+  indexLogs,
+  toBerlinDateIso,
+} from "@/lib/companionStats";
 
 // Pure helpers shared with the recall layer. Canonical in @/lib/recalls —
 // re-exported here so companion UI has ONE import path; do NOT reimplement.
@@ -880,6 +890,190 @@ export async function communitySignedUrl(path) {
     .createSignedUrl(path, 3600);
   if (error) throw error;
   return data?.signedUrl || null;
+}
+
+// ---------------------------------------------------------------------------
+// PATIENTENBLICK (Admin) — der Verlauf eines Patienten aus Team-Sicht.
+//
+// Spiegelbild von GET /api/companion/verlauf, nur über den Admin-Auth-Client
+// statt der Patienten-Session: gleiche Filter, gleiche Fenster, gleiche
+// companionStats-Formeln — Admin und Patienten-App sehen exakt dieselben
+// Zahlen. Reine Darstellung der Selbsteinträge, keinerlei Bewertungs-Logik
+// (§6, kein Medizinprodukt).
+// ---------------------------------------------------------------------------
+
+// Zeitraum-Whitelist wie in der Route — nie rohe Client-Werte in
+// Datums-Arithmetik durchreichen.
+const VERLAUF_RANGE_DAYS = { 30: 30, 90: 90 };
+
+// Pagination-Schleife gegen das stille PostgREST-Cap von 1000 Zeilen:
+// makeQuery liefert je Durchlauf einen FRISCHEN Query-Builder (Supabase-
+// Builder sind nicht wiederverwendbar), .range holt Seite für Seite.
+async function fetchAllPaged(makeQuery) {
+  const PAGE = 1000;
+  const all = [];
+  for (let offset = 0; ; offset += PAGE) {
+    const { data, error } = await makeQuery().range(offset, offset + PAGE - 1);
+    if (error) throw error;
+    all.push(...(data || []));
+    if (!data || data.length < PAGE) return all;
+  }
+}
+
+// Verlauf + Serien + Einnahme-Treue eines Patienten für den Admin-Block
+// "So geht es dem Patienten". range: '30' | '90' | 'all' (sonst hart '30').
+// Rückgabe-Form wie die verlauf-Route plus dosisByItem (Anzeige der Dosis in
+// der Treue-Liste — reine Zusatzspalte, ändert keine Zahl) und today (das
+// Berliner Heute, auf dem die Fenster gerechnet wurden — der Client nutzt
+// dasselbe Datum für die Chart-Achse, damit Fenster und Achse nie
+// auseinanderlaufen, z. B. um Mitternacht).
+export async function getPatientVerlauf(submissionId, rawRange) {
+  const today = berlinTodayIso();
+  const range = rawRange === "90" || rawRange === "all" ? rawRange : "30";
+
+  // Treue zählt IMMER nur bis gestern — der angebrochene Tag würde die
+  // Quote drücken, obwohl der Patient ihn noch abhaken kann.
+  const bis = addDaysIso(today, -1);
+  const treueVonFenster =
+    range === "all" ? null : addDaysIso(bis, -(VERLAUF_RANGE_DAYS[range] - 1));
+
+  // Check-in-Fenster: Chart-Zeitraum + 7 Vortage (Anlauf für den
+  // 7-Tage-Schnitt am linken Rand), mindestens 60 Tage (deckt das konstante
+  // Streak-Fenster mit ab). 'all' lädt alles (1 Zeile/Tag, paginiert).
+  const checkinSince =
+    range === "all"
+      ? null
+      : addDaysIso(today, -Math.max(VERLAUF_RANGE_DAYS[range] - 1 + 7, 60));
+
+  // context_kind 'tag' + context_item_id null sind PFLICHT: künftige
+  // infusion/praeparat-Check-ins dürfen nie in Tages-Statistiken doppelt
+  // zählen (exakt die Filter der Patienten-Route).
+  const baseCheckinQuery = () =>
+    supabase
+      .from("companion_checkins")
+      .select(
+        "id, checkin_date, feeling, energy, sleep, verdauung, stress, " +
+          "klarheit, symptom_scores, notes, help_flag"
+      )
+      .eq("practice_id", PRACTICE_ID)
+      .eq("submission_id", submissionId)
+      .eq("context_kind", "tag")
+      .is("context_item_id", null)
+      .order("checkin_date", { ascending: false });
+  const makeCheckinQuery = () => {
+    let q = baseCheckinQuery();
+    if (checkinSince) q = q.gte("checkin_date", checkinSince);
+    return q;
+  };
+  const checkinRows = await fetchAllPaged(makeCheckinQuery);
+
+  // Wie die Route: zusätzlich immer die letzten 30 Check-ins ALLER Zeiten —
+  // sonst wäre die Tagebuch-Liste nach mehr als 60 Tagen Pause leer, obwohl
+  // Einträge existieren. Anhängen per id-Dedupe erhält die Sortierung
+  // (alle Zusatz-Zeilen liegen VOR checkinSince, gehören also ans Ende).
+  if (checkinSince) {
+    const { data: kompatRows, error: kompatErr } = await baseCheckinQuery().limit(30);
+    if (kompatErr) throw kompatErr;
+    const seenIds = new Set(checkinRows.map((r) => r.id));
+    for (const row of kompatRows || []) {
+      if (!seenIds.has(row.id)) checkinRows.push(row);
+    }
+  }
+
+  // Aktive supplement/todo-Items — Pflichtfilter für Zahlengleichheit mit
+  // der Patienten-App. dosis ist die einzige Zusatzspalte (nur Anzeige);
+  // source bleibt draußen (§9-Konvention wie in der Route).
+  const { data: items, error: itemsErr } = await supabase
+    .from("companion_plan_items")
+    .select(
+      "id, kind, name, dosis, times, days_of_week, start_date, end_date, sort, created_at"
+    )
+    .eq("practice_id", PRACTICE_ID)
+    .eq("submission_id", submissionId)
+    .eq("active", true)
+    .in("kind", ["supplement", "todo"])
+    .order("sort", { ascending: true })
+    .order("created_at", { ascending: true });
+  if (itemsErr) throw itemsErr;
+
+  // Treue-Zeitraum: bei 'all' ab dem frühesten Zähl-Tag über alle Items,
+  // sonst das feste Fenster; Logs ab dem frühesten der drei Bedarfe
+  // (Serien 60 Tage, Treue [von … bis], MiniBars letzte 14 Tage).
+  const von = range === "all" ? earliestTreueStart(items, bis) : treueVonFenster;
+  const letzte14Start = addDaysIso(bis, -13);
+  const logsSince = [addDaysIso(today, -60), von, letzte14Start].reduce(
+    (a, b) => (b < a ? b : a)
+  );
+  const makeLogsQuery = () =>
+    supabase
+      .from("companion_item_logs")
+      .select("item_id, due_date, due_time")
+      .eq("practice_id", PRACTICE_ID)
+      .eq("submission_id", submissionId)
+      .gte("due_date", logsSince)
+      .order("due_date", { ascending: true })
+      .order("id", { ascending: true });
+  const logs = await fetchAllPaged(makeLogsQuery);
+
+  // Streak-Fenster KONSTANT 60 Tage, unabhängig vom range — die "Tage in
+  // Folge"-Zahl darf beim Umschalten der Zeitraum-Pille nicht springen.
+  const streakSince = addDaysIso(today, -60);
+  const { logCounts, daysByItem } = indexLogs(logs, streakSince);
+  const serien = buildSerien(items, daysByItem, today);
+  const checkinStreak = buildCheckinStreak(checkinRows, streakSince, today);
+  const treue = buildTreue(items, logCounts, von, bis);
+
+  // ALLE Symptome, auch inaktive — sie beschriften alte symptom_scores;
+  // der Client filtert selbst auf "hat Daten im Fenster".
+  const { data: symptoms, error: symErr } = await supabase
+    .from("companion_patient_symptoms")
+    .select("id, name, active")
+    .eq("practice_id", PRACTICE_ID)
+    .eq("submission_id", submissionId)
+    .order("sort", { ascending: true })
+    .order("created_at", { ascending: true });
+  if (symErr) throw symErr;
+
+  // startDate: MIN(checkin_date) aller Zeiten (eigener Mini-Select, das
+  // Fenster oben ist bei 30/90 beschnitten); Fallback Anlage-Datum der
+  // Submission, notfalls heute — reine Anzeige, nie ein Grund zu scheitern.
+  const { data: firstCheckin, error: firstErr } = await supabase
+    .from("companion_checkins")
+    .select("checkin_date")
+    .eq("practice_id", PRACTICE_ID)
+    .eq("submission_id", submissionId)
+    .eq("context_kind", "tag")
+    .is("context_item_id", null)
+    .order("checkin_date", { ascending: true })
+    .limit(1)
+    .maybeSingle();
+  if (firstErr) throw firstErr;
+  let startDate = firstCheckin
+    ? String(firstCheckin.checkin_date).slice(0, 10)
+    : null;
+  if (!startDate) {
+    const { data: sub } = await supabase
+      .from("anamnese_submissions")
+      .select("created_at")
+      .eq("id", submissionId)
+      .maybeSingle();
+    startDate = sub?.created_at ? toBerlinDateIso(sub.created_at) : today;
+  }
+
+  const dosisByItem = {};
+  for (const it of items || []) dosisByItem[it.id] = it.dosis || "";
+
+  return {
+    checkins: checkinRows,
+    serien,
+    checkinStreak,
+    symptoms: symptoms || [],
+    range,
+    startDate,
+    treue,
+    dosisByItem,
+    today,
+  };
 }
 
 // ---------------------------------------------------------------------------
