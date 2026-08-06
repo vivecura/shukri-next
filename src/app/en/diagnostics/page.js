@@ -1,4 +1,4 @@
-import PageBody from "@/components/pages/HealthCheck";
+import PageBody from "@/components/pages/DiagnostikNew";
 
 export const metadata = {
   title: "Diagnostics Berlin – Functional Medicine Lab & Analysis",
