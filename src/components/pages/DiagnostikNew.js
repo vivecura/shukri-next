@@ -26,6 +26,7 @@ const IC = {
   wind: svg('<path d="M3 8h9a2.5 2.5 0 1 0-2.5-2.5M3 12h13a2.5 2.5 0 1 1-2.5 2.5M3 16h7a2 2 0 1 1-2 2"/>'),
   shield: svg('<path d="M12 3l8 3v6c0 4.5-3.2 8.3-8 9.5-4.8-1.2-8-5-8-9.5V6z"/>'),
   dna: svg('<path d="M7 3c0 5 10 6 10 9s-10 4-10 9M17 3c0 5-10 6-10 9s10 4 10 9M8 7h8M8 17h8"/>'),
+  pulse: svg('<path d="M2 12h4l2.5-7 4.5 15 3-8 2 3h4"/>'),
 };
 const CHECK = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>';
 const ARROW = '<svg class="arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
@@ -113,6 +114,17 @@ const CONTENT = {
       cta: "Termin bei ViveCura buchen", addr: "ViveCura · Skalitzer Straße 137 · 10999 Berlin",
     },
     compliance: "Alle Preise sind Richtwerte und können je nach individuellem Laborumfang abweichen. Die genannten Analysen können Hinweise auf Ihre Gesundheit geben, ersetzen keine ärztliche Diagnose und versprechen keine Heilung. Ob und welche Untersuchungen für Sie sinnvoll sind, klären wir gemeinsam im persönlichen Gespräch.",
+    modal: {
+      eyebrow: "Kurz vor dem Buchen",
+      title: "Welchen Termin möchten Sie wählen?",
+      intro: "Gleich sehen Sie bei Doctolib alle Terminarten. Bitte wählen Sie dort einen dieser beiden:",
+      opt1t: "Ganzheitliche Analyse (1,5 Std)",
+      opt1d: "Wenn Sie den kompletten Überblick möchten — die große Analyse mit Ihrer Laborstufe.",
+      opt2t: "Diagnostik-Slot (30 Min)",
+      opt2d: "Für eine gezielte Einzel-Anfrage aus diesem Angebot, zum Beispiel Darm, Hormone oder NAD+.",
+      go: "Weiter zu Doctolib",
+      cancel: "Zurück",
+    },
     systems: [
       { min: 0, name: "Großes Blutbild und Differential", benefit: "Zeigt, ob Blutbildung, Abwehr und Entzündungslage im Lot sind.", markers: ["Erythrozyten", "Leukozyten", "Hämoglobin", "Hämatokrit", "Thrombozyten", "MCV", "MCH", "MCHC", "Neutrophile", "Lymphozyten", "Monozyten", "Eosinophile", "Basophile"] },
       { min: 0, name: "Leber, Niere und Stoffwechsel", benefit: "Wie gut Ihre Entgiftungs- und Filterorgane arbeiten.", markers: ["GOT", "GPT", "GGT", "AP", "Bilirubin", "Kreatinin", "eGFR", "Harnstoff", "Harnsäure", "Albumin"] },
@@ -153,6 +165,7 @@ const CONTENT = {
       { name: "Hormone", price: "ca. 300 €", icon: IC.heart, forwho: "Für Zyklus, Wechseljahre, Libido, Antrieb und Stimmung.", benefit: "Was hinter Zyklus, Libido, Antrieb und Stimmung stecken kann, im Zusammenspiel statt einzeln betrachtet.", markers: ["Sexualhormone", "Östradiol", "Progesteron", "Testosteron", "DHEAS", "Schilddrüse (TSH, fT3, fT4)", "Cortisol", "Vitamin D"] },
       { name: "Burnout und Stress", price: "ca. 580 €", icon: IC.flame, forwho: "Bei Dauerstress, Erschöpfung, innerer Unruhe und dem Gefühl, ausgebrannt zu sein.", benefit: "Wie Ihre Stress-Achse und Ihre Erholung wirklich stehen. Die Alpha-Amylase bildet dabei das Gleichgewicht von Anspannung und Entspannung ab, ganz ohne Belastungstest.", markers: ["Cortisol-Tagesprofil", "Alpha-Amylase", "Pregnenolonsulfat", "Rezeptor-Aktivität (GRAKT)", "GDF-15", "BDNF", "ATP intrazellulär", "MDA-LDL", "Nitrotyrosin", "IP-10"] },
       { name: "Mitochondrien und Energie", price: "ca. 340 €", icon: IC.bolt, forwho: "Bei anhaltender Erschöpfung, Leistungsknick und nach durchgemachten Infekten.", benefit: "Ein Blick auf die Kraftwerke Ihrer Zellen. Der Laktat-Pyruvat-Quotient zeigt, ob die Energiegewinnung ins Stocken gerät.", markers: ["ATP intrazellulär", "NAD+/NADH", "GDF-15", "IL-6", "TNF-alpha", "Laktat/Pyruvat"] },
+      { name: "NAD+ Testung", price: "ca. 190 €", icon: IC.pulse, forwho: "Vor einer NAD+-Infusion oder aus Longevity-Gründen: wenn Sie Ihren NAD+-Wert kennen möchten.", benefit: "NAD+ ist ein zentraler Baustein für Zellenergie und Regeneration. Wir bestimmen Ihren Ausgangswert, bevor Sie eine Infusion erwägen, oder einfach, um Ihren Status zu kennen.", markers: ["NAD+ / NADH (Blut)", "Zellenergie-Status"] },
       { name: "Schlaf-Diagnostik", price: "ca. 270 €", icon: IC.moon, forwho: "Bei Einschlaf- und Durchschlafstörungen.", benefit: "Warum Sie nicht ein- oder durchschlafen, gemessen im Tag-Nacht-Verlauf und ergänzt um eine HRV-Messung mit EKG bei uns in der Praxis.", markers: ["Schlafprofil Bettzeit (Einschlafen)", "Schlafprofil 2 Uhr nachts (Durchschlafen)", "Melatonin", "Cortisol", "Alpha-Amylase", "HRV mit EKG (in der Praxis)"] },
       { name: "Darm", price: "ca. 400 €", icon: IC.bowl, forwho: "Bei Blähungen, Reizdarm, Unverträglichkeiten und Hautthemen.", benefit: "Die Wurzel vieler Beschwerden, von Haut bis Stimmung, aus einer umfassenden Stuhlanalyse.", markers: ["Mikrobiom", "Parasiten-PCR", "Zonulin (Leaky Gut)", "sIgA", "Pankreaselastase", "Gallensäuren", "Calprotectin"] },
       { name: "Nahrungsmittel-Unverträglichkeit", price: "ca. 330 €", icon: IC.apple, forwho: "Bei Blähungen, Hautthemen und Reaktionen nach dem Essen.", benefit: "Welche Lebensmittel Ihr Immunsystem beschäftigen, über einen LTT-Test auf 25 häufige Nahrungsmittel.", markers: ["LTT-Test", "25 häufige Nahrungsmittel"] },
@@ -228,6 +241,17 @@ const CONTENT = {
       cta: "Book an appointment at ViveCura", addr: "ViveCura · Skalitzer Straße 137 · 10999 Berlin",
     },
     compliance: "All prices are guide values and may vary depending on the individual lab scope. The analyses described can provide indications about your health, do not replace a medical diagnosis and do not promise a cure. Whether and which examinations make sense for you is something we clarify together in a personal conversation.",
+    modal: {
+      eyebrow: "Just before booking",
+      title: "Which appointment would you like?",
+      intro: "In a moment you will see all appointment types on Doctolib. Please choose one of these two there:",
+      opt1t: "Holistic Analysis (1.5 h)",
+      opt1d: "If you want the complete overview — the large analysis with your lab level.",
+      opt2t: "Diagnostics Slot (30 min)",
+      opt2d: "For a single targeted request from this offer, for example gut, hormones or NAD+.",
+      go: "Continue to Doctolib",
+      cancel: "Back",
+    },
     systems: [
       { min: 0, name: "Complete blood count and differential", benefit: "Shows whether blood formation, defence and inflammation are in balance.", markers: ["Erythrocytes", "Leukocytes", "Haemoglobin", "Haematocrit", "Platelets", "MCV", "MCH", "MCHC", "Neutrophils", "Lymphocytes", "Monocytes", "Eosinophils", "Basophils"] },
       { min: 0, name: "Liver, kidney and metabolism", benefit: "How well your detox and filter organs are working.", markers: ["AST", "ALT", "GGT", "ALP", "Bilirubin", "Creatinine", "eGFR", "Urea", "Uric acid", "Albumin"] },
@@ -268,6 +292,7 @@ const CONTENT = {
       { name: "Hormones", price: "approx. 300 €", icon: IC.heart, forwho: "For cycle, menopause, libido, drive and mood.", benefit: "What can lie behind cycle, libido, drive and mood, seen together rather than in isolation.", markers: ["Sex hormones", "Estradiol", "Progesterone", "Testosterone", "DHEAS", "Thyroid (TSH, fT3, fT4)", "Cortisol", "Vitamin D"] },
       { name: "Burnout and stress", price: "approx. 580 €", icon: IC.flame, forwho: "For chronic stress, exhaustion, inner restlessness and feeling burned out.", benefit: "Where your stress axis and your recovery really stand. Alpha-amylase reflects the balance of tension and relaxation, with no exertion test.", markers: ["Cortisol daily profile", "Alpha-amylase", "Pregnenolone sulfate", "Receptor activity (GRAKT)", "GDF-15", "BDNF", "ATP intracellular", "MDA-LDL", "Nitrotyrosine", "IP-10"] },
       { name: "Mitochondria and energy", price: "approx. 340 €", icon: IC.bolt, forwho: "For persistent exhaustion, a drop in performance and after infections.", benefit: "A look at the power plants of your cells. The lactate-pyruvate ratio shows whether energy production is faltering.", markers: ["ATP intracellular", "NAD+/NADH", "GDF-15", "IL-6", "TNF-alpha", "Lactate/Pyruvate"] },
+      { name: "NAD+ testing", price: "approx. 190 €", icon: IC.pulse, forwho: "Before a NAD+ infusion or for longevity reasons: if you want to know your NAD+ level.", benefit: "NAD+ is a central building block for cell energy and regeneration. We measure your baseline before you consider an infusion, or simply to know your status.", markers: ["NAD+ / NADH (blood)", "Cell energy status"] },
       { name: "Sleep diagnostics", price: "approx. 270 €", icon: IC.moon, forwho: "For trouble falling asleep and staying asleep.", benefit: "Why you cannot fall or stay asleep, measured across the day-night cycle and complemented by an HRV measurement with ECG at our practice.", markers: ["Sleep profile bedtime (falling asleep)", "Sleep profile 2 a.m. (staying asleep)", "Melatonin", "Cortisol", "Alpha-amylase", "HRV with ECG (at the practice)"] },
       { name: "Gut", price: "approx. 400 €", icon: IC.bowl, forwho: "For bloating, irritable bowel, intolerances and skin issues.", benefit: "The root of many complaints, from skin to mood, from a comprehensive stool analysis.", markers: ["Microbiome", "Parasite PCR", "Zonulin (leaky gut)", "sIgA", "Pancreatic elastase", "Bile acids", "Calprotectin"] },
       { name: "Food intolerance", price: "approx. 330 €", icon: IC.apple, forwho: "For bloating, skin issues and reactions after eating.", benefit: "Which foods keep your immune system busy, via an LTT test on 25 common foods.", markers: ["LTT test", "25 common foods"] },
@@ -502,6 +527,21 @@ function buildBody(c) {
   </section>
 
   <div class="compl-wrap"><p class="compl">${esc(c.compliance)}</p></div>
+
+  <div class="vd-modal" id="bookModal" aria-hidden="true">
+    <div class="vd-modal-back" data-close="1"></div>
+    <div class="vd-modal-card" role="dialog" aria-modal="true">
+      <span class="vd-modal-eyebrow">${esc(c.modal.eyebrow)}</span>
+      <h3>${esc(c.modal.title)}</h3>
+      <p class="vd-modal-intro">${esc(c.modal.intro)}</p>
+      <div class="vd-modal-opts">
+        <div class="vd-modal-opt"><b>${esc(c.modal.opt1t)}</b><span>${esc(c.modal.opt1d)}</span></div>
+        <div class="vd-modal-opt"><b>${esc(c.modal.opt2t)}</b><span>${esc(c.modal.opt2d)}</span></div>
+      </div>
+      <a class="btn btn-primary vd-modal-go" href="${BOOK}">${esc(c.modal.go)} ${ARROW}</a>
+      <button type="button" class="vd-modal-cancel" data-close="1">${esc(c.modal.cancel)}</button>
+    </div>
+  </div>
   `;
 }
 
@@ -607,6 +647,23 @@ function initDiag(root, c) {
       const head = e.target && e.target.closest ? e.target.closest(".pkg-head") : null;
       if (head) head.parentNode.classList.toggle("open");
     });
+  }
+
+  // Buchungs-Hinweis-Modal vor der Weiterleitung zu Doctolib
+  const modal = root.querySelector("#bookModal");
+  if (modal) {
+    const openModal = () => { modal.classList.add("open"); modal.setAttribute("aria-hidden", "false"); };
+    const closeModal = () => { modal.classList.remove("open"); modal.setAttribute("aria-hidden", "true"); };
+    root.querySelectorAll('a[href*="doctolib.de"]').forEach((a) => {
+      if (a.classList.contains("vd-modal-go")) return;
+      a.addEventListener("click", (e) => { e.preventDefault(); openModal(); });
+    });
+    modal.addEventListener("click", (e) => {
+      if (e.target && e.target.getAttribute && e.target.getAttribute("data-close")) closeModal();
+    });
+    const goBtn = modal.querySelector(".vd-modal-go");
+    if (goBtn) goBtn.addEventListener("click", closeModal);
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
   }
 
   select(0);
@@ -823,4 +880,18 @@ const VD_CSS = `
 .vd .closing .addr{margin-top:30px;font-size:.94rem;color:rgba(255,255,255,.82)}
 .vd .compl-wrap{padding:40px 24px 10px;text-align:center}
 .vd .compl{margin:0 auto;max-width:64ch;font-size:.78rem;color:var(--gray-soft);line-height:1.65}
+.vd .vd-modal{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:20px}
+.vd .vd-modal.open{display:flex}
+.vd .vd-modal-back{position:absolute;inset:0;background:rgba(26,31,36,.55);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+.vd .vd-modal-card{position:relative;background:#fff;border-radius:22px;max-width:440px;width:100%;padding:30px 28px;box-shadow:0 40px 100px -30px rgba(15,20,23,.55);text-align:left}
+.vd .vd-modal-eyebrow{font-size:.7rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--teal)}
+.vd .vd-modal-card h3{font-size:1.35rem;font-weight:800;letter-spacing:-.02em;margin:8px 0 6px}
+.vd .vd-modal-intro{font-size:.95rem;color:var(--gray);line-height:1.55;margin-bottom:16px}
+.vd .vd-modal-opts{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+.vd .vd-modal-opt{border:1px solid var(--line);border-radius:14px;padding:13px 15px;background:var(--teal-subtle)}
+.vd .vd-modal-opt b{display:block;font-size:.98rem;color:var(--teal-darker);font-weight:700}
+.vd .vd-modal-opt span{display:block;font-size:.85rem;color:var(--gray);margin-top:2px;line-height:1.45}
+.vd .vd-modal-go{width:100%;justify-content:center}
+.vd .vd-modal-cancel{display:block;width:100%;margin-top:10px;background:none;border:none;color:var(--gray-soft);font-family:var(--sans);font-size:.9rem;font-weight:600;cursor:pointer;padding:8px;border-radius:8px}
+.vd .vd-modal-cancel:hover{color:var(--gray)}
 `;
