@@ -368,7 +368,7 @@ function buildBody(c) {
             `<div class="pkg-benefit">${esc(p.benefit)}</div>` +
             `<div class="mkrow">${chips}</div>` +
             `<div class="pkg-allin">${esc(c.bSec.allin)}</div>` +
-            `<a class="pkg-book" href="${BOOK}">${esc(c.bSec.book)} ${ARROW}</a>` +
+            `<a class="pkg-book" href="${BOOK}" rel="noreferrer">${esc(c.bSec.book)} ${ARROW}</a>` +
           `</div></div>` +
         `</div>`
       );
@@ -465,7 +465,7 @@ function buildBody(c) {
               </div>
             </div>
             <p class="tier-desc" id="tierDesc">${esc(s0.desc)}</p>
-            <a class="btn btn-primary cfg-book" href="${BOOK}">${esc(c.cfg.book)} ${ARROW}</a>
+            <a class="btn btn-primary cfg-book" href="${BOOK}" rel="noreferrer">${esc(c.cfg.book)} ${ARROW}</a>
           </div>
           <div class="cfg-right">
             <div class="right-head">${esc(c.cfg.rightHead)}</div>
@@ -521,7 +521,7 @@ function buildBody(c) {
     <div class="wrap">
       <h2>${esc(c.closing.h2a)}<em>${esc(c.closing.h2em)}</em>${esc(c.closing.h2b)}</h2>
       <p>${esc(c.closing.p)}</p>
-      <a class="btn btn-white" href="${BOOK}">${esc(c.closing.cta)} ${ARROW}</a>
+      <a class="btn btn-white" href="${BOOK}" rel="noreferrer">${esc(c.closing.cta)} ${ARROW}</a>
       <div class="addr">${esc(c.closing.addr)}</div>
     </div>
   </section>
@@ -538,7 +538,7 @@ function buildBody(c) {
         <div class="vd-modal-opt"><b>${esc(c.modal.opt1t)}</b><span>${esc(c.modal.opt1d)}</span></div>
         <div class="vd-modal-opt"><b>${esc(c.modal.opt2t)}</b><span>${esc(c.modal.opt2d)}</span></div>
       </div>
-      <a class="btn btn-primary vd-modal-go" href="${BOOK}">${esc(c.modal.go)} ${ARROW}</a>
+      <a class="btn btn-primary vd-modal-go" href="${BOOK}" rel="noreferrer">${esc(c.modal.go)} ${ARROW}</a>
       <button type="button" class="vd-modal-cancel" data-close="1">${esc(c.modal.cancel)}</button>
     </div>
   </div>
