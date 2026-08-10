@@ -8,7 +8,7 @@ import NewGridHoverEffectMobile from "@/components/NewGridHoverEffectMobile";
 import ScrolledLinesV3 from "@/components/ScrolledLinesV3";
 import FanCards from "@/components/FanCards";
 import FanCardsMobile from "@/components/FanCardsMobile";
-import Testimonials from "@/components/Testimonials";
+import GoogleReviews from "@/components/GoogleReviews";
 import MeinAnsatz from "@/components/MeinAnsatz";
 import SchwerpunkteGrid from "@/components/SchwerpunkteGrid";
 import ScrollingCards from "@/components/ScrollingCards";
@@ -103,7 +103,7 @@ function Home() {
 
      <ScrollingCards />
 
-     <Testimonials />
+     <GoogleReviews />
      <UnifiedBottomCta />
 
      {/* MobileImageSlider moved to Extras */}
