@@ -15,6 +15,7 @@ export const ROUTE_MAP = [
   { de: "/koerperliche-symptome", en: "/en/physical-symptoms" },
   { de: "/infusions",             en: "/en/infusions" },
   { de: "/ketamin",               en: "/en/ketamine" },
+  { de: "/eiseninfusion",         en: "/en/iron-infusion" },
   { de: "/beratung",              en: "/en/consultations" },
   { de: "/mentoring",             en: "/en/mentoring" },
   { de: "/mein-buch",             en: "/en/my-book" },

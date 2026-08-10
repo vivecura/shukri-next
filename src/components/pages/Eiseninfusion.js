@@ -132,6 +132,7 @@ const CONTENT = {
         { step: "05", name: "Dann gezielt höher", text: "Verträgst du die erste Infusion gut, können Folge-Infusionen höher dosiert werden, mit dem Präparat, das zu deinem Ziel und deinem Speicher passt." },
       ],
       foot: "So weißt du in jedem Schritt, was passiert und warum. Wie eine Eiseninfusion wirken kann und welche Nebenwirkungen möglich sind, schaue ich mir mit dir gleich ganz ehrlich an.",
+      afterTag: "Und danach",
     },
     nebenwirkungen: {
       tag: "Ehrlich, beide Seiten",
@@ -232,6 +233,8 @@ const CONTENT = {
         { ic: IC.file, t: "Eisenmangel und Eiseninfusionen", p: "Der große Überblick: Werte, Symptome, Behandlung und wann eine Infusion sinnvoll ist.", to: "/blog/eisenmangel-und-eiseninfusionen" },
       ],
       cta: "Zum ganzen Eisen-Ratgeber",
+      ctaHref: "/blog/thema/eisen",
+      read: "Lesen",
     },
     mentor: {
       tag: "Mehr als eine Infusion",
@@ -244,6 +247,207 @@ const CONTENT = {
       cta: "Termin bei ViveCura vereinbaren", addr: "ViveCura · Skalitzer Straße 137 · 10999 Berlin",
     },
     compliance: "Die Angaben auf dieser Seite dienen der allgemeinen Information und ersetzen keine persönliche ärztliche Beratung, Diagnose oder Behandlung. Ob eine Eiseninfusion für dich sinnvoll und geeignet ist, klären wir individuell im Gespräch und nach Untersuchung. Genannte Preise sind Richtwerte und können je nach Präparat und Dosis abweichen. Eine bestimmte Wirkung oder Heilung wird nicht versprochen.",
+  },
+  en: {
+    hero: {
+      eyebrow: "Iron Infusion · Iron Deficiency · Ferritin · Berlin",
+      h1a: "Your iron, finally ", h1em: "taken seriously", h1b: ".",
+      sub: "Fatigue, trouble sleeping, hair loss, restless legs, low mood. Sometimes an iron deficiency is behind it, one that no one took seriously for a long time, because many labs still work with outdated reference values. Together we look for the causes that may be at the root, and then we work on them. Carefully and with medical guidance in Berlin.",
+      strike: "With us it never just means “your levels are normal.”",
+      plan: "We see the <b>whole person</b>, not just reference ranges.",
+      cta: "Book an appointment", ghost: "What does it cost?",
+    },
+    subnav: [
+      { to: "#symptome", label: "Symptoms" },
+      { to: "#werte", label: "Understanding your levels" },
+      { to: "#ursachen", label: "Causes" },
+      { to: "#tablette-infusion", label: "Tablets or infusion" },
+      { to: "#ablauf", label: "Process & safety" },
+      { to: "#nebenwirkungen", label: "Benefits & side effects" },
+      { to: "#praeparate", label: "Preparations" },
+      { to: "#kosten", label: "Cost" },
+      { to: "#wissen", label: "Guide" },
+    ],
+    symptome: {
+      tag: "Maybe this sounds familiar",
+      h2a: "When your body runs on ", h2em: "empty", h2b: ".",
+      lead: "An iron deficiency rarely shows up as a single thing. It can appear as a sum of small things that you cannot explain for a long time and that together can cost a great deal of quality of life.",
+      cards: [
+        { ic: IC.bolt, t: "Fatigue and exhaustion", p: "Constantly worn out, even though you actually sleep enough. Exertion feels harder than it used to." },
+        { ic: IC.spark, t: "Hair loss", p: "More hair in the brush and the drain, thinning hair. Sometimes an early visible sign." },
+        { ic: IC.moon, t: "Sleep and restless legs", p: "Poor sleep, waking at night, restless legs in the evening that no one can explain." },
+        { ic: IC.heart, t: "Mood and drive", p: "Irritability, inner restlessness, lack of drive, low mood without a clear trigger." },
+        { ic: IC.cloud, t: "Concentration and brain fog", p: "Thoughts as if in a fog, a poorer memory, the feeling of not being quite there." },
+        { ic: IC.snow, t: "Paleness, feeling cold, dizziness", p: "Pale skin, cold hands and feet, dizziness or a racing heart even with light exertion." },
+      ],
+      foot: "The unfair part: many people live with complaints like these for a long time without knowing that an iron deficiency may be behind them. Each of these signs can have many causes. An honest look at your iron levels can give you a first, important answer.",
+    },
+    werte: {
+      tag: "The aha moment",
+      h2a: "“Normal” is not the same as ", h2em: "well supplied", h2b: ".",
+      lead: "For a long time only a very low ferritin value counted as a deficiency, often only below 15. For years I have worked with a different, scientifically grounded view. And slowly this view is reaching the German labs as well.",
+      cards: [
+        { ic: IC.magnifier, t: "Functional iron deficiency", p: "A possible deficiency even though there is no anaemia and the blood count looks “normal.” The stores can be empty, the symptoms are real. I look at both, with and without anaemia." },
+        { ic: IC.target, t: "The reference values are changing", p: "Labs such as IMD Berlin now assume that a ferritin below 100 can already point to depleted iron stores. In the past, often only a value below 15 counted as abnormal. Many labs in Germany, however, still work with the old limits." },
+        { ic: IC.layers, t: "Overlooked for years", p: "This way people can seem healthy on paper while their stores have long been too empty. Women in particular then push themselves every day just to function, and are told at the doctor that everything is normal. In hindsight this can turn out to be an overlooked iron deficiency." },
+      ],
+    },
+    ursachen: {
+      tag: "We look for the root",
+      h2a: "Iron deficiency is a ", h2em: "symptom", h2b: ", not a coincidence.",
+      lead: "For me, treatment does not stop at the infusion. I want to know why your iron is missing in the first place. That is why we search for the reasons together, instead of refilling the store again and again. This way an infusion can become a lasting treatment.",
+      cards: [
+        { ic: IC.droplet, t: "Blood loss", items: ["Heavy or long periods", "Hidden bleeding in the gastrointestinal tract", "Frequent blood donation"] },
+        { ic: IC.stomach, t: "Absorption problems", items: ["Gastrointestinal conditions", "Acid-suppressing medication", "Coeliac disease, irritable bowel, an irritated gut lining"] },
+        { ic: IC.flame, t: "Chronic, silent inflammation", items: ["Inflammation can lock iron away", "It is there but does not reach where it is needed", "An often underestimated possible cause"] },
+        { ic: IC.activity, t: "Increased need", items: ["Sport and endurance training", "Pregnancy and breastfeeding", "Growth phases"] },
+        { ic: IC.leaf, t: "Diet", items: ["Vegetarian or vegan", "A one-sided diet", "Little easily absorbed iron"] },
+      ],
+      foot: "What we find flows straight into your plan: better absorption in the gut, calm for silent inflammation, and if your overall picture suggests it, a look at further burdens such as heavy metals or mould. This way we can start at the possible roots, not just at a single value.",
+    },
+    duo: {
+      tag: "Tablets or infusion?",
+      h2a: "When tablets are enough and when they are ", h2em: "not", h2b: ".",
+      lead: "Tablets are often the first path, and that is a good thing. But they have limits. A large part of the iron is not absorbed in the gut, and it can take many months. And anyone with an absorption problem often has little choice but to bypass the gut entirely.",
+      cards: [
+        { t: "Iron tablets", tag: "The first path", p: "Inexpensive and simple, if you tolerate them well. A large part of the iron, however, is not absorbed in the gut, the bioavailability is low. Some people get stomach pressure, nausea or constipation from tablets, others tolerate them well.", hi: false },
+        { t: "Iron infusion", tag: "When tablets are not enough", p: "The iron can arrive directly where it is needed, independently of the gut. The store can fill up faster, and the dose is easy to control. It can be especially useful when tablets are not tolerated, are not enough, or an absorption problem makes the path through the gut difficult.", hi: true },
+      ],
+    },
+    tempo: {
+      tag: "Why speed can matter",
+      h2a: "Refill your iron store ", h2em: "faster", h2b: ".",
+      lead: "Iron tablets often take many months, and a large part is not absorbed in the gut. An infusion bypasses this path. The iron can arrive directly, and the store can fill up considerably faster. Pharmacologically this is easy to understand.",
+      body: "Many people who come to me do not want to wait for months before anything changes. They need their energy for work, family and everyday life. For that I want to be a reliable point of contact in Berlin, with medical guidance.",
+      note: "Whether and how quickly complaints improve differs from person to person and cannot be promised. What I can promise you is a carefully guided path to refilling your iron store.",
+    },
+    ablauf: {
+      tag: "Safety comes first",
+      h2a: "My approach: ", h2em: "protection", h2b: " first.",
+      lead: "An iron infusion is considered well tolerated today when it is done carefully. No medical procedure is entirely without risk. “Carefully” means, for me: first check, start cautiously, monitor well. And take you along at every step.",
+      steps: [
+        { step: "01", name: "Check and explain", text: "We look at your levels, your history and the possible causes. Before the infusion I also check your vital signs, namely blood pressure, heart rate and oxygen saturation, and we clarify whether an infusion makes sense for you and where it expressly does not." },
+        { step: "02", name: "Test tolerability", text: "If you have never had an iron infusion, I first gently test how well you tolerate it, before a higher dose is even considered." },
+        { step: "03", name: "Start gently, at most 200 mg", text: "As a rule I give the first infusion at a lower dose, usually 100 to 200 mg and at most 200 mg. Deliberately not the maximum dose, because on the first occasion it cannot yet be said with certainty how your body will react." },
+        { step: "04", name: "Monitor and respond calmly", text: "During and after the infusion I keep an eye on you. Allergic reactions are considered rare. I am prepared for them and can respond immediately if needed." },
+        { step: "05", name: "Then higher, step by step", text: "If you tolerate the first infusion well, follow-up infusions can be dosed higher, with the preparation that suits your goal and your store." },
+      ],
+      foot: "This way you know at every step what is happening and why. How an iron infusion can work and which side effects are possible, I look at with you quite honestly next.",
+      afterTag: "And then",
+    },
+    nebenwirkungen: {
+      tag: "Honest, both sides",
+      h2a: "What an iron infusion can bring, and what is ", h2em: "possible", h2b: ".",
+      lead: "Honesty is part of it for me. An iron infusion has good sides and possible side effects. Both belong openly on the table, so that you can decide freely.",
+      nutzenTitle: "What a filled iron store can contribute to",
+      nutzen: [
+        "More energy in everyday life",
+        "Calmer, more restful sleep",
+        "Clearer concentration, less fog in the head",
+        "A more balanced mood",
+        "Feeling cold less often, a better sense of warmth",
+        "Less hair loss over time",
+      ],
+      nutzenNote: "Many people report this once their iron store is filled again. It is not a promise, every body is different.",
+      nwTitle: "Which side effects are possible",
+      nw: [
+        { f: "Common", h: "about 1 to 10 in 100", t: "Nausea, headache, a brief feeling of heat or skin flushing, a metallic taste, a reaction at the injection site" },
+        { f: "Uncommon", h: "about 1 to 10 in 1,000", t: "Muscle and limb pain, fatigue, dizziness, abdominal pain, a mild fever" },
+        { f: "Rare", h: "fewer than 1 in 1,000", t: "a severe allergic reaction" },
+      ],
+      reframe: "According to the prescribing information and studies, most side effects are mild and temporary. Severe reactions are rare. That is exactly why I start cautiously and keep an eye on you during every infusion. This way you know both sides and can decide calmly.",
+    },
+    nutzenrisiko: {
+      tag: "Benefit and risk in view",
+      h2a: "The right dose for ", h2em: "you", h2b: ", not off the shelf.",
+      lead: "Before I give an infusion, I weigh benefit and risk carefully, for you personally. I look for the preparation and the dose that suit your level, your goal and how well you tolerate it.",
+      points: [
+        "Which dose brings you the most, without unnecessary strain?",
+        "Which preparation suits your history and tolerability?",
+        "What makes economic sense, so that you do not pay more than necessary?",
+      ],
+      foot: "I make this assessment anew for every person. The experience from many iron treatments helps me judge your situation well and find, together with you, the path that brings benefit and tolerability into a good balance.",
+    },
+    praeparate: {
+      tag: "Explained honestly",
+      h2a: "Not every iron is the ", h2em: "same", h2b: ".",
+      lead: "Depending on the preparation, doctors dose iron infusions between about 60 and 500 mg per session, in hospital sometimes up to 1,000 mg. Which one suits you depends on your goal, your history and how well you tolerate it. I explain to you openly what I use, and why.",
+      cards: [
+        { name: "Ferrlecit 62.5 mg", dose: "62.5 mg", forwho: "Low dose, for special situations.", benefit: "An older iron preparation that contains only 62.5 mg of iron per ampoule and is therefore deliberately given at a low dose. It is meant above all for people who should only receive small amounts of iron at a time, for example during dialysis. A complete refill would need many individual sessions. For the usual iron infusion in my practice I therefore generally do not use it." },
+        { name: "FerMed or Venofer", dose: "up to 200 mg", forwho: "My preferred first infusion for most people.", benefit: "Both are mid-class iron sucrose preparations and may be given up to 200 mg per session. An ampoule with 100 mg costs about 17 to 20 €, so for 200 mg you need two. This makes them considerably cheaper than the high-dose preparations and, for the first infusion, the right balance between effect and caution." },
+        { name: "Ferinject and Monofer", dose: "up to 500 mg", forwho: "For follow-up infusions or when there is a lot to refill.", benefit: "These preparations are built in a more modern way: the iron core is packed more tightly, so that less free iron can arise in the blood. This is why larger single doses of up to 500 mg in one session are possible, meaning fewer appointments. Because of its special manufacturing, Monofer is often described as particularly well tolerated, which explains part of the higher price. Important: they do not only come in high doses. I can also give Ferinject and Monofer at lower doses, around 100 or 200 mg, if you specifically want to invest in a better tolerated preparation without giving the full amount right away. As a very first infusion at a high dose I deliberately do not use them, because the high dose would come too early, before the tolerability test." },
+      ],
+      allin: "Which preparation and which dose suit you, we decide together, based on your levels, your goal and how well you tolerate it.",
+    },
+    ruf: {
+      tag: "The bad reputation",
+      h3a: "Why iron infusions have a ", h3em: "bad reputation", h3b: ", and why that is out of date.",
+      p: "Fifty to seventy years ago there were iron preparations that triggered severe reactions far more often than today’s do. The caution towards iron infusions comes from that time and was justified back then. Today’s modern preparations are made and formulated in a completely different way and are considered far better tolerated than the old substances. That is exactly why how an iron infusion is done today matters so much to me: with calm, with care and with today’s knowledge. Not the old fear, but the current state of knowledge.",
+    },
+    kosten: {
+      tag: "Transparent",
+      h2a: "What it ", h2em: "costs", h2b: ", and why it is worth it.",
+      lead: "For people with statutory insurance, an iron infusion with me is a self-pay service. If you have private insurance, your insurer may cover it depending on the indication and your plan, more on that below. And in any case it is much more than just an infusion. You are not paying for a bag of iron, but for the medical care around it: the examination, the history taking, the search for the why and your plan for a lasting solution.",
+      honorar: "For me the price does not stand for a bag of iron, but for everything around it. Before I give iron, I check your vital signs, namely blood pressure, heart rate and oxygen saturation. I take time for your history, carefully check the indications and contraindications, and look for the causes behind your deficiency. My aim is not to give as many infusions as possible. My aim is to see you as a whole person before I treat. Every price therefore includes the medical examination, the consultation, the infusion itself and all materials.",
+      valueTitle: "What is included in every infusion",
+      value: [
+        { ic: IC.gauge, t: "A check of your vital signs: blood pressure, heart rate, oxygen saturation" },
+        { ic: IC.file, t: "A thorough history instead of a quick shot" },
+        { ic: IC.shield, t: "A review of indications and contraindications" },
+        { ic: IC.magnifier, t: "Cause research: why is the iron missing in the first place?" },
+        { ic: IC.stomach, t: "A plan for better absorption in the gut" },
+        { ic: IC.flame, t: "A look at silent inflammation that can block iron" },
+        { ic: IC.leaf, t: "If needed: clearing heavy metals, mould and more" },
+        { ic: IC.heart, t: "Guidance, so that the deficiency ideally does not return" },
+      ],
+      stunde: "As standard you get <b>half an hour</b> of medical care. If you want more depth, a thorough <b>full hour</b> for your questions and your story, you can add it for around <b>60 € more</b>.",
+      kasseTitle: "And if you have private insurance?",
+      kasse: "Many people think they always have to pay for an iron infusion themselves. Often that is not the case. If you have private insurance, for example as a civil servant, your insurer usually covers the infusion when there is a clear indication: such as a proven deficiency, when iron tablets are not tolerated or do not reach where they are needed because of a bowel condition. There is no guarantee, it depends on your plan and the indication. But in many cases it is reimbursed.",
+      cards: [
+        { tag: "First infusion", name: "200 mg FerMed", amount: "approx. 177 €", note: "The usual first infusion at a moderate dose, deliberately chosen with caution. It includes the medical examination and consultation, the preparation and all materials." },
+        { tag: "Follow-up infusion", name: "500 mg Monofer", amount: "approx. 330 €", note: "I only give the higher dose once your tolerability is known, for example after a well tolerated first infusion. Depending on the amount and the preparation, a follow-up infusion can cost different amounts." },
+      ],
+      vergleichTitle: "Why the cheapest price is not always the cheapest",
+      vergleich: "The prices differ above all because the dose per session differs. With smaller doses of 60 or 100 mg you need more appointments for the same total amount of iron, and in the end that can even add up to a higher sum. For me, though, something other than the pure price matters anyway: I do not want to top you up with iron quickly as if at a petrol station, but to see you as a whole person. For me, your iron deficiency is a symptom, and behind it there is often a cause that can be treated as well.",
+      foot: "All prices are guide values. We set the exact dose and the right preparation together, based on your levels and your goal.",
+    },
+    zeit: {
+      tag: "Before you come",
+      h2a: "Give yourself ", h2em: "time", h2b: ", about two hours.",
+      lead: "How fast an iron infusion may run differs from person to person. For some it goes quickly, for others I deliberately let it run a little more slowly. Depending on the preparation and tolerability, an infusion takes between three quarters of an hour and about two hours.",
+      body: "So it is best to plan for around two hours and to come without time pressure. This way we can discuss everything calmly, look at your levels and give the infusion at the pace that suits you. It is your time, and it should feel good.",
+    },
+    foto: {
+      tag: "This is how it is with us",
+      h2a: "Relaxed, personal, ", h2em: "human", h2b: ".",
+      text: "An iron infusion does not have to feel clinical. With us you sit comfortably, we take our time, and often there is laughter too. This is exactly how I imagine good medicine: medically careful and yet human.",
+      img: "/Assets/eiseninfusion-praxis.jpg",
+      alt: "Shukri Jarmoukli giving an iron infusion to a patient at the ViveCura practice in Berlin",
+      caption: "An iron infusion at our practice in Berlin.",
+    },
+    wissen: {
+      tag: "Further reading",
+      h2a: "Your iron ", h2em: "guide", h2b: ".",
+      lead: "Many in-depth articles about iron, ferritin and infusions, explained clearly, for everyone who wants to go deeper.",
+      cards: [
+        { ic: IC.book, t: "All iron articles", p: "The complete guide with every topic around iron deficiency and iron infusion.", to: "/en/blog/topic/iron" },
+        { ic: IC.file, t: "Iron deficiency and iron infusions", p: "The big overview: levels, symptoms, treatment and when an infusion makes sense.", to: "/en/blog/eisenmangel-und-eiseninfusionen" },
+      ],
+      cta: "To the full iron guide",
+      ctaHref: "/en/blog/topic/iron",
+      read: "Read",
+    },
+    mentor: {
+      tag: "More than an infusion",
+      h2a: "I do not just refill your ", h2em: "store", h2b: ", I accompany you.",
+      p: "Iron is part of a larger picture. We keep an eye on your levels, adjust when needed and stay with the causes, so that the deficiency does not simply return. You do not get an off-the-shelf infusion, but care that fits you.",
+    },
+    closing: {
+      h2a: "Ready to get to the ", h2em: "bottom", h2b: " of your iron?",
+      p: "Book an appointment. We look at your levels, search for the cause and find out together whether an iron infusion is the right path for you.",
+      cta: "Book an appointment at ViveCura", addr: "ViveCura · Skalitzer Straße 137 · 10999 Berlin",
+    },
+    compliance: "The information on this page is for general information and does not replace personal medical advice, diagnosis or treatment. We clarify individually, in a conversation and after an examination, whether an iron infusion makes sense and is suitable for you. The prices mentioned are guide values and can vary depending on the preparation and dose. No particular effect or cure is promised.",
   },
 };
 
@@ -329,7 +533,7 @@ function buildBody(c) {
   const wissenHtml = c.wissen.cards
     .map(
       (w) =>
-        `<a class="fcard link" href="${w.to}"><div class="ic">${w.ic}</div><h4>${esc(w.t)}</h4><p>${esc(w.p)}</p><span class="fcard-go">Lesen ${ARROW}</span></a>`
+        `<a class="fcard link" href="${w.to}"><div class="ic">${w.ic}</div><h4>${esc(w.t)}</h4><p>${esc(w.p)}</p><span class="fcard-go">${esc(c.wissen.read)} ${ARROW}</span></a>`
     )
     .join("");
 
@@ -406,7 +610,7 @@ function buildBody(c) {
       <h2 class="sec-h">${esc(c.ablauf.h2a)}<em>${esc(c.ablauf.h2em)}</em>${esc(c.ablauf.h2b)}</h2>
       <p class="sec-lead">${esc(c.ablauf.lead)}</p>
       <div class="mgrid">${stepsHtml}</div>
-      <div class="mfoot"><span class="pill">Und danach</span><span>${esc(c.ablauf.foot)}</span></div>
+      <div class="mfoot"><span class="pill">${esc(c.ablauf.afterTag)}</span><span>${esc(c.ablauf.foot)}</span></div>
     </div>
   </section>
 
@@ -515,7 +719,7 @@ function buildBody(c) {
       <h2 class="sec-h">${esc(c.wissen.h2a)}<em>${esc(c.wissen.h2em)}</em>${esc(c.wissen.h2b)}</h2>
       <p class="sec-lead">${esc(c.wissen.lead)}</p>
       <div class="wissen-grid">${wissenHtml}</div>
-      <a class="btn btn-ghost wissen-cta" href="/blog/thema/eisen">${esc(c.wissen.cta)} ${ARROW}</a>
+      <a class="btn btn-ghost wissen-cta" href="${c.wissen.ctaHref}">${esc(c.wissen.cta)} ${ARROW}</a>
     </div>
   </section>
 

@@ -6,6 +6,10 @@ export const metadata = {
     "Eiseninfusion in Berlin, sicher und ärztlich begleitet: Ablauf, Präparate (FerMed, Ferinject, Monofer), Kosten und wann eine Infusion sinnvoll ist. Auch bei funktionellem Eisenmangel ohne Anämie.",
   alternates: {
     canonical: "/eiseninfusion",
+    languages: {
+      de: "/eiseninfusion",
+      en: "/en/iron-infusion",
+    },
   },
 };
 
