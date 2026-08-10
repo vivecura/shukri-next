@@ -8,6 +8,9 @@ import { useT } from "@/hooks/useT";
 import { translatePath } from "@/lib/routeMap";
 
 const navIcons = {
+	eisen: (
+		<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-5 h-5"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z" strokeLinecap="round" strokeLinejoin="round" /></svg>
+	),
 	home: (
 		<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-5 h-5">
 			<path d="M3 10.5L12 3l9 7.5V20a1 1 0 01-1 1h-5v-6h-6v6H4a1 1 0 01-1-1v-9.5z" strokeLinecap="round" strokeLinejoin="round" />
@@ -445,6 +448,7 @@ const Navbar = () => {
 								<NavItem isLink to={localized("/infusions")} icon={navIcons.infusions} label={t("navbar.infusions")} />
 								<NavItem isLink to={localized("/mentoring")} icon={navIcons.mentoring} label={t("navbar.mentoring")} />
 								<NavItem isLink to={localized("/ketamin")} icon={navIcons.extras} label={t("navbar.ketamin")} />
+								<NavItem isLink to={localized("/eiseninfusion")} icon={navIcons.eisen} label={t("navbar.eisen")} />
 								<NavItem isLink to={localized("/ueber-mich")} icon={navIcons.ueberMich} label={t("navbar.ueberMich")} />
 								<NavItem isLink to={localized("/blog")} icon={navIcons.blog} label={t("navbar.blog")} />
 								<NavItem isLink to={localized("/kontakt")} icon={navIcons.beratung} label={t("kontakt.navbarLabel")} />
@@ -489,6 +493,7 @@ const Navbar = () => {
 							{[
 								{ to: "/", icon: navIcons.home, label: t("navbar.home") },
 								{ to: "/ketamin", icon: navIcons.extras, label: t("navbar.ketamin") },
+								{ to: "/eiseninfusion", icon: navIcons.eisen, label: t("navbar.eisen") },
 								{ to: "/ueber-mich", icon: navIcons.ueberMich, label: t("navbar.ueberMich") },
 								{ to: "/blog", icon: navIcons.blog, label: t("navbar.blog") },
 								{ to: "/kontakt", icon: navIcons.beratung, label: t("kontakt.navbarLabel") },
