@@ -3,16 +3,15 @@
 /**
  * Ganzheitliche Beratung. Bereich /beratung (EN /en/consultations), ViveCura Berlin.
  * Stil & CSS-System wie /eiseninfusion (gekapselt unter .ber, kein Leaken).
- * Wiederverwendete Bausteine: <MeinAnsatz/> (interaktives Kreis-Diagramm) + <SchwerpunkteGrid/> (Bild-Klappkarten).
- * STIL: Du-Anrede, keine Gedankenstriche im Fließtext, kann-Form (kein Heilversprechen),
- *       sowohl-als-auch statt Abwertung der Kollegen (Anwalts-Gate).
+ * Dynamische Elemente: klickbares Blutdruck-Beispiel, Gesundheits-Spektrum (30/60/100 %),
+ *   interaktive Plan-Saeulen (multidisziplinaerer Plan).
+ * STIL: Du-Anrede, keine Gedankenstriche im Fliesstext, kann-Form (kein Heilversprechen),
+ *       sowohl-als-auch statt Abwertung der Kollegen (Anwalts-Gate), moegliche Ursachen (nicht "die").
  * PREIS: 30 Minuten Beratung 100 EUR, online zum selben Preis wie in der Praxis.
  */
 
 import { useEffect, useRef, useState } from "react";
 import useLanguage from "@/hooks/useLanguage";
-import MeinAnsatz from "@/components/MeinAnsatz";
-import SchwerpunkteGrid from "@/components/SchwerpunkteGrid";
 
 const BOOK =
   "https://www.doctolib.de/arzt/berlin/shukri-jarmoukli/booking/motives?source=profile";
@@ -46,6 +45,9 @@ const IC = {
   video: () => S(<><rect x="3" y="6" width="12" height="12" rx="2" /><path d="M15 10l6-3v10l-6-3" /></>),
   file: () => S(<><path d="M6 2h8l6 6v14H6z" /><path d="M14 2v6h6M9 14h6M9 17h6" /></>),
   leaf: () => S(<path d="M4 20c0-9 7-16 16-16 0 9-7 16-16 16zM4 20c4-4 8-6 12-7" />),
+  heart: () => S(<path d="M19.5 12.6l-7.5 7.4-7.5-7.4a5 5 0 1 1 7.5-6.6 5 5 0 1 1 7.5 6.6z" />),
+  pill: () => S(<><rect x="3" y="9" width="18" height="6" rx="3" transform="rotate(-45 12 12)" /><path d="M8.5 8.5l7 7" /></>),
+  brain: () => S(<><path d="M8.5 6A2.5 2.5 0 0 1 12 4a2.5 2.5 0 0 1 3.5 2" /><path d="M6.5 9A2.5 2.5 0 0 0 6 14" /><path d="M17.5 9a2.5 2.5 0 0 1 .5 5" /><path d="M8.5 18A2.5 2.5 0 0 0 12 20a2.5 2.5 0 0 0 3.5-2" /><path d="M12 4v16" /></>),
 };
 const CHECK = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
@@ -66,6 +68,7 @@ const CHEV = () => (
 /* ---------------- Inhalt ---------------- */
 const CONTENT = {
   de: {
+    diagHref: "/diagnostik",
     hero: {
       eyebrow: "Ganzheitliche Beratung · Berlin & online",
       h1a: "Ein Blick auf dich, ",
@@ -75,38 +78,22 @@ const CONTENT = {
         "In 30 Minuten schauen wir gemeinsam auf deine ganze Geschichte: Beschwerden, Werte, Lebensstil. Ich denke über die Fachgrenzen hinweg, sortiere die Komplexität, und du gehst mit einem konkreten ersten Plan wieder raus. Online per Video oder bei mir in der Praxis in Berlin.",
       strike: "Nur den einen Wert senken, der auffällt.",
       planPre: "Verstehen, ",
-      planB: "was dahintersteckt",
+      planB: "was dahinterstecken kann",
       planPost: ".",
       priceNote: "30 Minuten für 100 €. Online wie in der Praxis.",
       cta: "Termin buchen",
       ghost: "Was kostet das?",
     },
     subnav: [
-      { to: "fuerwen", label: "Für wen" },
       { to: "vergleich", label: "Der Unterschied" },
-      { to: "mehrblick", label: "Mehrblick" },
+      { to: "fuerwen", label: "Für wen" },
+      { to: "spektrum", label: "Spektrum" },
       { to: "ablauf", label: "Ablauf" },
       { to: "diagnostik", label: "Diagnostik" },
       { to: "online", label: "Online" },
-      { to: "plan", label: "Bausteine" },
+      { to: "plan", label: "Dein Plan" },
       { to: "kosten", label: "Kosten" },
     ],
-    fuerwen: {
-      tag: "Für wen",
-      h2a: "Auch ohne fertige Diagnose ",
-      h2em: "genau richtig",
-      h2b: ".",
-      lead:
-        "Viele kommen mit einem klaren Anliegen. Genauso viele mit dem Gefühl: irgendetwas stimmt nicht, ich weiß nur nicht was. Beides gehört hierher.",
-      cards: [
-        { ic: "magnifier", t: "Beschwerden ohne klare Ursache", p: "Du hast Symptome, aber bisher hat niemand den roten Faden gefunden." },
-        { ic: "layers", t: "Lust auf eine zweite Sicht", p: "Du möchtest deine Werte und Beschwerden aus einem anderen Blickwinkel einordnen lassen." },
-        { ic: "shield", t: "Gesund bleiben, bevor etwas kippt", p: "Du fühlst dich wohl und willst früh gegensteuern, statt zu warten, bis etwas weh tut." },
-        { ic: "help", t: "Einfach mal schauen, was geht", p: "Du hast kein konkretes Anliegen und willst wissen, wie ich dir überhaupt helfen könnte." },
-      ],
-      foot:
-        "Du musst nicht krank sein, um zu kommen. Ein Gespräch reicht, um zu sehen, was möglich ist.",
-    },
     vergleich: {
       tag: "Der Unterschied",
       h2a: "Zwei Wege, ",
@@ -125,9 +112,9 @@ const CONTENT = {
       holistic: {
         title: "Mein zusätzlicher Blick",
         points: [
-          "Fragt, warum der Wert überhaupt entgleist",
-          "Sucht die Auslöser: Stress, Belastungen, Darm, Ernährung",
-          "Arbeitet an der Ursache, damit später weniger nötig sein kann",
+          "Fragt, was den Wert antreiben könnte",
+          "Sucht mögliche Auslöser: Stress, Belastungen, Darm, Ernährung",
+          "Arbeitet an möglichen Ursachen, damit später weniger nötig sein kann",
         ],
       },
       exampleTag: "Ein Beispiel",
@@ -141,7 +128,7 @@ const CONTENT = {
           tag: "45, viel Verantwortung",
           reading: "150 / 95",
           cause:
-            "Dahinter steckt oft Dauerstress, zu wenig Schlaf und zu viel Kaffee. Wir schauen gemeinsam auf Erholung, Schlaf und dein Nervensystem.",
+            "Dahinter können Dauerstress, zu wenig Schlaf und zu viel Kaffee stecken. Wir schauen gemeinsam auf Erholung, Schlaf und dein Nervensystem.",
         },
         {
           id: "B",
@@ -153,17 +140,49 @@ const CONTENT = {
         },
       ],
       bridge:
-        "Der Wert wird bei beiden im Blick behalten. Was ihn antreibt, ist aber völlig verschieden, und genau das verändert den Plan. Ich ersetze die klassische Medizin nicht, ich denke sie weiter.",
+        "Der Wert wird bei beiden im Blick behalten. Was ihn antreibt, kann aber völlig verschieden sein, und genau das verändert den Plan. Ich ersetze die klassische Medizin nicht, ich denke sie weiter.",
+    },
+    fuerwen: {
+      tag: "Für wen",
+      h2a: "Und auch ohne Diagnose ",
+      h2em: "genau richtig",
+      h2b: ".",
+      lead:
+        "Viele kommen mit einem klaren Anliegen. Genauso viele mit dem Gefühl: irgendetwas stimmt nicht, ich weiß nur nicht was. Beides gehört hierher.",
+      cards: [
+        { ic: "magnifier", t: "Beschwerden ohne klare Ursache", p: "Du hast Symptome, aber bisher hat niemand den roten Faden gefunden." },
+        { ic: "layers", t: "Lust auf eine zweite Sicht", p: "Du möchtest deine Werte und Beschwerden aus einem anderen Blickwinkel einordnen lassen." },
+        { ic: "shield", t: "Gesund bleiben, bevor etwas kippt", p: "Du fühlst dich wohl und willst früh gegensteuern, statt zu warten, bis etwas weh tut." },
+        { ic: "help", t: "Einfach mal schauen, was geht", p: "Du hast kein konkretes Anliegen und willst wissen, wie ich dir überhaupt helfen könnte." },
+      ],
+      foot:
+        "Du musst nicht krank sein, um zu kommen. Ein Gespräch reicht, um zu sehen, was möglich ist.",
+    },
+    spektrum: {
+      tag: "Gesundheit ist ein Spektrum",
+      h2a: "Kein fester Zustand, ",
+      h2em: "sondern Lebendigkeit",
+      h2b: ".",
+      lead:
+        "Gesundheit ist nicht einfach die Abwesenheit einer Diagnose. Sie ist ein Spektrum. Es geht nicht darum, gerade so zu funktionieren, sondern darum, wirklich lebendig zu sein. Wo stehst du gerade?",
+      levels: [
+        { pct: 30, label: "Überleben", title: "Du funktionierst, mehr nicht", text: "Kein klarer Befund, und trotzdem wenig Energie. Du kommst durch den Tag, aber es fühlt sich nicht nach dir an." },
+        { pct: 60, label: "Funktionieren", title: "Der Alltag läuft", text: "Vieles ist in Ordnung, aber etwas fehlt: Schlaf, Fokus, Antrieb, Leichtigkeit. Da ist mehr möglich." },
+        { pct: 100, label: "Lebendigkeit", title: "Wach, klar, belastbar", text: "Nicht nur ohne Beschwerden, sondern voller Energie. Das ist das Ziel, an dem wir gemeinsam arbeiten können." },
+      ],
+      markerNote:
+        "Deshalb schaue ich nicht auf einen einzigen Wert, sondern je nach Fragestellung auf 40 bis 120 Marker.",
+      diagCta: "Mehr zur Diagnostik",
     },
     ablauf: {
       tag: "So läuft es",
-      h2a: "Zuhören, einordnen, ",
-      h2em: "einen Plan geben",
+      h2a: "Beratung, Diagnostik, ",
+      h2em: "dein Erstplan",
       h2b: ".",
       steps: [
-        { step: "01", ic: "ear", name: "Zuhören und verstehen", text: "30 Minuten Raum für deine Beschwerden, deine Geschichte, deine Biografie. Deine Empfindung nehme ich ernst, auch wenn ein Befund sie noch nicht erklärt." },
+        { step: "01", ic: "ear", name: "Beratung", text: "30 Minuten Raum für deine Beschwerden, deine Geschichte, deine Biografie. Deine Empfindung nehme ich ernst, auch wenn ein Befund sie noch nicht erklärt." },
         { step: "02", ic: "magnifier", name: "Sinnvolle Diagnostik", text: "Ich fordere gezielt die Untersuchungen an, die deine nächsten Schritte wirklich verändern. Keine Tests um der Tests willen." },
-        { step: "03", ic: "target", name: "Dein Erstplan", text: "Du gehst mit einer klaren ersten Roadmap raus: Lebensstil, Pflanzenheilkunde und Nährstoffe, bei Bedarf auch eine Infusion." },
+        { step: "03", ic: "target", name: "Dein Erstplan", text: "Du gehst mit einer klaren ersten Roadmap raus, abgestimmt auf dich und über die Fachgrenzen hinweg gedacht." },
       ],
     },
     diagnostik: {
@@ -181,6 +200,7 @@ const CONTENT = {
       ],
       foot:
         "Welche Tests sinnvoll sind, entscheiden wir zusammen, nachvollziehbar und transparent. Vieles davon lässt sich auch bequem von zuhause aus starten.",
+      cta: "Zur Diagnostik-Seite",
     },
     online: {
       tag: "Online möglich",
@@ -198,12 +218,19 @@ const CONTENT = {
         "So bekommst du dieselbe Beratung, egal ob du in Berlin, in Hamburg oder im Ausland bist.",
     },
     plan: {
-      tag: "Mögliche Bausteine",
+      tag: "Ein möglicher Plan",
       h2a: "So könnte dein ",
-      h2em: "Weg",
+      h2em: "Plan",
       h2b: " aussehen.",
       lead:
-        "Aus dem Erstgespräch wird ein Plan mit konkreten Bausteinen. Welche davon zu dir passen, entscheiden wir gemeinsam. Ein Eindruck, womit wir arbeiten können:",
+        "Aus Beratung und Diagnostik entsteht dein Plan. Er darf aus mehreren Disziplinen kommen, immer so, wie es zu dir passt. Tippe eine Säule an.",
+      pillars: [
+        { ic: "heart", name: "Lebensstil", text: "Der Alltag ist die stärkste Medizin.", methods: ["Ernährungsumstellung", "Atemtherapie", "Bewegungsoptimierung"] },
+        { ic: "droplet", name: "Entgiftung", text: "Den Körper dort entlasten, wo er belastet ist.", methods: ["Ausleitungs- und Entgiftungsstrategien", "zum Beispiel über Infusionen"] },
+        { ic: "leaf", name: "Pflanzenheilkunde", text: "Pflanzliche Heilmittel, gezielt eingesetzt.", methods: ["Pflanzliche Mittel nach anthroposophischer Medizin"] },
+        { ic: "pill", name: "Nährstofftherapie", text: "Auffüllen, was fehlt.", methods: ["Nach orthomolekularer Medizin", "Als Tabletten oder als Infusion"] },
+        { ic: "brain", name: "Psyche", text: "Körper und Psyche gehören zusammen.", methods: ["Psychotherapie mit Somatic Experiencing", "Ketamin-assistierte Infusionen"] },
+      ],
     },
     kosten: {
       tag: "Kosten",
@@ -236,6 +263,7 @@ const CONTENT = {
   },
 
   en: {
+    diagHref: "/en/diagnostics",
     hero: {
       eyebrow: "Holistic consultation · Berlin & online",
       h1a: "A look at you that ",
@@ -245,38 +273,22 @@ const CONTENT = {
         "In 30 minutes we look at your whole story together: symptoms, values, lifestyle. I think across the boundaries of the medical fields, sort through the complexity, and you leave with a concrete first plan. Online by video or with me at the practice in Berlin.",
       strike: "Just lowering the one value that stands out.",
       planPre: "Understanding ",
-      planB: "what is behind it",
+      planB: "what may be behind it",
       planPost: ".",
       priceNote: "30 minutes for €100. Online just like at the practice.",
       cta: "Book an appointment",
       ghost: "What does it cost?",
     },
     subnav: [
-      { to: "fuerwen", label: "Who it is for" },
       { to: "vergleich", label: "The difference" },
-      { to: "mehrblick", label: "Wider view" },
+      { to: "fuerwen", label: "Who it is for" },
+      { to: "spektrum", label: "Spectrum" },
       { to: "ablauf", label: "How it works" },
       { to: "diagnostik", label: "Diagnostics" },
       { to: "online", label: "Online" },
-      { to: "plan", label: "Building blocks" },
+      { to: "plan", label: "Your plan" },
       { to: "kosten", label: "Cost" },
     ],
-    fuerwen: {
-      tag: "Who it is for",
-      h2a: "The right place ",
-      h2em: "even without",
-      h2b: " a finished diagnosis.",
-      lead:
-        "Many people come with a clear concern. Just as many come with a feeling: something is off, I just do not know what. Both belong here.",
-      cards: [
-        { ic: "magnifier", t: "Symptoms without a clear cause", p: "You have symptoms, but so far no one has found the common thread." },
-        { ic: "layers", t: "Open to a second view", p: "You would like your values and symptoms understood from a different angle." },
-        { ic: "shield", t: "Staying well before things tip over", p: "You feel good and want to steer early, instead of waiting until something hurts." },
-        { ic: "help", t: "Simply seeing what is possible", p: "You have no specific concern and want to know how I could help you at all." },
-      ],
-      foot:
-        "You do not have to be ill to come. A conversation is enough to see what is possible.",
-    },
     vergleich: {
       tag: "The difference",
       h2a: "Two paths, ",
@@ -295,9 +307,9 @@ const CONTENT = {
       holistic: {
         title: "My additional view",
         points: [
-          "Asks why the value goes off track in the first place",
-          "Looks for the triggers: stress, exposures, gut, nutrition",
-          "Works on the cause, so that less may be needed later",
+          "Asks what could be driving the value",
+          "Looks for possible triggers: stress, exposures, gut, nutrition",
+          "Works on possible causes, so that less may be needed later",
         ],
       },
       exampleTag: "An example",
@@ -311,7 +323,7 @@ const CONTENT = {
           tag: "45, a lot of responsibility",
           reading: "150 / 95",
           cause:
-            "Behind it there is often ongoing stress, too little sleep and too much coffee. Together we look at recovery, sleep and your nervous system.",
+            "Behind it there can be ongoing stress, too little sleep and too much coffee. Together we look at recovery, sleep and your nervous system.",
         },
         {
           id: "B",
@@ -323,17 +335,49 @@ const CONTENT = {
         },
       ],
       bridge:
-        "The value is kept in view for both. But what drives it is completely different, and that is exactly what changes the plan. I do not replace conventional medicine, I think it further.",
+        "The value is kept in view for both. But what drives it can be completely different, and that is exactly what changes the plan. I do not replace conventional medicine, I think it further.",
+    },
+    fuerwen: {
+      tag: "Who it is for",
+      h2a: "And even without a diagnosis, ",
+      h2em: "exactly right",
+      h2b: ".",
+      lead:
+        "Many people come with a clear concern. Just as many come with a feeling: something is off, I just do not know what. Both belong here.",
+      cards: [
+        { ic: "magnifier", t: "Symptoms without a clear cause", p: "You have symptoms, but so far no one has found the common thread." },
+        { ic: "layers", t: "Open to a second view", p: "You would like your values and symptoms understood from a different angle." },
+        { ic: "shield", t: "Staying well before things tip over", p: "You feel good and want to steer early, instead of waiting until something hurts." },
+        { ic: "help", t: "Simply seeing what is possible", p: "You have no specific concern and want to know how I could help you at all." },
+      ],
+      foot:
+        "You do not have to be ill to come. A conversation is enough to see what is possible.",
+    },
+    spektrum: {
+      tag: "Health is a spectrum",
+      h2a: "Not a fixed state, ",
+      h2em: "but aliveness",
+      h2b: ".",
+      lead:
+        "Health is not simply the absence of a diagnosis. It is a spectrum. It is not about just barely functioning, but about being truly alive. Where are you right now?",
+      levels: [
+        { pct: 30, label: "Surviving", title: "You function, nothing more", text: "No clear finding, and still little energy. You get through the day, but it does not feel like you." },
+        { pct: 60, label: "Functioning", title: "Daily life runs", text: "A lot is fine, but something is missing: sleep, focus, drive, lightness. There is more possible." },
+        { pct: 100, label: "Aliveness", title: "Awake, clear, resilient", text: "Not just free of symptoms, but full of energy. That is the goal we can work towards together." },
+      ],
+      markerNote:
+        "That is why I do not look at a single value, but, depending on the question, at 40 to 120 markers.",
+      diagCta: "More about diagnostics",
     },
     ablauf: {
       tag: "How it works",
-      h2a: "Listen, make sense of it, ",
-      h2em: "give a plan",
+      h2a: "Consultation, diagnostics, ",
+      h2em: "your first plan",
       h2b: ".",
       steps: [
-        { step: "01", ic: "ear", name: "Listen and understand", text: "30 minutes of space for your symptoms, your story, your biography. I take your experience seriously, even when a report does not yet explain it." },
+        { step: "01", ic: "ear", name: "Consultation", text: "30 minutes of space for your symptoms, your story, your biography. I take your experience seriously, even when a report does not yet explain it." },
         { step: "02", ic: "magnifier", name: "Meaningful diagnostics", text: "I order exactly the tests that will really change your next steps. No tests for the sake of tests." },
-        { step: "03", ic: "target", name: "Your first plan", text: "You leave with a clear first roadmap: lifestyle, plant-based remedies and nutrients, and an infusion if it makes sense." },
+        { step: "03", ic: "target", name: "Your first plan", text: "You leave with a clear first roadmap, tailored to you and thought through across the medical fields." },
       ],
     },
     diagnostik: {
@@ -351,6 +395,7 @@ const CONTENT = {
       ],
       foot:
         "Which tests make sense we decide together, transparently and step by step. Much of it can also be started conveniently from home.",
+      cta: "Go to diagnostics",
     },
     online: {
       tag: "Available online",
@@ -368,12 +413,19 @@ const CONTENT = {
         "This way you get the same consultation, whether you are in Berlin, in Hamburg or abroad.",
     },
     plan: {
-      tag: "Possible building blocks",
+      tag: "A possible plan",
       h2a: "What your ",
-      h2em: "path",
+      h2em: "plan",
       h2b: " could look like.",
       lead:
-        "The first conversation turns into a plan with concrete building blocks. Which of them fit you we decide together. Here is an impression of what we can work with:",
+        "Your plan grows out of the consultation and the diagnostics. It may draw on several disciplines, always in the way that fits you. Tap a pillar.",
+      pillars: [
+        { ic: "heart", name: "Lifestyle", text: "Everyday life is the strongest medicine.", methods: ["Nutrition changes", "Breath therapy", "Movement optimisation"] },
+        { ic: "droplet", name: "Detoxification", text: "Relieving the body where it is burdened.", methods: ["Elimination and detox strategies", "for example via infusions"] },
+        { ic: "leaf", name: "Plant remedies", text: "Plant-based remedies, used precisely.", methods: ["Plant remedies from anthroposophic medicine"] },
+        { ic: "pill", name: "Nutrient therapy", text: "Filling what is missing.", methods: ["Based on orthomolecular medicine", "As tablets or as an infusion"] },
+        { ic: "brain", name: "Psyche", text: "Body and mind belong together.", methods: ["Psychotherapy with Somatic Experiencing", "Ketamine-assisted infusions"] },
+      ],
     },
     kosten: {
       tag: "Cost",
@@ -412,6 +464,8 @@ export default function Beratung() {
   const c = CONTENT[lang] || CONTENT.de;
   const ref = useRef(null);
   const [openPerson, setOpenPerson] = useState({});
+  const [specIdx, setSpecIdx] = useState(1);
+  const [pillarIdx, setPillarIdx] = useState(0);
 
   useEffect(() => {
     const root = ref.current;
@@ -431,8 +485,10 @@ export default function Beratung() {
     return () => root.removeEventListener("click", handler);
   }, [lang]);
 
-  const togglePerson = (id) =>
-    setOpenPerson((s) => ({ ...s, [id]: !s[id] }));
+  const togglePerson = (id) => setOpenPerson((s) => ({ ...s, [id]: !s[id] }));
+
+  const spec = c.spektrum.levels[specIdx];
+  const pillar = c.plan.pillars[pillarIdx];
 
   return (
     <div className="ber" ref={ref}>
@@ -465,26 +521,7 @@ export default function Beratung() {
         </div>
       </nav>
 
-      {/* Fuer wen */}
-      <section className="sec fuerwen" id="fuerwen">
-        <div className="wrap">
-          <span className="sec-tag">{c.fuerwen.tag}</span>
-          <h2 className="sec-h">{c.fuerwen.h2a}<em>{c.fuerwen.h2em}</em>{c.fuerwen.h2b}</h2>
-          <p className="sec-lead">{c.fuerwen.lead}</p>
-          <div className="cardgrid four">
-            {c.fuerwen.cards.map((card, i) => (
-              <div className="card" key={i}>
-                <div className="ic">{IC[card.ic]()}</div>
-                <h4>{card.t}</h4>
-                <p>{card.p}</p>
-              </div>
-            ))}
-          </div>
-          <div className="sec-foot">{c.fuerwen.foot}</div>
-        </div>
-      </section>
-
-      {/* Vergleich */}
+      {/* Der Unterschied */}
       <section className="sec vergleich" id="vergleich">
         <div className="wrap">
           <span className="sec-tag">{c.vergleich.tag}</span>
@@ -537,8 +574,60 @@ export default function Beratung() {
         </div>
       </section>
 
-      {/* Mehrblick: wiederverwendetes Kreis-Diagramm */}
-      <div id="mehrblick" className="ber-anchor"><MeinAnsatz /></div>
+      {/* Für wen */}
+      <section className="sec fuerwen" id="fuerwen">
+        <div className="wrap">
+          <span className="sec-tag">{c.fuerwen.tag}</span>
+          <h2 className="sec-h">{c.fuerwen.h2a}<em>{c.fuerwen.h2em}</em>{c.fuerwen.h2b}</h2>
+          <p className="sec-lead">{c.fuerwen.lead}</p>
+          <div className="cardgrid four">
+            {c.fuerwen.cards.map((card, i) => (
+              <div className="card" key={i}>
+                <div className="ic">{IC[card.ic]()}</div>
+                <h4>{card.t}</h4>
+                <p>{card.p}</p>
+              </div>
+            ))}
+          </div>
+          <div className="sec-foot">{c.fuerwen.foot}</div>
+        </div>
+      </section>
+
+      {/* Gesundheit ist ein Spektrum */}
+      <section className="sec spektrum" id="spektrum">
+        <div className="wrap">
+          <span className="sec-tag">{c.spektrum.tag}</span>
+          <h2 className="sec-h">{c.spektrum.h2a}<em>{c.spektrum.h2em}</em>{c.spektrum.h2b}</h2>
+          <p className="sec-lead">{c.spektrum.lead}</p>
+
+          <div className="spec">
+            <div className="spec-levels">
+              {c.spektrum.levels.map((lv, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  className={`spec-btn${i === specIdx ? " active" : ""}`}
+                  onClick={() => setSpecIdx(i)}
+                >
+                  {lv.label}
+                </button>
+              ))}
+            </div>
+            <div className="spec-bar"><div className="spec-fill" style={{ width: `${spec.pct}%` }} /></div>
+            <div className="spec-panel">
+              <div className="spec-pct">{spec.pct}%</div>
+              <div className="spec-head">
+                <div className="spec-ptitle">{spec.title}</div>
+                <div className="spec-ptext">{spec.text}</div>
+              </div>
+            </div>
+            <div className="spec-note">
+              <span>{c.spektrum.markerNote}</span>
+              <a className="btn btn-ghost" href={c.diagHref}>{c.spektrum.diagCta} <ARROW /></a>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Ablauf */}
       <section className="sec ablauf" id="ablauf">
@@ -574,6 +663,7 @@ export default function Beratung() {
             ))}
           </div>
           <div className="sec-foot">{c.diagnostik.foot}</div>
+          <div className="sec-cta"><a className="btn btn-ghost" href={c.diagHref}>{c.diagnostik.cta} <ARROW /></a></div>
         </div>
       </section>
 
@@ -597,14 +687,36 @@ export default function Beratung() {
         </div>
       </section>
 
-      {/* Bausteine: wiederverwendetes Karten-Grid */}
+      {/* Dein Plan (interaktive Saeulen) */}
       <section className="sec plan" id="plan">
         <div className="wrap">
           <span className="sec-tag">{c.plan.tag}</span>
           <h2 className="sec-h">{c.plan.h2a}<em>{c.plan.h2em}</em>{c.plan.h2b}</h2>
           <p className="sec-lead">{c.plan.lead}</p>
+
+          <div className="pillars">
+            <div className="pillar-tabs">
+              {c.plan.pillars.map((p, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  className={`pillar-tab${i === pillarIdx ? " active" : ""}`}
+                  onClick={() => setPillarIdx(i)}
+                >
+                  <span className="pic">{IC[p.ic]()}</span>
+                  <span className="pname">{p.name}</span>
+                </button>
+              ))}
+            </div>
+            <div className="pillar-panel">
+              <h4>{pillar.name}</h4>
+              <p className="pp-text">{pillar.text}</p>
+              <ul>
+                {pillar.methods.map((m, i) => <li key={i}>{m}</li>)}
+              </ul>
+            </div>
+          </div>
         </div>
-        <SchwerpunkteGrid title={null} />
       </section>
 
       {/* Kosten */}
@@ -664,7 +776,7 @@ const BER_CSS = `
 .ber .btn-white{background:#fff;color:var(--teal-darker)}
 .ber .btn-white:hover{background:var(--cream);transform:translateY(-2px)}
 .ber .arrow{transition:transform .3s var(--ease)}
-.ber .btn-primary:hover .arrow,.ber .btn-white:hover .arrow{transform:translateX(4px)}
+.ber .btn-primary:hover .arrow,.ber .btn-white:hover .arrow,.ber .btn-ghost:hover .arrow{transform:translateX(4px)}
 
 .ber .hero{position:relative;padding:70px 0 56px;overflow:hidden;background:radial-gradient(120% 90% at 86% -10%,var(--teal-pale) 0%,rgba(224,244,245,0) 55%),radial-gradient(90% 70% at -5% 110%,var(--teal-subtle) 0%,rgba(243,250,249,0) 60%)}
 .ber .eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal-darker);background:#fff;border:1.5px solid var(--line);padding:8px 16px;border-radius:100px}
@@ -685,24 +797,12 @@ const BER_CSS = `
 .ber .subnav a:hover{color:var(--teal-darker);border-color:var(--teal);background:var(--teal-subtle)}
 
 .ber .sec{padding:74px 0;scroll-margin-top:70px}
-.ber .ber-anchor{scroll-margin-top:70px}
 .ber .sec-tag{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);margin-bottom:14px}
 .ber .sec-h{font-size:clamp(2rem,3.7vw,2.9rem);line-height:1.07;letter-spacing:-.03em;font-weight:800;max-width:22ch;margin:0}
 .ber .sec-h em{font-family:var(--serif);font-style:italic;font-weight:400;color:var(--teal-darker)}
 .ber .sec-lead{font-size:1.12rem;color:var(--gray);max-width:62ch;margin-top:16px}
 .ber .sec-foot{margin-top:30px;font-family:var(--serif);font-style:italic;font-size:1.02rem;color:var(--gray);max-width:66ch;border-left:3px solid var(--teal-pale);padding-left:18px}
-
-.ber .fuerwen{background:linear-gradient(180deg,var(--teal-subtle),#fff)}
-.ber .cardgrid{margin-top:44px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
-.ber .cardgrid.four{grid-template-columns:repeat(4,minmax(0,1fr))}
-@media(max-width:980px){.ber .cardgrid.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:900px){.ber .cardgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:560px){.ber .cardgrid,.ber .cardgrid.four{grid-template-columns:1fr}}
-.ber .card{border:1px solid var(--line);border-radius:20px;padding:26px 24px;background:#fff;transition:.4s var(--ease)}
-.ber .card:hover{border-color:var(--teal);transform:translateY(-4px);box-shadow:0 28px 56px -40px rgba(31,110,112,.5)}
-.ber .card .ic{width:46px;height:46px;border-radius:13px;background:var(--teal-pale);color:var(--teal-darker);display:grid;place-items:center;margin-bottom:16px}
-.ber .card h4{font-size:1.1rem;font-weight:700;letter-spacing:-.01em;margin:0}
-.ber .card p{font-size:.92rem;color:var(--gray);line-height:1.6;margin-top:8px;overflow-wrap:break-word}
+.ber .sec-cta{margin-top:26px}
 
 .ber .vergleich{background:#fff}
 .ber .compare-grid{margin-top:44px;display:grid;grid-template-columns:1fr 1fr;gap:18px}
@@ -739,7 +839,35 @@ const BER_CSS = `
 .ber .person-cause-in{padding-top:16px;font-size:.96rem;color:rgba(255,255,255,.82);line-height:1.62}
 .ber .ex-bridge{position:relative;margin-top:26px;padding-top:22px;border-top:1px solid rgba(255,255,255,.14);font-family:var(--serif);font-style:italic;font-size:1.08rem;color:#fff;line-height:1.6;max-width:72ch}
 
-.ber .ablauf{background:linear-gradient(180deg,var(--teal-subtle),#fff)}
+.ber .fuerwen{background:linear-gradient(180deg,#fff,var(--teal-subtle))}
+.ber .cardgrid{margin-top:44px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.ber .cardgrid.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media(max-width:980px){.ber .cardgrid.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:900px){.ber .cardgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.ber .cardgrid,.ber .cardgrid.four{grid-template-columns:1fr}}
+.ber .card{border:1px solid var(--line);border-radius:20px;padding:26px 24px;background:#fff;transition:.4s var(--ease)}
+.ber .card:hover{border-color:var(--teal);transform:translateY(-4px);box-shadow:0 28px 56px -40px rgba(31,110,112,.5)}
+.ber .card .ic{width:46px;height:46px;border-radius:13px;background:var(--teal-pale);color:var(--teal-darker);display:grid;place-items:center;margin-bottom:16px}
+.ber .card h4{font-size:1.1rem;font-weight:700;letter-spacing:-.01em;margin:0}
+.ber .card p{font-size:.92rem;color:var(--gray);line-height:1.6;margin-top:8px;overflow-wrap:break-word}
+
+.ber .spektrum{background:linear-gradient(180deg,var(--teal-subtle),#fff)}
+.ber .spec{margin-top:40px}
+.ber .spec-levels{display:flex;gap:10px;flex-wrap:wrap}
+.ber .spec-btn{font-family:var(--sans);font-size:.92rem;font-weight:600;color:var(--gray);background:#fff;border:1px solid var(--line);border-radius:100px;padding:10px 20px;cursor:pointer;transition:.3s var(--ease)}
+.ber .spec-btn:hover{border-color:var(--teal)}
+.ber .spec-btn.active{color:#fff;background:var(--teal);border-color:var(--teal)}
+.ber .spec-bar{margin-top:22px;height:14px;border-radius:100px;background:var(--teal-pale);overflow:hidden}
+.ber .spec-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--teal),var(--teal-darker));transition:width .6s var(--spring)}
+.ber .spec-panel{margin-top:24px;display:flex;gap:22px;align-items:center}
+.ber .spec-pct{font-family:var(--serif);font-size:3rem;line-height:1;color:var(--teal-darker);flex:none}
+.ber .spec-head{flex:1;min-width:0}
+.ber .spec-ptitle{font-size:1.2rem;font-weight:800;color:var(--charcoal)}
+.ber .spec-ptext{font-size:1rem;color:var(--gray);line-height:1.6;margin-top:6px;max-width:62ch}
+.ber .spec-note{margin-top:26px;display:flex;gap:18px;align-items:center;flex-wrap:wrap;background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px 22px}
+.ber .spec-note>span{font-size:1rem;color:var(--gray);line-height:1.55;flex:1;min-width:240px}
+
+.ber .ablauf{background:#fff}
 .ber .online{background:linear-gradient(180deg,#fff,var(--teal-subtle))}
 .ber .stepgrid{margin-top:44px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
 @media(max-width:800px){.ber .stepgrid{grid-template-columns:1fr}}
@@ -750,9 +878,25 @@ const BER_CSS = `
 .ber .mcard h4{font-size:1.12rem;font-weight:700;margin:0}
 .ber .mcard p{font-size:.93rem;color:var(--gray);margin-top:10px;line-height:1.6}
 
-.ber .diagnostik{background:#fff}
+.ber .diagnostik{background:linear-gradient(180deg,var(--teal-subtle),#fff)}
 
-.ber .plan{background:linear-gradient(180deg,var(--teal-subtle),#fff);padding-bottom:40px}
+.ber .plan{background:linear-gradient(180deg,#fff,var(--teal-subtle))}
+.ber .pillars{margin-top:44px}
+.ber .pillar-tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+@media(max-width:820px){.ber .pillar-tabs{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:520px){.ber .pillar-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.ber .pillar-tab{border:1px solid var(--line);border-radius:16px;padding:20px 12px;background:#fff;cursor:pointer;text-align:center;transition:.3s var(--ease);display:flex;flex-direction:column;align-items:center;gap:11px}
+.ber .pillar-tab:hover{border-color:var(--teal);transform:translateY(-3px)}
+.ber .pillar-tab.active{border-color:var(--teal);background:var(--teal-subtle);box-shadow:0 22px 46px -34px rgba(31,110,112,.6)}
+.ber .pillar-tab .pic{width:46px;height:46px;border-radius:13px;background:var(--teal-pale);color:var(--teal-darker);display:grid;place-items:center}
+.ber .pillar-tab.active .pic{background:var(--teal);color:#fff}
+.ber .pillar-tab .pname{font-size:.95rem;font-weight:700;color:var(--charcoal);line-height:1.2}
+.ber .pillar-panel{margin-top:16px;border:1px solid var(--teal);background:var(--teal-subtle);border-radius:20px;padding:30px 32px}
+.ber .pillar-panel h4{font-size:1.35rem;font-weight:800;letter-spacing:-.02em;margin:0 0 6px;color:var(--teal-darker)}
+.ber .pillar-panel .pp-text{font-family:var(--serif);font-style:italic;font-size:1.06rem;color:var(--gray);margin:0 0 16px}
+.ber .pillar-panel ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:10px}
+.ber .pillar-panel li{display:inline-flex;align-items:center;gap:9px;font-size:.95rem;color:var(--charcoal);background:#fff;border:1px solid var(--line);border-radius:100px;padding:9px 17px}
+.ber .pillar-panel li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--teal);flex:none}
 
 .ber .kosten{background:var(--teal-subtle)}
 .ber .kosten-grid{margin-top:44px;display:grid;grid-template-columns:1fr 1.2fr;gap:18px;align-items:start}
@@ -795,6 +939,9 @@ const BER_CSS = `
   .ber .card,.ber .mcard{padding:22px 20px}
   .ber .compare-col{padding:26px 22px}
   .ber .example{padding:26px 22px;border-radius:20px}
+  .ber .spec-panel{gap:16px}
+  .ber .spec-pct{font-size:2.4rem}
+  .ber .pillar-panel{padding:24px 22px}
   .ber .price-card,.ber .value-box{padding:26px 22px}
   .ber .pc-amount{font-size:2.6rem}
   .ber .closing .wrap{padding:66px 20px}
