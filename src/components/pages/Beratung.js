@@ -117,8 +117,10 @@ const CONTENT = {
           "Arbeitet an möglichen Ursachen, damit später weniger nötig sein kann",
         ],
       },
-      exampleTag: "Ein Beispiel",
+      exampleTag: "Ein einfaches Beispiel",
       exampleTitle: "Zwei Menschen, hoher Blutdruck: 150 zu 95.",
+      exampleSub:
+        "Bewusst einfach gehalten, damit das Prinzip klar wird. In der Praxis schaue ich auf deutlich komplexere Zusammenhänge, nicht nur auf den Blutdruck.",
       readingLabel: "Gleicher Wert",
       reveal: "Was steckt dahinter?",
       persons: [
@@ -128,7 +130,7 @@ const CONTENT = {
           tag: "45, viel Verantwortung",
           reading: "150 / 95",
           cause:
-            "Dahinter können Dauerstress, zu wenig Schlaf und zu viel Kaffee stecken. Wir schauen gemeinsam auf Erholung, Schlaf und dein Nervensystem.",
+            "Dahinter können chronischer Stress, alte Traumata und der Lebensstil stecken, also Schlaf, Ernährung und Bewegung. Genau da arbeiten wir gemeinsam.",
         },
         {
           id: "B",
@@ -136,7 +138,7 @@ const CONTENT = {
           tag: "52, oft müde",
           reading: "150 / 95",
           cause:
-            "Hier können eine Belastung durch Schwermetalle und ein gereizter Darm mitspielen. Wir schauen auf Ausleitung, Darm und Ernährung.",
+            "Hier können Belastungen durch Toxine, Schwermetalle, Schimmel, Parasiten oder Umweltfaktoren mitspielen. Wir schauen auf Ausleitung, Darm und dein Umfeld.",
         },
       ],
       bridge:
@@ -312,8 +314,10 @@ const CONTENT = {
           "Works on possible causes, so that less may be needed later",
         ],
       },
-      exampleTag: "An example",
+      exampleTag: "A simple example",
       exampleTitle: "Two people, high blood pressure: 150 over 95.",
+      exampleSub:
+        "Deliberately kept simple so the principle is clear. In practice I look at much more complex connections, not just blood pressure.",
       readingLabel: "Same reading",
       reveal: "What is behind it?",
       persons: [
@@ -323,7 +327,7 @@ const CONTENT = {
           tag: "45, a lot of responsibility",
           reading: "150 / 95",
           cause:
-            "Behind it there can be ongoing stress, too little sleep and too much coffee. Together we look at recovery, sleep and your nervous system.",
+            "Behind it there can be chronic stress, old trauma and lifestyle, meaning sleep, nutrition and movement. That is exactly where we work together.",
         },
         {
           id: "B",
@@ -331,7 +335,7 @@ const CONTENT = {
           tag: "52, often tired",
           reading: "150 / 95",
           cause:
-            "Here a heavy metal exposure and an irritated gut can play a part. We look at detoxification, the gut and nutrition.",
+            "Here burdens from toxins, heavy metals, mould, parasites or environmental factors can play a part. We look at detoxification, the gut and your environment.",
         },
       ],
       bridge:
@@ -549,6 +553,7 @@ export default function Beratung() {
           <div className="example">
             <span className="ex-tag">{c.vergleich.exampleTag}</span>
             <div className="ex-title">{c.vergleich.exampleTitle}</div>
+            <div className="ex-sub">{c.vergleich.exampleSub}</div>
             <div className="person-grid">
               {c.vergleich.persons.map((p) => (
                 <div className={`person-card${openPerson[p.id] ? " open" : ""}`} key={p.id}>
@@ -820,6 +825,7 @@ const BER_CSS = `
 .ber .example::before{content:"";position:absolute;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(67,169,171,.20),transparent 68%);top:-130px;right:-80px}
 .ber .ex-tag{position:relative;font-size:.7rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);display:inline-block;margin-bottom:10px}
 .ber .ex-title{position:relative;font-size:clamp(1.3rem,2.4vw,1.7rem);font-weight:800;letter-spacing:-.02em;line-height:1.2;max-width:26ch}
+.ber .ex-sub{position:relative;margin-top:12px;font-size:1rem;color:rgba(255,255,255,.72);line-height:1.6;max-width:64ch}
 .ber .person-grid{position:relative;margin-top:26px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
 @media(max-width:680px){.ber .person-grid{grid-template-columns:1fr}}
 .ber .person-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.16);border-radius:18px;padding:22px 22px;transition:.35s var(--ease)}
