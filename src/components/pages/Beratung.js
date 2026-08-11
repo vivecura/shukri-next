@@ -48,6 +48,9 @@ const IC = {
   heart: () => S(<path d="M19.5 12.6l-7.5 7.4-7.5-7.4a5 5 0 1 1 7.5-6.6 5 5 0 1 1 7.5 6.6z" />),
   pill: () => S(<><rect x="3" y="9" width="18" height="6" rx="3" transform="rotate(-45 12 12)" /><path d="M8.5 8.5l7 7" /></>),
   brain: () => S(<><path d="M8.5 6A2.5 2.5 0 0 1 12 4a2.5 2.5 0 0 1 3.5 2" /><path d="M6.5 9A2.5 2.5 0 0 0 6 14" /><path d="M17.5 9a2.5 2.5 0 0 1 .5 5" /><path d="M8.5 18A2.5 2.5 0 0 0 12 20a2.5 2.5 0 0 0 3.5-2" /><path d="M12 4v16" /></>),
+  spark: () => S(<path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5L18 18M18 6l-2.5 2.5M8.5 15.5L6 18" />),
+  flame: () => S(<path d="M12 12c2-3 0-7-1-8 0 3-1.8 4.7-3 6s-2 3.2-2 5a6 6 0 1 0 12 0c0-1.5-1.1-3.9-2-5-1.8 3-2.8 3-4 2z" />),
+  activity: () => S(<path d="M2 12h4l2.5-7 4.5 15 3-8 2 3h4" />),
 };
 const CHECK = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
@@ -87,6 +90,7 @@ const CONTENT = {
     subnav: [
       { to: "vergleich", label: "Der Unterschied" },
       { to: "fuerwen", label: "Für wen" },
+      { to: "themen", label: "Themen" },
       { to: "spektrum", label: "Spektrum" },
       { to: "ablauf", label: "Ablauf" },
       { to: "diagnostik", label: "Diagnostik" },
@@ -159,6 +163,24 @@ const CONTENT = {
       ],
       foot:
         "Du musst nicht krank sein, um zu kommen. Ein Gespräch reicht, um zu sehen, was möglich ist.",
+    },
+    themen: {
+      tag: "Häufige Themen",
+      h2a: "Womit Menschen ",
+      h2em: "zu mir kommen",
+      h2b: ".",
+      lead:
+        "Viele Menschen bringen keine fertige Diagnose mit, sondern Beschwerden, die sich bisher schwer einordnen ließen. Hier findest du Beispiele für Themen, mit denen Menschen zu mir in die Praxis kommen und mit denen wir uns gemeinsam beschäftigen.",
+      cats: [
+        { ic: "droplet", t: "Hormone & Zyklus", items: ["Östrogendominanz und Progesteronmangel", "PCOS (Polyzystisches Ovarialsyndrom)", "Endometriose", "Wechseljahresbeschwerden (Perimenopause und Menopause)", "Testosteronmangel beim Mann", "Prämenstruelles Syndrom und PMDS", "Unerfüllter Kinderwunsch"] },
+        { ic: "stomach", t: "Darm, Verdauung & Unverträglichkeiten", items: ["Reizdarmsyndrom", "Verdauungsstörungen (Blähungen, Völlegefühl)", "Dünndarmfehlbesiedlung (SIBO)", "Leaky Gut und Darmdysbiose", "Nahrungsmittelunverträglichkeiten (Laktose, Fruktose, Gluten)", "Chronischer Reflux und Sodbrennen"] },
+        { ic: "brain", t: "Psyche, Trauma & Schlaf", items: ["Burnout", "Depression und Stimmungsschwankungen", "Trauma und Posttraumatische Belastungsstörung (PTBS)", "Angststörungen und Panikattacken", "Schlafprobleme (Ein- und Durchschlafstörungen)", "ADHS im Erwachsenenalter", "Innere Unruhe und Reizbarkeit"] },
+        { ic: "bolt", t: "Erschöpfung, Energie & Longevity", items: ["ME/CFS (chronisches Erschöpfungssyndrom)", "Long Covid und Post-Covid-Syndrom", "Mitochondriale Dysfunktion (Energiestoffwechsel)", "Nährstoffbedingte Erschöpfung (Eisen, Vitamin D, B12)", "Nebennierenschwäche und gestörte Cortisol-Rhythmik", "POTS und orthostatische Intoleranz", "Beschleunigte Zellalterung (Longevity)"] },
+        { ic: "heart", t: "Stoffwechsel, Blutzucker & Herz-Kreislauf", items: ["Diabetes Typ 2 und Prädiabetes", "Insulinresistenz", "Metabolisches Syndrom", "Bluthochdruck (arterielle Hypertonie)", "Erhöhtes Cholesterin (Fettstoffwechselstörung)", "Nichtalkoholische Fettleber (NAFLD)", "Hartnäckiges Übergewicht und Bauchfett"] },
+        { ic: "shield", t: "Immunsystem, Autoimmun & Umwelt", items: ["Autoimmunerkrankungen (z.B. Hashimoto, Rheuma, Lupus)", "Mastzellaktivierung (MCAS)", "Histaminintoleranz", "Chronische stille Entzündung (Silent Inflammation)", "Wiederkehrende Infekte und Infektanfälligkeit", "Schwermetallbelastung (z.B. Blei, Quecksilber)", "Schimmel- und Mykotoxin-Belastung (CIRS)"] },
+      ],
+      foot:
+        "Du erkennst dich hier nicht genau wieder oder hast noch keine klare Diagnose? Auch dann lohnt sich das Gespräch, denn oft beginnt der Weg genau bei den Fragen, die bisher offen geblieben sind.",
     },
     spektrum: {
       tag: "Gesundheit ist ein Spektrum",
@@ -284,6 +306,7 @@ const CONTENT = {
     subnav: [
       { to: "vergleich", label: "The difference" },
       { to: "fuerwen", label: "Who it is for" },
+      { to: "themen", label: "Topics" },
       { to: "spektrum", label: "Spectrum" },
       { to: "ablauf", label: "How it works" },
       { to: "diagnostik", label: "Diagnostics" },
@@ -356,6 +379,24 @@ const CONTENT = {
       ],
       foot:
         "You do not have to be ill to come. A conversation is enough to see what is possible.",
+    },
+    themen: {
+      tag: "Common topics",
+      h2a: "What people ",
+      h2em: "come to me with",
+      h2b: ".",
+      lead:
+        "Many people arrive without a finished diagnosis, but with symptoms that have been hard to make sense of so far. Here you find examples of the topics people come to my practice with and that we look into together.",
+      cats: [
+        { ic: "droplet", t: "Hormones & cycle", items: ["Estrogen dominance and progesterone deficiency", "PCOS (polycystic ovary syndrome)", "Endometriosis", "Menopausal symptoms (perimenopause and menopause)", "Male testosterone deficiency", "Premenstrual syndrome and PMDD", "Unfulfilled desire to have children"] },
+        { ic: "stomach", t: "Gut, digestion & intolerances", items: ["Irritable bowel syndrome (IBS)", "Digestive problems (bloating, fullness)", "Small intestinal bacterial overgrowth (SIBO)", "Leaky gut and gut dysbiosis", "Food intolerances (lactose, fructose, gluten)", "Chronic reflux and heartburn"] },
+        { ic: "brain", t: "Mind, trauma & sleep", items: ["Burnout", "Depression and mood swings", "Trauma and post-traumatic stress disorder (PTSD)", "Anxiety disorders and panic attacks", "Sleep problems (trouble falling and staying asleep)", "Adult ADHD", "Inner restlessness and irritability"] },
+        { ic: "bolt", t: "Exhaustion, energy & longevity", items: ["ME/CFS (chronic fatigue syndrome)", "Long Covid and post-Covid syndrome", "Mitochondrial dysfunction (energy metabolism)", "Nutrient-related fatigue (iron, vitamin D, B12)", "Adrenal dysfunction and disrupted cortisol rhythm", "POTS and orthostatic intolerance", "Accelerated cellular aging (longevity)"] },
+        { ic: "heart", t: "Metabolism, blood sugar & cardiovascular", items: ["Type 2 diabetes and prediabetes", "Insulin resistance", "Metabolic syndrome", "High blood pressure (hypertension)", "High cholesterol (dyslipidemia)", "Non-alcoholic fatty liver disease (NAFLD)", "Stubborn weight gain and visceral fat"] },
+        { ic: "shield", t: "Immune system, autoimmune & environment", items: ["Autoimmune diseases (e.g. Hashimoto's, rheumatoid arthritis, lupus)", "Mast cell activation (MCAS)", "Histamine intolerance", "Chronic low-grade inflammation (silent inflammation)", "Recurrent infections and weakened immune defense", "Heavy metal exposure (e.g. lead, mercury)", "Mold and mycotoxin exposure (CIRS)"] },
+      ],
+      foot:
+        "You do not see yourself exactly here, or you do not have a clear diagnosis yet? Even then it is worth talking, because the path often begins with exactly the questions that have stayed open.",
     },
     spektrum: {
       tag: "Health is a spectrum",
@@ -595,6 +636,29 @@ export default function Beratung() {
             ))}
           </div>
           <div className="sec-foot">{c.fuerwen.foot}</div>
+        </div>
+      </section>
+
+      {/* Themen: Diagnosen und Symptome */}
+      <section className="sec themen" id="themen">
+        <div className="wrap">
+          <span className="sec-tag">{c.themen.tag}</span>
+          <h2 className="sec-h">{c.themen.h2a}<em>{c.themen.h2em}</em>{c.themen.h2b}</h2>
+          <p className="sec-lead">{c.themen.lead}</p>
+          <div className="themen-grid">
+            {c.themen.cats.map((cat, i) => (
+              <div className="tcard" key={i}>
+                <div className="tcard-head">
+                  <span className="tcard-ic">{IC[cat.ic]()}</span>
+                  <div className="tcard-title">{cat.t}</div>
+                </div>
+                <ul>
+                  {cat.items.map((it, j) => <li key={j}>{it}</li>)}
+                </ul>
+              </div>
+            ))}
+          </div>
+          <div className="sec-foot">{c.themen.foot}</div>
         </div>
       </section>
 
@@ -856,6 +920,18 @@ const BER_CSS = `
 .ber .card .ic{width:46px;height:46px;border-radius:13px;background:var(--teal-pale);color:var(--teal-darker);display:grid;place-items:center;margin-bottom:16px}
 .ber .card h4{font-size:1.1rem;font-weight:700;letter-spacing:-.01em;margin:0}
 .ber .card p{font-size:.92rem;color:var(--gray);line-height:1.6;margin-top:8px;overflow-wrap:break-word}
+
+.ber .themen{background:#fff}
+.ber .themen-grid{margin-top:44px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media(max-width:900px){.ber .themen-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.ber .themen-grid{grid-template-columns:1fr}}
+.ber .tcard{border:1px solid var(--line);border-radius:20px;padding:24px 22px;background:#fff;transition:.4s var(--ease)}
+.ber .tcard:hover{border-color:var(--teal);transform:translateY(-4px);box-shadow:0 24px 50px -38px rgba(31,110,112,.5)}
+.ber .tcard-head{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.ber .tcard-ic{width:42px;height:42px;border-radius:12px;background:var(--teal-pale);color:var(--teal-darker);display:grid;place-items:center;flex:none}
+.ber .tcard-title{font-size:1.05rem;font-weight:700;letter-spacing:-.01em}
+.ber .tcard ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.ber .tcard li{font-size:.85rem;color:var(--gray);background:var(--teal-subtle);border:1px solid var(--line);border-radius:100px;padding:6px 13px;line-height:1.3}
 
 .ber .spektrum{background:linear-gradient(180deg,var(--teal-subtle),#fff)}
 .ber .spec{margin-top:40px}
