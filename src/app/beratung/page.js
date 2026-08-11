@@ -1,9 +1,9 @@
 import PageBody from "@/components/pages/Beratung";
 
 export const metadata = {
-  title: "Ärztliche Beratung Berlin – Funktionelle Medizin",
+  title: "Ganzheitliche Beratung Berlin & Online – Ursachen finden | ViveCura",
   description:
-    "Persönliche ärztliche Beratung in Berlin: Erstgespräch, Zweitmeinung und individuelle Therapieplanung in der funktionellen Medizin.",
+    "Ärztliche Beratung in Berlin oder online per Video: interdisziplinärer Blick auf alle Beschwerden, passende Diagnostik und ein erster Plan. 30 Minuten für 100 €.",
   alternates: {
     canonical: "/beratung",
     languages: {
