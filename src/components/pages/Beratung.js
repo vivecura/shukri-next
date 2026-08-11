@@ -931,7 +931,7 @@ const BER_CSS = `
 @media(max-width:600px){
   .ber .sec{padding:50px 0}
   .ber .wrap{padding:0 18px}
-  .ber .hero{padding:46px 0 38px}
+  .ber .hero{padding:84px 0 38px}
   .ber .hero-sub{font-size:1.05rem}
   .ber .usp-plan{font-size:1.28rem}
   .ber .hero-actions{gap:10px}
