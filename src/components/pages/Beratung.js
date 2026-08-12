@@ -68,6 +68,33 @@ const CHEV = () => (
   </svg>
 );
 
+/* Gesichts-Zustaende fuer das Gesundheits-Spektrum (0 = Ueberleben, 1 = Funktionieren, 2 = Lebendigkeit) */
+const FACES = [
+  { fill: "#eef4f3", stroke: "#93b7b7", feat: "#5f8f8f", mouth: "M18 31 Q24 32.4 30 31", spark: false },
+  { fill: "#e0f4f5", stroke: "#43a9ab", feat: "#1f6e70", mouth: "M18 30 Q24 35 30 30", spark: false },
+  { fill: "#bfe8e8", stroke: "#2d8789", feat: "#1a5f61", mouth: "M16.5 29 Q24 39 31.5 29", spark: true },
+];
+function SpecFace({ idx }) {
+  const f = FACES[idx] || FACES[0];
+  return (
+    <svg width="92" height="92" viewBox="0 0 48 48" fill="none">
+      {f.spark && (
+        <g stroke="#43a9ab" strokeWidth="2.2" strokeLinecap="round">
+          <path d="M24 2.5V6" />
+          <path d="M8.5 8.5L11 11" />
+          <path d="M39.5 8.5L37 11" />
+          <path d="M2.5 24H6" />
+          <path d="M45.5 24H42" />
+        </g>
+      )}
+      <circle cx="24" cy="24" r="17" fill={f.fill} stroke={f.stroke} strokeWidth="2" />
+      <circle cx="18" cy="21" r="2.1" fill={f.feat} />
+      <circle cx="30" cy="21" r="2.1" fill={f.feat} />
+      <path d={f.mouth} stroke={f.feat} strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+    </svg>
+  );
+}
+
 /* ---------------- Inhalt ---------------- */
 const CONTENT = {
   de: {
@@ -744,7 +771,10 @@ export default function Beratung() {
             </div>
             <div className="spec-bar"><div className="spec-fill" style={{ width: `${spec.pct}%` }} /></div>
             <div className="spec-panel">
-              <div className="spec-pct">{spec.pct}%</div>
+              <div className="spec-face-wrap">
+                <div className={`spec-face lv${specIdx}`}><SpecFace idx={specIdx} /></div>
+                <div className="spec-face-pct">{spec.pct}%</div>
+              </div>
               <div className="spec-head">
                 <div className="spec-ptitle">{spec.title}</div>
                 <div className="spec-ptext">{spec.text}</div>
@@ -1043,7 +1073,12 @@ const BER_CSS = `
 .ber .spec-bar{margin-top:22px;height:14px;border-radius:100px;background:var(--teal-pale);overflow:hidden}
 .ber .spec-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--teal),var(--teal-darker));transition:width .6s var(--spring)}
 .ber .spec-panel{margin-top:24px;display:flex;gap:22px;align-items:center}
-.ber .spec-pct{font-family:var(--serif);font-size:3rem;line-height:1;color:var(--teal-darker);flex:none}
+.ber .spec-face-wrap{flex:none;display:flex;flex-direction:column;align-items:center;gap:5px}
+.ber .spec-face{width:92px;height:92px;display:grid;place-items:center;transition:transform .5s var(--spring),filter .5s var(--ease)}
+.ber .spec-face.lv0{transform:scale(.9)}
+.ber .spec-face.lv1{transform:scale(1)}
+.ber .spec-face.lv2{transform:scale(1.1);filter:drop-shadow(0 12px 22px rgba(67,169,171,.4))}
+.ber .spec-face-pct{font-family:var(--serif);font-size:1.4rem;line-height:1;color:var(--teal-darker)}
 .ber .spec-head{flex:1;min-width:0}
 .ber .spec-ptitle{font-size:1.2rem;font-weight:800;color:var(--charcoal)}
 .ber .spec-ptext{font-size:1rem;color:var(--gray);line-height:1.6;margin-top:6px;max-width:62ch}
@@ -1141,7 +1176,8 @@ const BER_CSS = `
   .ber .compare-col{padding:26px 22px}
   .ber .example{padding:26px 22px;border-radius:20px}
   .ber .spec-panel{gap:16px}
-  .ber .spec-pct{font-size:2.4rem}
+  .ber .spec-face{width:76px;height:76px}
+  .ber .spec-face-pct{font-size:1.25rem}
   .ber .pillar-panel{padding:24px 22px}
   .ber .bef-example{padding:26px 22px}
   .ber .tcard-count{display:none}
