@@ -10,7 +10,7 @@
  * PREIS: 30 Minuten Beratung 100 EUR, online zum selben Preis wie in der Praxis.
  */
 
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import useLanguage from "@/hooks/useLanguage";
 
 const BOOK =
@@ -171,7 +171,8 @@ const CONTENT = {
       h2em: "zu mir kommen",
       h2b: ".",
       lead:
-        "Viele Menschen bringen keine fertige Diagnose mit, sondern Beschwerden, die sich bisher schwer einordnen ließen. Hier findest du Beispiele für Themen, mit denen Menschen zu mir in die Praxis kommen und mit denen wir uns gemeinsam beschäftigen.",
+        "Viele Menschen bringen keine fertige Diagnose mit, sondern Beschwerden, die sich bisher schwer einordnen ließen. Hier findest du Beispiele für Themen, mit denen Menschen zu mir in die Praxis kommen und mit denen wir uns gemeinsam beschäftigen. Tippe eine Kategorie an.",
+      countLabel: "Beispiele",
       cats: [
         { ic: "droplet", t: "Hormone & Zyklus", items: ["Östrogendominanz und Progesteronmangel", "PCOS (Polyzystisches Ovarialsyndrom)", "Endometriose", "Wechseljahresbeschwerden (Perimenopause und Menopause)", "Testosteronmangel beim Mann", "Prämenstruelles Syndrom und PMDS", "Unerfüllter Kinderwunsch"] },
         { ic: "stomach", t: "Darm, Verdauung & Unverträglichkeiten", items: ["Reizdarmsyndrom", "Verdauungsstörungen (Blähungen, Völlegefühl)", "Dünndarmfehlbesiedlung (SIBO)", "Leaky Gut und Darmdysbiose", "Nahrungsmittelunverträglichkeiten (Laktose, Fruktose, Gluten)", "Chronischer Reflux und Sodbrennen"] },
@@ -212,8 +213,14 @@ const CONTENT = {
       ],
       exTag: "Ein Beispiel",
       exTitle: "Warum fehlt Omega-3?",
-      exBody:
-        "Ein Omega-3-Mangel lässt sich mit Kapseln ausgleichen. Ich frage zuerst: warum ist der Wert überhaupt niedrig? Omega-3, vor allem EPA, kann bei stillen Entzündungen vermehrt verbraucht werden. Kommen dann niedrige Werte bei Bausteinen und Vorstufen wie Cystein oder Glutamin dazu, kann das auf einen hohen Verbrauch von Glutathion hindeuten, deinem wichtigsten körpereigenen Entgifter. Zusammen mit einem erhöhten Homocystein ergibt sich womöglich ein ganz anderes Bild: eine belastete Entgiftung. Dann ergänzen wir nicht nur den einzelnen Mangel, sondern gehen die mögliche Ursache dahinter an.",
+      exIntro:
+        "Ein Omega-3-Mangel lässt sich mit Kapseln ausgleichen. Ich frage zuerst: warum ist der Wert überhaupt niedrig?",
+      chain: [
+        { badge: "Befund", b: "Omega-3 (EPA) niedrig", m: "Kann bei stillen Entzündungen vermehrt verbraucht werden." },
+        { badge: "Dazu", b: "Cystein und Glutamin niedrig", m: "Kann auf einen hohen Verbrauch von Glutathion hindeuten, deinem wichtigsten körpereigenen Entgifter." },
+        { badge: "Und", b: "Homocystein erhöht", m: "Zusammengenommen ergibt sich womöglich ein ganz anderes Bild." },
+      ],
+      result: { badge: "Mögliche Ursache", b: "Eine belastete Entgiftung", m: "Dann ergänzen wir nicht nur den einzelnen Mangel, sondern gehen die mögliche Ursache dahinter an." },
       exFoot:
         "So wird aus einzelnen Werten ein Gesamtbild: Ich schaue nicht nur, was fehlt, sondern auch, warum.",
     },
@@ -406,7 +413,8 @@ const CONTENT = {
       h2em: "come to me with",
       h2b: ".",
       lead:
-        "Many people arrive without a finished diagnosis, but with symptoms that have been hard to make sense of so far. Here you find examples of the topics people come to my practice with and that we look into together.",
+        "Many people arrive without a finished diagnosis, but with symptoms that have been hard to make sense of so far. Here you find examples of the topics people come to my practice with and that we look into together. Tap a category.",
+      countLabel: "examples",
       cats: [
         { ic: "droplet", t: "Hormones & cycle", items: ["Estrogen dominance and progesterone deficiency", "PCOS (polycystic ovary syndrome)", "Endometriosis", "Menopausal symptoms (perimenopause and menopause)", "Male testosterone deficiency", "Premenstrual syndrome and PMDD", "Unfulfilled desire to have children"] },
         { ic: "stomach", t: "Gut, digestion & intolerances", items: ["Irritable bowel syndrome (IBS)", "Digestive problems (bloating, fullness)", "Small intestinal bacterial overgrowth (SIBO)", "Leaky gut and gut dysbiosis", "Food intolerances (lactose, fructose, gluten)", "Chronic reflux and heartburn"] },
@@ -447,8 +455,14 @@ const CONTENT = {
       ],
       exTag: "An example",
       exTitle: "Why is omega-3 low?",
-      exBody:
-        "An omega-3 deficiency can be corrected with capsules. But I ask first: why is the value low in the first place? Omega-3, especially EPA, can be used up more during silent inflammation. If low values of building blocks and precursors like cysteine or glutamine come on top, that can point to a high consumption of glutathione, your body's most important detoxifier. Together with an elevated homocysteine, a very different picture may emerge: a burdened detoxification. Then we do not just replace the single deficiency, we address the possible cause behind it.",
+      exIntro:
+        "An omega-3 deficiency can be corrected with capsules. But I ask first: why is the value low in the first place?",
+      chain: [
+        { badge: "Finding", b: "Omega-3 (EPA) low", m: "Can be used up more during silent inflammation." },
+        { badge: "Plus", b: "Cysteine and glutamine low", m: "Can point to a high consumption of glutathione, your body's most important detoxifier." },
+        { badge: "And", b: "Homocysteine elevated", m: "Taken together, a very different picture may emerge." },
+      ],
+      result: { badge: "Possible cause", b: "A burdened detoxification", m: "Then we do not just replace the single deficiency, we address the possible cause behind it." },
       exFoot:
         "This is how single values become a whole picture: I look not only at what is missing, but also at why.",
     },
@@ -549,6 +563,7 @@ export default function Beratung() {
   const [openPerson, setOpenPerson] = useState({});
   const [specIdx, setSpecIdx] = useState(1);
   const [pillarIdx, setPillarIdx] = useState(0);
+  const [openCat, setOpenCat] = useState({});
 
   useEffect(() => {
     const root = ref.current;
@@ -569,6 +584,7 @@ export default function Beratung() {
   }, [lang]);
 
   const togglePerson = (id) => setOpenPerson((s) => ({ ...s, [id]: !s[id] }));
+  const toggleCat = (i) => setOpenCat((s) => ({ ...s, [i]: !s[i] }));
 
   const spec = c.spektrum.levels[specIdx];
   const pillar = c.plan.pillars[pillarIdx];
@@ -683,16 +699,28 @@ export default function Beratung() {
           <span className="sec-tag">{c.themen.tag}</span>
           <h2 className="sec-h">{c.themen.h2a}<em>{c.themen.h2em}</em>{c.themen.h2b}</h2>
           <p className="sec-lead">{c.themen.lead}</p>
-          <div className="themen-grid">
+          <div className="themen-list">
             {c.themen.cats.map((cat, i) => (
-              <div className="tcard" key={i}>
-                <div className="tcard-head">
+              <div className={`tcard${openCat[i] ? " open" : ""}`} key={i}>
+                <div
+                  className="tcard-head"
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => toggleCat(i)}
+                  onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggleCat(i); } }}
+                >
                   <span className="tcard-ic">{IC[cat.ic]()}</span>
                   <div className="tcard-title">{cat.t}</div>
+                  <span className="tcard-count">{cat.items.length} {c.themen.countLabel}</span>
+                  <span className="tcard-chev"><CHEV /></span>
                 </div>
-                <ul>
-                  {cat.items.map((it, j) => <li key={j}>{it}</li>)}
-                </ul>
+                <div className="tcard-body">
+                  <div className="tcard-body-in">
+                    <ul>
+                      {cat.items.map((it, j) => <li key={j}>{it}</li>)}
+                    </ul>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
@@ -754,7 +782,24 @@ export default function Beratung() {
           <div className="bef-example">
             <span className="bef-ex-tag">{c.befunde.exTag}</span>
             <div className="bef-ex-title">{c.befunde.exTitle}</div>
-            <p className="bef-ex-body">{c.befunde.exBody}</p>
+            <p className="bef-ex-intro">{c.befunde.exIntro}</p>
+            <div className="chain">
+              {c.befunde.chain.map((n, i) => (
+                <Fragment key={i}>
+                  <div className="chain-node">
+                    <span className="chain-badge">{n.badge}</span>
+                    <div className="chain-b">{n.b}</div>
+                    <div className="chain-m">{n.m}</div>
+                  </div>
+                  <div className="chain-link"><CHEV /></div>
+                </Fragment>
+              ))}
+              <div className="chain-node result">
+                <span className="chain-badge">{c.befunde.result.badge}</span>
+                <div className="chain-b">{c.befunde.result.b}</div>
+                <div className="chain-m">{c.befunde.result.m}</div>
+              </div>
+            </div>
             <div className="bef-ex-foot">{c.befunde.exFoot}</div>
           </div>
         </div>
@@ -984,16 +1029,22 @@ const BER_CSS = `
 .ber .card p{font-size:.92rem;color:var(--gray);line-height:1.6;margin-top:8px;overflow-wrap:break-word}
 
 .ber .themen{background:#fff}
-.ber .themen-grid{margin-top:44px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
-@media(max-width:900px){.ber .themen-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:600px){.ber .themen-grid{grid-template-columns:1fr}}
-.ber .tcard{border:1px solid var(--line);border-radius:20px;padding:24px 22px;background:#fff;transition:.4s var(--ease)}
-.ber .tcard:hover{border-color:var(--teal);transform:translateY(-4px);box-shadow:0 24px 50px -38px rgba(31,110,112,.5)}
-.ber .tcard-head{display:flex;align-items:center;gap:12px;margin-bottom:16px}
-.ber .tcard-ic{width:42px;height:42px;border-radius:12px;background:var(--teal-pale);color:var(--teal-darker);display:grid;place-items:center;flex:none}
-.ber .tcard-title{font-size:1.05rem;font-weight:700;letter-spacing:-.01em}
+.ber .themen-list{margin-top:40px;display:flex;flex-direction:column;gap:12px}
+.ber .tcard{border:1px solid var(--line);border-radius:18px;background:#fff;overflow:hidden;transition:border-color .3s var(--ease),box-shadow .3s var(--ease)}
+.ber .tcard.open{border-color:var(--teal);box-shadow:0 22px 48px -38px rgba(31,110,112,.5)}
+.ber .tcard-head{display:flex;align-items:center;gap:14px;padding:19px 22px;cursor:pointer;user-select:none;transition:background .3s var(--ease)}
+.ber .tcard-head:hover{background:var(--teal-subtle)}
+.ber .tcard-ic{width:44px;height:44px;border-radius:12px;background:var(--teal-pale);color:var(--teal-darker);display:grid;place-items:center;flex:none;transition:.3s var(--ease)}
+.ber .tcard.open .tcard-ic{background:var(--teal);color:#fff}
+.ber .tcard-title{flex:1;min-width:0;font-size:1.08rem;font-weight:700;letter-spacing:-.01em}
+.ber .tcard-count{font-size:.82rem;color:var(--gray-soft);font-weight:600;flex:none}
+.ber .tcard-chev{color:var(--gray-soft);flex:none;display:flex;transition:transform .4s var(--spring)}
+.ber .tcard.open .tcard-chev{transform:rotate(180deg);color:var(--teal)}
+.ber .tcard-body{max-height:0;overflow:hidden;transition:max-height .5s var(--ease)}
+.ber .tcard.open .tcard-body{max-height:460px}
+.ber .tcard-body-in{padding:2px 22px 22px}
 .ber .tcard ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
-.ber .tcard li{font-size:.85rem;color:var(--gray);background:var(--teal-subtle);border:1px solid var(--line);border-radius:100px;padding:6px 13px;line-height:1.3}
+.ber .tcard li{font-size:.86rem;color:var(--gray);background:var(--teal-subtle);border:1px solid var(--line);border-radius:100px;padding:7px 14px;line-height:1.3}
 
 .ber .spektrum{background:linear-gradient(180deg,var(--teal-subtle),#fff)}
 .ber .spec{margin-top:40px}
@@ -1030,7 +1081,15 @@ const BER_CSS = `
 .ber .bef-example{margin-top:18px;border:1px solid var(--teal);background:#fff;border-radius:22px;padding:32px 34px;box-shadow:0 30px 64px -46px rgba(31,110,112,.5)}
 .ber .bef-ex-tag{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);margin-bottom:10px}
 .ber .bef-ex-title{font-size:clamp(1.3rem,2.2vw,1.6rem);font-weight:800;letter-spacing:-.02em;color:var(--teal-darker);margin:0 0 14px}
-.ber .bef-ex-body{font-size:1.04rem;color:var(--gray);line-height:1.78;margin:0}
+.ber .bef-ex-intro{font-size:1.04rem;color:var(--gray);line-height:1.7;margin:0}
+.ber .chain{margin-top:22px;display:flex;flex-direction:column}
+.ber .chain-node{border:1px solid var(--line);border-radius:16px;background:var(--teal-subtle);padding:16px 20px}
+.ber .chain-node.result{border-color:var(--teal);background:var(--teal-pale)}
+.ber .chain-badge{display:inline-block;font-size:.62rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--teal-darker);margin-bottom:6px}
+.ber .chain-b{font-size:1.06rem;font-weight:700;color:var(--charcoal);line-height:1.3}
+.ber .chain-node.result .chain-b{color:var(--teal-darker)}
+.ber .chain-m{font-size:.95rem;color:var(--gray);line-height:1.55;margin-top:5px}
+.ber .chain-link{display:flex;justify-content:center;color:var(--teal);padding:7px 0}
 .ber .bef-ex-foot{margin-top:20px;padding-top:18px;border-top:1px solid var(--line);font-family:var(--serif);font-style:italic;font-size:1.06rem;color:var(--charcoal);line-height:1.6}
 
 .ber .plan{background:linear-gradient(180deg,#fff,var(--teal-subtle))}
@@ -1096,6 +1155,10 @@ const BER_CSS = `
   .ber .spec-pct{font-size:2.4rem}
   .ber .pillar-panel{padding:24px 22px}
   .ber .bef-example{padding:26px 22px}
+  .ber .tcard-count{display:none}
+  .ber .tcard-head{padding:17px 18px;gap:12px}
+  .ber .tcard-body-in{padding:2px 18px 20px}
+  .ber .chain-node{padding:14px 16px}
   .ber .price-card,.ber .value-box{padding:26px 22px}
   .ber .pc-amount{font-size:2.6rem}
   .ber .closing .wrap{padding:66px 20px}
