@@ -92,6 +92,7 @@ const CONTENT = {
       { to: "fuerwen", label: "Für wen" },
       { to: "themen", label: "Themen" },
       { to: "spektrum", label: "Spektrum" },
+      { to: "befunde", label: "Befunde" },
       { to: "ablauf", label: "Ablauf" },
       { to: "diagnostik", label: "Diagnostik" },
       { to: "online", label: "Online" },
@@ -197,6 +198,24 @@ const CONTENT = {
       markerNote:
         "Deshalb schaue ich nicht auf einen einzigen Wert, sondern je nach Fragestellung auf 40 bis 120 Marker.",
       diagCta: "Mehr zur Diagnostik",
+    },
+    befunde: {
+      tag: "Deine Befunde",
+      h2a: "‚Alles normal‘, und die ",
+      h2em: "Beschwerden bleiben",
+      h2b: "?",
+      lead:
+        "Ein unauffälliges Blutbild heißt nicht automatisch, dass alles in Ordnung ist. Ich schaue auf dich und deine Werte zusammen, nicht auf einen Laborwert allein. Wenn dein Gefühl und der Befund nicht zusammenpassen, nehmen wir das ernst und schauen gezielt weiter.",
+      cards: [
+        { ic: "magnifier", t: "Wir schauen genauer hin", p: "Die Standarddiagnostik beantwortet bestimmte Fragen zuverlässig. Für andere Fragen gibt es zusätzliche, funktionelle Untersuchungen. Oft lässt sich über die Routine hinaus deutlich mehr anschauen, bevor feststeht, dass alles in Ordnung ist." },
+        { ic: "file", t: "Bring deine Befunde mit", p: "Du hast schon Laborwerte oder Untersuchungen von woanders? Bring sie mit. Ich ordne sie im Zusammenhang ein und schaue, was sie gemeinsam über dich erzählen." },
+      ],
+      exTag: "Ein Beispiel",
+      exTitle: "Warum fehlt Omega-3?",
+      exBody:
+        "Ein Omega-3-Mangel lässt sich mit Kapseln ausgleichen. Ich frage zuerst: warum ist der Wert überhaupt niedrig? Omega-3, vor allem EPA, kann bei stillen Entzündungen vermehrt verbraucht werden. Kommen dann niedrige Werte bei Bausteinen und Vorstufen wie Cystein oder Glutamin dazu, kann das auf einen hohen Verbrauch von Glutathion hindeuten, deinem wichtigsten körpereigenen Entgifter. Zusammen mit einem erhöhten Homocystein ergibt sich womöglich ein ganz anderes Bild: eine belastete Entgiftung. Dann ergänzen wir nicht nur den einzelnen Mangel, sondern gehen die mögliche Ursache dahinter an.",
+      exFoot:
+        "So wird aus einzelnen Werten ein Gesamtbild: Ich schaue nicht nur, was fehlt, sondern auch, warum.",
     },
     ablauf: {
       tag: "So läuft es",
@@ -308,6 +327,7 @@ const CONTENT = {
       { to: "fuerwen", label: "Who it is for" },
       { to: "themen", label: "Topics" },
       { to: "spektrum", label: "Spectrum" },
+      { to: "befunde", label: "Findings" },
       { to: "ablauf", label: "How it works" },
       { to: "diagnostik", label: "Diagnostics" },
       { to: "online", label: "Online" },
@@ -413,6 +433,24 @@ const CONTENT = {
       markerNote:
         "That is why I do not look at a single value, but, depending on the question, at 40 to 120 markers.",
       diagCta: "More about diagnostics",
+    },
+    befunde: {
+      tag: "Your findings",
+      h2a: "'Everything normal', and the ",
+      h2em: "symptoms remain",
+      h2b: "?",
+      lead:
+        "A normal blood count does not automatically mean everything is fine. I look at you and your values together, not at a single lab value alone. When your feeling and the findings do not match, we take that seriously and look further, in a targeted way.",
+      cards: [
+        { ic: "magnifier", t: "We look more closely", p: "Standard diagnostics answer certain questions reliably. For other questions there are additional, functional tests. Often there is much more to look at beyond the routine before it is settled that everything is fine." },
+        { ic: "file", t: "Bring your findings", p: "You already have lab values or tests from elsewhere? Bring them. I put them in context and look at what they say about you together." },
+      ],
+      exTag: "An example",
+      exTitle: "Why is omega-3 low?",
+      exBody:
+        "An omega-3 deficiency can be corrected with capsules. But I ask first: why is the value low in the first place? Omega-3, especially EPA, can be used up more during silent inflammation. If low values of building blocks and precursors like cysteine or glutamine come on top, that can point to a high consumption of glutathione, your body's most important detoxifier. Together with an elevated homocysteine, a very different picture may emerge: a burdened detoxification. Then we do not just replace the single deficiency, we address the possible cause behind it.",
+      exFoot:
+        "This is how single values become a whole picture: I look not only at what is missing, but also at why.",
     },
     ablauf: {
       tag: "How it works",
@@ -698,6 +736,30 @@ export default function Beratung() {
         </div>
       </section>
 
+      {/* Befunde / Zweitmeinung */}
+      <section className="sec befunde" id="befunde">
+        <div className="wrap">
+          <span className="sec-tag">{c.befunde.tag}</span>
+          <h2 className="sec-h">{c.befunde.h2a}<em>{c.befunde.h2em}</em>{c.befunde.h2b}</h2>
+          <p className="sec-lead">{c.befunde.lead}</p>
+          <div className="bef-cards">
+            {c.befunde.cards.map((card, i) => (
+              <div className="card" key={i}>
+                <div className="ic">{IC[card.ic]()}</div>
+                <h4>{card.t}</h4>
+                <p>{card.p}</p>
+              </div>
+            ))}
+          </div>
+          <div className="bef-example">
+            <span className="bef-ex-tag">{c.befunde.exTag}</span>
+            <div className="bef-ex-title">{c.befunde.exTitle}</div>
+            <p className="bef-ex-body">{c.befunde.exBody}</p>
+            <div className="bef-ex-foot">{c.befunde.exFoot}</div>
+          </div>
+        </div>
+      </section>
+
       {/* Ablauf */}
       <section className="sec ablauf" id="ablauf">
         <div className="wrap">
@@ -962,6 +1024,15 @@ const BER_CSS = `
 
 .ber .diagnostik{background:linear-gradient(180deg,var(--teal-subtle),#fff)}
 
+.ber .befunde{background:linear-gradient(180deg,#fff,var(--teal-subtle))}
+.ber .bef-cards{margin-top:44px;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:760px){.ber .bef-cards{grid-template-columns:1fr}}
+.ber .bef-example{margin-top:18px;border:1px solid var(--teal);background:#fff;border-radius:22px;padding:32px 34px;box-shadow:0 30px 64px -46px rgba(31,110,112,.5)}
+.ber .bef-ex-tag{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);margin-bottom:10px}
+.ber .bef-ex-title{font-size:clamp(1.3rem,2.2vw,1.6rem);font-weight:800;letter-spacing:-.02em;color:var(--teal-darker);margin:0 0 14px}
+.ber .bef-ex-body{font-size:1.04rem;color:var(--gray);line-height:1.78;margin:0}
+.ber .bef-ex-foot{margin-top:20px;padding-top:18px;border-top:1px solid var(--line);font-family:var(--serif);font-style:italic;font-size:1.06rem;color:var(--charcoal);line-height:1.6}
+
 .ber .plan{background:linear-gradient(180deg,#fff,var(--teal-subtle))}
 .ber .pillars{margin-top:44px}
 .ber .pillar-tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
@@ -1024,6 +1095,7 @@ const BER_CSS = `
   .ber .spec-panel{gap:16px}
   .ber .spec-pct{font-size:2.4rem}
   .ber .pillar-panel{padding:24px 22px}
+  .ber .bef-example{padding:26px 22px}
   .ber .price-card,.ber .value-box{padding:26px 22px}
   .ber .pc-amount{font-size:2.6rem}
   .ber .closing .wrap{padding:66px 20px}
