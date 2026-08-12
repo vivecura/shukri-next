@@ -10,7 +10,7 @@
  * PREIS: 30 Minuten Beratung 100 EUR, online zum selben Preis wie in der Praxis.
  */
 
-import { Fragment, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import useLanguage from "@/hooks/useLanguage";
 
 const BOOK =
@@ -212,17 +212,14 @@ const CONTENT = {
         { ic: "file", t: "Bring deine Befunde mit", p: "Du hast schon Laborwerte oder Untersuchungen von woanders? Bring sie mit. Ich ordne sie im Zusammenhang ein und schaue, was sie gemeinsam über dich erzählen." },
       ],
       exTag: "Ein Beispiel",
-      exTitle: "Warum fehlt Omega-3?",
-      exIntro:
-        "Ein Omega-3-Mangel lässt sich mit Kapseln ausgleichen. Ich frage zuerst: warum ist der Wert überhaupt niedrig?",
-      chain: [
-        { badge: "Befund", b: "Omega-3 (EPA) niedrig", m: "Kann bei stillen Entzündungen vermehrt verbraucht werden." },
-        { badge: "Dazu", b: "Cystein und Glutamin niedrig", m: "Kann auf einen hohen Verbrauch von Glutathion hindeuten, deinem wichtigsten körpereigenen Entgifter." },
-        { badge: "Und", b: "Homocystein erhöht", m: "Zusammengenommen ergibt sich womöglich ein ganz anderes Bild." },
+      exTitle: "Nicht einfach geben, was fehlt.",
+      exLead: "Dein Omega-3 ist zu niedrig. Es gibt zwei Wege:",
+      options: [
+        { label: "Der direkte Weg", text: "Omega-3 einnehmen. Der Wert steigt, die Ursache bleibt offen." },
+        { label: "Mein Weg", hi: true, text: "Ich frage, warum es fehlt, verbinde deine Laborwerte miteinander und gehe der Ursache nach." },
       ],
-      result: { badge: "Mögliche Ursache", b: "Eine belastete Entgiftung", m: "Dann ergänzen wir nicht nur den einzelnen Mangel, sondern gehen die mögliche Ursache dahinter an." },
       exFoot:
-        "So wird aus einzelnen Werten ein Gesamtbild: Ich schaue nicht nur, was fehlt, sondern auch, warum.",
+        "So wird aus einzelnen Werten ein Gesamtbild, statt ein Wert nach dem anderen.",
     },
     ablauf: {
       tag: "So läuft es",
@@ -454,17 +451,14 @@ const CONTENT = {
         { ic: "file", t: "Bring your findings", p: "You already have lab values or tests from elsewhere? Bring them. I put them in context and look at what they say about you together." },
       ],
       exTag: "An example",
-      exTitle: "Why is omega-3 low?",
-      exIntro:
-        "An omega-3 deficiency can be corrected with capsules. But I ask first: why is the value low in the first place?",
-      chain: [
-        { badge: "Finding", b: "Omega-3 (EPA) low", m: "Can be used up more during silent inflammation." },
-        { badge: "Plus", b: "Cysteine and glutamine low", m: "Can point to a high consumption of glutathione, your body's most important detoxifier." },
-        { badge: "And", b: "Homocysteine elevated", m: "Taken together, a very different picture may emerge." },
+      exTitle: "Not just replacing what is missing.",
+      exLead: "Your omega-3 is too low. There are two ways:",
+      options: [
+        { label: "The direct way", text: "Take omega-3. The value goes up, the cause stays open." },
+        { label: "My way", hi: true, text: "I ask why it is low, connect your lab values with each other and go after the cause." },
       ],
-      result: { badge: "Possible cause", b: "A burdened detoxification", m: "Then we do not just replace the single deficiency, we address the possible cause behind it." },
       exFoot:
-        "This is how single values become a whole picture: I look not only at what is missing, but also at why.",
+        "This way single values become a whole picture, instead of one value after another.",
     },
     ablauf: {
       tag: "How it works",
@@ -782,23 +776,17 @@ export default function Beratung() {
           <div className="bef-example">
             <span className="bef-ex-tag">{c.befunde.exTag}</span>
             <div className="bef-ex-title">{c.befunde.exTitle}</div>
-            <p className="bef-ex-intro">{c.befunde.exIntro}</p>
-            <div className="chain">
-              {c.befunde.chain.map((n, i) => (
-                <Fragment key={i}>
-                  <div className="chain-node">
-                    <span className="chain-badge">{n.badge}</span>
-                    <div className="chain-b">{n.b}</div>
-                    <div className="chain-m">{n.m}</div>
+            <p className="bef-ex-intro">{c.befunde.exLead}</p>
+            <div className="bef-opts">
+              {c.befunde.options.map((o, i) => (
+                <div className={`bef-opt${o.hi ? " hi" : ""}`} key={i}>
+                  <span className="bef-opt-mark">{o.hi ? <CHECK /> : <ARROW />}</span>
+                  <div>
+                    <div className="bef-opt-label">{o.label}</div>
+                    <div className="bef-opt-text">{o.text}</div>
                   </div>
-                  <div className="chain-link"><CHEV /></div>
-                </Fragment>
+                </div>
               ))}
-              <div className="chain-node result">
-                <span className="chain-badge">{c.befunde.result.badge}</span>
-                <div className="chain-b">{c.befunde.result.b}</div>
-                <div className="chain-m">{c.befunde.result.m}</div>
-              </div>
             </div>
             <div className="bef-ex-foot">{c.befunde.exFoot}</div>
           </div>
@@ -1081,15 +1069,16 @@ const BER_CSS = `
 .ber .bef-example{margin-top:18px;border:1px solid var(--teal);background:#fff;border-radius:22px;padding:32px 34px;box-shadow:0 30px 64px -46px rgba(31,110,112,.5)}
 .ber .bef-ex-tag{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);margin-bottom:10px}
 .ber .bef-ex-title{font-size:clamp(1.3rem,2.2vw,1.6rem);font-weight:800;letter-spacing:-.02em;color:var(--teal-darker);margin:0 0 14px}
-.ber .bef-ex-intro{font-size:1.04rem;color:var(--gray);line-height:1.7;margin:0}
-.ber .chain{margin-top:22px;display:flex;flex-direction:column}
-.ber .chain-node{border:1px solid var(--line);border-radius:16px;background:var(--teal-subtle);padding:16px 20px}
-.ber .chain-node.result{border-color:var(--teal);background:var(--teal-pale)}
-.ber .chain-badge{display:inline-block;font-size:.62rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--teal-darker);margin-bottom:6px}
-.ber .chain-b{font-size:1.06rem;font-weight:700;color:var(--charcoal);line-height:1.3}
-.ber .chain-node.result .chain-b{color:var(--teal-darker)}
-.ber .chain-m{font-size:.95rem;color:var(--gray);line-height:1.55;margin-top:5px}
-.ber .chain-link{display:flex;justify-content:center;color:var(--teal);padding:7px 0}
+.ber .bef-ex-intro{font-size:1.06rem;font-weight:600;color:var(--charcoal);line-height:1.6;margin:0}
+.ber .bef-opts{margin-top:20px;display:flex;flex-direction:column;gap:12px}
+.ber .bef-opt{display:flex;gap:15px;align-items:flex-start;border:1px solid var(--line);border-radius:16px;background:#fff;padding:18px 20px}
+.ber .bef-opt.hi{border-color:var(--teal);background:var(--teal-subtle);box-shadow:0 24px 50px -40px rgba(31,110,112,.5)}
+.ber .bef-opt-mark{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;flex:none;background:var(--cream);color:var(--gray-soft)}
+.ber .bef-opt-mark svg{width:17px;height:17px}
+.ber .bef-opt.hi .bef-opt-mark{background:var(--teal);color:#fff}
+.ber .bef-opt-label{font-size:1.05rem;font-weight:700;color:var(--charcoal);letter-spacing:-.01em}
+.ber .bef-opt.hi .bef-opt-label{color:var(--teal-darker)}
+.ber .bef-opt-text{font-size:.96rem;color:var(--gray);line-height:1.55;margin-top:3px}
 .ber .bef-ex-foot{margin-top:20px;padding-top:18px;border-top:1px solid var(--line);font-family:var(--serif);font-style:italic;font-size:1.06rem;color:var(--charcoal);line-height:1.6}
 
 .ber .plan{background:linear-gradient(180deg,#fff,var(--teal-subtle))}
@@ -1158,7 +1147,7 @@ const BER_CSS = `
   .ber .tcard-count{display:none}
   .ber .tcard-head{padding:17px 18px;gap:12px}
   .ber .tcard-body-in{padding:2px 18px 20px}
-  .ber .chain-node{padding:14px 16px}
+  .ber .bef-opt{padding:16px 16px}
   .ber .price-card,.ber .value-box{padding:26px 22px}
   .ber .pc-amount{font-size:2.6rem}
   .ber .closing .wrap{padding:66px 20px}
