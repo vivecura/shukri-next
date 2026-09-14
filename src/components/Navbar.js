@@ -364,7 +364,7 @@ const Navbar = () => {
 								</button>
 							</div>
 							<a
-								href="https://www.doctolib.de/arzt/berlin/shukri-jarmoukli/booking/motives?source=profile"
+								href="https://www.doctolib.de/arzt/berlin/shukri-jarmoukli"
 								target="_blank"
 								rel="noopener noreferrer"
 								className="absolute right-3 flex flex-col items-center justify-center gap-0.5 w-[60px] py-1.5 rounded-lg bg-[#43a9ab] text-white no-underline hover:bg-[#378f91]"
@@ -453,7 +453,7 @@ const Navbar = () => {
 								<NavItem isLink to={localized("/blog")} icon={navIcons.blog} label={t("navbar.blog")} />
 								<NavItem isLink to={localized("/kontakt")} icon={navIcons.beratung} label={t("kontakt.navbarLabel")} />
 								<a
-									href="https://www.doctolib.de/arzt/berlin/shukri-jarmoukli/booking/motives?source=profile"
+									href="https://www.doctolib.de/arzt/berlin/shukri-jarmoukli"
 									target="_blank"
 									rel="noopener noreferrer"
 									className="group flex items-center px-3 py-2 ml-2 rounded-xl bg-[#43a9ab] hover:bg-[#378f91] transition-colors duration-300 no-underline focus:outline-none"
@@ -553,7 +553,7 @@ const Navbar = () => {
 						</div>
 
 						<a
-							href="https://www.doctolib.de/arzt/berlin/shukri-jarmoukli/booking/motives?source=profile"
+							href="https://www.doctolib.de/arzt/berlin/shukri-jarmoukli"
 							target="_blank"
 							rel="noopener noreferrer"
 							className="mt-8 flex items-center justify-center gap-2 w-full py-4 rounded-2xl bg-[#43a9ab] text-white font-bold tracking-wide hover:bg-[#378f91] transition-colors no-underline"

@@ -11,7 +11,7 @@
 import { C, cardStyle, ghostBtn, sectionTitle } from "@/components/companion/companionUi";
 
 const DOCTOLIB_URL =
-  "https://www.doctolib.de/arzt/berlin/shukri-jarmoukli/booking/motives?source=profile";
+  "https://www.doctolib.de/arzt/berlin/shukri-jarmoukli";
 
 // Ghost-Button als Link: gleicher Look wie die App-Buttons, nur als <a>.
 const linkBtn = {

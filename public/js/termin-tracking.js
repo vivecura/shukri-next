@@ -21,9 +21,7 @@
   }
 
   function sendEvent(href) {
-    var typ = "sonstige";
-    if (href.indexOf("booking/new-patient") !== -1) typ = "neupatient";
-    else if (href.indexOf("booking/motives") !== -1) typ = "profil";
+    var typ = href.indexOf("booking/new-patient") !== -1 ? "neupatient" : "profil";
     var g = window.gtag || function () { (window.dataLayer = window.dataLayer || []).push(arguments); };
     g("event", "termin_klick", {
       booking_typ: typ,
@@ -38,7 +36,7 @@
       var el = ev.target && ev.target.closest ? ev.target.closest("a[href]") : null;
       if (!el) return;
       var href = el.href || "";
-      if (href.indexOf("doctolib.de") === -1 || href.indexOf("booking") === -1) return;
+      if (href.indexOf("doctolib.de/arzt/berlin/shukri-jarmoukli") === -1) return;
       sendEvent(href);
     },
     true

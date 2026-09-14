@@ -14,7 +14,7 @@
 import { useEffect, useRef } from "react";
 import useLanguage from "@/hooks/useLanguage";
 
-const BOOK = "https://www.doctolib.de/arzt/berlin/shukri-jarmoukli/booking/motives?source=profile";
+const BOOK = "https://www.doctolib.de/arzt/berlin/shukri-jarmoukli";
 
 /* ---------------- Icons ---------------- */
 const svg = (inner) =>

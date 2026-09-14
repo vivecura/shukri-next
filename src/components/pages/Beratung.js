@@ -14,7 +14,7 @@ import { useEffect, useRef, useState } from "react";
 import useLanguage from "@/hooks/useLanguage";
 
 const BOOK =
-  "https://www.doctolib.de/arzt/berlin/shukri-jarmoukli/booking/motives?source=profile";
+  "https://www.doctolib.de/arzt/berlin/shukri-jarmoukli";
 
 /* ---------------- Icons (JSX) ---------------- */
 const S = (inner) => (

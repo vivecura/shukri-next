@@ -171,7 +171,7 @@ function FlipGrid({
         {showBottomButton && (
           <div className="flex justify-center mt-8">
             <a
-              href="https://www.doctolib.de/arzt/berlin/shukri-jarmoukli/booking/motives?source=profile"
+              href="https://www.doctolib.de/arzt/berlin/shukri-jarmoukli"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block px-8 py-3 text-base font-semibold bg-[#43A9AB] text-white rounded-full hover:bg-[#378f91] transition-colors"
@@ -233,7 +233,7 @@ function FlipGrid({
         {showBottomButton && (
           <div className="flex justify-center mt-8">
             <a
-              href="https://www.doctolib.de/arzt/berlin/shukri-jarmoukli/booking/motives?source=profile"
+              href="https://www.doctolib.de/arzt/berlin/shukri-jarmoukli"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block px-8 py-3 text-base md:text-lg font-semibold bg-[#43A9AB] text-white rounded-full hover:bg-[#378f91] transition-colors"
