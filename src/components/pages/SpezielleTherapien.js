@@ -155,7 +155,7 @@ function SpezielleTherapien() {
               <div className="flex items-center gap-3 mb-5 text-sm text-gray-500">
                 <span>{t("spezielleTherapien.hero.locationLabel")}</span>
                 <a
-                  href="https://www.doctolib.de/arzt/berlin/shukri-jarmoukli/booking/motives?source=profile"
+                  href="https://www.doctolib.de/arzt/berlin/shukri-jarmoukli"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-[#43a9ab] font-semibold no-underline hover:underline flex items-center gap-1"

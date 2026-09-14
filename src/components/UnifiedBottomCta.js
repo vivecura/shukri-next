@@ -6,7 +6,7 @@ function UnifiedBottomCta({
   title,
   subtitle,
   buttonText,
-  href = "https://www.doctolib.de/arzt/berlin/shukri-jarmoukli/booking/motives?source=profile",
+  href = "https://www.doctolib.de/arzt/berlin/shukri-jarmoukli",
   className = "py-20 sm:py-28 px-5 sm:px-8",
 }) {
   const t = useT();

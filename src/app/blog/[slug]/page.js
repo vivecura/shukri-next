@@ -136,7 +136,7 @@ export default async function BlogPostPage({ params }) {
             {tForLang("de", "blogPost.ctaSubtitle")}
           </p>
           <a
-            href="https://www.doctolib.de/arzt/berlin/shukri-jarmoukli/booking/motives?source=profile"
+            href="https://www.doctolib.de/arzt/berlin/shukri-jarmoukli"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block bg-[#43a9ab] hover:bg-[#3a9496] text-white px-8 py-3 rounded-lg text-base font-medium transition-colors duration-300 no-underline"

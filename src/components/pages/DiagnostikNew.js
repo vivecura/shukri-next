@@ -10,7 +10,7 @@
 import { useEffect, useRef } from "react";
 import useLanguage from "@/hooks/useLanguage";
 
-const BOOK = "https://www.doctolib.de/arzt/berlin/shukri-jarmoukli/booking/motives?source=profile";
+const BOOK = "https://www.doctolib.de/arzt/berlin/shukri-jarmoukli";
 const IMG = "/Assets/Diagnostik2.png";
 
 /* ---------------- Icons (width/height als Attribut) ---------------- */

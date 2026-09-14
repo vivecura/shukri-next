@@ -53,7 +53,7 @@ function KetaminHero() {
                 ))}
               </ul>
               <a
-                href="https://www.doctolib.de/arzt/berlin/shukri-jarmoukli/booking/motives?source=profile"
+                href="https://www.doctolib.de/arzt/berlin/shukri-jarmoukli"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center bg-[#43a9ab] text-white px-7 py-3.5 rounded-xl text-sm font-semibold hover:bg-[#389193] transition-colors duration-200 no-underline shadow-sm"
@@ -103,7 +103,7 @@ function KetaminCTA() {
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <a
-            href="https://www.doctolib.de/arzt/berlin/shukri-jarmoukli/booking/motives?source=profile"
+            href="https://www.doctolib.de/arzt/berlin/shukri-jarmoukli"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center gap-2 bg-[#43a9ab] text-white px-7 py-3.5 rounded-xl text-sm sm:text-base font-semibold hover:bg-[#389193] transition-colors duration-200 no-underline shadow-sm"

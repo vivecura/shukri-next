@@ -583,7 +583,7 @@ function PraeventionLongevity() {
         }
         subtitle={t("praeventionLongevity.heroSubtitle")}
         ctaText={t("praeventionLongevity.heroCta")}
-        ctaHref="https://www.doctolib.de/arzt/berlin/shukri-jarmoukli/booking/motives?source=profile"
+        ctaHref="https://www.doctolib.de/arzt/berlin/shukri-jarmoukli"
         trustItems={trustItems}
       />
 
@@ -830,7 +830,7 @@ function PraeventionLongevity() {
           </div>
           <div className="mt-10">
             <a
-              href="https://www.doctolib.de/arzt/berlin/shukri-jarmoukli/booking/motives?source=profile"
+              href="https://www.doctolib.de/arzt/berlin/shukri-jarmoukli"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center bg-[#43a9ab] text-white px-8 py-4 rounded-xl text-base font-semibold hover:bg-[#389193] transition-colors duration-200 no-underline shadow-sm"
@@ -931,7 +931,7 @@ function PraeventionLongevity() {
             {t("praeventionLongevity.finalCtaBody")}
           </p>
           <a
-            href="https://www.doctolib.de/arzt/berlin/shukri-jarmoukli/booking/motives?source=profile"
+            href="https://www.doctolib.de/arzt/berlin/shukri-jarmoukli"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center bg-[#43a9ab] text-white px-10 py-4 rounded-xl text-base font-semibold hover:bg-[#389193] transition-colors duration-200 no-underline shadow-lg shadow-[#43a9ab]/20"
