@@ -299,6 +299,8 @@ export default function AdminBlogPanel() {
             <img
               src={post.thumbnail_url}
               alt=""
+              loading="lazy"
+              decoding="async"
               className="w-full h-full object-cover"
             />
           ) : (
