@@ -26,6 +26,8 @@ function ArticleCard({ post, lang, index = 0 }) {
             <img
               src={post.thumbnail_url}
               alt={post.title}
+              loading={index < 4 ? "eager" : "lazy"}
+              decoding="async"
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
             />
           </div>

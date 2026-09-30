@@ -63,7 +63,13 @@ export default function ScrollingCards({ speedSeconds = 36, title }) {
     >
       <div className="w-full h-44 sm:h-48 bg-[#e0f4f5] overflow-hidden">
         {post.thumbnail_url ? (
-          <img src={post.thumbnail_url} alt={post.title} className="w-full h-full object-cover" />
+          <img
+            src={post.thumbnail_url}
+            alt={post.title}
+            loading="lazy"
+            decoding="async"
+            className="w-full h-full object-cover"
+          />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
             <img
