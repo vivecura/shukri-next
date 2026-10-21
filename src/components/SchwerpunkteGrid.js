@@ -1,43 +1,14 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useT } from "@/hooks/useT";
 import useLanguage from "@/hooks/useLanguage";
+import useScrollFadeIn from "@/hooks/useScrollFadeIn";
 import de from "@/locales/de.json";
 import en from "@/locales/en.json";
 
 const DICTS = { de, en };
-
-function useScrollFadeIn() {
-  const ref = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.unobserve(el);
-        }
-      },
-      { threshold: 0.1 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
-  return {
-    ref,
-    style: {
-      opacity: isVisible ? 1 : 0,
-      transform: isVisible ? "translateY(0)" : "translateY(40px)",
-      transition: "opacity 1.4s ease-out, transform 1.4s ease-out",
-    },
-  };
-}
 
 function FlipCard({ title, image, desc, bgColor, href, flipped, onFlip, onUnflip }) {
   const t = useT();
@@ -174,7 +145,7 @@ function FlipCard({ title, image, desc, bgColor, href, flipped, onFlip, onUnflip
 export default function SchwerpunkteGrid({ therapies: therapiesProp, title: titleProp }) {
   const t = useT();
   const lang = useLanguage();
-  const gridAnim = useScrollFadeIn();
+  const gridAnim = useScrollFadeIn({ duration: 1.4 });
 
   const therapyHrefs = {
     ketamin:      lang === "en" ? "/en/ketamine"                       : "/ketamin",
@@ -228,7 +199,7 @@ export default function SchwerpunkteGrid({ therapies: therapiesProp, title: titl
   const title = titleProp === undefined ? t("spezielleTherapien.grid.title") : titleProp;
 
   return (
-    <section ref={gridAnim.ref} style={gridAnim.style} className="px-5 sm:px-10 py-10 sm:py-14">
+    <section {...gridAnim} className="px-5 sm:px-10 py-10 sm:py-14">
       <div className="max-w-7xl mx-auto">
         {title && (
           <h2

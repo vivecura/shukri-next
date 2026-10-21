@@ -1,39 +1,10 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import SchwerpunkteGrid from "@/components/SchwerpunkteGrid";
 import UnifiedBottomCta from "@/components/UnifiedBottomCta";
 import { useT } from "@/hooks/useT";
-
-function useScrollFadeIn() {
-  const ref = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.unobserve(el);
-        }
-      },
-      { threshold: 0.1 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
-  return {
-    ref,
-    style: {
-      opacity: isVisible ? 1 : 0,
-      transform: isVisible ? "translateY(0)" : "translateY(40px)",
-      transition: "opacity 1.4s ease-out, transform 1.4s ease-out",
-    },
-  };
-}
+import useScrollFadeIn from "@/hooks/useScrollFadeIn";
 
 const ChevronDown = ({ isOpen }) => (
   <svg
@@ -108,7 +79,7 @@ function SpezielleTherapien() {
     }
   };
 
-  const testimonialsAnim = useScrollFadeIn();
+  const testimonialsAnim = useScrollFadeIn({ duration: 1.4 });
 
   const toggleAccordion = (index) => {
     setOpenAccordion(openAccordion === index ? null : index);
@@ -207,7 +178,7 @@ function SpezielleTherapien() {
       {/* Focus Carousel Section — removed */}
 
       {/* Testimonials Section */}
-      <section ref={testimonialsAnim.ref} style={testimonialsAnim.style} className="pb-16 sm:pb-20">
+      <section {...testimonialsAnim} className="pb-16 sm:pb-20">
         <div className="max-w-4xl mx-auto px-5 sm:px-8">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-3xl sm:text-4xl font-bold text-[#43A9AB]">

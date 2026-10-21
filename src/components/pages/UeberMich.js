@@ -1,36 +1,11 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
 import useLanguage from "@/hooks/useLanguage";
 import { useT } from "@/hooks/useT";
+import useScrollFadeIn from "@/hooks/useScrollFadeIn";
 
-function useScrollFadeIn(delay = 0) {
-  const ref = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.unobserve(el);
-        }
-      },
-      { threshold: 0.15 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-  return {
-    ref,
-    style: {
-      opacity: isVisible ? 1 : 0,
-      transform: isVisible ? "translateY(0)" : "translateY(32px)",
-      transition: `opacity 0.9s ease-out ${delay}s, transform 0.9s ease-out ${delay}s`,
-    },
-  };
-}
+// Softer, quicker fade than the other pages.
+const FADE = { threshold: 0.15, distance: 32, duration: 0.9 };
 
 const physicianJsonLd = {
   "@context": "https://schema.org",
@@ -51,15 +26,15 @@ const physicianJsonLd = {
 function UeberMich() {
   const t = useT();
   const lang = useLanguage();
-  const heroText = useScrollFadeIn(0.1);
-  const section1 = useScrollFadeIn(0);
-  const pullQuote1 = useScrollFadeIn(0);
-  const section2 = useScrollFadeIn(0);
-  const section3 = useScrollFadeIn(0);
-  const pullQuote2 = useScrollFadeIn(0);
-  const section4 = useScrollFadeIn(0);
-  const section5 = useScrollFadeIn(0);
-  const closing = useScrollFadeIn(0);
+  const heroText = useScrollFadeIn({ ...FADE, delay: 0.1 });
+  const section1 = useScrollFadeIn(FADE);
+  const pullQuote1 = useScrollFadeIn(FADE);
+  const section2 = useScrollFadeIn(FADE);
+  const section3 = useScrollFadeIn(FADE);
+  const pullQuote2 = useScrollFadeIn(FADE);
+  const section4 = useScrollFadeIn(FADE);
+  const section5 = useScrollFadeIn(FADE);
+  const closing = useScrollFadeIn(FADE);
 
   return (
     <div className="bg-white min-h-screen">
@@ -79,7 +54,7 @@ function UeberMich() {
               <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-[#43A9AB] tracking-tight leading-[1.08] mb-8">
                 {t("ueberMich.heroTitle")}
               </h1>
-              <div ref={heroText.ref} style={heroText.style}>
+              <div {...heroText}>
                 <p className="text-xl sm:text-2xl font-medium text-[#515757] leading-relaxed">
                   {t("ueberMich.heroLead")}
                 </p>
@@ -100,7 +75,7 @@ function UeberMich() {
       </div>
 
       {/* Section 1 — Philosophy */}
-      <section ref={section1.ref} style={section1.style} className="py-16 sm:py-24 px-5 sm:px-8">
+      <section {...section1} className="py-16 sm:py-24 px-5 sm:px-8">
         <div className="max-w-3xl mx-auto space-y-6">
           <p className="text-base sm:text-lg text-[#515757]/80 leading-relaxed">
             {t("ueberMich.section1Para")}
@@ -109,7 +84,7 @@ function UeberMich() {
       </section>
 
       {/* Pull Quote */}
-      <section ref={pullQuote1.ref} style={pullQuote1.style} className="px-5 sm:px-8">
+      <section {...pullQuote1} className="px-5 sm:px-8">
         <div className="max-w-3xl mx-auto">
           <div className="border-l-4 border-[#43a9ab] pl-6 sm:pl-8 py-4">
             <p className="text-xl sm:text-2xl font-medium text-[#515757] leading-relaxed italic">
@@ -120,7 +95,7 @@ function UeberMich() {
       </section>
 
       {/* Section 2 — Personal Story */}
-      <section ref={section2.ref} style={section2.style} className="py-16 sm:py-24 px-5 sm:px-8">
+      <section {...section2} className="py-16 sm:py-24 px-5 sm:px-8">
         <div className="max-w-3xl mx-auto space-y-6">
           <p className="text-base sm:text-lg text-[#515757]/80 leading-relaxed">
             {t("ueberMich.section2Para")}
@@ -129,7 +104,7 @@ function UeberMich() {
       </section>
 
       {/* Section 3 — Transformation */}
-      <section ref={section3.ref} style={section3.style} className="pb-16 sm:pb-24 px-5 sm:px-8">
+      <section {...section3} className="pb-16 sm:pb-24 px-5 sm:px-8">
         <div className="max-w-3xl mx-auto space-y-6">
           <h2 className="text-2xl sm:text-3xl font-bold text-[#43A9AB] tracking-tight mb-2">
             {t("ueberMich.section3Heading")}
@@ -138,7 +113,7 @@ function UeberMich() {
       </section>
 
       {/* Pull Quote 2 — Cold */}
-      <section ref={pullQuote2.ref} style={pullQuote2.style} className="px-5 sm:px-8">
+      <section {...pullQuote2} className="px-5 sm:px-8">
         <div className="max-w-3xl mx-auto">
           <div className="rounded-2xl px-8 sm:px-12 py-10 sm:py-14" style={{ backgroundColor: "#43A9AB" }}>
             <p className="text-lg sm:text-xl text-white leading-relaxed">
@@ -152,7 +127,7 @@ function UeberMich() {
       </section>
 
       {/* Section 4 — Integrative Approach */}
-      <section ref={section4.ref} style={section4.style} className="py-16 sm:py-24 px-5 sm:px-8">
+      <section {...section4} className="py-16 sm:py-24 px-5 sm:px-8">
         <div className="max-w-3xl mx-auto space-y-6">
           <p className="text-base sm:text-lg text-[#515757]/80 leading-relaxed">
             {t("ueberMich.section4Para1")}
@@ -176,7 +151,7 @@ function UeberMich() {
       </section>
 
       {/* Section 5 — Experience */}
-      <section ref={section5.ref} style={section5.style} className="pb-16 sm:pb-24 px-5 sm:px-8">
+      <section {...section5} className="pb-16 sm:pb-24 px-5 sm:px-8">
         <div className="max-w-3xl mx-auto space-y-6">
           <p className="text-base sm:text-lg text-[#515757]/80 leading-relaxed">
             {t("ueberMich.section5Para")}
@@ -185,7 +160,7 @@ function UeberMich() {
       </section>
 
       {/* Closing Statement */}
-      <section ref={closing.ref} style={closing.style} className="pb-24 sm:pb-36 px-5 sm:px-8">
+      <section {...closing} className="pb-24 sm:pb-36 px-5 sm:px-8">
         <div className="max-w-3xl mx-auto">
           <div className="border-t border-[#515757]/10 pt-12 space-y-6">
             <p className="text-xl sm:text-2xl font-medium text-[#515757] leading-relaxed">

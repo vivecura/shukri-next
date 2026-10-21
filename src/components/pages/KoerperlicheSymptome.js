@@ -1,42 +1,15 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import ScrolledLines from "@/components/ScrolledLines";
 import SchwerpunkteGrid from "@/components/SchwerpunkteGrid";
 import { useT } from "@/hooks/useT";
 import useLanguage from "@/hooks/useLanguage";
+import useScrollFadeIn from "@/hooks/useScrollFadeIn";
 import de from "@/locales/de.json";
 import en from "@/locales/en.json";
 
 const DICTS = { de, en };
-
-function useScrollFadeIn(threshold = 0.1) {
-  const ref = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.unobserve(el);
-        }
-      },
-      { threshold }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [threshold]);
-  return {
-    ref,
-    style: {
-      opacity: isVisible ? 1 : 0,
-      transform: isVisible ? "translateY(0)" : "translateY(40px)",
-      transition: "opacity 1.2s ease-out, transform 1.2s ease-out",
-    },
-  };
-}
 
 const ChevronDown = ({ isOpen }) => (
   <svg
@@ -358,7 +331,7 @@ function KoerperlicheSymptome() {
       <ZitatWunderpille />
 
       {/* Perspektivwechsel */}
-      <section ref={perspectiveAnim.ref} style={perspectiveAnim.style} className="py-16 sm:py-24 px-5 sm:px-8">
+      <section {...perspectiveAnim} className="py-16 sm:py-24 px-5 sm:px-8">
         <div className="max-w-4xl mx-auto">
           <div
             className="rounded-3xl p-8 sm:p-12"
@@ -386,7 +359,7 @@ function KoerperlicheSymptome() {
       </section>
 
       {/* So arbeite ich anders */}
-      <section ref={approachAnim.ref} style={approachAnim.style} className="py-16 sm:py-24 px-5 sm:px-8">
+      <section {...approachAnim} className="py-16 sm:py-24 px-5 sm:px-8">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl sm:text-3xl font-bold text-[#43A9AB] mb-6 tracking-tight">
             {t("koerperlicheSymptome.approachTitle")}
@@ -420,7 +393,7 @@ function KoerperlicheSymptome() {
       </div>
 
       {/* Diagnostik */}
-      <section ref={diagnostikAnim.ref} style={diagnostikAnim.style} className="py-16 sm:py-24 px-5 sm:px-8">
+      <section {...diagnostikAnim} className="py-16 sm:py-24 px-5 sm:px-8">
         <div className="max-w-4xl mx-auto">
           <div className="text-[10px] font-light tracking-[3px] uppercase text-[#43a9ab]/60 mb-4">
             {t("koerperlicheSymptome.diagnostikLabel")}
@@ -454,7 +427,7 @@ function KoerperlicheSymptome() {
       </section>
 
       {/* Alles was du brauchst in einem Termin */}
-      <section ref={processAnim.ref} style={processAnim.style} className="pt-16 sm:pt-24 pb-20 sm:pb-28 px-5 sm:px-8">
+      <section {...processAnim} className="pt-16 sm:pt-24 pb-20 sm:pb-28 px-5 sm:px-8">
         <div className="max-w-5xl mx-auto">
           <div
             className="rounded-3xl overflow-hidden"
@@ -483,7 +456,7 @@ function KoerperlicheSymptome() {
       </section>
 
       {/* Für wen */}
-      <section ref={fitAnim.ref} style={fitAnim.style} className="py-16 sm:py-24 px-5 sm:px-8">
+      <section {...fitAnim} className="py-16 sm:py-24 px-5 sm:px-8">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl sm:text-3xl font-bold text-[#43A9AB] mb-8 tracking-tight">
             {t("koerperlicheSymptome.fitTitle")}
@@ -504,7 +477,7 @@ function KoerperlicheSymptome() {
       </section>
 
       {/* FAQ */}
-      <section ref={faqAnim.ref} style={faqAnim.style} className="py-16 sm:py-24 px-5 sm:px-8">
+      <section {...faqAnim} className="py-16 sm:py-24 px-5 sm:px-8">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl sm:text-3xl font-bold text-[#43A9AB] mb-10 tracking-tight">
             {t("koerperlicheSymptome.faqTitle")}
@@ -525,7 +498,7 @@ function KoerperlicheSymptome() {
       </section>
 
       {/* Final CTA */}
-      <section ref={ctaAnim.ref} style={ctaAnim.style} className="py-20 sm:py-28 px-5 sm:px-8">
+      <section {...ctaAnim} className="py-20 sm:py-28 px-5 sm:px-8">
         <div className="max-w-3xl mx-auto text-center">
           <h2
             className="text-[#43A9AB] font-black leading-[0.92] tracking-tighter mb-6"

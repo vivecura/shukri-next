@@ -95,6 +95,25 @@ const navIcons = {
 	),
 };
 
+// Top-level so the links are not rebuilt on every Navbar render (e.g. while scrolling).
+function NavItem({ icon, label, to }) {
+	const pathname = usePathname();
+	const isActive = pathname === to;
+	return (
+		<Link
+			href={to}
+			className="group flex flex-col items-center gap-1 px-4 py-1 no-underline focus:outline-none"
+		>
+			<span className={`${isActive ? "text-[#43a9ab] scale-110" : "text-[#515757]/50"} group-hover:text-[#43a9ab] transition-all duration-300`}>
+				{icon}
+			</span>
+			<span className={`${isActive ? "text-[12px] text-[#43a9ab] font-bold" : "text-[11px] text-[#515757]/90 font-semibold"} group-hover:text-[#43a9ab] transition-all duration-300`}>
+				{label}
+			</span>
+		</Link>
+	);
+}
+
 const Navbar = () => {
 	const pathname = usePathname();
 	const t = useT();
@@ -171,62 +190,6 @@ const Navbar = () => {
 	if (pathname === "/honorar" || pathname?.startsWith("/honorar/") || pathname === "/anamnese") {
 		return null;
 	}
-
-	const scrollToSection = (sectionId) => {
-		const element = document.getElementById(sectionId);
-		if (element) {
-			let offset = element.offsetTop;
-			if (sectionId === "landing-page") {
-				offset = 0;
-			}
-			window.scrollTo({ top: offset, behavior: "smooth" });
-			setMenuOpen(false);
-		}
-	};
-
-	const handleNavigation = (sectionId) => {
-		const homePath = lang === "en" ? "/en" : "/";
-		if (pathname === homePath) {
-			scrollToSection(sectionId);
-		} else {
-			window.location.href = `${homePath}#${sectionId}`;
-		}
-		setMenuOpen(false);
-	};
-
-	const NavItem = ({ onClick, icon, label, isLink, to }) => {
-		const isActive = isLink && pathname === to;
-		const inner = (
-			<>
-				<span className={`${isActive ? "text-[#43a9ab] scale-110" : "text-[#515757]/50"} group-hover:text-[#43a9ab] transition-all duration-300`}>
-					{icon}
-				</span>
-				<span className={`${isActive ? "text-[12px] text-[#43a9ab] font-bold" : "text-[11px] text-[#515757]/90 font-semibold"} group-hover:text-[#43a9ab] transition-all duration-300`}>
-					{label}
-				</span>
-			</>
-		);
-
-		if (isLink) {
-			return (
-				<Link
-					href={to}
-					className="group flex flex-col items-center gap-1 px-4 py-1 no-underline focus:outline-none"
-				>
-					{inner}
-				</Link>
-			);
-		}
-
-		return (
-			<button
-				onClick={onClick}
-				className="group flex flex-col items-center gap-1 px-4 py-1 focus:outline-none"
-			>
-				{inner}
-			</button>
-		);
-	};
 
 	return (
 		<>
@@ -379,7 +342,7 @@ const Navbar = () => {
 								<img src="/Assets/logo6.png" alt="ViveCura" className="h-20 w-auto object-contain" />
 							</Link>
 							<div className="flex items-center">
-								<NavItem isLink to={localized("/")} icon={navIcons.home} label={t("navbar.home")} />
+								<NavItem to={localized("/")} icon={navIcons.home} label={t("navbar.home")} />
 								<div
 									className="relative"
 									onMouseEnter={() => setServicesOpen(true)}
@@ -443,15 +406,15 @@ const Navbar = () => {
 										</div>
 									</div>
 								</div>
-								<NavItem isLink to={localized("/beratung")} icon={navIcons.beratung} label={t("navbar.beratung")} />
-								<NavItem isLink to={localized("/diagnostik")} icon={navIcons.diagnostik} label={t("navbar.diagnostik")} />
-								<NavItem isLink to={localized("/infusions")} icon={navIcons.infusions} label={t("navbar.infusions")} />
-								<NavItem isLink to={localized("/mentoring")} icon={navIcons.mentoring} label={t("navbar.mentoring")} />
-								<NavItem isLink to={localized("/ketamin")} icon={navIcons.extras} label={t("navbar.ketamin")} />
-								<NavItem isLink to={localized("/eiseninfusion")} icon={navIcons.eisen} label={t("navbar.eisen")} />
-								<NavItem isLink to={localized("/ueber-mich")} icon={navIcons.ueberMich} label={t("navbar.ueberMich")} />
-								<NavItem isLink to={localized("/blog")} icon={navIcons.blog} label={t("navbar.blog")} />
-								<NavItem isLink to={localized("/kontakt")} icon={navIcons.beratung} label={t("kontakt.navbarLabel")} />
+								<NavItem to={localized("/beratung")} icon={navIcons.beratung} label={t("navbar.beratung")} />
+								<NavItem to={localized("/diagnostik")} icon={navIcons.diagnostik} label={t("navbar.diagnostik")} />
+								<NavItem to={localized("/infusions")} icon={navIcons.infusions} label={t("navbar.infusions")} />
+								<NavItem to={localized("/mentoring")} icon={navIcons.mentoring} label={t("navbar.mentoring")} />
+								<NavItem to={localized("/ketamin")} icon={navIcons.extras} label={t("navbar.ketamin")} />
+								<NavItem to={localized("/eiseninfusion")} icon={navIcons.eisen} label={t("navbar.eisen")} />
+								<NavItem to={localized("/ueber-mich")} icon={navIcons.ueberMich} label={t("navbar.ueberMich")} />
+								<NavItem to={localized("/blog")} icon={navIcons.blog} label={t("navbar.blog")} />
+								<NavItem to={localized("/kontakt")} icon={navIcons.beratung} label={t("kontakt.navbarLabel")} />
 								<a
 									href="https://www.doctolib.de/arzt/berlin/shukri-jarmoukli"
 									target="_blank"

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { supabase } from "@/lib/supabaseClient";
 import AdminContactsPanel from "@/components/AdminContactsPanel";
 import AdminLifesummitPanel from "@/components/AdminLifesummitPanel";
@@ -279,7 +280,7 @@ function Admin() {
           )}
           </div>
           <div className="shrink-0 flex items-center gap-4 pb-2">
-            <a
+            <Link
               href="/"
               className="flex items-center gap-1 text-xs text-[#515757]/40 hover:text-[#43a9ab] transition-colors tracking-wider uppercase"
             >
@@ -287,7 +288,7 @@ function Admin() {
                 <path d="M3 10.5L12 3l9 7.5V20a1 1 0 01-1 1h-5v-6h-6v6H4a1 1 0 01-1-1v-9.5z" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
               Home
-            </a>
+            </Link>
             <button
               onClick={handleLogout}
               className="text-xs text-[#515757]/40 hover:text-[#515757] transition-colors tracking-wider uppercase"

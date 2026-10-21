@@ -66,7 +66,7 @@ export default async function OG({ params }) {
           padding: 80,
         }}
       >
-        <img src={logoSrc} style={{ width: 260, height: 260, objectFit: "contain" }} />
+        <img src={logoSrc} alt="" style={{ width: 260, height: 260, objectFit: "contain" }} />
         {post?.title && (
           <div
             style={{

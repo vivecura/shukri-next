@@ -3,40 +3,13 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { useT } from "@/hooks/useT";
 import useLanguage from "@/hooks/useLanguage";
+import useScrollFadeIn from "@/hooks/useScrollFadeIn";
 import SchwerpunkteGrid from "@/components/SchwerpunkteGrid";
 import UnifiedBottomCta from "@/components/UnifiedBottomCta";
 import de from "@/locales/de.json";
 import en from "@/locales/en.json";
 
 const DICTS = { de, en };
-
-function useScrollFadeIn() {
-  const ref = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.unobserve(el);
-        }
-      },
-      { threshold: 0.1 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-  return {
-    ref,
-    style: {
-      opacity: isVisible ? 1 : 0,
-      transform: isVisible ? "translateY(0)" : "translateY(40px)",
-      transition: "opacity 1.2s ease-out, transform 1.2s ease-out",
-    },
-  };
-}
 
 const ChevronDown = ({ isOpen }) => (
   <svg className={`w-5 h-5 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -623,7 +596,7 @@ function HealthCheck() {
       />
 
       {/* ── EVERYTHING INCLUDED ── */}
-      <section ref={includesAnim.ref} style={includesAnim.style} className="pt-28 sm:pt-40 pb-20 sm:pb-28 px-5 sm:px-8">
+      <section {...includesAnim} className="pt-28 sm:pt-40 pb-20 sm:pb-28 px-5 sm:px-8">
         <div className="max-w-5xl mx-auto">
           <div className="rounded-3xl overflow-hidden" style={{ background: "linear-gradient(135deg, #d4ece1 0%, #e0f4f5 30%, #d9f0e4 60%, #c8e6d8 100%)" }}>
             <div className="px-8 sm:px-14 py-12 sm:py-16">
@@ -669,7 +642,7 @@ function HealthCheck() {
 
       {/* ── WHY CHOOSE US — 4 benefits — HIDDEN, keep for later ── */}
       {false && (
-      <section ref={benefitsAnim.ref} style={benefitsAnim.style} className="pb-20 sm:pb-28 px-5 sm:px-8">
+      <section {...benefitsAnim} className="pb-20 sm:pb-28 px-5 sm:px-8">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#43A9AB] mb-4 text-center">
             {t("healthCheck.benefitsSection.title")}
@@ -694,7 +667,7 @@ function HealthCheck() {
 
       {/* ── FAQ — HIDDEN, keep for later ── */}
       {false && (
-      <section ref={faqAnim.ref} style={faqAnim.style} className="pb-20 sm:pb-28 px-5 sm:px-8">
+      <section {...faqAnim} className="pb-20 sm:pb-28 px-5 sm:px-8">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#43A9AB] mb-10 text-center">
             {t("healthCheck.faqSection.title")}

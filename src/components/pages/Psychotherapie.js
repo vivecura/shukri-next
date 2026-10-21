@@ -6,6 +6,7 @@ import FanCardsMobile from "@/components/FanCardsMobile";
 import useIsMobile from "@/hooks/useIsMobile";
 import useLanguage from "@/hooks/useLanguage";
 import { useT } from "@/hooks/useT";
+import useScrollFadeIn from "@/hooks/useScrollFadeIn";
 import de from "@/locales/de.json";
 import en from "@/locales/en.json";
 
@@ -40,22 +41,6 @@ const psyStartIcons = {
     </svg>
   ),
 };
-
-function useScrollFadeIn(threshold = 0.1) {
-  const ref = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setIsVisible(true); observer.unobserve(el); } },
-      { threshold }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [threshold]);
-  return { ref, style: { opacity: isVisible ? 1 : 0, transform: isVisible ? "translateY(0)" : "translateY(40px)", transition: "opacity 1.2s ease-out, transform 1.2s ease-out" } };
-}
 
 const ChevronDown = ({ isOpen }) => (
   <svg className={`w-5 h-5 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1363,17 +1348,17 @@ function Psychotherapie() {
       </HeroBanner>
 
       {/* Vielleicht erkennst du dich hier wieder */}
-      <section ref={recognizeAnim.ref} style={recognizeAnim.style}>
+      <section {...recognizeAnim}>
         <RecognizeTable dict={dict} />
       </section>
 
       {/* Was oft fehlt */}
-      <section ref={missingAnim.ref} style={missingAnim.style}>
+      <section {...missingAnim}>
         <MissingWaves dict={dict} />
       </section>
 
       {/* So arbeite ich */}
-      <section ref={approachAnim.ref} style={approachAnim.style}>
+      <section {...approachAnim}>
         {isMobile ? (
           <FanCardsMobile cards={soArbeiteIchCards} title={t("psychotherapie.approach.title")} />
         ) : (
@@ -1382,12 +1367,12 @@ function Psychotherapie() {
       </section>
 
       {/* Methoden */}
-      <section ref={methodsAnim.ref} style={methodsAnim.style}>
+      <section {...methodsAnim}>
         <MethodenKreise dict={dict} />
       </section>
 
       {/* Prozess */}
-      <section ref={processAnim.ref} style={processAnim.style} className="py-16 sm:py-24 px-5 sm:px-8">
+      <section {...processAnim} className="py-16 sm:py-24 px-5 sm:px-8">
         <div className="max-w-5xl mx-auto">
           <div className="rounded-3xl overflow-hidden" style={{ background: "linear-gradient(135deg, #d4ece1 0%, #e0f4f5 30%, #d9f0e4 60%, #c8e6d8 100%)" }}>
             <div className="px-8 sm:px-14 py-12 sm:py-16">
@@ -1427,7 +1412,7 @@ function Psychotherapie() {
       </section>
 
       {/* Fuer wen */}
-      <section ref={fitAnim.ref} style={fitAnim.style} className="py-16 sm:py-24 px-5 sm:px-8">
+      <section {...fitAnim} className="py-16 sm:py-24 px-5 sm:px-8">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl sm:text-3xl font-bold text-[#43A9AB] mb-8 tracking-tight">{t("psychotherapie.fit.title")}</h2>
           <div className="space-y-4 mb-8">
@@ -1454,7 +1439,7 @@ function Psychotherapie() {
       </section>
 
       {/* FAQ */}
-      <section ref={faqAnim.ref} style={faqAnim.style} className="py-16 sm:py-24 px-5 sm:px-8">
+      <section {...faqAnim} className="py-16 sm:py-24 px-5 sm:px-8">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl sm:text-3xl font-bold text-[#43A9AB] mb-10 tracking-tight">{t("psychotherapie.faq.title")}</h2>
           <div className="border-t border-[#43a9ab]/10">
@@ -1473,7 +1458,7 @@ function Psychotherapie() {
       </section>
 
       {/* Final CTA */}
-      <section ref={ctaAnim.ref} style={ctaAnim.style} className="py-20 sm:py-28 px-5 sm:px-8">
+      <section {...ctaAnim} className="py-20 sm:py-28 px-5 sm:px-8">
         <div className="max-w-3xl mx-auto text-center">
           <h2
             className="text-[#43A9AB] font-black leading-[0.92] tracking-tighter mb-6"

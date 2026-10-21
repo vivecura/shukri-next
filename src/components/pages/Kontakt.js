@@ -36,6 +36,39 @@ function interpolate(str, vars) {
   );
 }
 
+// Kept outside Kontakt so React reuses the same buttons between renders;
+// otherwise a click remounts them and keyboard focus is lost.
+function Card({ value, selected, onClick, children }) {
+  return (
+    <button
+      type="button"
+      className={`vc-card ${selected ? "is-selected" : ""}`}
+      onClick={() => onClick(value)}
+      aria-pressed={selected}
+    >
+      <span className="vc-card__indicator" aria-hidden>{selected ? "✓" : ""}</span>
+      <span className="vc-card__label">{children}</span>
+    </button>
+  );
+}
+
+function Chip({ value, selected, onClick, children }) {
+  return (
+    <button
+      type="button"
+      className={`vc-chip ${selected ? "is-selected" : ""}`}
+      onClick={() => onClick(value)}
+      aria-pressed={selected}
+    >
+      {children ?? value}
+    </button>
+  );
+}
+
+function Err({ message }) {
+  return message ? <p className="vc-error" role="alert">{message}</p> : null;
+}
+
 export default function Kontakt() {
   const t = useT();
   const lang = useLanguage();
@@ -152,34 +185,6 @@ export default function Kontakt() {
     setDone(true);
   };
 
-  const Card = ({ value, selected, onClick, children }) => (
-    <button
-      type="button"
-      className={`vc-card ${selected ? "is-selected" : ""}`}
-      onClick={() => onClick(value)}
-      aria-pressed={selected}
-    >
-      <span className="vc-card__indicator" aria-hidden>{selected ? "✓" : ""}</span>
-      <span className="vc-card__label">{children}</span>
-    </button>
-  );
-
-  const Chip = ({ value, selected, onClick, children }) => (
-    <button
-      type="button"
-      className={`vc-chip ${selected ? "is-selected" : ""}`}
-      onClick={() => onClick(value)}
-      aria-pressed={selected}
-    >
-      {children ?? value}
-    </button>
-  );
-
-  const Err = ({ id }) =>
-    errors[id] ? (
-      <p className="vc-error" role="alert">{errors[id]}</p>
-    ) : null;
-
   if (done) {
     return (
       <>
@@ -249,7 +254,7 @@ export default function Kontakt() {
                     );
                   })}
                 </div>
-                <Err id="anliegen" />
+                <Err message={errors.anliegen} />
               </fieldset>
             )}
 
@@ -289,7 +294,7 @@ export default function Kontakt() {
                       );
                     })}
                   </div>
-                  <Err id="dauer" />
+                  <Err message={errors.dauer} />
                 </div>
               </fieldset>
             )}
@@ -312,7 +317,7 @@ export default function Kontakt() {
                       onChange={(e) => setField("vorname", e.target.value)}
                       autoComplete="given-name"
                     />
-                    <Err id="vorname" />
+                    <Err message={errors.vorname} />
                   </div>
                   <div>
                     <label className="vc-label" htmlFor="nachname">
@@ -326,7 +331,7 @@ export default function Kontakt() {
                       onChange={(e) => setField("nachname", e.target.value)}
                       autoComplete="family-name"
                     />
-                    <Err id="nachname" />
+                    <Err message={errors.nachname} />
                   </div>
                   <div className="vc-grid__full">
                     <label className="vc-label" htmlFor="geburtsdatum">
@@ -341,7 +346,7 @@ export default function Kontakt() {
                       autoComplete="bday"
                       max={new Date().toISOString().slice(0, 10)}
                     />
-                    <Err id="geburtsdatum" />
+                    <Err message={errors.geburtsdatum} />
                   </div>
                   <div className="vc-grid__full">
                     <label className="vc-label" htmlFor="email">
@@ -355,7 +360,7 @@ export default function Kontakt() {
                       onChange={(e) => setField("email", e.target.value)}
                       autoComplete="email"
                     />
-                    <Err id="email" />
+                    <Err message={errors.email} />
                   </div>
                   <div className="vc-grid__full">
                     <label className="vc-label" htmlFor="telefon">
@@ -370,7 +375,7 @@ export default function Kontakt() {
                       autoComplete="tel"
                       placeholder={t("kontakt.step4.telefonPlaceholder")}
                     />
-                    <Err id="telefon" />
+                    <Err message={errors.telefon} />
                   </div>
 
                   <div className="vc-grid__full">
@@ -451,7 +456,7 @@ export default function Kontakt() {
                     </Chip>
                   </div>
                   <p className="vc-note">{t("kontakt.step4.versicherungNote")}</p>
-                  <Err id="versicherung" />
+                  <Err message={errors.versicherung} />
                 </div>
 
                 <div className="vc-subgroup">
@@ -470,7 +475,7 @@ export default function Kontakt() {
                       </Chip>
                     ))}
                   </div>
-                  <Err id="preferredDays" />
+                  <Err message={errors.preferredDays} />
                 </div>
 
                 <div className="vc-subgroup">
@@ -489,7 +494,7 @@ export default function Kontakt() {
                       </Chip>
                     ))}
                   </div>
-                  <Err id="preferredTimes" />
+                  <Err message={errors.preferredTimes} />
                 </div>
 
                 <label className="vc-checkbox">
@@ -509,8 +514,8 @@ export default function Kontakt() {
                     </a>.
                   </span>
                 </label>
-                <Err id="dsgvo" />
-                <Err id="submit" />
+                <Err message={errors.dsgvo} />
+                <Err message={errors.submit} />
               </fieldset>
             )}
 

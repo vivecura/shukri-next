@@ -6,38 +6,11 @@ import FanCardsMobile from "@/components/FanCardsMobile";
 import useIsMobile from "@/hooks/useIsMobile";
 import useLanguage from "@/hooks/useLanguage";
 import { useT } from "@/hooks/useT";
+import useScrollFadeIn from "@/hooks/useScrollFadeIn";
 import de from "@/locales/de.json";
 import en from "@/locales/en.json";
 
 const DICTS = { de, en };
-
-function useScrollFadeIn(threshold = 0.1) {
-  const ref = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.unobserve(el);
-        }
-      },
-      { threshold }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [threshold]);
-  return {
-    ref,
-    style: {
-      opacity: isVisible ? 1 : 0,
-      transform: isVisible ? "translateY(0)" : "translateY(40px)",
-      transition: "opacity 1.2s ease-out, transform 1.2s ease-out",
-    },
-  };
-}
 
 const ChevronDown = ({ isOpen }) => (
   <svg
@@ -589,8 +562,7 @@ function PraeventionLongevity() {
 
       {/* Das Longevity-Chaos */}
       <section
-        ref={chaosAnim.ref}
-        style={chaosAnim.style}
+        {...chaosAnim}
         className="py-16 sm:py-24 px-5 sm:px-8"
       >
         <div className="max-w-4xl mx-auto">
@@ -605,8 +577,7 @@ function PraeventionLongevity() {
 
       {/* Was oft uebersehen wird + Biofeedback */}
       <section
-        ref={biofeedbackAnim.ref}
-        style={biofeedbackAnim.style}
+        {...biofeedbackAnim}
         className="py-16 sm:py-24 px-5 sm:px-8"
       >
         <div className="max-w-4xl mx-auto">
@@ -683,8 +654,7 @@ function PraeventionLongevity() {
 
       {/* So arbeiten wir - Intro */}
       <section
-        ref={processAnim.ref}
-        style={processAnim.style}
+        {...processAnim}
         className="py-16 sm:py-24 px-5 sm:px-8"
       >
         <div className="max-w-4xl mx-auto">
@@ -708,8 +678,7 @@ function PraeventionLongevity() {
 
       {/* Systemlogik */}
       <section
-        ref={systemAnim.ref}
-        style={systemAnim.style}
+        {...systemAnim}
         className="pt-16 sm:pt-24 px-5 sm:px-10"
       >
         <div className="w-full max-w-7xl mx-auto">
@@ -732,8 +701,7 @@ function PraeventionLongevity() {
 
       {/* Diagnostik mit Sinn */}
       <section
-        ref={diagnostikAnim.ref}
-        style={diagnostikAnim.style}
+        {...diagnostikAnim}
         className="py-16 sm:py-24 px-5 sm:px-8"
       >
         <div className="max-w-4xl mx-auto">
@@ -800,7 +768,7 @@ function PraeventionLongevity() {
       </section>
 
       {/* Die Hebel */}
-      <section ref={leversAnim.ref} style={leversAnim.style}>
+      <section {...leversAnim}>
         <HebelFlow
           data={hebelData}
           heading={t("praeventionLongevity.hebelHeading")}
@@ -811,8 +779,7 @@ function PraeventionLongevity() {
 
       {/* So starten wir */}
       <section
-        ref={startAnim.ref}
-        style={startAnim.style}
+        {...startAnim}
         className="py-16 sm:py-24 px-5 sm:px-8"
       >
         <div className="max-w-4xl mx-auto">
@@ -856,8 +823,7 @@ function PraeventionLongevity() {
 
       {/* Fuer wen */}
       <section
-        ref={fitAnim.ref}
-        style={fitAnim.style}
+        {...fitAnim}
         className="py-16 sm:py-24 px-5 sm:px-8"
       >
         <div className="max-w-4xl mx-auto">
@@ -891,8 +857,7 @@ function PraeventionLongevity() {
 
       {/* FAQ */}
       <section
-        ref={faqAnim.ref}
-        style={faqAnim.style}
+        {...faqAnim}
         className="py-16 sm:py-24 px-5 sm:px-8"
       >
         <div className="max-w-4xl mx-auto">
@@ -916,8 +881,7 @@ function PraeventionLongevity() {
 
       {/* Final CTA */}
       <section
-        ref={ctaAnim.ref}
-        style={ctaAnim.style}
+        {...ctaAnim}
         className="py-20 sm:py-28 px-5 sm:px-8"
       >
         <div className="max-w-3xl mx-auto text-center">
