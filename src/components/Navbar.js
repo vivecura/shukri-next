@@ -492,7 +492,10 @@ const Navbar = () => {
 						<div className="flex flex-col gap-2">
 							{[
 								{ to: "/", icon: navIcons.home, label: t("navbar.home") },
+								{ to: "/beratung", icon: navIcons.beratung, label: t("navbar.beratung") },
+								{ to: "/diagnostik", icon: navIcons.diagnostik, label: t("navbar.diagnostik") },
 								{ to: "/infusions", icon: navIcons.infusions, label: t("navbar.infusions") },
+								{ to: "/mentoring", icon: navIcons.mentoring, label: t("navbar.mentoring") },
 								{ to: "/ketamin", icon: navIcons.extras, label: t("navbar.ketamin") },
 								{ to: "/eiseninfusion", icon: navIcons.eisen, label: t("navbar.eisen") },
 								{ to: "/ueber-mich", icon: navIcons.ueberMich, label: t("navbar.ueberMich") },
