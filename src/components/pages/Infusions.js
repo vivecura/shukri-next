@@ -20,8 +20,7 @@ function ShotsSection() {
       title: "Vitamin D Shot",
       img: "/Assets/infusions-pics/Vitamin D Shot.png",
       duration: "15 min.",
-      oldPrice: "40 €",
-      price: "25 €",
+      price: shotsDict.vitaminD?.price,
       desc: shotsDict.vitaminD?.desc,
       tags: shotsDict.vitaminD?.tags || [],
       popupDesc: shotsDict.vitaminD?.popupDesc,
@@ -33,7 +32,7 @@ function ShotsSection() {
       title: "Magnesium Shot",
       img: "/Assets/infusions-pics/Magnesium Shot.png",
       duration: "15 min.",
-      price: "ca. 39 €",
+      price: shotsDict.magnesium?.price,
       desc: shotsDict.magnesium?.desc,
       tags: shotsDict.magnesium?.tags || [],
       popupDesc: shotsDict.magnesium?.popupDesc,
@@ -45,7 +44,7 @@ function ShotsSection() {
       title: "Glutathion Shot",
       img: "/Assets/infusions-pics/Glutathion Shot.png",
       duration: "15 min.",
-      price: "45 €",
+      price: shotsDict.glutathion?.price,
       desc: shotsDict.glutathion?.desc,
       tags: shotsDict.glutathion?.tags || [],
       popupDesc: shotsDict.glutathion?.popupDesc,
@@ -240,6 +239,10 @@ function ShotsSection() {
                     </p>
                   </div>
                 )}
+
+                <p className="mt-6 text-xs text-[#515757]/70 leading-relaxed">
+                  {t("infusions.priceNote")}
+                </p>
               </div>
             </div>
 
@@ -318,6 +321,16 @@ function Infusions() {
       <ServicesCardssmaller2 />
 
       <ShotsSection />
+
+      {/* Preishinweis (Vorgabe Anwalt): gilt für alle mit * markierten Preise */}
+      <section className="px-4 pb-20 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="h-px bg-[#515757]/10 mb-6" />
+          <p className="text-sm text-[#515757]/80 leading-relaxed max-w-3xl">
+            {t("infusions.priceNote")}
+          </p>
+        </div>
+      </section>
     </div>
   );
 }
