@@ -177,12 +177,12 @@ const ServicesCardssmaller2 = () => {
                     <span>{card.duration}</span>
                   </div>
                   <div className="flex items-end justify-between mt-auto">
-                    <span className="text-lg font-bold text-[#515757]">
+                    <span className="text-base md:text-lg font-bold text-[#515757]">
                       {card.price}
                     </span>
-                    <button className="w-10 h-10 rounded-full bg-[#43a9ab] flex items-center justify-center hover:bg-[#389193] transition-colors">
+                    <button className="w-8 h-8 md:w-10 md:h-10 shrink-0 rounded-full bg-[#43a9ab] flex items-center justify-center hover:bg-[#389193] transition-colors">
                       <svg
-                        className="w-5 h-5 text-white"
+                        className="w-4 h-4 md:w-5 md:h-5 text-white"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -286,6 +286,10 @@ const ServicesCardssmaller2 = () => {
                     </p>
                   </div>
                 )}
+
+                <p className="mt-6 text-xs text-[#515757]/70 leading-relaxed">
+                  {t("infusions.priceNote")}
+                </p>
               </div>
             </div>
 

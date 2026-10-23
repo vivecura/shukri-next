@@ -1256,8 +1256,10 @@
     "shotsSubtitle": "Targeted active ingredients as a quick injection — no long sitting required.",
     "ingredients": "Ingredients",
     "bookNow": "Book now",
+    "priceNote": "*The prices stated are determined on the basis of the GOÄ (German scale of medical fees) according to the individual wishes of the patient and the particular circumstances of each case, whereby we agree with our patients on a fee level that deviates from the GOÄ. In the case of treatment, the consultation and its fee are already included in the price. The services listed are not part of the benefits catalogue of the statutory health insurance funds and/or health insurers and are therefore, as a rule, to be paid at the patient's own expense.",
     "shots": {
       "vitaminD": {
+        "price": "from €25*",
         "desc": "A single shot can replace months of daily oral intake.",
         "tags": [
           "Immune system",
@@ -1269,6 +1271,7 @@
         "whyText": "Vitamin D is not a normal vitamin. It can act as a hormone and may be involved in over 200 gene processes: immune defense, bone formation, muscle strength, mood, sleep, testosterone, thyroid. Studies show that over 80% of Germans have suboptimal levels, many without knowing it.\n\nFor comparison: a 1,000 IU tablet daily for 3 months — 90 tablets, remembering every day, and depending on gut health only a fraction actually arrives. This shot? One ampoule, five minutes, directly into the muscle — can deliver 100,000 IU straight into the body's depot, 100% available, without the detour through gut or bile. What tablets try to achieve over a quarter of a year, this shot can accomplish in a single appointment."
       },
       "magnesium": {
+        "price": "from €39*",
         "desc": "A single infusion can achieve what tablets can barely manage in weeks.",
         "tags": [
           "Relaxation",
@@ -1280,6 +1283,7 @@
         "whyText": "It's not about filling up stores. It's about what happens in the moment magnesium goes directly into the blood, and what happens when you repeat that moment.\n\nIV magnesium can instantly relax the smooth muscle of the blood vessels, lower blood pressure and dramatically boost circulation. Many patients feel it live: an intense warmth spreads from the arm across the whole body. That's real vasodilation — the body literally opens up! Muscles can let go, the nervous system can wind down, heart rhythm can stabilize.\n\nIn chronic exhaustion and fatigue, exactly this short-term reset can be decisive. Not because the body is permanently changed afterwards, but because every repetition trains the nervous system to enter this state again. Like a reset button that becomes easier to press with each session. Applied as a series, this brief, deep relaxation can turn into lasting recovery; measurable in HRV, sleep quality and energy levels."
       },
       "glutathion": {
+        "price": "from €45*",
         "desc": "Directly intravenous for immediate bioavailability at the cellular level.",
         "tags": [
           "Detox",
@@ -1296,7 +1300,7 @@
       "iron": {
         "title": "Iron",
         "duration": "45 min",
-        "price": "€142–176",
+        "price": "from €142*",
         "popupDesc": "Our iron infusion delivers bioavailable iron directly into the bloodstream for a fast and gentle replenishment of your stores. It's ideal when oral iron supplements aren't tolerated or don't work well enough. Particularly suitable for iron-deficiency anemia, functional iron deficiency without anemia (ferritin <70), chronic exhaustion or after blood loss.",
         "tags": [
           "Iron deficiency",
@@ -1310,7 +1314,7 @@
       "antiPain": {
         "title": "Anti-Pain",
         "duration": "45 min",
-        "price": "€150",
+        "price": "from €150*",
         "popupDesc": "This infusion combines muscle-relaxing, nerve-stabilizing and pain-modulating actives for fast, targeted relief. It works directly in the tissue, without burdening the gastrointestinal tract the way oral painkillers do. Suitable for acute and chronic pain, tension or migraine.",
         "tags": [
           "Pain relief",
@@ -1324,7 +1328,7 @@
       "antiInflammation": {
         "title": "Anti-Inflammation",
         "duration": "60 min",
-        "price": "€190",
+        "price": "from €190*",
         "popupDesc": "Our anti-inflammation infusion delivers high-dose vitamin C, glutathione and anti-inflammatory micronutrients directly into the blood. It can reduce oxidative stress and dampen chronic inflammatory processes at the root. For anyone with chronic complaints, autoimmune conditions or elevated inflammatory markers.",
         "tags": [
           "Anti-inflammatory",
@@ -1338,7 +1342,7 @@
       "detox": {
         "title": "Detox",
         "duration": "45 min",
-        "price": "€172",
+        "price": "from €172*",
         "popupDesc": "Our detox infusion supports liver and kidneys in clearing a range of environmental toxins and metabolic waste (heavy metals, microplastics, mold, xenoestrogens). High-dose antioxidants, vitamins and liver-protective actives ease the burden on your body at the cellular level. Ideal for anyone who senses chronic exposure or a sluggish metabolism.",
         "tags": [
           "Detoxification",
@@ -1366,7 +1370,7 @@
       "veganBoost": {
         "title": "Vegan Boost",
         "duration": "45 min",
-        "price": "€190",
+        "price": "from €190*",
         "popupDesc": "A plant-based diet means a higher demand for B12, iron, zinc and omega fatty acids — nutrients that are hard to get in sufficient amounts from food alone. Our Vegan Boost infusion closes those gaps directly and effectively. For everyone living vegan or vegetarian who wants to optimize their supply.",
         "tags": [
           "B12",
@@ -1380,7 +1384,7 @@
       "nadPlus": {
         "title": "NAD+",
         "duration": "2–3 hours",
-        "price": "from €362",
+        "price": "from €362*",
         "popupDesc": "NAD+ is a central coenzyme in every cell, responsible for energy production, DNA repair and cellular longevity. NAD+ levels drop noticeably with age — our infusion restores them directly and effectively. For anyone who wants to support cognitive performance, vitality and anti-aging in a targeted way.",
         "tags": [
           "Longevity",
@@ -1394,7 +1398,7 @@
       "immuneBoost": {
         "title": "Immune Boost",
         "duration": "45 min",
-        "price": "€180",
+        "price": "from €180*",
         "popupDesc": "This infusion can strengthen the immune system directly with high-dose vitamin C, zinc and immune-active micronutrients. Intravenous administration can reach blood levels simply not attainable orally — vitamin C IV can reach up to 70× higher blood concentrations than tablets. Recommended for frequent infections, weakened defense or as targeted prevention during cold season.",
         "tags": [
           "Immune strengthening",
@@ -1408,7 +1412,7 @@
       "burnoutFix": {
         "title": "Burnout Fix",
         "duration": "45 min",
-        "price": "€187",
+        "price": "from €187*",
         "popupDesc": "This infusion can address the biochemical foundation of burnout, not just the symptoms. ATP concentrate, with a complete spectrum of amino acids and B-vitamins, can ramp energy production in the mitochondria back up.",
         "tags": [
           "Exhaustion",
@@ -1422,7 +1426,7 @@
       "burnoutFixPlus": {
         "title": "Burnout Fix+",
         "duration": "60 min",
-        "price": "€350",
+        "price": "from €350*",
         "popupDesc": "This infusion can address the biochemical foundation of burnout, not just the symptoms. ATP concentrate, with a complete spectrum of amino acids and B-vitamins, can ramp energy production in the mitochondria back up. In the premium version, NAD+ can additionally act like a defibrillator for an exhausted nervous system — it can directly reactivate cells that seem to be running on reserves.",
         "tags": [
           "Exhaustion",
@@ -1436,7 +1440,7 @@
       "antiStress": {
         "title": "Anti-Stress",
         "duration": "45 min",
-        "price": "€175",
+        "price": "from €175*",
         "popupDesc": "Our Anti-Stress infusion regulates the nervous system with high-dose magnesium, B-vitamins and calming amino acids such as L-theanine. It balances the cortisol axis and promotes inner calm without grogginess. Suitable for ongoing stress, sleep problems or inner restlessness.",
         "tags": [
           "Stress reduction",
@@ -1450,7 +1454,7 @@
       "custom": {
         "title": "Custom Blend",
         "duration": "By arrangement",
-        "price": "from €150",
+        "price": "from €150*",
         "popupDesc": "No two bodies are alike. That's why we also offer the option to compose an infusion entirely around your individual needs. Based on your lab values, symptoms and goals, we choose the optimal combination of actives together. For everyone who wants targeted, precise treatment instead of a one-size-fits-all approach.",
         "tags": [
           "Personalized",
@@ -1464,7 +1468,7 @@
       "antiFlu": {
         "title": "Anti-Flu",
         "duration": "45 min",
-        "price": "€183",
+        "price": "from €183*",
         "popupDesc": "At the first signs of illness, this infusion can step in directly with high-dose vitamin C, zinc and antiviral micronutrients. The intravenous route can speed up the immune response and noticeably shorten the course of the illness. Ideal at the first scratchy throat, as targeted support mid-infection, and as a remedy for infections that won't fully clear.",
         "tags": [
           "Acute protection",
@@ -1478,7 +1482,7 @@
       "fatBurner": {
         "title": "Fat Burner",
         "duration": "45 min",
-        "price": "€170",
+        "price": "from €170*",
         "popupDesc": "This infusion can ramp up fat metabolism directly at the cellular level. Targeted, efficient and tangible. It can be especially useful for anyone not making progress despite diet and exercise, or whose body simply doesn't have enough carnitine and B-vitamins to use fat as an energy source.",
         "tags": [
           "Fat metabolism",
@@ -1492,7 +1496,7 @@
       "energyKick": {
         "title": "Energy Kick",
         "duration": "60 min",
-        "price": "€200",
+        "price": "from €200*",
         "popupDesc": "Real energy starts in the mitochondria, the cell's power plants. Every single cell in the body produces its energy there — and when that process stalls, no stimulant in the world helps. This infusion can act directly at the cellular core: Mito Energy can supply the mitochondria with everything they need for maximum energy production.",
         "tags": [
           "Cell energy",

@@ -1256,8 +1256,10 @@
     "shotsSubtitle": "Gezielte Wirkstoffe als schnelle Injektion — ohne lange Sitzung.",
     "ingredients": "Inhaltsstoffe",
     "bookNow": "Jetzt buchen",
+    "priceNote": "*Die angegebenen Preise werden nach den individuellen Wünschen des Patienten und den jeweiligen Umständen im Einzelfall auf Grundlage der GOÄ bemessen, wobei wir mit den Patienten eine von der GOÄ abweichende Gebührenhöhe vereinbaren. Bei einer Behandlung ist die Beratung und deren Gebühr bereits im Preis enthalten. Die genannten Leistungen gehören nicht zum Leistungskatalog der gesetzlichen Krankenkassen und/oder Krankenversicherungen und sind deshalb regelmäßig auf patienteneigene Kosten zu bezahlen.",
     "shots": {
       "vitaminD": {
+        "price": "ab 25 €*",
         "desc": "Eine einzige Spritze kann monatelange tägliche Einnahme ersetzen.",
         "tags": [
           "Immunsystem",
@@ -1269,6 +1271,7 @@
         "whyText": "Vitamin D ist kein normales Vitamin. Es kann als Hormon wirken und kann an über 200 Genprozessen beteiligt sein: Immunabwehr, Knochenaufbau, Muskelkraft, Stimmung, Schlaf, Testosteron, Schilddrüse. Studien zeigen, dass über 80% der Deutschen einen suboptimalen Spiegel haben, viele ohne es zu wissen.\n\nIm Vergleich: Eine 1.000 IU Tablette täglich, 3 Monate lang – 90 Tabletten, täglich daran denken, und davon kommt je nach Darmgesundheit nur ein Bruchteil wirklich an. Dieser Shot? Eine Ampulle, fünf Minuten, direkt in den Muskel – kann 100.000 IU sofort ins Körperdepot liefern, zu 100% verfügbar, ohne Umweg über Darm oder Galle. Was Tabletten in einem Vierteljahr versuchen zu erreichen, kann dieser Shot in einem einzigen Termin schaffen."
       },
       "magnesium": {
+        "price": "ab 39 €*",
         "desc": "Eine einzige Infusion kann das erreichen, was Tabletten in Wochen kaum schaffen.",
         "tags": [
           "Entspannung",
@@ -1280,6 +1283,7 @@
         "whyText": "Es geht nicht darum, Speicher aufzufüllen. Es geht darum, was in dem Moment passiert, wenn Magnesium direkt ins Blut geht und was passiert, wenn man diesen Moment wiederholt.\n\nMagnesium i.v. kann die glatte Muskulatur der Blutgefäße sofort entspannen, den Blutdruck senken und die Durchblutung schlagartig steigern. Viele Patienten spüren es live: eine intensive Wärme breitet sich vom Arm über den ganzen Körper aus. Das ist echte Vasodilatation, der Körper öffnet sich buchstäblich! Muskeln können loslassen, das Nervensystem kann runterfahren, der Herzrhythmus kann sich stabilisieren.\n\nBei chronischer Erschöpfung und Fatigue kann genau dieser kurzfristige Reset entscheidend sein. Nicht weil der Körper danach dauerhaft verändert ist, sondern weil jede Wiederholung das Nervensystem trainiert, wieder in diesen Zustand zu kommen. Wie ein Reset-Knopf, der mit jeder Sitzung leichter zu drücken ist. Als Serie angewendet, kann sich diese kurze, tiefe Entspannung in nachhaltige Erholung verwandeln; messbar an HRV, Schlafqualität und Energielevel."
       },
       "glutathion": {
+        "price": "ab 45 €*",
         "desc": "Direkt intravenös für sofortige Bioverfügbarkeit auf Zellniveau.",
         "tags": [
           "Entgiftung",
@@ -1296,7 +1300,7 @@
       "iron": {
         "title": "Eisen",
         "duration": "45 min",
-        "price": "142–176 €",
+        "price": "ab 142 €*",
         "popupDesc": "Unsere Eisen-Infusion liefert bioverfügbares Eisen direkt in die Blutbahn, für eine schnelle und schonende Auffüllung der Speicher. Sie ist ideal, wenn orale Eisenpräparate nicht vertragen werden oder nicht ausreichend wirken. Besonders geeignet bei Eisenmangelanämie, funktioneller Eisenmangel ohne Anämie (Ferritinwerte <70), chronischer Erschöpfung oder nach Blutverlust.",
         "tags": [
           "Eisenmangel",
@@ -1310,7 +1314,7 @@
       "antiPain": {
         "title": "Anti-Schmerz",
         "duration": "45 min",
-        "price": "150 €",
+        "price": "ab 150 €*",
         "popupDesc": "Diese Infusion kombiniert muskelentspannende, nervenstabilisierende und schmerzmodulierende Wirkstoffe für schnelle, gezielte Linderung. Sie wirkt direkt im Gewebe, ohne die Belastung des Magen-Darm-Trakts durch orale Schmerzmittel. Geeignet bei akuten und chronischen Schmerzen, Verspannungen oder Migräne.",
         "tags": [
           "Schmerzlinderung",
@@ -1324,7 +1328,7 @@
       "antiInflammation": {
         "title": "Anti-Entzündung",
         "duration": "60 min",
-        "price": "190 €",
+        "price": "ab 190 €*",
         "popupDesc": "Unsere Anti-Entzündungs-Infusion versorgt den Körper mit hochdosiertem Vitamin C, Glutathion und entzündungshemmenden Mikronährstoffen direkt ins Blut. Sie kann oxidativen Stress reduzieren und chronisch-entzündliche Prozesse an der Wurzel dämpfen. Für alle mit chronischen Beschwerden, Autoimmunerkrankungen oder erhöhten Entzündungsmarkern.",
         "tags": [
           "Entzündungshemmung",
@@ -1338,7 +1342,7 @@
       "detox": {
         "title": "Detox",
         "duration": "45 min",
-        "price": "172 €",
+        "price": "ab 172 €*",
         "popupDesc": "Unsere Detox-Infusion unterstützt Leber und Nieren bei der Ausleitung von unterschiedlichen Umweltgiften und Stoffwechselabbauprodukten (Schwermetallen, Mikroplastik, Schimmel, Xenoöstrogene). Hochdosierte Antioxidantien, Vitamine und leberschützende Wirkstoffe entlasten deinen Organismus auf zellulärer Ebene. Ideal für alle, die chronische Belastungen oder einen trägen Stoffwechsel spüren.",
         "tags": [
           "Entgiftung",
@@ -1366,7 +1370,7 @@
       "veganBoost": {
         "title": "Vegan Boost",
         "duration": "45 min",
-        "price": "190 €",
+        "price": "ab 190 €*",
         "popupDesc": "Wer sich pflanzlich ernährt, hat einen erhöhten Bedarf an B12, Eisen, Zink und Omega-Fettsäuren. Nährstoffe, die rein über die Ernährung schwer ausreichend aufzunehmen sind. Unsere Vegan-Boost-Infusion schließt diese Lücken direkt und effektiv. Für alle, die vegan oder vegetarisch leben und ihre Versorgung optimieren möchten.",
         "tags": [
           "B12",
@@ -1380,7 +1384,7 @@
       "nadPlus": {
         "title": "NAD+",
         "duration": "2–3 Stunden",
-        "price": "ab 362 €",
+        "price": "ab 362 €*",
         "popupDesc": "NAD+ ist ein zentrales Coenzym in jeder Körperzelle; zuständig für Energieproduktion, DNA-Reparatur und zelluläre Langlebigkeit. Mit zunehmendem Alter sinkt der NAD+-Spiegel deutlich; unsere Infusion stellt ihn direkt und effektiv wieder her. Für alle, die kognitive Leistung, Vitalität und Anti-Aging gezielt fördern möchten.",
         "tags": [
           "Longevity",
@@ -1394,7 +1398,7 @@
       "immuneBoost": {
         "title": "Immun Boost",
         "duration": "45 min",
-        "price": "180 €",
+        "price": "ab 180 €*",
         "popupDesc": "Diese Infusion kann das Immunsystem mit hochdosiertem Vitamin C, Zink und immunaktiven Mikronährstoffen auf direktem Weg stärken. Die intravenöse Gabe kann Wirkstoffspiegel erreichen, die oral schlicht nicht erreichbar sind – Vitamin C kann intravenös eine bis zu 70-fach höhere Blutkonzentration erreichen als über Tabletten. Empfehlenswert bei häufigen Infekten, geschwächter Abwehr oder als gezielte Prävention in der Erkältungssaison.",
         "tags": [
           "Immunstärkung",
@@ -1408,7 +1412,7 @@
       "burnoutFix": {
         "title": "Burnout Fix",
         "duration": "45 min",
-        "price": "187 €",
+        "price": "ab 187 €*",
         "popupDesc": "Diese Infusion kann an der biochemischen Grundlage von Burnout ansetzen, nicht nur an den Symptomen. ATP-Konzentrat kann mit einem kompletten Spektrum an Aminosäuren und B-Vitaminen die Energieproduktion in den Mitochondrien wieder hochfahren.",
         "tags": [
           "Erschöpfung",
@@ -1422,7 +1426,7 @@
       "burnoutFixPlus": {
         "title": "Burnout Fix+",
         "duration": "60 min",
-        "price": "350 €",
+        "price": "ab 350 €*",
         "popupDesc": "Diese Infusion kann an der biochemischen Grundlage von Burnout ansetzen, nicht nur an den Symptomen. ATP-Konzentrat kann mit einem kompletten Spektrum an Aminosäuren und B-Vitaminen die Energieproduktion in den Mitochondrien wieder hochfahren. In der Premium-Variante kann NAD+ zusätzlich wie ein Defibrillator für das erschöpfte Nervensystem wirken – es kann Zellen, die scheinbar auf Reserve laufen, direkt reaktivieren.",
         "tags": [
           "Erschöpfung",
@@ -1436,7 +1440,7 @@
       "antiStress": {
         "title": "Anti-Stress",
         "duration": "45 min",
-        "price": "175 €",
+        "price": "ab 175 €*",
         "popupDesc": "Unsere Anti-Stress-Infusion reguliert das Nervensystem mit hochdosiertem Magnesium, B-Vitaminen und entspannenden Aminosäuren wie L-Theanin. Sie wirkt ausgleichend auf die Cortisol-Achse und fördert innere Ruhe ohne Benommenheit. Geeignet bei dauerhaftem Stress, Schlafproblemen oder innerer Unruhe.",
         "tags": [
           "Stressreduktion",
@@ -1450,7 +1454,7 @@
       "custom": {
         "title": "Individuelle Mischung",
         "duration": "nach Absprache",
-        "price": "ab 150 €",
+        "price": "ab 150 €*",
         "popupDesc": "Kein Körper ist wie der andere. Deshalb gibt es bei uns auch die Möglichkeit, eine Infusion ganz nach deinen individuellen Bedürfnissen zusammenzustellen. Auf Basis deiner Laborwerte, Symptome und Ziele wählen wir gemeinsam die optimale Wirkstoffkombination. Für alle, die gezielt und präzise, statt nach Schema F, behandelt werden möchten.",
         "tags": [
           "Personalisiert",
@@ -1464,7 +1468,7 @@
       "antiFlu": {
         "title": "Anti-Grippe",
         "duration": "45 min",
-        "price": "183 €",
+        "price": "ab 183 €*",
         "popupDesc": "Bei ersten Krankheitszeichen kann diese Infusion mit hochdosiertem Vitamin C, Zink und antiviralen Mikronährstoffen direkt ansetzen. Die intravenöse Gabe kann die Immunantwort beschleunigen und den Krankheitsverlauf spürbar verkürzen. Ideal beim ersten Kratzen im Hals, als gezielte Unterstützung mitten im Infekt und als Abhilfe bei Infekten, die lange nicht ausheilen.",
         "tags": [
           "Akutschutz",
@@ -1478,7 +1482,7 @@
       "fatBurner": {
         "title": "Fat Burner",
         "duration": "45 min",
-        "price": "170 €",
+        "price": "ab 170 €*",
         "popupDesc": "Diese Infusion kann den Fettstoffwechsel auf zellulärer Ebene direkt ankurbeln. Gezielt, effizient und spürbar. Sie kann besonders für alle sinnvoll sein, die trotz Diät und Sport nicht vorankommen, oder deren Körper schlicht nicht genug Carnitin und B-Vitamine hat, um Fett als Energiequelle zu nutzen.",
         "tags": [
           "Fettstoffwechsel",
@@ -1492,7 +1496,7 @@
       "energyKick": {
         "title": "Energy Kick",
         "duration": "60 min",
-        "price": "200 €",
+        "price": "ab 200 €*",
         "popupDesc": "Echte Energie beginnt in den Mitochondrien, den Kraftwerken der Zelle. Jede einzelne Zelle des Körpers produziert dort ihre Energie, und wenn dieser Prozess ins Stocken gerät, hilft kein Aufputschmittel der Welt. Diese Infusion kann direkt in den Zellkern wirken: Mito Energy kann die Mitochondrien mit allem versorgen, was sie für maximale Energieproduktion brauchen.",
         "tags": [
           "Zellenergie",
