@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Osmoseanlagen im Vergleich</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@112,600;112,800&family=Literata:opsz,wght@7..72,400;7..72,600&family=IBM+Plex+Mono:wght@400;600&display=swap');
+/* Layout: Reportage mit Labor-Etiketten. Lesespalte ~66ch, Datenkästen im Stil eines Mineralwasser-Analyseauszugs, breite Tabellen/Grafik scrollen in eigenem Container. */
+:root{
+  --ink:#10313a;      /* Tiefenwasser: Text */
+  --mute:#4f6469;     /* Sekundärtext, Nähe zu ViveCura-Grau */
+  --bg:#ffffff;       /* Seite */
+  --pool:#eef5f5;     /* Flächen, kühles Mineralgrau */
+  --line:#cfdfe0;     /* Linien */
+  --teal:#237f81;     /* Akzent, ViveCura-Teal abgedunkelt für Lesbarkeit */
+  --teal-soft:#43a9ab;/* ViveCura-Teal für Flächen */
+  --uv:#5b45c9;       /* nur für UV-C */
+  --ok:#2c7a4b; --mid:#a5670f; --no:#b0412d;
+  --f-disp:'Archivo','Arial Narrow',Arial,sans-serif;
+  --f-body:'Literata',Georgia,'Times New Roman',serif;
+  --f-data:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:light;
+}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17.5px;line-height:1.65;margin:0;padding-block:8px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+*{box-sizing:border-box}
+.w{max-width:44rem;margin:0 auto;display:flex;flex-direction:column;gap:1.1rem}
+.wide{max-width:70rem;margin:0 auto;width:100%;display:flex;flex-direction:column;gap:1rem}
+main{display:flex;flex-direction:column;gap:1.6rem}
+.wide>.w{width:100%}
+figure{margin:0}
+[id]{scroll-margin-top:6rem}
+h1,h2,h3{font-family:var(--f-disp);font-stretch:112%;font-weight:800;line-height:1.12;text-wrap:balance;margin:0;letter-spacing:-.01em}
+h1{font-size:clamp(2rem,6vw,3.3rem)}
+h2{font-size:clamp(1.45rem,3.6vw,2rem);margin-top:1.2rem}
+h3{font-size:1.12rem;font-weight:600}
+p,ul,ol{margin:0}
+ul,ol{padding-left:1.2rem;display:flex;flex-direction:column;gap:.35rem}
+ul{list-style:disc}ol{list-style:decimal}
+a{color:var(--teal);text-decoration:underline;text-underline-offset:3px}
+a:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+strong{font-weight:600}
+.eyebrow,.lab,.pill,th,.ax,.src,.meta{font-family:var(--f-data);font-size:.74rem;letter-spacing:.06em;text-transform:uppercase}
+.eyebrow{color:var(--teal);font-weight:600}
+.lede{font-size:1.18rem;color:var(--mute)}
+.meta{color:var(--mute);text-transform:none;letter-spacing:.02em}
+/* Analyseauszug: das Etikett-Motiv */
+.label{border:1.5px solid var(--ink);border-radius:4px;background:var(--bg)}
+.label>.lab{display:flex;justify-content:space-between;gap:1rem;padding:.55rem .9rem;border-bottom:1.5px solid var(--ink);font-weight:600}
+.label dl{margin:0;padding:.4rem .9rem .7rem}
+.label dl>div{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:1rem;padding:.45rem 0;border-bottom:1px dotted var(--line)}
+.label dl>div:last-child{border-bottom:0}
+.label dt{min-width:0}
+.label dd{margin:0;font-family:var(--f-data);font-size:.92rem;text-align:right;font-variant-numeric:tabular-nums}
+.note{background:var(--pool);border-radius:4px;padding:1rem 1.1rem;display:flex;flex-direction:column;gap:.5rem}
+.note.uv{background:#f1eefc}
+.uvt{color:var(--uv);font-weight:600}
+/* Grafik & Tabellen */
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:4px;background:var(--bg)}
+.scroll>svg{display:block;min-width:640px;width:100%;height:auto}
+.hint{font-family:var(--f-data);font-size:.72rem;color:var(--mute)}
+table{border-collapse:collapse;width:100%;min-width:760px;font-size:.88rem;line-height:1.4}
+th{text-align:left;background:var(--pool);color:var(--ink);font-weight:600;padding:.6rem .55rem;vertical-align:bottom}
+td{padding:.6rem .55rem;border-top:1px solid var(--line);vertical-align:top}
+td.n{font-family:var(--f-data);font-size:.86rem;white-space:nowrap;font-variant-numeric:tabular-nums}
+tbody th{background:var(--bg);text-transform:none;letter-spacing:0;font-family:var(--f-body);font-size:.95rem;position:sticky;left:0;border-top:1px solid var(--line);min-width:9.5rem;vertical-align:top}
+tr.hl td,tr.hl th{background:#e6f3f3}
+.pill{display:inline-block;padding:.12rem .45rem;border-radius:3px;font-size:.66rem;font-weight:600;white-space:nowrap;border:1px solid currentColor}
+.ok{color:var(--ok)}.mid{color:var(--mid)}.no{color:var(--no)}.uvc{color:var(--uv)}
+/* Empfehlungen */
+.picks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;max-width:52rem;margin:0 auto;width:100%}
+.pick{border:1px solid var(--line);border-radius:4px;padding:1rem 1.1rem;display:flex;flex-direction:column;gap:.55rem;min-width:0}
+.pick.top{border:2px solid var(--teal)}
+.price{font-family:var(--f-data);font-size:1.25rem;font-weight:600;font-variant-numeric:tabular-nums}
+.claims{display:flex;flex-direction:column;border-top:1.5px solid var(--ink)}
+.claim{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.4rem 1rem;padding:.8rem 0;border-bottom:1px solid var(--line);align-items:start}
+.claim p{grid-column:1/-1;color:var(--mute);font-size:.95rem}
+.src{text-transform:none;letter-spacing:0;font-size:.78rem;color:var(--mute);line-height:1.5}
+.src ol{gap:.3rem}
+.src a{word-break:break-word}
+.drop{animation:rise .8s ease-out both}
+@keyframes rise{from{transform:translateY(8px)}to{transform:none}}
+@media (prefers-reduced-motion:reduce){.drop{animation:none}}
+@media (max-width:640px){.picks{grid-template-columns:1fr}}
+@media (max-width:520px){body{font-size:16.5px}.lede{font-size:1.06rem}.label dl>div{grid-template-columns:1fr;gap:.15rem}.label dd{text-align:left;color:var(--teal)}}
+.toc{display:flex;flex-wrap:wrap;gap:.4rem .9rem;font-family:var(--f-data);font-size:.78rem}
+.toc a{text-decoration:none;border-bottom:1px solid var(--line)}
+.split{display:grid;grid-template-columns:repeat(auto-fit,minmax(16rem,1fr));gap:1rem}
+.split>div{min-width:0;display:flex;flex-direction:column;gap:.4rem}
+.plus li::marker{content:"+  ";color:var(--ok);font-family:var(--f-data)}
+.minus li::marker{content:"–  ";color:var(--no);font-family:var(--f-data)}
+.bars{display:flex;flex-direction:column;gap:.85rem}
+.bar{display:grid;grid-template-columns:minmax(0,1fr) 5.2rem;gap:.3rem .8rem;align-items:center}
+.bar>span{grid-column:1/-1;font-size:.93rem;line-height:1.35}
+.track{height:.75rem;background:var(--pool);border-radius:2px;overflow:hidden}
+.track i{display:block;height:100%;background:var(--teal);min-width:3px}
+.track i.est{background:#8ccacb}.track i.ref{background:transparent;border:2px solid var(--ink)}.track i.min{background:var(--ink)}
+.v{font-family:var(--f-data);font-size:.85rem;text-align:right;font-variant-numeric:tabular-nums}
+.p1{width:.2%}.p2{width:1.6%}.p3{width:17%}.p4{width:5%;margin-left:10%}.p5{width:75%}
+.axis{display:grid;grid-template-columns:repeat(4,1fr);font-family:var(--f-data);font-size:.7rem;color:var(--mute);margin-right:6rem}
+.axis span:last-child{display:flex;justify-content:space-between}.axis em{font-style:normal}
+.dim{color:var(--mute)}
+</style>
+</head>
+<body>
+<main>
+<header class="w drop">
+  <p class="eyebrow">Prävention · Trinkwasser · Stand November 2026</p>
+  <h1>Welcher Wasserfilter lohnt sich wirklich?</h1>
+  <p class="lede">Umkehrosmose, UV-C-Licht, Remineralisierung, „belebtes“ Wasser: Wir haben Osmoseanlagen mit festem Wasseranschluss verglichen und die Werbeversprechen mit der Studienlage abgeglichen.</p>
+  <p class="meta">Lesezeit ca. 12 Minuten · unabhängiger Vergleich, keine Affiliate-Links</p>
+
+  <section class="label" aria-label="Kurzantwort">
+    <div class="lab"><span>Analyseauszug · Kurzantwort</span><span>11/2026</span></div>
+    <dl>
+      <div><dt>Brauchen die meisten Haushalte einen Filter?</dt><dd>Nein</dd></div>
+      <div><dt>Gründlichste Methode für zu Hause</dt><dd>Umkehrosmose</dd></div>
+      <div><dt>Unsere Empfehlung unter der Spüle (mit UV und Mineralien)</dt><dd>Waterdrop G3P800</dd></div>
+      <div><dt>Bestes Preis-Leistungs-Verhältnis</dt><dd>Waterdrop G3P600</dd></div>
+      <div><dt>Mit Heißwasser, auf der Arbeitsplatte</dt><dd>OsmoFresh Fusion Stream</dd></div>
+      <div><dt>Mineralien nach der Osmose</dt><dd>Geschmack ja, Nährwert kaum</dd></div>
+      <div><dt>Strukturiertes oder belebtes Wasser</dt><dd>nicht belegt</dd></div>
+    </dl>
+  </section>
+
+  <nav class="toc" aria-label="Inhalt">
+    <a href="#brauche">Brauche ich einen Filter?</a><a href="#osmose">So funktioniert Osmose</a><a href="#besser">Ist Osmose das Beste?</a><a href="#osmofresh">OsmoFresh im Check</a><a href="#vergleich">Vergleichstabelle</a><a href="#mineralien">Remineralisieren</a><a href="#belebt">Belebtes Wasser</a><a href="#kauf">Checkliste</a><a href="#fazit">Fazit</a>
+  </nav>
+</header>
+
+<section class="w" id="brauche">
+  <h2>Erst die ehrliche Frage: Brauchen Sie überhaupt einen Filter?</h2>
+  <p>Leitungswasser gehört in Deutschland zu den am besten kontrollierten Lebensmitteln. Laut Umweltbundesamt hielten im Berichtszeitraum 2020–2022 fast alle mikrobiologischen und chemischen Werte in über 99 % der Messungen die Grenzwerte ein. Umweltbundesamt, Verbraucherzentralen und Stiftung Warentest halten eine zusätzliche Aufbereitung im Haushalt deshalb in der Regel für unnötig. Sie warnen außerdem: Ein schlecht gewarteter Filter kann das Wasser verschlechtern, weil sich darin Keime vermehren.</p>
+  <p>Die Kontrolle des Wasserversorgers endet allerdings am Hausanschluss. Danach liegt die Verantwortung bei Ihnen. Ein Filter kann sinnvoll sein, wenn:</p>
+  <ul>
+    <li>Sie Wasser aus einem eigenen <strong>Hausbrunnen</strong> trinken (Nitrat, Uran, Arsen sind dort häufiger ein Thema),</li>
+    <li>in Ihrer Region <strong>PFAS</strong> bekannt sind. Seit dem 12. Januar 2026 gilt ein Grenzwert von 0,1 µg/l für die Summe von 20 PFAS, ab 2028 zusätzlich 0,02 µg/l für vier besonders kritische PFAS,</li>
+    <li>die <strong>Hausinstallation</strong> alt oder unbekannt ist. Bleileitungen mussten grundsätzlich bis zum 12. Januar 2026 entfernt werden. Ein Filter ist hier nur eine Übergangslösung, kein Ersatz für neue Rohre,</li>
+    <li>Sie die Aufnahme von Rückständen aus Vorsorgegründen so gering wie möglich halten möchten.</li>
+  </ul>
+  <div class="note">
+    <p><strong>Erster Schritt, kostenlos:</strong> Laden Sie die Trinkwasseranalyse Ihres Versorgers herunter (meist auf dessen Website, nach Postleitzahl). Bei einem Altbau mit unbekannten Leitungen lohnt sich zusätzlich eine Laboranalyse direkt am Hahn.</p>
+  </div>
+  <p>Ein verbreitetes Verkaufsargument ist <strong>Mikroplastik</strong>. In einer Untersuchung deutscher Wasserwerke, die Grundwasser aufbereiten, fanden Forschende im Mittel 0,7 Partikel pro <em>Kubikmeter</em>, also pro 1.000 Liter (Mintenig et al. 2019). Allein dafür braucht es keine Osmoseanlage.</p>
+</section>
+
+<section class="w" id="osmose">
+  <h2>So funktioniert Umkehrosmose</h2>
+  <p>Eine Pumpe oder der Leitungsdruck presst das Wasser durch eine hauchdünne Membran. Fast nur Wassermoleküle gelangen hindurch. Gelöste Salze, Nitrat, Schwermetalle, PFAS und Arzneimittelreste bleiben zurück und werden mit einem Teil des Wassers in den Abfluss gespült. Moderne Geräte arbeiten ohne Vorratstank („Direct Flow“): Das Wasser wird erst beim Zapfen gefiltert und steht nicht stunden­lang in einem Behälter.</p>
+  <p>Typischer Aufbau: Vorfilter (Sediment und Aktivkohle) → Osmosemembran → Nachfilter (Aktivkohle, oft mit Mineralien) → bei manchen Geräten eine UV-C-LED am Auslass.</p>
+</section>
+
+<figure class="wide" aria-labelledby="cap1">
+  <div class="scroll">
+<svg viewBox="0 0 720 352" role="img" aria-labelledby="pt" xmlns="http://www.w3.org/2000/svg" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="12">
+<title id="pt">Porengröße der Filterarten im Vergleich zur Größe von Stoffen im Wasser, logarithmische Skala von 0,0001 bis 100 Mikrometer</title>
+<defs><pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="#ffffff"/><rect width="3" height="6" fill="#43a9ab"/></pattern></defs>
+<g stroke="#dfeaea" stroke-width="1"><line x1="150" y1="28" x2="150" y2="306"/><line x1="241.7" y1="28" x2="241.7" y2="306"/><line x1="333.3" y1="28" x2="333.3" y2="306"/><line x1="425" y1="28" x2="425" y2="306"/><line x1="516.7" y1="28" x2="516.7" y2="306"/><line x1="608.3" y1="28" x2="608.3" y2="306"/><line x1="700" y1="28" x2="700" y2="306"/></g>
+<text x="10" y="20" fill="#237f81" font-weight="600" letter-spacing=".06em">WAS IM WASSER STECKT</text>
+<g fill="#10313a">
+<circle cx="191" cy="44" r="5" fill="#10313a"/><text x="201" y="48">Wasser (H₂O) – passiert jeden Filter</text>
+<rect x="205" y="58" width="37" height="10" rx="2" fill="#4f6469"/><text x="250" y="68">Gelöste Salze: Kalk, Nitrat, Natrium</text>
+<rect x="242" y="78" width="43" height="10" rx="2" fill="#4f6469"/><text x="293" y="88">PFAS, Pestizide, Arzneimittelreste</text>
+<rect x="361" y="98" width="108" height="10" rx="2" fill="#4f6469"/><text x="477" y="108">Viren</text>
+<rect x="469" y="118" width="112" height="10" rx="2" fill="#4f6469"/><text x="589" y="128">Bakterien</text>
+<rect x="517" y="138" width="183" height="10" rx="2" fill="#4f6469"/><text x="509" y="148" text-anchor="end">Mikroplastik (Nanoplastik ist kleiner)</text>
+<rect x="608" y="158" width="92" height="10" rx="2" fill="#4f6469"/><text x="600" y="168" text-anchor="end">Rost, Sand, Schwebstoffe</text>
+</g>
+<line x1="10" y1="184" x2="710" y2="184" stroke="#cfdfe0"/>
+<text x="10" y="202" fill="#237f81" font-weight="600" letter-spacing=".06em">WAS DER FILTER ZURÜCKHÄLT</text>
+<g fill="#10313a" font-size="12.5">
+<text x="10" y="226">Sedimentfilter</text><rect x="581" y="214" width="119" height="16" rx="2" fill="#bfe0e0"/>
+<text x="10" y="252">Aktivkohle-Block</text><rect x="489" y="240" width="211" height="16" rx="2" fill="#8ccacb"/><rect x="242" y="240" width="43" height="16" rx="2" fill="url(#hatch)" stroke="#43a9ab"/><text x="293" y="252" font-size="10.5" fill="#4f6469">Adsorption (teilweise)</text>
+<text x="10" y="278">Ultrafiltration</text><rect x="333" y="266" width="367" height="16" rx="2" fill="#43a9ab"/>
+<text x="10" y="304" font-weight="600">Umkehrosmose</text><rect x="205" y="292" width="495" height="16" rx="2" fill="#237f81"/>
+</g>
+<g fill="#4f6469" font-size="11" text-anchor="middle"><line x1="150" y1="318" x2="700" y2="318" stroke="#10313a"/>
+<text x="150" y="334">0,0001</text><text x="241.7" y="334">0,001</text><text x="333.3" y="334">0,01</text><text x="425" y="334">0,1</text><text x="516.7" y="334">1</text><text x="608.3" y="334">10</text><text x="700" y="334" text-anchor="end">100 µm</text>
+<text x="10" y="334" text-anchor="start">Größe</text><text x="425" y="349">logarithmisch · 1 nm = 0,001 µm · ein Haar ≈ 70 µm</text></g>
+</svg>
+  </div>
+  <figcaption id="cap1" class="hint">So fein trennen die Filterarten: Jede Stufe hält zurück, was größer ist als ihre Trenngrenze. Aktivkohle bindet zusätzlich einen Teil der gelösten Stoffe chemisch. Vereinfachte Darstellung, Größen gerundet. Auf dem Handy seitlich wischen.</figcaption>
+</figure>
+
+<section class="w" id="besser">
+  <h2>Ist Umkehrosmose wirklich die beste Lösung?</h2>
+  <p>Bei der Reinigungsleistung: ja. Keine andere gängige Haushaltstechnik entfernt so viel. In einer Studie mit 76 Haushaltsfiltern entfernten Osmoseanlagen unter der Spüle PFAS nahezu vollständig (je nach Stoff über 90 %), Aktivkohlefilter im Schnitt nur rund 73 %, mit großen Unterschieden (Herkert et al. 2020). Ultrakurze PFAS wie TFA hält Aktivkohle laut Umweltbundesamt gar nicht zurück, eine Osmosemembran dagegen schon. Nitrat sinkt um etwa 85–90 %.</p>
+  <p>„Am gründlichsten“ heißt aber nicht automatisch „am besten für jeden“. Die Nachteile:</p>
+  <div class="split">
+    <div><h3>Spricht für Osmose</h3><ul class="plus"><li>entfernt auch gelöste Stoffe (PFAS, Nitrat, Schwermetalle, Uran)</li><li>hält Partikel und Keime an der Membran zurück</li><li>entfernt Kalk: kein Belag im Wasserkocher</li><li>direkt am Hahn, kein Nachfüllen</li></ul></div>
+    <div><h3>Spricht dagegen</h3><ul class="minus"><li>Abwasser: je nach Gerät 0,3 bis 1 Liter pro Liter Trinkwasser, bei alten Tankanlagen bis zu 3 Liter</li><li>entfernt auch Calcium und Magnesium, das Wasser wird leicht sauer</li><li>Keime können sich hinter der Membran ansiedeln, wenn nicht gewartet wird</li><li>Strom, Platz unter der Spüle, Filterkosten von 100–215 € pro Jahr</li></ul></div>
+  </div>
+</section>
+
+<div class="wide">
+  <div class="scroll">
+    <table aria-label="Filterarten im Vergleich">
+      <thead><tr><th scope="col">Filterart</th><th scope="col">Hält gut zurück</th><th scope="col">Lässt durch</th><th scope="col">Mineralien</th><th scope="col">Abwasser</th><th scope="col">Passt zu</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Tischfilter / Kanne</th><td>Chlor, Geschmack, etwas Kalk</td><td>Nitrat, die meisten PFAS. Stiftung Warentest 2022: Keime in allen getesteten Kannen</td><td>teilweise</td><td>nein</td><td>kein Festanschluss</td></tr>
+        <tr><th scope="row">Aktivkohle-Block (unter der Spüle)</th><td>Chlor, Geruch, viele organische Stoffe, langkettige PFAS, Partikel</td><td>Nitrat, Kalk, kurzkettige PFAS, TFA</td><td>bleiben</td><td>nein</td><td>Geschmack, solide Vorsorge</td></tr>
+        <tr><th scope="row">Ultrafiltration</th><td>Bakterien, die meisten Viren, Partikel</td><td>alle gelösten Stoffe: Nitrat, PFAS, Salze</td><td>bleiben</td><td>kaum</td><td>Keimschutz</td></tr>
+        <tr class="hl"><th scope="row">Umkehrosmose</th><td>fast alles Gelöste: Salze, Nitrat, Schwermetalle, PFAS inkl. TFA; Partikel, Keime</td><td>gelöste Gase (CO₂). Rückverkeimung nach der Membran möglich</td><td>werden entfernt</td><td>ja</td><td>Brunnen, PFAS-Gebiete, maximale Reinheit</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<section class="w">
+  <div class="note">
+    <p><strong>Einordnung:</strong> Für normales Leitungswasser ist eine Osmoseanlage kein Muss. Wer die Belastung mit PFAS, Nitrat oder Schwermetallen bewusst möglichst niedrig halten möchte, findet in ihr aber die gründlichste Lösung für zu Hause. Wer nur Chlorgeschmack oder Kalk loswerden will, kommt mit einem Aktivkohle-Blockfilter günstiger aus.</p>
+  </div>
+</section>
+
+<section class="w" id="osmofresh">
+  <h2>OsmoFresh Fusion Stream unter der Lupe</h2>
+  <p>Die deutsche Marke OsmoFresh bietet zwei Geräte für je 499 € mit UV-C-LEDs an. Nur eines davon hängt fest an der Wasserleitung: der <strong>Fusion Stream</strong>. Das Schwestermodell Fusion Air hat einen 4,7-Liter-Tank, den Sie von Hand befüllen.</p>
+  <section class="label" aria-label="Datenblatt OsmoFresh Fusion Stream">
+    <div class="lab"><span>Datenblatt · Fusion Stream</span><span>Auftischgerät</span></div>
+    <dl>
+      <div><dt>Preis (Liste / Aktion)</dt><dd>499 € / ab ca. 425 €</dd></div>
+      <div><dt>Anschluss</dt><dd>fest an der Leitung</dd></div>
+      <div><dt>Filterstufen</dt><dd>7 inkl. Mineralisierung</dd></div>
+      <div><dt>UV-C am Auslass</dt><dd>3 LEDs</dd></div>
+      <div><dt>Heißwasser</dt><dd>bis ca. 95 °C</dd></div>
+      <div><dt>Durchfluss</dt><dd>ca. 0,9 l/min</dd></div>
+      <div><dt>Filterkosten</dt><dd>ca. 190 € / Jahr</dd></div>
+      <div><dt>Zertifikat</dt><dd>TÜV Rheinland, Materialhygiene</dd></div>
+      <div><dt>NSF/ANSI 58 (Filterleistung)</dt><dd>nein</dd></div>
+      <div><dt>Gesamtkosten über 3 Jahre</dt><dd>ca. 1.070 €</dd></div>
+    </dl>
+  </section>
+  <div class="split">
+    <div><h3>Stärken</h3><ul class="plus"><li>Heißwasser direkt aus dem Gerät</li><li>kein Einbau unter der Spüle, Filterwechsel ohne Werkzeug</li><li>Mineralisierung und UV-C ab Werk</li><li>Bewertungsportale: überwiegend „gut“</li></ul></div>
+    <div><h3>Schwächen</h3><ul class="minus"><li>höchste Filterkosten im Vergleich</li><li>keine unabhängige Zertifizierung der Filterleistung</li><li>Abwasserverhältnis nicht veröffentlicht</li><li>Kunststoffgehäuse, braucht Platz auf der Arbeitsplatte</li></ul></div>
+  </div>
+  <div class="note uv">
+    <p class="uvt">Das blaue Licht tötet keine Keime</p>
+    <p>Keimtötendes UV-C hat eine Wellenlänge von 250–280 Nanometern und ist für das Auge unsichtbar. Das sichtbare blaue oder violette Leuchten stammt von einer Anzeige-LED. Die UV-C-LED bestrahlt nur das Wasser, das gerade am Auslass vorbeifließt. Wie viel Dosis ankommt, hängt stark vom Durchfluss ab: In einer Messung waren es bei 2 l/min rund 45 mJ/cm², bei 8 l/min nur noch 10. Filter, Leitungen und Biofilm erreicht das Licht nicht. In einer Feldstudie mit 17 Haushalten erreichte ein UV-C-LED-Gerät hinter einem Aktivkohlefilter keine verlässliche Entkeimung (Zanib et al. 2025).</p>
+    <p><strong>Fazit:</strong> eine sinnvolle Zusatzbarriere, aber kein Ersatz für pünktliche Filterwechsel.</p>
+  </div>
+  <p><strong>Urteil:</strong> Der Fusion Stream ist ein faires Angebot, wenn Sie Heißwasser wollen und nichts unter der Spüle einbauen möchten. Ohne Heißwasser bekommen Sie für weniger Geld besser dokumentierte Filterleistung.</p>
+</section>
+
+<section class="wide" id="vergleich">
+  <div class="w">
+    <h2>Der Vergleich: Osmoseanlagen mit Festwasseranschluss</h2>
+    <p>Alle Geräte hängen dauerhaft an der Wasserleitung. Die Preise schwanken stark, viele Hersteller arbeiten mit Dauer-Rabatten. „3 Jahre gesamt“ heißt: Gerät plus dreimal die jährlichen Filterkosten.</p>
+  </div>
+  <div class="scroll">
+    <table>
+      <thead><tr><th scope="col">Modell</th><th scope="col">Bauart</th><th scope="col">Preis ca.</th><th scope="col">Leistung</th><th scope="col">Rein : Abwasser</th><th scope="col">UV-C</th><th scope="col">Mineralien</th><th scope="col">Filter / Jahr</th><th scope="col">NSF 58</th><th scope="col">3 Jahre gesamt</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Waterdrop G3P600</th><td>unter der Spüle, tanklos</td><td class="n">400 €</td><td class="n">600 GPD</td><td class="n">2 : 1</td><td><span class="pill no">nein</span></td><td>optional</td><td class="n">160 €</td><td><span class="pill ok">ja</span></td><td class="n">890 €</td></tr>
+        <tr class="hl"><th scope="row">Waterdrop G3P800</th><td>unter der Spüle, tanklos</td><td class="n">680–800 €</td><td class="n">800 GPD</td><td class="n">3 : 1</td><td><span class="pill uvc">ja</span></td><td>optional (MNR35)</td><td class="n">175 €</td><td><span class="pill ok">ja</span></td><td class="n">1.200–1.330 €</td></tr>
+        <tr><th scope="row">OsmoFresh Fusion Stream</th><td>Arbeitsplatte, fest angeschlossen, Heißwasser</td><td class="n">425–499 €</td><td class="n">0,9 l/min</td><td class="n">k. A.</td><td><span class="pill uvc">3 LEDs</span></td><td>ja</td><td class="n">190 €</td><td><span class="pill no">nein</span></td><td class="n">1.070 €</td></tr>
+        <tr><th scope="row">OsmoFresh Flow2</th><td>unter der Spüle, tanklos</td><td class="n">350–400 €</td><td class="n">600/800 GPD</td><td class="n">2 : 1</td><td>nicht bestätigt</td><td>ja</td><td class="n">190–215 €</td><td><span class="pill no">nein</span></td><td class="n">920–1.040 €</td></tr>
+        <tr><th scope="row">Frizzlife PD600-TAM3</th><td>unter der Spüle, tanklos</td><td class="n">430 €</td><td class="n">600 GPD</td><td class="n">1,5 : 1</td><td><span class="pill no">nein</span></td><td>ja, ab Werk</td><td class="n">110–175 €</td><td>unklar</td><td class="n">760–955 €</td></tr>
+        <tr><th scope="row">Waterdrop K6</th><td>unter der Spüle, mit Heißwasser</td><td class="n">500 € (UVP 749)</td><td class="n">600 GPD</td><td class="n">2 : 1</td><td>k. A.</td><td>k. A.</td><td>k. A.</td><td>k. A.</td><td>–</td></tr>
+        <tr><th scope="row">Aquaphor Morion DWM-101S</th><td>unter der Spüle, 5-l-Tank</td><td class="n">270–300 €</td><td class="n">190 l/Tag</td><td class="n">k. A.</td><td><span class="pill no">nein</span></td><td>ja (Calcium + Magnesium)</td><td class="n">150–210 €</td><td>k. A.</td><td class="n">720–930 €</td></tr>
+        <tr><th scope="row">Ecosoft P'URE AquaCalcium</th><td>unter der Spüle, Tank</td><td class="n">330 €</td><td class="n">75 GPD</td><td class="n">ca. 1 : 1</td><td><span class="pill no">nein</span></td><td>ja (Calcium)</td><td class="n">145 €</td><td>k. A.</td><td class="n">765 €</td></tr>
+        <tr><th scope="row">Waterdrop X12</th><td>unter der Spüle, Smart-Hahn mit Messanzeige</td><td class="n">930–1.300 €</td><td class="n">1.200 GPD</td><td class="n">3 : 1</td><td><span class="pill uvc">ja</span></td><td>Variante „Alkaline“</td><td class="n">100–170 €</td><td><span class="pill ok">ja</span></td><td class="n">1.230–1.810 €</td></tr>
+        <tr><th scope="row">OsmoFresh Fusion Pro 2</th><td>Arbeitsplatte, Tank oder Festanschluss; heiß, kalt, sprudelnd</td><td class="n">1.290 €</td><td class="n">k. A.</td><td class="n">widersprüchlich</td><td><span class="pill uvc">3 LEDs</span></td><td>ja</td><td class="n">140–150 €</td><td><span class="pill no">nein</span></td><td class="n">1.710–1.740 €</td></tr>
+        <tr><th scope="row">Pi-Power Compact 300 UV Plus</th><td>unter der Spüle, Edelstahl</td><td class="n">3.400–3.600 €</td><td class="n">300 GPD</td><td class="n">ca. 1,2 : 1</td><td><span class="pill uvc">ja</span></td><td>„Vitalizer“</td><td>k. A.</td><td>k. A.</td><td>–</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="hint">GPD = Gallonen pro Tag; 600 GPD entsprechen etwa 1,6 Litern pro Minute. NSF/ANSI 58 ist der einzige Standard, der die Filterleistung einer Osmoseanlage prüft. k. A. = keine verlässliche Angabe gefunden. Filterkosten nach Herstellerintervallen berechnet. Preise: Hersteller- und Händlerangaben, Stand November 2026.</p>
+</section>
+
+<section class="wide">
+  <div class="w"><h2>Unsere Empfehlungen</h2></div>
+  <div class="picks">
+    <article class="pick top">
+      <p class="eyebrow">Beste Gesamtlösung</p>
+      <h3>Waterdrop G3P800 mit Mineralfilter</h3>
+      <p class="price">ca. 670–800 €</p>
+      <p>Tanklos unter der Spüle, UV-C-LED am Auslass, Mineralfilter (MNR35), sparsames Verhältnis von 3 : 1 und eine unabhängige Zertifizierung nach NSF/ANSI 58. Zudem gibt es mehr unabhängige Tests als bei den meisten anderen Geräten.</p>
+      <p class="dim">Filter ca. 175 € pro Jahr, Mineralfilter ca. 32 € extra.</p>
+    </article>
+    <article class="pick">
+      <p class="eyebrow">Preis-Leistung</p>
+      <h3>Waterdrop G3P600</h3>
+      <p class="price">ca. 400 €</p>
+      <p>Gleiche Bauweise und Zertifizierung, etwas langsamer, ohne UV. Als Variante mit Mineralfilter ab ca. 430 €. Die günstigste Wahl, wenn Ihnen geprüfte Filterleistung wichtiger ist als Extras.</p>
+      <p class="dim">Filter ca. 160 € pro Jahr.</p>
+    </article>
+    <article class="pick">
+      <p class="eyebrow">Mit Heißwasser</p>
+      <h3>OsmoFresh Fusion Stream</h3>
+      <p class="price">ca. 425–499 €</p>
+      <p>Für alle, die Tee- und Kochwasser direkt aus dem Gerät wollen und unter der Spüle keinen Platz haben. UV-C und Mineralisierung inklusive.</p>
+      <p class="dim">Filter ca. 190 € pro Jahr; keine NSF-58-Zertifizierung.</p>
+    </article>
+    <article class="pick">
+      <p class="eyebrow">Mineralien ab Werk, sparsam</p>
+      <h3>Frizzlife PD600-TAM3</h3>
+      <p class="price">ca. 430 €</p>
+      <p>Mineralfilter serienmäßig, sehr wenig Abwasser (1,5 : 1). Ohne UV, und die Zertifizierung ist nicht eindeutig belegt.</p>
+      <p class="dim">Filter ca. 110–175 € pro Jahr.</p>
+    </article>
+  </div>
+</section>
+
+<section class="w" id="mineralien">
+  <h2>Remineralisieren: Was die Mineralpatrone wirklich bringt</h2>
+  <p>Osmosewasser enthält kaum noch Calcium und Magnesium. Die Weltgesundheitsorganisation empfiehlt, entmineralisiertes Wasser wieder anzureichern, und nennt als Orientierung etwa 20–30 mg Calcium und 10 mg Magnesium pro Liter (Kozisek, WHO 2005). Eine Übersichtsarbeit fand bei dauerhaftem Konsum entmineralisierten Wassers ungünstigere Gesundheitswerte (Sunardi et al. 2022). Einen verbindlichen Mindestwert gibt es aber weder bei der WHO noch in der EU.</p>
+  <p>Wie viel bringen die Patronen? Unabhängige Messungen zeigen: sehr wenig.</p>
+  <figure class="bars" aria-label="Calcium aus zwei Litern Wasser pro Tag als Anteil am Tagesbedarf von 1.000 mg">
+    <figcaption class="eyebrow">Calcium aus 2 Litern pro Tag, Anteil am Tagesbedarf (1.000 mg)</figcaption>
+    <div class="bar"><span>Osmosewasser ohne Mineralfilter (gemessen)</span><div class="track"><i class="p1"></i></div><b class="v">0,07 %</b></div>
+    <div class="bar"><span>Osmosewasser mit Mineralfilter (gemessen, Waterdrop G3)</span><div class="track"><i class="p2"></i></div><b class="v">0,6 %</b></div>
+    <div class="bar"><span>WHO-Orientierungswert für entmineralisiertes Wasser</span><div class="track"><i class="p4 ref"></i></div><b class="v">4–6 %</b></div>
+    <div class="bar"><span>Stärkste Mineralpatrone im Vergleich (Herstellerangabe, Aquaphor)</span><div class="track"><i class="p3 est"></i></div><b class="v">6,8 %</b></div>
+    <div class="bar"><span>„Calciumhaltiges“ Mineralwasser (ab 150 mg/l)</span><div class="track"><i class="p5 min"></i></div><b class="v">ab 30 %</b></div>
+    <div class="axis" aria-hidden="true"><span>0 %</span><span>10 %</span><span>20 %</span><span>30 %<em>40 %</em></span></div>
+  </figure>
+  <p>Ein Labortest der Waterdrop G3 maß mit Mineralstufe 3,2 mg Calcium und 0,1 mg Magnesium pro Liter. Frizzlife gibt für seine Mineralfilter ein Plus von 10–30 ppm gelösten Stoffen an. Selbst die höchste Herstellerangabe (Aquaphor: 34 mg Calcium und 12 mg Magnesium pro Liter, unabhängig nicht bestätigt) deckt bei zwei Litern am Tag nur etwa 7 % des Bedarfs.</p>
+  <div class="note">
+    <p><strong>Unser Rat:</strong> Die Mineralpatrone verbessert Geschmack und pH-Wert. Sie lohnt sich, ist aber kein Nährstofflieferant. Calcium und Magnesium kommen zum größten Teil aus der Nahrung. Wer gezielt mehr möchte, trinkt zusätzlich ein mineralreiches Mineralwasser. „Magnesiumhaltig“ darf es sich ab 50 mg/l nennen. Ob tatsächlich ein Mangel besteht, lässt sich über Laborwerte klären.</p>
+  </div>
+  <p><strong>Premium-Varianten mit Mineralien:</strong> Die Waterdrop X12 (ca. 930–1.300 €) zeigt die Wasserqualität am Hahn an und hat UV-C, die Variante „Alkaline“ remineralisiert. Der OsmoFresh Fusion Pro 2 (1.290 €) liefert heißes, kaltes und sprudelndes Wasser mit UV-C und Mineralisierung. Beide sind komfortabler, filtern aber nicht gründlicher als die G3P800.</p>
+</section>
+
+<section class="w" id="belebt">
+  <h2>Strukturiert, belebt, verwirbelt: der Faktencheck</h2>
+  <p>Die Idee, dass bewegtes Wasser „lebendiger“ sei, hat eine lange Tradition, etwa bei Viktor Schauberger. Frisches, sprudelndes Quellwasser schmeckt tatsächlich anders als abgestandenes. Wirbler, Grander-Geräte, Levitation, „hexagonales Wasser“ und Vitalisierer versprechen aber mehr: Sie sollen dem Wasser eine dauerhafte Struktur, Energie oder Information geben. So sieht die Studienlage aus:</p>
+  <div class="claims">
+    <div class="claim"><strong>Verwirbeltes Wasser behält eine geordnete Struktur</strong><span class="pill no">nicht haltbar</span><p>Die Wasserstoffbrücken zwischen Wassermolekülen lösen sich und bilden sich neu, innerhalb von etwa einer Billionstelsekunde. Jede „Struktur“ ist sofort wieder verschwunden.</p></div>
+    <div class="claim"><strong>Wasser speichert Information oder Energie</strong><span class="pill no">unbelegt</span><p>Ein Gutachten für das Handelsgericht Wien fand für die Grander-Technologie keinen wissenschaftlichen Wirkungsnachweis. Das Oberlandesgericht Wien entschied 2006, dass ein Kritiker sie „parawissenschaftlichen Unfug“ nennen darf. In einem Blindtest konnten Versuchspersonen „belebtes“ Wasser nicht von normalem unterscheiden.</p></div>
+    <div class="claim"><strong>„Hexagonales“ oder strukturiertes Wasser ist gesünder</strong><span class="pill no">unbelegt</span><p>Chemiker halten die Theorie für unvereinbar mit grundlegender Chemie. Es gibt keine begutachtete Studie, die einen Gesundheitsnutzen zeigt.</p></div>
+    <div class="claim"><strong>Basisches Wasser aus dem Ionisierer ist gesünder</strong><span class="pill no">kein Zusatznutzen</span><p>Eine Übersichtsarbeit fand keinen Vorteil gegenüber Mineralwasser. Die italienische Wettbewerbsbehörde verhängte gegen einen bekannten Anbieter eine Strafe von 80.000 € wegen der Werbung mit krebshemmender Wirkung.</p></div>
+    <div class="claim"><strong>Wasserstoffwasser</strong><span class="pill mid">offen</span><p>Erste kleine Studien sind vielversprechend, etwa bei Erschöpfung. Für eine Empfehlung reicht das noch nicht.</p></div>
+    <div class="claim"><strong>Bewegtes, belüftetes Wasser schmeckt frischer</strong><span class="pill mid">plausibel</span><p>Sauerstoff und Kohlensäure verändern den Geschmack. Einen Gesundheitsvorteil durch mehr Sauerstoff im Wasser fand die Stiftung Warentest nicht.</p></div>
+    <div class="claim"><strong>Mineralien verändern Geschmack und pH-Wert</strong><span class="pill ok">belegt</span><p>Das ist der messbare Teil vieler „Vitalisierungen“: Das Wasser schmeckt runder und weniger flach.</p></div>
+  </div>
+  <div class="note">
+    <p><strong>Wenn Sie bewegtes Wasser mögen:</strong> Gießen Sie es in eine Glaskaraffe und lassen Sie es kurz kreisen, oder nutzen Sie einen einfachen Glaswirbler. Mehr als 70–100 € muss das nicht kosten. Ein Wirbler am Eckventil vor einer Osmoseanlage ist sinnlos, weil die Membran danach ohnehin alles neu sortiert. Für Energie- und Informationsversprechen sollten Sie keinen Aufpreis zahlen. Osmoseanlagen mit „Vitalizer“ kosten teils das Fünf- bis Achtfache technisch vergleichbarer Geräte.</p>
+  </div>
+</section>
+
+<section class="w" id="kauf">
+  <h2>Checkliste vor dem Kauf</h2>
+  <ol>
+    <li><strong>Wasseranalyse lesen.</strong> Was steckt in Ihrem Wasser? Bei Altbau oder Brunnen zusätzlich selbst testen lassen.</li>
+    <li><strong>Auf das richtige Zertifikat achten.</strong> NSF/ANSI 58 prüft die Filterleistung einer Osmoseanlage. NSF/ANSI 372 bedeutet nur „bleifreie Materialien“, ein TÜV-Hygienezertifikat bezieht sich auf die Werkstoffe. „Getestet nach NSF“ ist keine Zertifizierung.</li>
+    <li><strong>Folgekosten über drei Jahre rechnen.</strong> Die meisten Hersteller nutzen eigene Kartuschen, Sie sind also an deren Preise gebunden.</li>
+    <li><strong>Einbau planen.</strong> Ein fest angeschlossenes Gerät gehört zur Trinkwasserinstallation. Es braucht einen Rückflussverhinderer nach DIN EN 1717, einen freien Auslauf für das Abwasser und meist eine Steckdose. Im Zweifel baut es ein eingetragener Installateur ein.</li>
+    <li><strong>Leckschutz einplanen.</strong> Ein Wasserstopp mit Sensor kostet wenig und schützt vor Wasserschäden.</li>
+    <li><strong>Wartung ernst nehmen.</strong> Filter pünktlich wechseln. Nach Urlaub oder längerer Pause zuerst einige Liter ablaufen lassen. Für Säuglingsnahrung raten Verbraucherschützer generell von Haushaltsfiltern ab.</li>
+  </ol>
+</section>
+
+<section class="w" id="fazit">
+  <h2>Ärztliches Fazit</h2>
+  <p>Leitungswasser ist in Deutschland in aller Regel sehr gut. Wer trotzdem filtern möchte, etwa um die Aufnahme von PFAS, Nitrat oder Schwermetallen so gering wie möglich zu halten, ist mit einer Umkehrosmose mit festem Wasseranschluss am gründlichsten versorgt. Unsere Wahl ist die <strong>Waterdrop G3P800 mit Mineralfilter</strong>: geprüfte Filterleistung, UV-C am Auslass, wenig Abwasser. Wer Heißwasser auf der Arbeitsplatte möchte, ist mit dem <strong>OsmoFresh Fusion Stream</strong> gut bedient. Wer sparen will, nimmt die <strong>G3P600</strong>.</p>
+  <p>Mineralien holen Sie sich über die Ernährung und bei Bedarf über ein mineralreiches Wasser, nicht über die Patrone. Beim „belebten“ Wasser gilt: Freude am Ritual ja, Aufpreis für Energieversprechen nein.</p>
+</section>
+
+<section class="w src" aria-label="Quellen">
+  <p class="eyebrow">Transparenz</p>
+  <p>Dieser Vergleich ist unabhängig: keine Kooperationen, keine bezahlten Platzierungen, keine Affiliate-Links. Herstellerangaben sind als solche gekennzeichnet. Uns ist kein aktueller Test von Osmoseanlagen durch Stiftung Warentest oder Öko-Test bekannt. Viele „Testsieger“-Seiten im Netz sind Werbung.</p>
+  <p class="eyebrow">Quellen</p>
+  <ol>
+    <li><a href="https://www.umweltbundesamt.de/daten/wasser/wasserwirtschaft/qualitaet-des-trinkwassers-aus-zentralen">Umweltbundesamt: Qualität des Trinkwassers aus zentralen Versorgungen (Bericht 2020–2022)</a></li>
+    <li><a href="https://www.umweltbundesamt.de/system/files/medien/421/publikationen/uba_trinkwas-ratgeber_2020-04-07_web_barrierefrei.pdf">Umweltbundesamt: Ratgeber „Trinkwasser aus dem Hahn“ (2020)</a></li>
+    <li><a href="https://www.verbraucherzentrale.de/wissen/umwelt-haushalt/wasser/wasserfilter-sind-sie-aus-hygienischer-sicht-notwendig-5534">Verbraucherzentrale: Wasserfilter – aus hygienischer Sicht notwendig?</a></li>
+    <li><a href="https://www.vzhh.de/themen/umwelt-nachhaltigkeit/trinkwasser/muss-ich-leitungswasser-filtern">Verbraucherzentrale Hamburg: Muss ich Leitungswasser filtern?</a></li>
+    <li><a href="https://www.test.de/Wasserfilter-im-Test-Gut-filtert-keiner-4840828-0/">Stiftung Warentest: Wasserfilter im Test – Gut filtert keiner (2022)</a></li>
+    <li><a href="https://www.gesetze-im-internet.de/trinkwv_2023/TrinkwV.pdf">Trinkwasserverordnung 2023 (PFAS-Grenzwerte, Bleileitungen)</a></li>
+    <li><a href="https://www.umweltbundesamt.de/faq-ewigkeitschemikalie-trifluoressigsaeure-tfa">Umweltbundesamt: FAQ Trifluoressigsäure (TFA)</a></li>
+    <li><a href="https://pubs.acs.org/doi/10.1021/acs.estlett.0c00004">Herkert et al. 2020: PFAS-Entfernung durch Haushaltsfilter, Environ. Sci. Technol. Lett.</a></li>
+    <li><a href="https://epic.awi.de/id/eprint/49247/">Mintenig et al. 2019: Mikroplastik in deutschem Trinkwasser, Sci. Total Environ.</a></li>
+    <li><a href="https://extension.psu.edu/nitrates-in-drinking-water">Penn State Extension: Nitrat im Trinkwasser</a></li>
+    <li><a href="https://www.cdnsciencepub.com/doi/10.1139/m89-178">Studie zur Verkeimung von Haushalts-Osmoseanlagen (1989)</a></li>
+    <li><a href="https://journals.plos.org/water/article?id=10.1371%2Fjournal.pwat.0000365">Zanib et al. 2025: UV-C-LED-Geräte im Haushalt, PLOS Water</a></li>
+    <li><a href="https://www.nsf.org/consumer-resources/articles/standards-water-treatment-systems">NSF: Standards für Wasseraufbereitungsgeräte</a></li>
+    <li><a href="https://www.sbz-online.de/trinkwasserhygiene/regelwerk-din-en-1717-so-wird-trinkwasser-gegen-verunreinigungen-geschuetzt">SBZ: DIN EN 1717 – Schutz des Trinkwassers</a></li>
+    <li><a href="https://www.tuv.com/press/en/press-releases/hygenic.html">TÜV Rheinland: Zertifikat „Hygienic Properties“ (OsmoFresh)</a></li>
+    <li><a href="https://osmofresh.de/osmoseanlagen/fusion-stream">OsmoFresh: Fusion Stream (Herstellerangaben)</a></li>
+    <li><a href="https://www.waterdropfilter.de/en/products/umkehrosmoseanlage-g3p800">Waterdrop: G3P800 (Herstellerangaben)</a></li>
+    <li><a href="https://waterfilterguru.com/waterdrop-g3-review/">Water Filter Guru: Labortest Waterdrop G3 (Mineralwerte)</a></li>
+    <li><a href="https://www.frizzlife.com/de/collections/best-sellers/products/pd600tam3">Frizzlife: PD600-TAM3 (Herstellerangaben)</a></li>
+    <li><a href="https://iris.who.int/server/api/core/bitstreams/ee809f3c-d909-4138-9242-002bce630853/content">WHO 2005: Nutrients in Drinking Water (Kozisek)</a></li>
+    <li><a href="https://doi.org/10.1515/reveh-2022-0057">Sunardi et al. 2022: Mineral-, basisches und entmineralisiertes Wasser, Rev. Environ. Health</a></li>
+    <li><a href="https://www.dge.de/fileadmin/dok/gesunde-ernaehrung/faq/DGE-FAQ-Magnesium-2022.pdf">DGE: Referenzwerte Magnesium</a></li>
+    <li><a href="https://phys.org/news/2015-09-memory-persists-picosecond-timescale.pdf">Nagata, Bonn et al. 2015: Struktur von Wasser zerfällt in Pikosekunden</a></li>
+    <li><a href="https://theconversation.com/dont-fall-for-the-snake-oil-claims-of-structured-water-a-chemist-explains-why-its-nonsense-188159">The Conversation 2022: Ein Chemiker über „strukturiertes Wasser“</a></li>
+    <li><a href="https://konsument.at/essen-trinken/granderwasser-kritik-bestaetigt">Konsument: Granderwasser-Kritik bestätigt (OLG Wien 2006)</a></li>
+    <li><a href="https://www.test.de/Sauerstoffangereicherte-Waesser-Luftnummern-1097408-0/">Stiftung Warentest: Sauerstoffangereicherte Wässer – Luftnummern</a></li>
+  </ol>
+</section>
+</main>
+</body>
+</html>
